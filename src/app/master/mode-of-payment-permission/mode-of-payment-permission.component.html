@@ -1,0 +1,111 @@
+<section class="content">
+  <mat-card style="display: flex; justify-content: space-between; align-items: center;">
+   <h3>  <strong> Mode of Payment Permission  </strong></h3>
+    <button [disabled]="!isLocalApprver" (click)="ToggleAddPopup()" type="button" class="btn btn-success"  matTooltip="Add Mode of Payment Permission">Add </button>
+  </mat-card>
+
+  <mat-card class="mt-2 ">
+    <div  class="row">
+      <div>
+        <strong>Permission Details </strong>
+      </div>
+      <div class="col-md-6" style="margin: 20px 0px 0px 0px;">
+        <ng-select [items]="LocationForJob.Data" [(ngModel)]="Location" bindLabel="TEXT" bindValue="Id"
+          style="width: 100%;" class="w-100" placeholder="select location to search ">
+        </ng-select>
+      </div>
+      <div class="col-md-3" style="margin: 37px 0px 0px 0px;" >
+       <span>&nbsp;</span>
+        <button  class="btn btn-success w-50" (click)="getModeOfPaymentPermissionFunc()">Search</button>
+      </div>
+      <div class="col-md-3" style="margin: 37px 0px 0px 0px;">
+        <button  class="btn btn-warning w-50" (click)="Reset()">Reset</button>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-md-12" >
+        <div class="table-responsive" style="max-height: 400px; overflow: auto;">
+        <table  >
+          <thead >
+            <tr style="height: auto !important;">  
+              <th>Location</th>
+              <th>Customer Advance</th>
+              <th>Cash</th>
+              <th>Cheque</th>
+              <th>Credit Card</th>
+              <th>Credit Request</th>
+              <th>Instant Cash Back</th>
+              <th>PineLabs / Ecommerse</th>
+              <th>All Staff Debit</th>
+              <th>UPI</th>
+              <th>PAYTM</th>
+              <th>Manual Paytm</th>
+              <th>Manual Pinelabs </th>
+
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of MOPList">
+              <td style="white-space: nowrap; display: flex; align-items: center">{{ item.location }}  
+                    <button style="margin-left: auto;" (click)="editPermission(item)"  matTooltip="Edit Permission Details">  <span class="fa fa-pen" >  </span> </button>
+             
+              </td>
+              <td *ngFor="let mop of item.mops" style="white-space: nowrap;">
+                {{ mop.isAllowed == '1' ? 'Allowed' : 'Not Allowed' }}
+              </td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+  </mat-card>
+
+</section>
+
+
+
+<div class="popup-overlay" *ngIf="ShowAddPopup">
+  <mat-card class="popup-card">
+    <div>
+      <label for="">Select Location</label>
+      <ng-select [items]="LocationForJob.Data" [(ngModel)]="Location" bindLabel="TEXT" bindValue="Id"
+        style="width: 80%;">
+      </ng-select>
+    </div>
+    <div>
+      <table>
+        <thead>
+          <tr style="height: auto !important;">
+
+            <th scope="col">MOP Code</th>
+            <th scope="col">Payment Mode</th>
+            <th scope="col"> NOT ALLOW / ALLOW</th>
+            <!-- <th scope="col">NOT ALLOW</th> -->
+
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr *ngFor="let item of ModeOfPayments ;  let i = index">
+            <td style="white-space: nowrap; "> <span> {{ item?.MOPCode}} </span></td>
+            <td style="white-space: nowrap;">{{ item?.MOPDesc }}</td>
+            <td style="text-align: center;">
+                <mat-slide-toggle  [(ngModel)]="item.isAllowed" [disabled]="isServiceManger &&  item?.MOPCode !== 'MANUALPAYTM' && item?.MOPCode !== 'MANUALPINELABS' " ></mat-slide-toggle>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class="popup-buttons">
+      <button class="btn btn-success" (click)="onSubmit()">Save</button>
+      <button class="btn btn-warning" (click)="ToggleAddPopup()">Cancel</button>
+    </div>
+  </mat-card>
+
+</div>

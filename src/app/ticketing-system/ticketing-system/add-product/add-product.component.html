@@ -1,0 +1,226 @@
+<section class="add-product-container">
+
+  <!-- Header -->
+  <!-- Header -->
+  <div class="ap-header">
+    <div class="ap-header-left">
+      <div class="ap-icon-wrap">
+        <i class="fa fa-mobile-alt"></i>
+      </div>
+      <div>
+        <h2 class="ap-title">Add Product</h2>
+        <p class="ap-subtitle">Search by Apple Serial Number to add devices</p>
+      </div>
+    </div>
+    <div class="ap-header-right" style="display:flex; align-items:center; gap:10px;">
+      <span class="ap-count-badge" *ngIf="productList.length > 0">
+        {{ productList.length }} device{{ productList.length > 1 ? 's' : '' }} added
+      </span>
+      <!-- ✅ Close button -->
+      <button class="ap-close-btn" (click)="dialogRef.close()" matTooltip="Close">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+
+  <div class="ap-search-card">
+    <div class="ap-search-inner">
+      <div class="ap-search-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <input class="ap-search-input" [(ngModel)]="serialNumber" placeholder="Enter Apple Serial Number"
+        (keyup.enter)="Search_Serialno()" [disabled]="isSearching" autocomplete="off" />
+      <button class="ap-search-btn" (click)="Search_Serialno()" [disabled]="isSearching">
+        <i class="fa" [ngClass]="isSearching ? 'fa-spinner fa-spin' : 'fa-plus-circle'" style="margin-right:6px;"></i>
+        {{ isSearching ? 'Searching...' : 'Add Device' }}
+      </button>
+    </div>
+    <p class="ap-search-hint">Press <kbd>Enter</kbd> or click Add Device — you can search multiple serials</p>
+  </div>
+
+  <!-- Empty State -->
+  <div class="ap-empty-state" *ngIf="productList.length === 0">
+    <div class="ap-empty-icon">
+      <i class="fa fa-mobile-alt"></i>
+    </div>
+    <p class="ap-empty-title">No devices added yet</p>
+    <p class="ap-empty-sub">Search for an Apple Serial Number above to get started</p>
+  </div>
+
+  <!-- Product Table -->
+  <div class="ap-table-wrapper" *ngIf="productList.length > 0">
+    <div class="ap-table-scroll">
+      <table class="ap-table" mat-table [dataSource]="productList">
+
+        <!-- Image -->
+        <ng-container matColumnDef="image" sticky>
+          <th mat-header-cell *matHeaderCellDef class="col-img"></th>
+          <td mat-cell *matCellDef="let row" class="col-img">
+            <div class="ap-device-img-wrap">
+              <img [src]="row.productImageURL" [alt]="row.productDescription" class="ap-device-img"
+                onerror="this.src='assets/images/device-placeholder.png'">
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Serial -->
+        <ng-container matColumnDef="serial">
+          <th mat-header-cell *matHeaderCellDef>Serial No.</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-mono">{{ row.serial }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Product -->
+        <ng-container matColumnDef="product">
+          <th mat-header-cell *matHeaderCellDef>Device</th>
+          <td mat-cell *matCellDef="let row">
+            <div class="ap-product-name">{{ row.productDescription }}</div>
+          </td>
+        </ng-container>
+
+        <!-- Config -->
+        <ng-container matColumnDef="config">
+          <th mat-header-cell *matHeaderCellDef>Configuration</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-config-text">{{ row.configDescription }}</span>
+          </td>
+        </ng-container>
+
+        <!-- IMEI -->
+        <ng-container matColumnDef="imei">
+          <th mat-header-cell *matHeaderCellDef>IMEI</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-mono ap-muted">{{ row.imei }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Warranty -->
+        <ng-container matColumnDef="warranty">
+          <th mat-header-cell *matHeaderCellDef>Warranty</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-badge" [ngClass]="{
+              'ap-badge-danger': row.warrantyStatusCode === 'OO',
+              'ap-badge-success': row.warrantyStatusCode !== 'OO'
+            }">
+              {{ row.warrantyStatusDescription }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Purchase Date -->
+        <ng-container matColumnDef="purchaseDate">
+          <th mat-header-cell *matHeaderCellDef>Purchase Date</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-date">{{ row.purchaseDate | date:'mediumDate' }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Coverage End -->
+        <ng-container matColumnDef="coverageEnd">
+          <th mat-header-cell *matHeaderCellDef>Coverage End</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-date ap-muted">{{ row.coverageEndDate ? (row.coverageEndDate | date:'mediumDate') : '—'
+              }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Country -->
+        <ng-container matColumnDef="country">
+          <th mat-header-cell *matHeaderCellDef>Country</th>
+          <td mat-cell *matCellDef="let row">
+            <span>{{ row.purchaseCountryDesc || '—' }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Carrier -->
+        <ng-container matColumnDef="carrier">
+          <th mat-header-cell *matHeaderCellDef>Carrier</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-carrier">{{ row.carrierName }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Sold To -->
+        <ng-container matColumnDef="soldTo">
+          <th mat-header-cell *matHeaderCellDef>Sold To</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-muted" style="font-size:12px;">{{ row.soldToName || '—' }}</span>
+          </td>
+        </ng-container>
+
+        <!-- Labor Cover -->
+        <ng-container matColumnDef="laborCover">
+          <th mat-header-cell *matHeaderCellDef>Labor</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-pill" [ngClass]="row.laborCovered ? 'ap-pill-ok' : 'ap-pill-no'">
+              <i class="fa" [ngClass]="row.laborCovered ? 'fa-check' : 'fa-times'"></i>
+              {{ row.laborCoverLabel }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Part Cover -->
+        <ng-container matColumnDef="partCover">
+          <th mat-header-cell *matHeaderCellDef>Parts</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-pill" [ngClass]="row.partCovered ? 'ap-pill-ok' : 'ap-pill-no'">
+              <i class="fa" [ngClass]="row.partCovered ? 'fa-check' : 'fa-times'"></i>
+              {{ row.partCoverLabel }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Onsite -->
+        <ng-container matColumnDef="onsite">
+          <th mat-header-cell *matHeaderCellDef>Onsite</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-pill" [ngClass]="row.onsiteCoverage ? 'ap-pill-ok' : 'ap-pill-no'">
+              <i class="fa" [ngClass]="row.onsiteCoverage ? 'fa-check' : 'fa-times'"></i>
+              {{ row.onsiteLabel }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- AppleCare -->
+        <ng-container matColumnDef="appleCare">
+          <th mat-header-cell *matHeaderCellDef>AppleCare</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="ap-pill" [ngClass]="row.appleCareEligible === 'Eligible' ? 'ap-pill-ok' : 'ap-pill-no'">
+              <i class="fa" [ngClass]="row.appleCareEligible === 'Eligible' ? 'fa-check' : 'fa-times'"></i>
+              {{ row.appleCareEligible }}
+            </span>
+          </td>
+        </ng-container>
+
+        <!-- Action -->
+        <ng-container matColumnDef="action" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row; let i = index" class="col-action">
+            <button class="ap-remove-btn" (click)="removeProduct(i)" matTooltip="Remove device">
+              <i class="fa fa-trash-alt"></i>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="ap-table-row"></tr>
+
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer Actions -->
+  <div class="ap-footer" *ngIf="productList.length > 0">
+    <span class="ap-footer-info">
+      <i class="fa fa-info-circle"></i>
+      {{ productList.length }} device{{ productList.length > 1 ? 's' : '' }} ready to submit
+    </span>
+    <button class="ap-submit-btn" (click)="submitProducts()">
+      <i class="fa fa-check-circle" style="margin-right:7px;"></i>
+      Submit Products
+    </button>
+  </div>
+
+</section>

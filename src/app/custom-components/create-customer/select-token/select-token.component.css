@@ -1,0 +1,20 @@
+.TextStyle
+{
+    font-weight: 600;
+    font-size: 19px !important;
+}
+
+table thead tr th
+{
+font-size: 20px !important;
+padding: 10px;
+background-color: rgb(97, 97, 97) !important;
+}
+
+table tbody tr td
+{
+font-size: 20px !important;
+background-color:wheat !important;
+border:2px solid black;
+padding:15px;
+}

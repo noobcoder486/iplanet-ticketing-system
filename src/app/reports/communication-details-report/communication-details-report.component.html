@@ -1,0 +1,95 @@
+<section class="content">
+    <ngx-spinner size="medium" [type]="typeSelected">
+      <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+  
+    <mat-card style="z-index: 9;">
+  
+      <div class="row" style="display: flex;justify-content: space-between;">
+        <div class="col-sm-4 col-lg-12 col-md-4">
+          <p class="HeaderText">Communication Details Report </p>
+        </div>
+      </div>
+
+      <div class="row" style="border: 1px solid #dddddd;padding: 10px;">
+
+        <div class="col-sm-3 col-lg-2 col-md-3">
+            <label style="font-weight: 600;padding-bottom: 2px;">Location</label><br>
+            <ng-select [items]="LocationForJob.Data" [(ngModel)]="LocationData" bindLabel="TEXT"
+              bindValue="Id"></ng-select>
+          </div>
+
+          <div class="col-sm-3 col-md-3 col-lg-2 col-12">
+            <label style="font-weight: 600;padding-bottom: 2px;">Case Id</label><br>
+            <input type="text" style="border-radius: 0px; height: 34px; width: 100%; border: 1px solid rgb(211, 211, 211);"
+              placeholder="CaseId" [(ngModel)]="CaseIdData" />
+          </div>
+
+         <div class="col-sm-3 col-lg-2 col-md-3">
+            <label style="font-weight: 600;padding-bottom: 2px;">Call Type</label><br>
+            <ng-select  [items]="callTypes"
+            bindLabel="TEXT"
+            bindValue="Id" 
+            [(ngModel)]="CallType"></ng-select>
+        </div>  
+
+        <div class="col-sm-3 col-lg-2 col-md-3">
+            <label style="font-weight: 600;padding-bottom: 2px;">Connect Disposition</label><br>
+            <ng-select
+            [items]="DispositionDD.Data"
+            bindLabel="TEXT"
+            bindValue="Id"
+            [(ngModel)]="ConnectDisposition"
+             
+            >
+          </ng-select> 
+        </div> 
+
+        <div class="col-sm-5 col-md-5 col-lg-2">
+            <mat-form-field appearance="fill" style="border-radius: 0px !important;     height: 32.5px !important;">
+              <mat-label style="padding-top: 3px;font-weight: 600;">Enter a date range</mat-label>
+    
+              <div style="display: flex;align-items: center;justify-content: space-between;">
+                <div>
+                  <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate [(ngModel)]="StartDate" placeholder="Start date">
+                    <input matEndDate [(ngModel)]="EndDate" placeholder="End date">
+                  </mat-date-range-input>
+                </div>
+    
+                <div>
+                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-date-range-picker #picker></mat-date-range-picker>
+                </div>
+              </div>
+            </mat-form-field>
+          </div>
+
+
+      </div>
+  
+      <div class=" " style="padding-top: 10px;display: flex;justify-content: flex-end;">
+        <div style="padding-right: 40px;">
+          <button style="float:right" type="submit"  (click)="exportReportData()"  class="btn btnClass">Export Report</button>
+        </div>
+  
+        <div>
+          <button style="float:right" type="submit"  (click)="getReportData()"  class="btn btnClass">Generate Report</button>
+        </div>
+        <!-- <div class="col-sm- col-md-12 col-lg-12 ">
+            <button style="float:right"  type="submit" (click)="exportReportData()" class="btnClass">Export Report</button>
+            <button style="float:right"  type="submit" (click)="getReportData()" class="btnClass">Generate Report</button>
+          </div> -->
+      </div>
+    </mat-card>
+
+
+    <mat-card class="mt-2" *ngIf="results.length>0">   
+                <div class="table-responsive">
+                  <nitc-grid [gridcolumns]="columns" [dataSource]="detail" (actionEvent)="actionEmit($event)"
+                    [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent" (changeEvent)="loadPageData($event)"
+                    [isAllowSelect]="isChoose">
+                  </nitc-grid>
+                </div> 
+    </mat-card>
+    </section>

@@ -1,0 +1,70 @@
+<div class="confirm-dialog-container">
+
+  <div class="dialog-header">
+    <div class="header-left">
+      <div class="avatar">
+        {{ (data.customer?.FirstName || '?')[0] | uppercase }}
+      </div>
+      <div>
+        <h2 class="dialog-title">Confirm Customer Mapping</h2>
+        <p class="dialog-subtitle">Link this customer to Ticket {{ data.ticket?.TicketNo }}</p>
+      </div>
+    </div>
+    <span class="customer-code-badge">{{ data.customer?.CustomerCode }}</span>
+  </div>
+
+  <mat-card class="customer-card">
+
+    <div class="info-grid">
+
+      <div class="info-item">
+        <span class="info-label">
+          <mat-icon style="margin-right:5px;">person</mat-icon> Full Name
+        </span>
+        <span class="info-value">{{ fullName }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="info-label">
+          <mat-icon style="margin-right:5px;">phone</mat-icon> Mobile
+        </span>
+        <span class="info-value">{{ data.customer?.MobileNo || '—' }}</span>
+      </div>
+
+      <div class="info-item full-width">
+        <span class="info-label">
+          <mat-icon style="margin-right:5px;">email</mat-icon> Email
+        </span>
+        <span class="info-value">{{ data.customer?.EmailID || '—' }}</span>
+      </div>
+
+      <div class="info-item full-width">
+        <span class="info-label">
+          <mat-icon style="margin-right:5px;">location_on</mat-icon> Address
+        </span>
+        <span class="info-value">{{ address }}</span>
+      </div>
+
+      <div class="info-item full-width" *ngIf="data.customer?.GSTRegistrationNo || data.customer?.GSTRegistrationType">
+        <span class="info-label">
+          <mat-icon style="margin-right:5px;">receipt_long</mat-icon> GST Details
+        </span>
+        <span class="info-value">{{ gstInfo }}</span>
+      </div>
+
+    </div>
+
+  </mat-card>
+
+  <div class="confirm-actions">
+    <button class="btn-back" (click)="onCancel()">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+    <button class="btn-confirm" (click)="onConfirm()">
+      <mat-icon>check_circle</mat-icon>
+      Confirm Mapping
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,78 @@
+<section class="content">
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="row" >
+          <div class="col-12">
+            <h3 class="ml-2 p-10 text-dark">
+              <b>{{formTitle}} GST Setup</b> 
+            </h3>
+          </div>
+        </div>
+  </mat-card>
+<mat-card class="p-2 mb-4" style="z-index: 9;">
+  <form [formGroup]="gstSetupForm" name="gstSetupForm" autocomplete="off">
+      <div class="card-body" style="padding: 10px;">
+        <div class="row">
+          <div class="col-sm-6">
+            <ng-select placeholder="GST Component Code*" [readonly]="isEdit" [items]="GSTComponentCode.Data" bindLabel="TEXT" bindValue="Id"
+                formControlName="GSTComponentCode" (search)="onGSTComponentCode($event)">
+                <i style="color: red">*</i>
+            </ng-select>
+            </div>
+            <div class="col-sm-6">
+              <ng-select placeholder="GST Group Code*" [items]="GSTGroupCode.Data" bindLabel="TEXT" bindValue="Id"
+                formControlName="GSTGroupCode" (search)="onGSTGroupCode($event)">
+                <i style="color: red">*</i>
+              </ng-select>
+            </div>
+            <div class="col-sm-6">
+              <ng-select placeholder="Select Country" [items]="gstCountry.Data" bindLabel="TEXT" bindValue="Id"
+                [(ngModel)]="gstsetup.countryCode" formControlName="CountryCode" (search)="onCountrySearch($event)">
+              </ng-select>
+            </div>
+            <div class="col-sm-6">
+              <ng-select placeholder="Select State" [items]="gstState.Data" bindLabel="TEXT" bindValue="Id"
+                (search)="onStatesSearch($event)" formControlName="GSTStateCode" [(ngModel)]="gstsetup.gstStateCode"></ng-select>
+            </div>
+            <div class="col-sm-6">
+              <ng-select placeholder="GST Juridiction Code" [items]="gstJuridictionCode.Data" bindLabel="TEXT" bindValue="Id"
+                formControlName="GSTJuridictionCode">
+              </ng-select>
+            </div>
+            <div class="col-sm-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Effective Date</mat-label>
+                <input matInput [matDatepicker]="picker"
+                  formControlName="EffectiveDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Calculation Order</mat-label>
+                  <input matInput [(ngModel)]="gstsetup.calculationOrder" formControlName="CalculationOrder">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>GST Percentage</mat-label>
+                  <input matInput [(ngModel)]="gstsetup.gstPercentage" formControlName="GSTPercentage">
+                </mat-form-field>
+            </div>
+          <div class="row">
+          <div class="col-sm-9" style="text-align: right;">
+            <div class="text-danger" style="display: inline-block" role="alert">
+              {{errorMessage}}
+            </div>
+          </div>
+        </div><br/>
+        <div class="row"></div>
+          <div class="col-sm-12" style="text-align: right;">
+            <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+            <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+          </div>
+        </div>
+      </div>
+  </form>
+</mat-card>
+</section>

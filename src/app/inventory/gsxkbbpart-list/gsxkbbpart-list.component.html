@@ -1,0 +1,195 @@
+<section class="content">
+<ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+      </ngx-spinner>
+    <mat-card class="mt-2">
+        <div class="row" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="col-lg-7 col-sm-8 col-md-8"
+                >
+                <p style="font-weight: 700; font-size: 18px !important; margin: 0;">KBB Part Lists </p>
+            </div>
+            <div class="col-lg-2 col-sm-4 col-md-4">
+                <mat-form-field appearance="fill">
+                    <mat-label>Expiry Date</mat-label>
+                    <input matInput [matDatepicker]="DatePicker" [(ngModel)]="expiryDate" placeholder="Expiry date">
+                    <mat-datepicker-toggle matTooltip="Select Expiry Date" matSuffix
+                        [for]="DatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #DatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-1 col-sm-4 col-md-4">
+                <button class="btn blue-button" matTooltip="Export As Excel" (click)="ExportExpiredGsxkbbpartlist()">Export</button>
+            </div>
+            <div class="col-lg-1 col-sm-4 col-md-4">
+                <button class="btn btn-success" matTooltip="Download Sample" (click)="DownloadSample()">Sample</button>
+            </div>
+            <div class="col-lg-1 col-sm-4 col-md-4">
+                <!-- <button matTooltip="Update Expiry Date through Uploader " >Upload</button> -->
+                <div>
+                    <input type="file" id="fileInput" accept=".xls, .xlsx" style="display: none"
+                        (change)="FileUploadGsxKbbPartBulk($event)" />
+                    <button (click)="selectFile('GsxKbbPartExcelFormat')" matTooltip="Bulk update Gsxkbbpart"
+                        class="btn" style=" width: 30px;
+                      padding: 3px;
+                      border-radius: 4px;
+                      background-color: #233f76;
+                    ">
+                        <img src="assets/images/uploadNew.png" />
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </mat-card>
+    <mat-card class="mt-2">
+        <div class="row">
+
+            <div class="col-lg-3 col-sm-3 col-md-3">
+                <div class="col-12">
+                    <label><strong>Repair Id </strong></label>
+                </div>
+                <div class="col-12">
+                    <input type="text" placeholder="Repair Id" [(ngModel)]="RepairId">
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-3 col-md-3">
+                <div class="col-12">
+                    <label><strong>Part Code</strong></label>
+
+                </div>
+                <div class="col-12">
+                    <input type="text" placeholder="Part Code" [(ngModel)]="PartNumber">
+
+                </div>
+            </div>
+            <!-- <div class="col-lg-3 col-sm-3 col-md-3">
+                    <div class="col-12">
+                        <mat-form-field appearance="fill" style="width: 47%;">
+                            <mat-label>Expiry Date</mat-label>
+                            <input matInput [matDatepicker]="startPicker" [(ngModel)]="expiryDate" name="StartDate"
+                                placeholder="Start date">
+                            <mat-datepicker-toggle matTooltip="Select Start Date" matSuffix
+                                [for]="startPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #startPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div> -->
+            <div class="col-lg-3 col-sm-3 col-md-3">
+                <div class="col-6">
+                    <div class="col-sm-3" style="display: flex; justify-content: flex-end;">
+                        <button class="btn btn-success" (click)="getGsxKbbPartList()">search</button>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </mat-card>
+
+
+    <mat-card class="mt-2">
+        <div class="row">
+            <mat-card>
+                <div class="items_details_grid scrollable-table-container">
+                    <div class="scroll-wrapper">
+                        <table class="table table-success table-striped table-wrap">
+                            <thead>
+                                <tr style="height: 30px !important;">
+                                    <th class="fontFamily">Repair Id</th>
+                                    <th class="fontFamily">Sequence No.</th>
+                                    <th class="fontFamily">Part Code</th>
+                                    <th class="fontFamily" style="width: 25% !important;">Expiry Date</th>
+                                    <th class="fontFamily" style="width: 25% !important;">Expected Return Date</th>
+                                    <th class="fontFamily" style="width: 10% !important;"> Status </th>
+                                    <th class="fontFamily">Part Description</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of GsxKbbPartList">
+
+                                    <td><span>{{item?.repairId}}</span></td>
+                                    <td><span>{{item?.sequenceNumber}}</span></td>
+                                    <td><span>{{item?.partNumber}}</span></td>
+                                    <td><span><a [ngStyle]="{ color: item?.isDateExpired == 'YES' ? 'red' : 'blue'}"
+                                                class="tableBody" (click)="UpdateExpiryDate(item,'EXPIRYDATE')">
+                                                {{ item.expiryDate | date:'yyyy-MM-dd' }}
+                                            </a></span></td>
+                                    <td><span>{{item?.expectedReturnDate}}</span></td>
+
+                                    <td><span><a class="tableBody" (click)="UpdateExpiryDate(item,'STATUS')">
+                                                {{item?.Status ?? 'Update'}}
+                                            </a></span></td>
+                                    <td><span>{{item?.partDescription}}</span></td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </mat-card>
+
+
+</section>
+
+
+<div class="popup-overlay" *ngIf="isUpdateexpiryDate">
+    <mat-card class="popup-card">
+        <div>
+            <p>Update Repair </p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+            <div style="display: flex; flex-direction: column; ">
+
+                <label>Repair Id </label>
+                <input disabled="true" type="text" [(ngModel)]="currentRepairId">
+            </div>
+            <div style="display: flex; flex-direction: column; ">
+                <label>Sequence Number </label>
+                <input disabled="true" type="text" [(ngModel)]="currentSequenceNo">
+            </div>
+
+            <div *ngIf="isStatus" style="display: flex; flex-direction: column; ">
+                <label>Status</label>
+                <ng-select [items]="StatusList" [(ngModel)]="SelectedStatus"> </ng-select>
+            </div>
+
+            <div *ngIf="isDateUpdate" style="display: flex; flex-direction: column; ">
+                <label>Current Expiry Date</label>
+                <input disabled="true" type="text" [(ngModel)]="currentExpiryDate">
+            </div>
+
+            <mat-form-field *ngIf="isDateUpdate" appearance="fill" style="display: flex; flex-direction: column;">
+                <mat-label>Updated Expiry Date</mat-label>
+                <input matInput [matDatepicker]="Picker" [(ngModel)]="UpdatedexpiryDate"
+                    placeholder="Updated Expiry Date">
+                <mat-datepicker-toggle matSuffix [for]="Picker"></mat-datepicker-toggle>
+                <mat-datepicker #Picker></mat-datepicker>
+
+            </mat-form-field>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <div>
+                    <button class="btn btn-warning" (click)="closepop()">Cancel</button>
+                </div>
+                <div *ngIf="isDateUpdate">
+                    <button class="btn btn-success"
+                        (click)="UpdateGSXBulkPartListExpiryDate('EXPIRYDATE')">Submit</button>
+                </div>
+                <div *ngIf="isStatus">
+                    <button class="btn btn-success" (click)="UpdateGSXBulkPartListExpiryDate('STATUS')">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </mat-card>
+</div>

@@ -1,0 +1,8 @@
+node_modules
+*.zip
+.vs/slnx.sqlite
+.idea/
+.vs/
+dist/
+
+.fake

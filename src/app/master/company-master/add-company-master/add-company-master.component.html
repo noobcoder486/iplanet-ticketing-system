@@ -1,0 +1,178 @@
+<section class="content">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="row">
+        <div class="col-12">
+          <h3 class="ml-2 p-10 text-dark">
+            <b>{{formTitle}} Company</b>
+          </h3>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <form [formGroup]="companyForm" name="companyForm" autocomplete="off">
+        <div class="card-body" style="padding: 10px;">
+          <div class="row">
+            <div class="col-sm-6">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Company Code<i style="color:red">*</i></mat-label>
+                <input matInput [readonly]="isEdit" formControlName="CompanyCode">
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Company Name<i style="color:red">*</i></mat-label>
+                <input matInput    formControlName="CompanyName">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Company Address<i style="color:red">*</i></mat-label>
+                <input matInput  formControlName="CompanyAddress">
+              </mat-form-field>
+            </div> 
+  
+            <div class="col-sm-6">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Company Address 2</mat-label>
+                <input matInput formControlName="CompanyAddress2">
+              </mat-form-field>
+            </div>
+          </div>
+            
+          <div class="row">
+            <div class="col-sm-6">
+              <ng-select placeholder="Select Country" [items]="Countries.Data" bindLabel="TEXT" bindValue="Id"
+              formControlName="Country" (search)="onCountrySearch($event)">
+              </ng-select>
+            </div>
+            <div class="col-sm-6">
+              <ng-select placeholder="Select State" [items]="States.Data" bindLabel="TEXT" bindValue="Id"
+                (search)="onStatesSearch($event)" formControlName="State" ></ng-select>
+            </div> 
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>City<i style="color:red">*</i></mat-label>
+              <input matInput  (keypress)="onKeyPress($event, 'alpha', 20)"   formControlName="City">
+            </mat-form-field>
+          </div> 
+
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Phone<i style="color:red">*</i></mat-label>
+              <input matInput (keypress)="onKeyPress($event, 'int', 10)" formControlName="Phone">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Email ID<i style="color:red">*</i></mat-label>
+              <input matInput   formControlName="EmailID">
+            </mat-form-field>
+          </div> 
+
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Pan No<i style="color:red">*</i></mat-label>
+              <input matInput (keypress)="onKeyPress($event, '', 10)" formControlName="PanNo">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Company Print Name<i style="color:red">*</i></mat-label>
+              <input matInput  formControlName="CompanyPrintName">
+            </mat-form-field>
+          </div> 
+
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Pin Code<i style="color:red">*</i></mat-label>
+              <input matInput  (keypress)="onKeyPress($event, 'int', 6)"   formControlName="PostalCode">
+            </mat-form-field>
+          </div> 
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Contact Person</mat-label>
+              <input matInput formControlName="ContactPerson" (keypress)="onKeyPress($event, 'int', 10)">
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Phone2</mat-label>
+              <input matInput formControlName="Phone2" (keypress)="onKeyPress($event, 'int', 10)">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>TanNo</mat-label>
+              <input matInput formControlName="TanNo">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Default Currency</mat-label>
+              <input matInput formControlName="DefaultCurrency">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Company Address2</mat-label>
+              <input matInput formControlName="CompanyAddress2">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>WebSite</mat-label>
+              <input matInput formControlName="WebSite">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>SAPCompanyCode</mat-label>
+              <input matInput formControlName="SAPCompanyCode">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>CIN</mat-label>
+              <input matInput formControlName="CIN">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6" >
+            <div class="text-danger" style="display: inline-block" role="alert">
+              {{errorMessage}}
+            </div>
+          </div>
+          <div class="col-sm-5" style="text-align: right;">
+            <button style="position: relative;"  (click)="onSubmit()" class="btn btn-success">Save</button>
+          </div>
+          <div class="col-sm-1">
+            <button type="button" style="border:1px solid black ;position: relative;" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+          </div>
+        </div>
+      </div>
+      </form>
+    </mat-card>
+  </section>

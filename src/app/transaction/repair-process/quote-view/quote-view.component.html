@@ -1,0 +1,293 @@
+<!-- <div *ngIf="isShowTotal" >
+  <div style="background-color: #ffffff;width: 50%;height: 150px;border-radius: 10px;z-index: 1;position: absolute;margin: 13% 25%;box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+    <div style="padding: 20px;">
+    <div class="col-12">
+      <label  style="float: left;font-size: 15px;" > <span><b>Enter Discount Amount : </b></span></label>
+    </div>
+    <div class="col-12" style="padding-top: 5px;">
+      <mat-form-field appearance="standard" >
+        <mat-label>Discount Amount</mat-label>
+        <input matInput type="text" [(ngModel)]="HeaderDiscount">
+      </mat-form-field>
+    </div>
+    <div class="col-12" style="padding-top: 5px;">
+      <button class="x_final_button x_active_btn x_save_button" style="display: initial;float: right;"  type="button" (click)="add_Discount_quote()" >Apply</button>
+    </div>
+
+    </div>
+  </div>
+</div> -->
+<!-- <div class="col-12" style="padding-top: 5px;">
+  <button class="x_final_button x_active_btn x_save_button" style="display: initial;float: right;"  type="button" (click)=" button()" >Apply</button>
+</div> -->
+<div  class="card-body" style="height: 387px;"   > <!-- *ngIf="repa?.QuoteFlag == 0"-->
+
+  <div *ngIf="repa?.QuoteFlag == 1">
+    <mat-card  style="margin:10px; border-radius:8px;">
+      <div class="row">
+        <div class="col-sm-6">
+          <mat-card-content>
+            <p>QuoteCode: {{objQuote?.QuoteCode }}</p>
+          </mat-card-content>
+        </div>
+        <div class="col-sm-6">
+          <mat-card-content>
+            <p align="end">{{objQuote?.QuoteDate}}</p>
+          </mat-card-content>
+        </div>
+      </div>
+        <div >
+          <form [formGroup]="quoteStatusForm">
+          <mat-card-content >
+            <div class="row" (mouseenter)="quotestatushover=repa?.QUOTE?.QuoteStatus" (mouseleave)="quotestatushover=''">
+              <div class="col-4"> Quote Status: </div>
+              <div class="col-7" >{{quoteStatus}}</div>
+              <div class="col-1" >
+                <i *ngIf="repa?.QUOTE?.QuoteStatus== quotestatushover && quoteStatus != 'REJECTED'"  (click)="onQuoteStatus()" style="align-content:right;color:red"  class="fa-duotone fa-pen-to-square"></i>
+              </div>
+            </div>
+            <div class="row" *ngIf="isOpenStatus"  >
+              <div class="col-4" style="display: flex; align-items: center;">
+                Quote Status:
+              </div>
+              <div class="col-7">  
+                <ng-select [items]="QuoteStatusList"  bindLabel="QuoteStatusDescription" 
+                bindValue="QuoteStatusCode" [(ngModel)]="quoteSatusChange"  [ngModelOptions]="{standalone: true}"></ng-select>
+              </div>
+              <div class="col-1" style="margin-top: 24px;"><i (click)="updatequoteStatus()"  style="align-content:right;font-size:23px !important;color:green"   class="fa-regular fa-floppy-disk"></i></div>
+            </div>       
+             <!--Reject Reason  -->
+               <div class="row"  *ngIf="quoteSatusChange == 'REJECTED' || quoteStatus == 'REJECTED' ">
+              <div class="col-4" style="display: flex; align-items: center;">
+                Quote Reject Reason:
+              </div>
+              <div class="col-8">  
+                <ng-select [disabled]="quoteStatus == 'REJECTED'" [items]="RejectQuoteReasonDD.Data"  bindLabel="TEXT" 
+                bindValue="Id" [(ngModel)]="RejectQuoteReason"  [ngModelOptions]="{standalone: true}"></ng-select>
+              </div>
+               </div>
+             <!--Reject Reason  -->
+
+          </mat-card-content>
+        </form>
+         </div>
+    <mat-card-content>
+      <P align="end">{{repa?.QUOTE?.CreatedBy}}</P> 
+    </mat-card-content>
+    <mat-card-content *ngIf="ContractApplicable">
+      <P matTooltip="Service Count Under Contract">Service Count : {{this.repa?.ContractCodeObject?.NoOfTimesUsed || 0 }}</P> 
+    </mat-card-content>
+    
+    </mat-card>
+    </div> 
+  
+
+
+  <div *ngFor="let item of objQuote?.QuoteDetail">
+    <form [formGroup]="quoteForm">
+      <mat-card class="example-card" style="margin-bottom:10px; border-radius:8px;" [ngClass]="{'bg-primary':item.isDeleted==1}">
+        <mat-card-content>
+          <div class="row" (mouseenter)="isDeletshover=item.ItemCode" (mouseleave)="isDeletshover=''">
+            <div class="col-lg-3" >
+              <img src={{item.ImageUrl}} style="width: 48px;height:48px;" onerror="this.src='./assets/images/crm-logo-icon.png';"
+            mat-card-avatar />
+            </div>
+              <div class="col-lg-8" style="font-size:18px ;"> {{ item.ItemCode}}</div>
+              <div  *ngIf="item.isDeleted == 1" class="col-lg-1"   style="font-size:18px ;"><i *ngIf="item.ItemCode == isDeletshover"  (click)="removeItem(item)" style="color: green;"  class="fa-solid fa-trash-can-undo"></i></div>
+              <div  *ngIf="item.isDeleted == 0" class="col-lg-1"   style="font-size:18px ;"><i *ngIf="item.ItemCode == isDeletshover"  (click)="removeItem(item)" style="color: red;"  class="fa-duotone fa-trash-can"></i></div>
+          </div>
+          <div class="row">
+            <mat-card-subtitle>{{ item.ItemDescription}}</mat-card-subtitle>
+        </div>
+        </mat-card-content>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-4" ><b> Warranty :</b></div>
+            <div class="col-8" > {{repa.GSXWarrantyStatusDesc}}</div>
+          </div>
+          <mat-card-content (mouseenter)="coveragehover=item.ItemCode" (mouseleave)="coveragehover=''" style="margin-bottom: 0px;" >
+            <div class="row" >
+              <div class="col-4"> <b>Coverage :</b></div>
+              <div class="col-7" > {{item.CoverageDescription}}</div>
+              <div class="col-1" >
+                <i *ngIf="item.ItemCode==coveragehover" (click)="coveragehoverFunc(item)" style="align-content:right;color:red"  class="fa-duotone fa-pen-to-square"></i>
+              </div>
+            </div>
+            <div class="row" *ngIf="item.isCoverage"  >
+              <div class="col-lg-4" style="display: flex; align-items: center;">
+              <b> Coverage :</b>
+              </div>
+              <div class="col-7">  
+                <ng-select
+                    [items]="coverages.Data"
+                    formControlName="CoverageOption{{item.rowno}}"
+                    (search)="getCovarage($event)"
+                    bindLabel="TEXT">
+                </ng-select>
+              </div>
+              <div class="col-1" style="margin-top: 24px;"><i  (click)="onCoverageSubmit(item)" style="align-content:right;font-size:23px !important;color:green"  class="fa-regular fa-floppy-disk"></i></div>
+            </div>
+          </mat-card-content>   
+            <div class="row" (mouseenter)="issueshover=item.ItemCode" (mouseleave)="issueshover=''" *ngIf="selectedcomponentissuelist?.length <= 0">
+              <div class="col-4" > <b>Comp/Issue :</b></div>
+              <div class="col-7" style="white-space: nowrap;">{{item.ComponentDescription}} / {{item.IssueDescription}}</div>
+              <div class="col-1"><i *ngIf="item.ItemCode==issueshover" (click)="issueshoverFunc(item)" style="align-content:right;color:red"  class="fa-duotone fa-pen-to-square"></i></div>
+            </div>
+              <div class="row" *ngIf="item.isCompIssue"> 
+                <div class="col-lg-4" style="display: flex;    align-items: center;;">
+                  <b>Component :</b>
+                </div>
+                <div class="col-7">  
+                  <ng-select [items]="ComponentList" formControlName="component{{item.rowno}}" bindLabel="componentDescription" 
+                  (change)="onSelectComponent($event)">
+                </ng-select>
+                </div>
+                <div class="col-lg-4" style="display: flex; align-items: center;margin-top: -15px;">
+                  <b>Issues :</b>
+                </div>
+                <div class="col-7" style="margin-top: -15px;">  
+                  <ng-select [items]="IssuesList" formControlName="issues{{item.rowno}}"  bindLabel="description"
+                  (search)="onSelectIssue($event)">
+              </ng-select>
+                </div> 
+              <div class="col-1"><i  (click)="onComponentIssuesSubmit(item)" style="align-content:right;font-size:23px !important;color:green;margin-top: 10px;"  class="fa-regular fa-floppy-disk"></i></div> 
+              </div>
+              <mat-card-content (mouseenter)="pricetypehover=item.ItemCode" (mouseleave)="pricetypehover=''" style="margin-bottom: 0px;" >
+              <div class="row" >
+                <div class="col-4"><b> Price Type :</b></div>
+                <div class="col-7" > {{item.PriceType}}</div>
+                <div class="col-1" >
+                  <i *ngIf="item.ItemCode==pricetypehover" (click)="isPriceTypeFuc(item)" style="align-content:right;color:red"  class="fa-duotone fa-pen-to-square"></i>
+                </div>
+              </div>
+              <div class="row" *ngIf="item.isPriceType"  >
+                <div class="col-lg-4" style="display: flex; align-items: center;">
+                <b> Price Type :</b>
+                </div>
+                <div class="col-7">  
+                  <ng-select [items]="PricingOptionDD.Data" bindLabel="TEXT" bindValue="Id"  formControlName="PriceType{{item.rowno}}" [appendToBody]="true"></ng-select>
+                  <!-- <ng-select [items]="PriceTypeList" formControlName="PriceType{{item.rowno}}"></ng-select> -->
+                </div>
+                <div class="col-1" style="margin-top: 24px;"><i  (click)="onPriceType(item)" style="align-content:right;font-size:23px !important;color:green"  class="fa-regular fa-floppy-disk"></i></div>
+              </div>
+              </mat-card-content>
+          <div class="row">
+            <div class="col-4" > <b>Unit Price :</b></div>
+            <!-- <div class="col-8" >{{item.UnitPrice}}</div> -->
+            <div class="col-8" > <input [disabled]="item?.PriceRangeApplicable == 0 " [ngModelOptions]="{standalone: true}" type="text" [(ngModel)]="item.UnitPrice"  (blur)="onUnitPriceChange(item)"> </div>
+
+          </div>
+          <div class="row">
+            <div class="col-4" > <b>Taxable Amount :</b></div>
+            <div class="col-8" >{{item.TaxableAmount}}</div>
+          </div>
+          <div class="row">
+            <div class="col-4" > <b>Tax Amount :</b></div>
+            <div class="col-8" >{{item.TaxAmount}}</div>
+          </div>
+          <div class="row">
+            <div class="col-4" > <b>Net Amount:</b></div>
+            <div class="col-8" >{{item.NetAmount}}</div>
+          </div>
+          <div class="row">
+            <div class="col-4" > <b>PriceRangeApplicable:</b></div>
+            <div class="col-8" >{{item.PriceRangeApplicable}}</div>
+          </div>
+          <div class="row">
+            <div class="col-4" > <b>PriceRangeStart:</b></div>
+            <div class="col-8" >{{item.PriceRangeStart}}</div>
+          </div>
+          <div class="row">
+            <div class="col-4" > <b>PriceRangeEnd:</b></div>
+            <div class="col-8" >{{item.PriceRangeEnd}}</div>
+          </div>
+          <!-- Contract Code -->
+           <div class="row" *ngIf="ContractApplicable">
+            <div class="col-4" > <b>ContractCode:</b></div>
+            <div class="col-8" >{{item.ContractCode || ContractCode}}</div>
+          </div>
+          <div class="row" *ngIf="ContractApplicable">
+            <div class="col-4" > <b>ContractStartDate:</b></div>
+            <div class="col-8" >{{item.ContractStartDate || ContractStartDate}}</div>
+          </div>
+          <div class="row" *ngIf="ContractApplicable">
+            <div class="col-4" > <b>ContractEndDate:</b></div>
+            <div class="col-8" >{{item.ContractEndDate || ContractEndDate}}</div>
+          </div>
+          <!-- Contract Code -->
+
+
+          <div class="row" style="padding-top: 5px;">
+            <div class="col-4" ><b> Discount :</b></div>
+            <!-- <div  class="col-2" >{{  item.DiscountAmount  }}</div>  -->
+            <div  class="col-2" >{{  Math.abs(item.DiscountAmount)  }}</div> 
+            <div class="col-2" *ngIf="item?.DiscountCouponCode != ''" >
+              <label  matTooltip="Coupon Code" >
+                {{item.DiscountCouponCode}}
+              </label>
+            </div> 
+            <div class="col-4" style="display: flex;align-items: center;padding-left: 20px;" >
+              <label (click)="showDiscount(item)" style="color: blue;cursor: pointer;font-weight: 600;letter-spacing: 1px;" matTooltip="Apply for Discount" >[Discount]</label>
+            </div>
+          </div>
+          <!-- <div class="row" style="padding-top: 5px;">
+            <div class="col-4" ><b> Discount Amount :</b></div>
+            <div class="col-4" style="padding-right: 20px;" > 
+              <input class="inputStyle" matInput [(ngModel)]="item.DiscountAmount" [ngModelOptions]="{standalone: true}" (input)="validateDiscountAmount($event.target.value,item)" type="number" formControlName="DiscountAmount{{item.rowno}}">
+            </div>
+            <div class="col-2" style="display: flex;align-items: center;padding-left: 20px;" >
+              <i style="border:none;cursor:pointer;color:green;font-size: 17px;" class="fas fa-save" (click)="onHeaderDiscountAmount(item)"></i>
+            </div>
+          </div> -->
+        </mat-card-content>
+      </mat-card>
+    </form>        
+  </div>
+
+  <div class="text-right " style="padding: 15px;"  *ngIf="objQuote?.QuoteDetail?.length > 0">
+    <button class="x_final_button x_active_btn x_save_button" style="display: initial;"  type="button" (click)="onSubmit()">Save</button>
+  </div>
+  </div>
+
+    <!-- update quote -->
+    
+
+    <!--Footer  -->
+    <div class="card-footer" style="  background-color: rgba(0, 0, 0, 0.03) !important;padding: 0px;">
+      <div class="row" >
+      <div *ngIf="isShowTotal" >
+        <div style="background-color: #cfcfcf;width: 100%;">
+          <div class="row">
+            <div class="col-8" >
+              </div>
+              <div class="col-4">
+                <label align="end" style="float: left;font-size: 15px !important;" >  <span ><b> Base Amount :</b> </span>{{objQuote?.BaseAmount}}</label>
+              </div>
+    
+              <div class="col-8" >
+              </div>
+              <div class="col-4">
+                <label align="end" style="float: left;font-size: 15px !important;" > <span><b>Tax Amount : </b></span> {{objQuote?.TaxAmount}}</label>
+              </div>
+          </div>
+          </div>
+      </div>
+    </div>
+     
+    
+    
+       
+        <div class="row" style=" height:43px; "> 
+    
+          <div class="col-lg-11 col-sm-11">
+            <div class="col-11" align="end" style="font-size: 15px !important;padding-top:5px ;float: right;"><b>Net Amount :{{objQuote?.NetAmount}}</b></div>
+          </div>
+    
+    
+          <div class="col-lg-1 col-sm-1">
+        <svg  (click)="showTotal()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+        </svg>
+        </div>
+      </div>
+    </div>

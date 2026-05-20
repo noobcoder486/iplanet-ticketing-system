@@ -1,0 +1,11 @@
+.Ux_close {
+    position:initial !important;
+    
+  }
+
+.cardHeader
+{
+  font-size: 19px !important;
+  font-weight: 600;
+  color: rgb(111, 111, 250);
+}

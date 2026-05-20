@@ -1,0 +1,2087 @@
+/* =============================================================================
+   TICKETING SYSTEM — scoped to section.content
+   ============================================================================= */
+
+section.content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #eef2f7;
+  font-family: 'Segoe UI', Tahoma, Geneva, sans-serif;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+section.content *,
+section.content *::before,
+section.content *::after {
+  box-sizing: border-box;
+}
+
+/* =============================================================================
+   TOP BAR
+   ============================================================================= */
+section.content .ts-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 12px 20px;
+  border-bottom: 2px solid #1a73e8;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+  z-index: 20;
+  gap: 12px;
+}
+
+section.content .ts-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+section.content .ts-topbar-title {
+  font-size: 15px !important;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+section.content .ts-topbar-sub {
+  font-size: 11px;
+  color: #94a3b8;
+  display: block;
+  margin-top: 1px;
+}
+
+section.content .ts-create-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #1a73e8;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.35);
+  white-space: nowrap;
+}
+
+section.content .ts-create-btn:hover {
+  background: #1558b0;
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.45);
+  transform: translateY(-1px);
+}
+
+section.content .ts-create-btn:active {
+  transform: scale(0.97);
+}
+
+/* =============================================================================
+   MAIN LAYOUT
+   ============================================================================= */
+section.content .ts-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+  position: relative;
+}
+
+/* =============================================================================
+   LEFT PANEL — DRAWER
+   ============================================================================= */
+section.content .ts-left {
+  width: 295px;
+  min-width: 295px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  border-right: 2px solid #e2e8f0;
+  overflow: hidden;
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    min-width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.28s;
+}
+
+/* Collapsed state */
+section.content .ts-left.ts-left--collapsed {
+  width: 0;
+  min-width: 0;
+  border-right-color: transparent;
+}
+
+/* Inner wrapper preserves width so content doesn't reflow during animation */
+section.content .ts-drawer-inner {
+  width: 295px;
+  min-width: 295px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Pull Tab — a flex sibling between .ts-left and .ts-right in .ts-layout ── */
+section.content .ts-drawer-tab {
+  flex-shrink: 0;
+  align-self: center;
+  width: 16px;
+  height: 52px;
+  background: #1a73e8;
+  border: none;
+  border-radius: 0 6px 6px 0;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  cursor: pointer;
+  box-shadow: 2px 0 8px rgba(26, 115, 232, 0.3);
+  transition: background 0.15s, width 0.15s;
+  z-index: 10;
+}
+
+section.content .ts-drawer-tab:hover {
+  background: #1558b0;
+  width: 20px;
+}
+
+section.content .ts-filter-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+section.content .ts-filter-icon {
+  color: #94a3b8;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+section.content .ts-ng-select {
+  flex: 1;
+}
+
+section.content .ts-ng-select .ng-select-container {
+  border-radius: 6px !important;
+  border-color: #e2e8f0 !important;
+  min-height: 32px !important;
+  font-size: 12.5px !important;
+}
+
+section.content .ts-ng-select.ng-select-focused .ng-select-container {
+  border-color: #1a73e8 !important;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.15) !important;
+}
+
+section.content .ts-ticket-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+
+section.content .ts-ticket-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+section.content .ts-ticket-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+section.content .ts-ticket-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+/* ── Ticket Card ─────────────────────────────────────────────────────────────── */
+section.content .ts-ticket-card {
+  display: flex;
+  align-items: stretch;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+section.content .ts-ticket-stripe {
+  width: 5px;
+  flex-shrink: 0;
+}
+
+section.content .ts-ticket-card.new {
+  background: #f0f7ff;
+  border-color: #bfdbfe;
+}
+
+section.content .ts-ticket-card.new .ts-ticket-stripe {
+  background: #1a73e8;
+}
+
+section.content .ts-ticket-card.new:hover {
+  border-color: #1a73e8;
+  box-shadow: 0 3px 12px rgba(26, 115, 232, 0.2);
+  transform: translateX(3px);
+}
+
+section.content .ts-ticket-card.in-progress {
+  background: #fffbeb;
+  border-color: #fcd34d;
+}
+
+section.content .ts-ticket-card.in-progress .ts-ticket-stripe {
+  background: #d97706;
+}
+
+section.content .ts-ticket-card.in-progress:hover {
+  border-color: #d97706;
+  box-shadow: 0 3px 12px rgba(217, 119, 6, 0.2);
+  transform: translateX(3px);
+}
+
+section.content .ts-ticket-card.closed {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  opacity: 0.8;
+}
+
+section.content .ts-ticket-card.closed .ts-ticket-stripe {
+  background: #94a3b8;
+}
+
+section.content .ts-ticket-card.closed:hover {
+  border-color: #94a3b8;
+  opacity: 1;
+  transform: translateX(3px);
+}
+
+section.content .ts-ticket-card.partially-closed {
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+}
+
+section.content .ts-ticket-card.partially-closed .ts-ticket-stripe {
+  background: #7c3aed;
+}
+
+section.content .ts-ticket-card.partially-closed:hover {
+  border-color: #7c3aed;
+  box-shadow: 0 3px 12px rgba(124, 58, 237, 0.2);
+  transform: translateX(3px);
+}
+
+section.content .ts-ticket-card.completed {
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+section.content .ts-ticket-card.completed .ts-ticket-stripe {
+  background: #16a34a;
+}
+
+section.content .ts-ticket-card.completed:hover {
+  border-color: #16a34a;
+  box-shadow: 0 3px 12px rgba(22, 163, 74, 0.2);
+  transform: translateX(3px);
+}
+
+section.content .ts-ticket-card.ts-ticket-active {
+  background: #dbeafe !important;
+  border-color: #1a73e8 !important;
+  box-shadow: 0 3px 14px rgba(26, 115, 232, 0.25) !important;
+  transform: translateX(3px);
+}
+
+section.content .ts-ticket-card.ts-ticket-active .ts-ticket-stripe {
+  background: #1a73e8 !important;
+  width: 6px;
+}
+
+section.content .ts-ticket-card.ts-ticket-active .ts-ticket-no {
+  color: #1558b0;
+}
+
+section.content .ts-ticket-body {
+  flex: 1;
+  padding: 8px 10px;
+  min-width: 0;
+}
+
+section.content .ts-ticket-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+section.content .ts-ticket-no {
+  font-weight: 700;
+  font-size: 12.5px;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+section.content .ts-status-pill {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+section.content .ts-status-pill--new {
+  background: #bfdbfe;
+  color: #1d4ed8;
+}
+
+section.content .ts-status-pill--in-progress {
+  background: #fde68a;
+  color: #92400e;
+}
+
+section.content .ts-status-pill--closed {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+/* NEW */
+section.content .ts-status-pill--partially-closed {
+  background: #ede9fe;
+  color: #31951d;
+}
+
+section.content .ts-status-pill--completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+section.content .ts-ticket-customer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 2px;
+}
+
+section.content .ts-cust-icon {
+  color: #94a3b8;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+
+section.content .ts-cust-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1e293b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+section.content .ts-ticket-phone {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+section.content .ts-phone-icon {
+  color: #94a3b8;
+  font-size: 9px;
+  flex-shrink: 0;
+}
+
+section.content .ts-ticket-phone span {
+  font-size: 11px;
+  color: #64748b;
+}
+
+section.content .ts-active-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1a73e8;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+section.content .ts-list-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  color: #94a3b8;
+  gap: 8px;
+}
+
+section.content .ts-list-empty i {
+  font-size: 26px;
+  opacity: 0.5;
+}
+
+section.content .ts-list-empty p {
+  font-size: 13px;
+  margin: 0;
+}
+
+section.content .ts-paginator-wrap {
+  flex-shrink: 0;
+  border-top: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+section.content .ts-paginator-wrap .mat-paginator {
+  background: transparent;
+}
+
+section.content .ts-paginator-wrap .mat-paginator-container {
+  min-height: 44px;
+  padding: 0 8px;
+}
+
+/* =============================================================================
+   RIGHT PANEL
+   ============================================================================= */
+section.content .ts-right {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+section.content .ts-right::-webkit-scrollbar {
+  width: 5px;
+}
+
+section.content .ts-right::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+/* =============================================================================
+   DETAIL CARD
+   ============================================================================= */
+section.content .ts-detail {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+section.content .ts-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 18px;
+  background: #1e293b;
+  border-bottom: 2px solid #1a73e8;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+section.content .ts-detail-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+section.content .ts-detail-ticketno {
+  font-size: 16px;
+  font-weight: 800;
+  color: #f1f5f9;
+}
+
+section.content .ts-detail-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 20px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+section.content .ts-dsb-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+section.content .ts-dsb--new {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+section.content .ts-dsb--new .ts-dsb-dot {
+  background: #1d4ed8;
+}
+
+section.content .ts-dsb--inprogress {
+  background: #fef9c3;
+  color: #92400e;
+}
+
+section.content .ts-dsb--inprogress .ts-dsb-dot {
+  background: #d97706;
+}
+
+section.content .ts-dsb--closed {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+section.content .ts-dsb--closed .ts-dsb-dot {
+  background: #94a3b8;
+}
+
+/* NEW */
+section.content .ts-dsb--partiallyclosed {
+  background: #ede9fe;
+  color: #31951d;
+}
+
+section.content .ts-dsb--partiallyclosed .ts-dsb-dot {
+  background: #31951d;
+}
+
+section.content .ts-dsb--completed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+section.content .ts-dsb--completed .ts-dsb-dot {
+  background: #16a34a;
+}
+
+
+section.content .ts-detail-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+section.content .ts-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all 0.15s;
+  line-height: 1;
+}
+
+section.content .ts-action-btn--location {
+  background: #fef9c3;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+section.content .ts-action-btn--location:hover {
+  background: #fde68a;
+}
+
+section.content .ts-action-btn--customer {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #86efac;
+}
+
+section.content .ts-action-btn--customer:hover {
+  background: #86efac;
+}
+
+section.content .ts-action-btn--view {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-color: #93c5fd;
+}
+
+section.content .ts-action-btn--view:hover {
+  background: #93c5fd;
+}
+
+/* Meta Grid */
+section.content .ts-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  border-bottom: 1px solid #e2e8f0;
+}
+
+section.content .ts-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 11px 16px;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+section.content .ts-meta-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+}
+
+section.content .ts-meta-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: #0f172a;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+section.content .ts-meta-code {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+/* Workflow Row */
+section.content .ts-workflow-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+  min-height: 50px;
+}
+
+section.content .ts-workflow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  line-height: 1;
+  color: #fff;
+}
+
+section.content .ts-workflow-btn--assign {
+  background: linear-gradient(135deg, #059669, #047857);
+}
+
+section.content .ts-workflow-btn--assign:hover {
+  background: linear-gradient(135deg, #047857, #065f46);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+section.content .ts-workflow-btn--product {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+}
+
+section.content .ts-workflow-btn--product:hover {
+  background: linear-gradient(135deg, #6d28d9, #5b21b6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+section.content .ts-divider {
+  margin: 0;
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+/* =============================================================================
+   MAIL SECTION
+   ============================================================================= */
+section.content .ts-mail-section {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+section.content .ts-mail-subject {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  background: #dbeafe;
+  padding: 9px 13px;
+  border-radius: 8px;
+  border-left: 4px solid #1a73e8;
+  flex-shrink: 0;
+}
+
+section.content .ts-mail-icon {
+  color: #1a73e8;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+section.content .ts-mail-thread-scroll {
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+section.content .ts-mail-thread-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+section.content .ts-mail-thread-scroll::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 2px;
+}
+
+section.content .ts-mail-thread-scroll::-webkit-scrollbar-thumb {
+  background: #93c5fd;
+  border-radius: 2px;
+}
+
+section.content .ts-mail-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+section.content .ts-mail-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a73e8, #1558b0);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 13px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+section.content .ts-mail-content {
+  flex: 1;
+  min-width: 0;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+section.content .ts-mail-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 11px;
+  background: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+section.content .ts-mail-from-to {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+
+section.content .ts-mail-from {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+section.content .ts-mail-arrow {
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+section.content .ts-mail-to {
+  color: #64748b;
+}
+
+section.content .ts-mail-date {
+  font-size: 11px;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+section.content .ts-mail-body {
+  padding: 9px 11px;
+  font-size: 13px;
+  color: #1e293b;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* =============================================================================
+   INFO CARD (for product details)
+   ============================================================================= */
+section.content .ts-info-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+section.content .ts-info-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+section.content .ts-info-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+section.content .ts-info-card-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #fff;
+}
+
+section.content .ts-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+section.content .ts-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 11px 16px;
+  border-right: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+section.content .ts-info-item--full {
+  grid-column: 1 / -1;
+}
+
+section.content .ts-info-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+}
+
+section.content .ts-info-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: #0f172a;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+/* =============================================================================
+   EMPTY STATE
+   ============================================================================= */
+section.content .ts-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 60px 20px;
+  text-align: center;
+}
+
+section.content .ts-empty-icon {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: #dbeafe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: #1a73e8;
+  margin-bottom: 16px;
+}
+
+section.content .ts-empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 6px;
+}
+
+section.content .ts-empty-sub {
+  font-size: 13px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+/* =============================================================================
+   RESPONSIVE
+   ============================================================================= */
+@media (max-width: 768px) {
+  section.content .ts-layout {
+    flex-direction: column;
+  }
+
+  section.content .ts-left {
+    width: 100% !important;
+    min-width: unset !important;
+    height: 260px;
+    border-right: none;
+    border-bottom: 2px solid #e2e8f0;
+    flex-direction: column;
+  }
+
+  section.content .ts-left.ts-left--collapsed {
+    height: 0;
+    border-bottom-color: transparent;
+  }
+
+  section.content .ts-drawer-inner {
+    width: 100%;
+    min-width: unset;
+  }
+
+  section.content .ts-drawer-tab {
+    align-self: auto;
+    width: 100%;
+    height: 16px;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
+  }
+
+  section.content .ts-right {
+    padding: 10px;
+  }
+
+  section.content .ts-meta-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+section.content .ts-product-section {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 10px !important
+}
+
+section.content .ts-product-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #dbeafe;
+  flex-shrink: 0;
+  border-left: 4px solid #1a73e8;
+  margin-bottom: 3px !important;
+}
+
+section.content .ts-product-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+section.content .ts-product-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #1a73e8;
+  flex-shrink: 0;
+}
+
+section.content .ts-product-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: black;
+}
+
+/* Scrollable table wrapper — max height so it doesn't push everything down */
+section.content .ts-product-scroll {
+  max-height: 220px;
+  overflow-x: auto;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+section.content .ts-product-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+section.content .ts-product-scroll::-webkit-scrollbar-thumb {
+  background: #c4b5fd;
+  border-radius: 3px;
+}
+
+section.content .ts-product-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+section.content .ts-product-table thead tr {
+  background: #f5f3ff;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+section.content .ts-product-table th {
+  padding: 7px 10px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: white;
+  border-bottom: 1.5px solid #ddd6fe;
+  white-space: nowrap;
+}
+
+section.content .ts-product-table td {
+  padding: 5px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  color: #1e293b;
+}
+
+section.content .ts-product-row:hover td {
+  background: #faf5ff;
+}
+
+section.content .ts-pd-img {
+  width: 44px;
+  padding: 4px 8px !important;
+}
+
+section.content .ts-pd-device-img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  display: block;
+}
+
+section.content .ts-pd-mono {
+  font-family: 'Courier New', monospace;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #1d4ed8;
+  background: #dbeafe;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+section.content .ts-pd-muted {
+  color: #64748b;
+  font-size: 11.5px;
+}
+
+section.content .ts-pd-name {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 12px;
+  max-width: 160px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+section.content .ts-pd-config {
+  color: #475569;
+  font-size: 11.5px;
+  max-width: 140px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+section.content .ts-pd-date {
+  font-size: 11.5px;
+  color: #334155;
+}
+
+section.content .ts-pd-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+section.content .ts-pd-badge--success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+section.content .ts-pd-badge--danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+section.content .ts-pd-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+section.content .ts-pd-pill--ok {
+  background: #dcfce7;
+  color: #166534;
+}
+
+section.content .ts-pd-pill--no {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+section.content .ts-pd-action {
+  width: 36px;
+  text-align: center;
+}
+
+section.content .ts-pd-remove-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+section.content .ts-pd-remove-btn:hover {
+  background: #fca5a5;
+}
+
+/* ── ADD THESE TO ticketing-system.component.css ─────────────────────────────
+   These styles extend the existing file. Do not replace existing styles.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Per-row dropdown cell ───────────────────────────────────────────────── */
+.ts-pd-dd-cell {
+  min-width: 180px;
+  vertical-align: top;
+  padding-top: 10px !important;
+}
+
+/* ── Invalid ng-select highlight ─────────────────────────────────────────── */
+.ts-ng-invalid .ng-select-container {
+  border-color: #c62828 !important;
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.15) !important;
+}
+
+/* ── Inline field error text ─────────────────────────────────────────────── */
+.ts-field-error {
+  display: block;
+  color: #c62828;
+  font-size: 11px;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* ── Contract dates shown below the contract dropdown ───────────────────── */
+.ts-contract-dates {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  color: #555;
+  font-size: 11px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+/* ── Voice fields section ─────────────────────────────────────────────────── */
+.ts-voice-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px 22px 14px;
+  margin-top: 16px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+.ts-voice-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.ts-voice-field {
+  flex: 1;
+  min-width: 280px;
+}
+
+.ts-voice-field mat-error {
+  font-size: 11.5px;
+  color: #c62828;
+  margin-top: 2px;
+  display: block;
+}
+
+.ts-textarea-error {
+  border-bottom: 2px solid #c62828 !important;
+}
+
+/* ── Submit row at the bottom of voice section ───────────────────────────── */
+.ts-submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.ts-submit-btn {
+  background: linear-gradient(135deg, #1a73e8, #1558b0);
+  color: #fff;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  letter-spacing: 0.3px;
+  box-shadow: 0 3px 10px rgba(26, 115, 232, 0.3);
+}
+
+.ts-submit-btn:hover {
+  background: linear-gradient(135deg, #1558b0, #0d47a1);
+  box-shadow: 0 4px 14px rgba(26, 115, 232, 0.4);
+}
+
+.ts-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* ── ADD THESE TO ticketing-system.component.css ─────────────────────────────
+   These styles extend the existing file. Do not replace existing styles.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Per-row dropdown cell ───────────────────────────────────────────────── */
+.ts-pd-dd-cell {
+  min-width: 180px;
+  vertical-align: top;
+  padding-top: 10px !important;
+}
+
+/* ── Invalid ng-select highlight ─────────────────────────────────────────── */
+.ts-ng-invalid .ng-select-container {
+  border-color: #c62828 !important;
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.15) !important;
+}
+
+/* ── Inline field error text ─────────────────────────────────────────────── */
+.ts-field-error {
+  display: block;
+  color: #c62828;
+  font-size: 11px;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* ── Contract dates shown below the contract dropdown ───────────────────── */
+.ts-contract-dates {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  color: #555;
+  font-size: 11px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+/* ── Voice fields section ─────────────────────────────────────────────────── */
+.ts-voice-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px 22px 14px;
+  margin-top: 16px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+.ts-voice-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.ts-voice-field {
+  flex: 1;
+  min-width: 280px;
+}
+
+.ts-voice-field mat-error {
+  font-size: 11.5px;
+  color: #c62828;
+  margin-top: 2px;
+  display: block;
+}
+
+.ts-textarea-error {
+  border-bottom: 2px solid #c62828 !important;
+}
+
+/* ── Submit row at the bottom of voice section ───────────────────────────── */
+.ts-submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.ts-submit-btn {
+  background: linear-gradient(135deg, #1a73e8, #1558b0);
+  color: #fff;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  letter-spacing: 0.3px;
+  box-shadow: 0 3px 10px rgba(26, 115, 232, 0.3);
+}
+
+.ts-submit-btn:hover {
+  background: linear-gradient(135deg, #1558b0, #0d47a1);
+  box-shadow: 0 4px 14px rgba(26, 115, 232, 0.4);
+}
+
+.ts-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* ── CaseId badge shown in the action column for saved-job rows ───────────── */
+.ts-job-case-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2e7d32;
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  border-radius: 12px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+/* ── Read-only banner at the bottom of the voice section ─────────────────── */
+.ts-job-saved-banner {
+  display: flex;
+  align-items: center;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 8px;
+  color: #1565c0;
+  font-size: 13px;
+  padding: 10px 16px;
+  margin-top: 8px;
+}
+
+/* ── ADD THESE TO ticketing-system.component.css ─────────────────────────────
+   These styles extend the existing file. Do not replace existing styles.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Per-row dropdown cell ───────────────────────────────────────────────── */
+.ts-pd-dd-cell {
+  min-width: 180px;
+  vertical-align: middle;
+  /* FIX: was 'top' which caused tall rows */
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+/* ── Invalid ng-select highlight ─────────────────────────────────────────── */
+.ts-ng-invalid .ng-select-container {
+  border-color: #c62828 !important;
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.15) !important;
+}
+
+/* ── Inline field error text ─────────────────────────────────────────────── */
+.ts-field-error {
+  display: block;
+  color: #c62828;
+  font-size: 11px;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* ── Contract dates shown below the contract dropdown ───────────────────── */
+.ts-contract-dates {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  color: #555;
+  font-size: 11px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+/* ── Voice fields section ─────────────────────────────────────────────────── */
+.ts-voice-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px 22px 14px;
+  margin-top: 16px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+.ts-voice-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.ts-voice-field {
+  flex: 1;
+  min-width: 280px;
+}
+
+.ts-voice-field mat-error {
+  font-size: 11.5px;
+  color: #c62828;
+  margin-top: 2px;
+  display: block;
+}
+
+.ts-textarea-error {
+  border-bottom: 2px solid #c62828 !important;
+}
+
+/* ── Submit row at the bottom of voice section ───────────────────────────── */
+.ts-submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.ts-submit-btn {
+  background: linear-gradient(135deg, #1a73e8, #1558b0);
+  color: #fff;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  letter-spacing: 0.3px;
+  box-shadow: 0 3px 10px rgba(26, 115, 232, 0.3);
+}
+
+.ts-submit-btn:hover {
+  background: linear-gradient(135deg, #1558b0, #0d47a1);
+  box-shadow: 0 4px 14px rgba(26, 115, 232, 0.4);
+}
+
+.ts-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* ── CaseId badge shown in the action column for saved-job rows ───────────── */
+.ts-job-case-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2e7d32;
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  border-radius: 12px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+/* ── Read-only banner at the bottom of the voice section ─────────────────── */
+.ts-job-saved-banner {
+  display: flex;
+  align-items: center;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 8px;
+  color: #1565c0;
+  font-size: 13px;
+  padding: 10px 16px;
+  margin-top: 8px;
+}
+
+/* ── Static read-only badge replacing a dropdown in _fromJob rows ─────────── */
+.ts-saved-field-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #37474f;
+  background: #eceff1;
+  border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  padding: 3px 10px;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center;
+}
+
+.ts-saved-field-badge--grey {
+  color: #546e7a;
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+}
+
+/* ── Job header badge in product list header ──────────────────────────────── */
+.ts-job-header-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1565c0;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 10px;
+  padding: 2px 10px;
+  margin-left: 8px;
+}
+
+/* ── Add More Products button in product list header ─────────────────────── */
+.ts-add-more-btn {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, #43a047, #2e7d32);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.25);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.ts-add-more-btn:hover {
+  background: linear-gradient(135deg, #388e3c, #1b5e20);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.35);
+}
+
+/* ── Product table: lock row height for non-dropdown cells ───────────────── */
+.ts-product-table tbody tr {
+  height: 48px;
+}
+
+.ts-product-table tbody td {
+  vertical-align: middle;
+  padding: 6px 10px;
+}
+
+/* ── ADD THESE TO ticketing-system.component.css ─────────────────────────────
+   These styles extend the existing file. Do not replace existing styles.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Per-row dropdown cell ───────────────────────────────────────────────── */
+.ts-pd-dd-cell {
+  min-width: 180px;
+  vertical-align: middle;
+  /* FIX: was 'top' which caused tall rows */
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+/* ── Invalid ng-select highlight ─────────────────────────────────────────── */
+.ts-ng-invalid .ng-select-container {
+  border-color: #c62828 !important;
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.15) !important;
+}
+
+/* ── Inline field error text ─────────────────────────────────────────────── */
+.ts-field-error {
+  display: block;
+  color: #c62828;
+  font-size: 11px;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* ── Contract dates shown below the contract dropdown ───────────────────── */
+.ts-contract-dates {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  color: #555;
+  font-size: 11px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+/* ── Voice fields section ─────────────────────────────────────────────────── */
+.ts-voice-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px 22px 14px;
+  margin-top: 16px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+.ts-voice-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.ts-voice-field {
+  flex: 1;
+  min-width: 280px;
+}
+
+.ts-voice-field mat-error {
+  font-size: 11.5px;
+  color: #c62828;
+  margin-top: 2px;
+  display: block;
+}
+
+.ts-textarea-error {
+  border-bottom: 2px solid #c62828 !important;
+}
+
+/* ── Submit row at the bottom of voice section ───────────────────────────── */
+.ts-submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.ts-submit-btn {
+  background: linear-gradient(135deg, #1a73e8, #1558b0);
+  color: #fff;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  letter-spacing: 0.3px;
+  box-shadow: 0 3px 10px rgba(26, 115, 232, 0.3);
+}
+
+.ts-submit-btn:hover {
+  background: linear-gradient(135deg, #1558b0, #0d47a1);
+  box-shadow: 0 4px 14px rgba(26, 115, 232, 0.4);
+}
+
+.ts-submit-btn:active {
+  transform: scale(0.98);
+}
+
+.ts-pd-img {
+  text-align: center;
+  vertical-align: middle;
+  padding: 6px 8px !important;
+  min-width: 80px;
+}
+
+.ts-pd-device-img {
+  display: block;
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  margin: 0 auto 4px;
+  border-radius: 6px;
+  background: #f5f5f5;
+  padding: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+.ts-job-case-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2e7d32;
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  border-radius: 12px;
+  padding: 2px 8px;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.ts-job-case-badge:hover {
+  background: #c8e6c9;
+  box-shadow: 0 1px 5px rgba(46, 125, 50, 0.25);
+  text-decoration: none;
+}
+
+/* ── Read-only banner at the bottom of the voice section ─────────────────── */
+.ts-job-saved-banner {
+  display: flex;
+  align-items: center;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 8px;
+  color: #1565c0;
+  font-size: 13px;
+  padding: 10px 16px;
+  margin-top: 8px;
+}
+
+/* ── Static read-only badge replacing a dropdown in _fromJob rows ─────────── */
+.ts-saved-field-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #37474f;
+  background: #eceff1;
+  border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  padding: 3px 10px;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center;
+}
+
+.ts-saved-field-badge--grey {
+  color: #546e7a;
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+}
+
+/* ── Job header badge in product list header ──────────────────────────────── */
+.ts-job-header-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: #1565c0;
+  background: #e3f2fd;
+  border: 1px solid #90caf9;
+  border-radius: 10px;
+  padding: 2px 10px;
+  margin-left: 8px;
+}
+
+/* ── Add More Products button in product list header ─────────────────────── */
+.ts-add-more-btn {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, #43a047, #2e7d32);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.25);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.ts-add-more-btn:hover {
+  background: linear-gradient(135deg, #388e3c, #1b5e20);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.35);
+}
+
+.ts-product-table tbody tr {
+  height: 48px;
+}
+
+.ts-product-table tbody td {
+  vertical-align: middle;
+  padding: 6px 10px;
+}
+
+section.content .ts-workflow-btn--quotation {
+  background: linear-gradient(135deg, #0891b2, #0e7490);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.25);
+  line-height: 1;
+}
+
+section.content .ts-workflow-btn--quotation:hover {
+  background: linear-gradient(135deg, #0e7490, #155e75);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.35);
+}
+
+/* Container for the grid */
+.job-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
+  margin-left: 10px !important;
+}
+
+/* The Base Square Card */
+.status-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  /* Larger, softer corners for a modern feel */
+  padding: 10px;
+  text-align: center;
+  color: #ffffff;
+  /* Forces all text inside to be white */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  /* Soft baseline shadow */
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: default;
+}
+
+/* Smooth, modern hover effect */
+.status-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  /* Floats up and slightly enlarges */
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  /* Shadow deepens on hover */
+}
+
+/* The Bold Number */
+.status-count {
+  font-size: 2.5rem;
+  font-weight: 800;
+  /* Extra bold */
+  margin-bottom: 12px;
+  line-height: 1;
+  /* Crucial for readability of white text on light backgrounds */
+  text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* The Job Status Description */
+.status-desc {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  /* Adds breathing room to ALL CAPS text */
+  word-wrap: break-word;
+  line-height: 1.3;
+  opacity: 0.95;
+  /* Slightly softens the text compared to the number */
+}
+
+/* =========================================================
+   DYNAMIC COLORS: Cycles through 10 modern light gradients
+   ========================================================= */
+
+.status-card:nth-child(10n + 1) {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+/* Cyan Blue */
+.status-card:nth-child(10n + 2) {
+  background: linear-gradient(135deg, #ff9a44 0%, #fc6076 100%);
+}
+
+/* Warm Sunset */
+.status-card:nth-child(10n + 3) {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* Mint Green */
+.status-card:nth-child(10n + 4) {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+}
+
+/* Soft Purple */
+.status-card:nth-child(10n + 5) {
+  background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+}
+
+/* Rose Pink */
+.status-card:nth-child(10n + 6) {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+}
+
+/* Peach Yellow */
+.status-card:nth-child(10n + 7) {
+  background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+}
+
+/* Seafoam */
+.status-card:nth-child(10n + 8) {
+  background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%);
+  color: #333;
+}
+
+/* Light Silver (Overrides text to dark gray for contrast) */
+.status-card:nth-child(10n + 8) .status-count {
+  text-shadow: none;
+}
+
+/* Removes shadow for the silver card */
+.status-card:nth-child(10n + 9) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Deep Violet */
+.status-card:nth-child(10n + 10) {
+  background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
+}
+
+/* Sunset Glow */
+
+/* Styles for total header and fallback message */
+.total-jobs-header {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.no-jobs-msg {
+  color: #888;
+  font-style: italic;
+  padding: 16px 0;
+}
+
+.ts-status-pen-icon {
+  cursor: pointer;
+  font-size: 13px;
+  color: #888;
+  margin-left: 8px;
+  transition: color .2s;
+
+  &:hover {
+    color: #1a73e8;
+  }
+}
+
+.ts-status-inline-select {
+  min-width: 160px;
+  margin-left: 8px;
+}
+
+.ts-status-save-btn {
+  margin-left: 8px;
+  padding: 4px 12px;
+  border: none;
+  border-radius: 4px;
+  background: #1a73e8;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+
+  &:hover {
+    background: #1557b0;
+  }
+}
+
+.ts-status-cancel-icon {
+  margin-left: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #c62828;
+
+  &:hover {
+    color: #8b0000;
+  }
+}

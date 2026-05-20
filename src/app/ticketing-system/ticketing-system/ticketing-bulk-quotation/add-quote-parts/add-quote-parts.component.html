@@ -1,0 +1,126 @@
+<!-- Overlay backdrop -->
+<div class="aqp-overlay" (click)="onClose()"></div>
+
+<!-- Popup panel -->
+<div class="aqp-panel">
+
+    <!-- ── Header ── -->
+    <div class="aqp-header">
+        <div class="aqp-header-left">
+            <div class="aqp-header-icon"><i class="fa fa-plus-circle"></i></div>
+            <div>
+                <h2 class="aqp-title">Add Parts</h2>
+                <span class="aqp-subtitle" *ngIf="product">
+                    {{ product.serial }} &nbsp;·&nbsp;
+                    {{ product.productDescription | slice:0:32 }}{{ product.productDescription?.length > 32 ? '…' : ''
+                    }}
+                </span>
+            </div>
+        </div>
+        <button class="aqp-close-btn" (click)="onClose()" matTooltip="Close">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+
+    <!-- ── Loading ── -->
+    <div class="aqp-loading" *ngIf="isLoading">
+        <div class="aqp-spinner"></div>
+        <p>Fetching parts from GSX…</p>
+    </div>
+
+    <!-- ── Error ── -->
+    <div class="aqp-error" *ngIf="hasError && !isLoading">
+        <div class="aqp-error-icon"><i class="fa fa-exclamation-triangle"></i></div>
+        <h3>Failed to load parts</h3>
+        <p>{{ errorMessage }}</p>
+        <button class="aqp-retry-btn" (click)="loadParts()">
+            <i class="fa fa-redo"></i> Retry
+        </button>
+    </div>
+
+    <!-- ── Content ── -->
+    <ng-container *ngIf="!isLoading && !hasError">
+
+        <!-- Search bar -->
+        <div class="aqp-search-bar">
+            <div class="aqp-search-wrap">
+                <i class="fa fa-search aqp-search-icon"></i>
+                <input class="aqp-search-input" [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)"
+                    placeholder="Search by part code or description…" />
+                <button class="aqp-search-clear" *ngIf="searchText.length"
+                    (click)="searchText = ''; onSearchChange('')">
+                    <i class="fa fa-times-circle"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="aqp-table-wrap">
+            <table class="aqp-table">
+                <thead>
+                    <tr>
+                        <th class="aqp-th aqp-th--check"></th>
+                        <th class="aqp-th aqp-th--preview">Preview</th>
+                        <th class="aqp-th aqp-th--code">Part Code</th>
+                        <th class="aqp-th aqp-th--desc">Description</th>
+                        <th class="aqp-th aqp-th--type">Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of partList" class="aqp-tr" [class.aqp-tr--selected]="item.selected"
+                        [class.aqp-tr--hidden]="!isVisible(item)"
+                        (click)="item.selected = !item.selected; updateSelectedCount()">
+                        <td class="aqp-td aqp-td--check">
+                            <div class="aqp-checkbox" [class.aqp-checkbox--checked]="item.selected">
+                                <i class="fa fa-check" *ngIf="item.selected"></i>
+                            </div>
+                        </td>
+                        <td class="aqp-td aqp-td--preview">
+                            <img class="aqp-part-img" [src]="item.imageUrl || 'assets/images/Apple-Logo.png'"
+                                [alt]="item.description" onerror="this.src='assets/images/Apple-Logo.png'" />
+                        </td>
+                        <td class="aqp-td aqp-td--code">
+                            <span class="aqp-part-code">{{ item.number }}</span>
+                        </td>
+                        <td class="aqp-td aqp-td--desc">{{ item.description }}</td>
+                        <td class="aqp-td aqp-td--type">
+                            <span class="aqp-type-pill">{{ item.typeDescription || '—' }}</span>
+                        </td>
+                    </tr>
+
+                    <!-- Empty state -->
+                    <tr *ngIf="partList.length === 0">
+                        <td colspan="5" class="aqp-empty">
+                            <i class="fa fa-inbox"></i>
+                            <p>No parts available for this device</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ── Footer ── -->
+        <div class="aqp-footer">
+            <div class="aqp-footer-left">
+                <label class="aqp-toggle-label">
+                    <div class="aqp-toggle" [class.aqp-toggle--on]="showOnlySelected"
+                        (click)="showOnlySelected = !showOnlySelected">
+                        <div class="aqp-toggle-thumb"></div>
+                    </div>
+                    Show selected only
+                </label>
+                <span class="aqp-count-badge" [class.aqp-count-badge--active]="selectedCount > 0">
+                    {{ selectedCount }} part{{ selectedCount !== 1 ? 's' : '' }} selected
+                </span>
+            </div>
+            <div class="aqp-footer-right">
+                <button class="aqp-cancel-btn" (click)="onClose()">Cancel</button>
+                <button class="aqp-submit-btn" (click)="onSubmit()" [disabled]="selectedCount === 0">
+                    <i class="fa fa-check-circle"></i>
+                    Add {{ selectedCount > 0 ? '(' + selectedCount + ')' : '' }} Parts
+                </button>
+            </div>
+        </div>
+
+    </ng-container>
+</div>

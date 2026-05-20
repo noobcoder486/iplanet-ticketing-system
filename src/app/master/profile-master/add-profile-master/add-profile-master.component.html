@@ -1,0 +1,58 @@
+<section class="content">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row" >
+            <div class="col-12">
+              <h3 class="ml-2 p-10 text-dark">
+                {{formTitle}} Profile 
+              </h3>
+            </div>
+          </div>
+    </mat-card>
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+    <form [formGroup]="ProfileForm" name="ProfileForm" autocomplete="off">
+        <div class="card-body" style="padding: 10px;">
+          <div class="row">
+              <div class="col-sm-6">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Profile Name </mat-label>
+                    <input matInput  [readonly]="isEdit" formControlName="ProfileName">
+                  </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Profile Description </mat-label>
+                  <input matInput  formControlName="ProfileDescription">
+                </mat-form-field>
+              </div>
+              <br />
+            <div class="row">
+            <div class="col-sm-9" style="text-align: right;">
+              <div class="text-danger" style="display: inline-block" role="alert">
+                {{errorMessage}}
+              </div>
+            </div>
+            <!-- <div class="col-sm-3" style="text-align: right;">
+              <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+              <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+            </div> -->
+          </div>
+        </div>
+        </div>
+    </form>
+  </mat-card>
+
+  <mat-card class="mb-4" style="z-index: 9;">
+    <div class="row">
+      <div class="col-sm-8" style="text-align: right;">
+        <div class="text-danger" style="display: inline-block" role="alert">
+          <!-- {{errorMessage}} -->
+        </div>
+      </div>
+      <div class="col-sm-4" style="text-align: right;">
+        <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+ 
+        <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+      </div>
+  </div>
+</mat-card>
+  </section>

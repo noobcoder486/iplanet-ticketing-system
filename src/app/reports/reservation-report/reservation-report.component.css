@@ -1,0 +1,23 @@
+
+:host ::ng-deep .ng-select.ng-select-single .ng-select-container
+{ 
+  margin: 0px !important;
+  height: 32.5px !important;
+  border-radius: 0px;
+}
+
+:host ::ng-deep .mat-form-field-wrapper
+{
+  height: 34.5px !important;
+  border-radius: 0px;
+  background-color: transparent !important;
+}
+.btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(202, 212, 223), rgb(103, 163, 253)) !important;
+    height: 35px;
+    cursor: pointer;
+}

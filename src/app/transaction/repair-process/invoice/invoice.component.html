@@ -1,0 +1,90 @@
+  <div class="row" style="padding: 10px;" >
+     <div class="col-11 col-lg-11">
+     </div>
+     <div class="col-1 col-lg-1" *ngIf="showButton" style="display: flex;justify-content: flex-end;align-items: center;">
+        <div style="padding-right: 5px; padding-bottom: 5px;">
+          <button class="btn btnClass" style="float:right;width: auto;" (click)="routeToAccessorySales()"
+          type="button">Create</button>
+        
+        </div>
+       <hr>
+    </div>
+  </div>
+
+<!-- <div  style="height:60vh ;"> -->
+      <div class="row" *ngIf="invoiceList[0]?.ItemCode != null || invoiceList[0]?.ItemCode != undefined">
+        <div class="row">
+          <div class="row" style="padding: 10px;">
+            <div class="row">
+            <div class="col-lg-3">
+            <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">Invoice Number:</span> </h4>
+            </div>
+            <div class="col-lg-9">
+            <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{repa?.INVOICE?.InvoiceCode}}</span> </h4>
+            </div>
+            </div>
+            <div  class="row">
+            <div class="col-lg-3">
+            <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;"> Invoice Date:</span> </h4>
+            </div>
+            <div class="col-lg-9">
+            <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{repa?.INVOICE?.CreatedDate}}</span> </h4>
+            </div>
+            </div>
+          </div>
+        <!-- <div class="scrollcntr" style=" height: 30vh;">  -->
+          <div class="contents table-responsive">
+            <div class="fixTableHead"> 
+                    <table  style=" font-size: 13px !important;">
+                      <thead>
+                        <tr style="height: auto !important;">
+                          <th style="width: 8%;" scope="col">Sr No</th>
+                          <th style="width: 15%;"scope="col">Part <Noscript></Noscript></th>
+                          <th style="width: 40%;"scope="col">Description</th>
+                          <!-- <th style="width: 15%;"scope="col">Price</th> -->
+                          <th style="width: 15%;"scope="col">NetAmount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of invoiceList" (mouseenter)="isDeletshover = item.PartCode" (mouseleave)="isDeletshover=''" >
+                          <td style="width: 15%; "> <span> {{ item.ItemNo}} </span></td>
+                          <td style="width: 15%; "> <span> {{ item.ItemCode}} </span></td>
+                          <td style="width: 40%; "> <span> {{ item.ItemDescription}} </span></td>
+                          <!-- <td style="width: 15%; "> <span> {{ item.UnitPrice}}</span></td> -->
+                          <td style="width: 15%; "> <span> {{ item.NetAmount}}</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    </div>
+                  </div>
+                  <!-- </div> -->
+          </div>
+
+          <div style="padding-bottom: 43px;position: absolute;bottom: 0;border-top: 1px solid rgba(0, 0, 0, 0.125);padding-top: 10px;"  *ngIf="isShowTotal">
+     
+              <mat-card-content style="line-height: 0.8;">
+                <p align="end" style="margin-right: 46px;" >Tax Amount : {{repa?.QUOTE?.TotalTaxAmount}}</p>
+                <p align="end" style="margin-right: 35px;" >Taxable Amount : {{repa?.QUOTE?.TotalTaxableAmount}}</p>
+              </mat-card-content>
+           
+          </div>
+
+          <div class="card-footer" style="background-color: transparent !important;">
+         
+
+            <div class="row">
+              <div style="display: flex;">
+              <!-- <div class="col-5" align="end" style="font-size: 15px;padding-top:5px ;">Parts No: {{SelectedPartCount}}</div> -->
+              <!-- <div class="col-11" align="end" style="font-size: 15px;padding-top:5px ;">Net Amount :{{repa?.QUOTE?.TotalNetAmount}}</div> -->
+              <div class="col-11" align="end" style="font-size: 15px;padding-top:5px ;">Net Amount :{{repa?.INVOICE?.TotalNetAmount}}</div>
+              <div class="col-1" align="end" style="margin-left: -15px;">
+                <svg  (click)="showTotal()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                </svg>
+              </div>
+              </div>
+          </div>
+          </div>
+          </div>
+ 
+<!-- </div> -->

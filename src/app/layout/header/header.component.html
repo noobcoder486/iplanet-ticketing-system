@@ -1,0 +1,110 @@
+<nav  #navbar class="navbar" [ngClass]="isNavbarShow ? 'active' : 'inactive'">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="#" onClick="return false;" class="navbar-toggle collapsed"
+        (click)="isNavbarCollapsed = !isNavbarCollapsed" aria-expanded="false"></a>
+      <!-- mobile menu bars -->
+      <a href="#" onClick="return false;" class="bars" (click)="mobileMenuSidebarOpen($event,'overlay-open')"></a>
+      <a class="navbar-brand" (click)="add()">
+        <img src="assets/images/iPlanet.jpg" style="width:100%;" alt="" class="header-logo" />
+        <img src="assets/images/Apple-Logo.png" alt="" class="close-logo" />
+        <!-- <span class="logo-name">NITC-CRM</span> -->
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" [ngbCollapse]="isNavbarCollapsed" >
+
+<div class="MainIcon" >     
+<div class="leftSideIcon">
+      <ul style="float: left;margin-left: 30px;    margin-top: -12px;" >
+        <li class="fullscreen">
+          <i (click)="callSidemenuCollapse()" style="font-size: 18px;" class="fa-regular fa-bars"></i>
+        </li>
+        </ul>
+</div>
+
+
+<div class="rightsideIcon">
+      <ul class="nav navbar-nav navbar-right">
+
+        <!-- Active user Name  -->
+        <li>
+          <div style="margin-top: -4px !important;"  [matTooltip]= "userDetails[0]?.FirstName  + ' ' +userDetails[0]?.LastName ">
+            <strong class="nav-item"> {{userDetails[0]?.FirstName}} </strong>
+          </div>
+         </li>
+    
+    
+      
+        <!-- Full Screen Button -->
+        <li class="nav-item fullscreen" matTooltip="FullScreen">
+          <button mat-icon-button (click)="callFullscreen()" class=" nav-notification-icons">
+            <mat-icon>fullscreen</mat-icon>
+          </button>
+        </li>
+        <!-- #END# Full Screen Button -->
+        <li class="nav-item" ngbDropdown>
+          <div ngbDropdownMenu class="dropdown-menu lang-item dropdown-menu-right pullDown">
+            <a href="javascript:void(0);" class="dropdown-item lang-item-list" *ngFor="let item of listLang"
+              (click)="setLanguage(item.text, item.lang, item.flag)"
+              [ngClass]="{'active': langStoreValue === item.lang}">
+              <img src="{{item.flag}}" class="flag-img" height="12"> <span class="align-middle">{{item.text}}</span>
+            </a>
+          </div>
+        </li>
+
+        <li class="nav-item user_profile" ngbDropdown>
+          <a href="#" onClick="return false;" ngbDropdownToggle role="button" class="nav-notification-icons pt-0">
+            <i class="fa-regular fa-user-pen"></i>          
+          </a>
+          <div ngbDropdownMenu class="notification-dropdown pullDown" matTooltip="User Info">
+            <div class="noti-list" style="position: relative; max-width: 600px; max-height: 300px;" [perfectScrollbar]>
+              <ul class="menu">
+                <li class="body">
+                  <ul class="user_dw_menu">
+                    <li class="sidebar-user-panel">
+                      <a href="#" class="p0">
+                        <div class="user-panel">
+                          <div class=" image">
+                            <img matTooltip="User Info" src="assets/images/usrbig.jpg" class="img-circle user-img-circle" alt="User Image" />
+                          </div>
+                          <div class="profile-usertitle">
+                            <div class="sidebar-userpic-name"> {{userDetails[0]?.FirstName}}</div>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <a (click)="loadCompany()">
+                        <mat-icon aria-hidden="false" class="mr-2">domain</mat-icon>Company View
+                      </a>
+                    </li>
+                    <li>
+                      <a href="javascript:void(0);" (click)="logout()">
+                        <mat-icon aria-hidden="false" class="mr-2">power_settings_new</mat-icon>Logout
+                      </a>
+                    </li>
+                    <li>
+                      <!-- <a (click)="logout()">
+                        <mat-icon aria-hidden="false" class="mr-2"></mat-icon>CheckIn/CheckOut
+                      </a> -->
+                       <a (click)="CheckInCheckOut()">
+                        <mat-icon aria-hidden="false" class="mr-2">schedule</mat-icon>CheckIn/CheckOut
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <!-- #END# Tasks -->
+        <li class="pull-right">
+
+        </li>
+      </ul>
+</div>
+</div>
+</div>
+    
+  </div>
+</nav>

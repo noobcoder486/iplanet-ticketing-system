@@ -1,0 +1,91 @@
+<section class="content">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row" >
+            <div class="col-12">
+              <h3 class="ml-2 p-10 text-dark">
+                {{formTitle}} Resource 
+              </h3>
+            </div>
+          </div>
+    </mat-card>
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+    <form [formGroup]="resourceForm" name="resourceForm" autocomplete="off">
+        <div class="card-body" style="padding: 10px;">
+          <div class="row">
+            <div class="col-sm-6">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Resource Code<i style="color:red">*</i></mat-label>
+                  <input matInput [(ngModel)]="resource.ResourceCode" [readonly]="isEdit" formControlName="ResourceCode">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <ng-select placeholder="Resource Type" [items]="ResourceType.Data" bindLabel="TEXT" bindValue="Id"
+                   formControlName="ResourceType">
+                </ng-select>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Resource Name<i style="color:red">*</i></mat-label>
+                  <input matInput [(ngModel)]="resource.ResourceName" formControlName="ResourceName">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Resource Description<i style="color:red">*</i></mat-label>
+                  <input matInput [(ngModel)]="resource.ResourceDescription" formControlName="ResourceDescription">
+                </mat-form-field>
+              </div>           
+              <div class="col-sm-6">
+                <ng-select placeholder="Product Category"  [items]="ProductCategory.Data" bindLabel="TEXT" bindValue="Id"
+                   formControlName="ProductCategory">
+                </ng-select>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>DivisionCode</mat-label>
+                  <input matInput [(ngModel)]="resource.DivisionCode" formControlName="DivisionCode">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>BaseUOM</mat-label>
+                  <input matInput [(ngModel)]="resource.BaseUOM" formControlName="BaseUOM">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>SalesUOM</mat-label>
+                  <input matInput [(ngModel)]="resource.SalesUOM" formControlName="SalesUOM">
+                </mat-form-field>
+              </div>
+              <br />
+            <!-- <div class="row">
+            <div class="col-sm-9" style="text-align: right;">
+              <div class="text-danger" style="display: inline-block" role="alert">
+                {{errorMessage}}
+              </div>
+            </div>
+            <div class="col-sm-3" style="text-align: right;">
+              <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+              <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+            </div>
+          </div> -->
+        </div>
+        </div>
+        <mat-card class="mb-4" style="z-index: 9;">
+          <div class="row">
+            <div class="col-sm-8" style="text-align: right;">
+              <div class="text-danger" style="display: inline-block" role="alert">
+                <!-- {{errorMessage}} -->
+              </div>
+            </div>
+            <div class="col-sm-4" style="text-align: right;">
+              <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+       
+              <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+            </div>
+        </div>
+      </mat-card>
+    </form>
+  </mat-card>
+  </section>

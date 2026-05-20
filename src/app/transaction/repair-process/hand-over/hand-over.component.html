@@ -1,0 +1,232 @@
+<style>
+  p {
+    margin-bottom: 2px;
+  }
+</style>
+
+
+<form [formGroup]="handoverForm" name="handoverForm">
+  <div *ngIf="isHandOver">
+    <div class="containers">
+      <div class="col-sm-12 d-flex justify-content-end">
+        <!-- <i (click)="addSignature()" style="font-size: 25px;" class="fa-regular  fa-square-plus"
+    matTooltip="Add Signature" matTooltipClass="example-tooltip-red" matTooltipPosition="below"></i> -->
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <ng-select placeholder="HandOver Status" [items]="HandOverList" formControlName="HandOverStatus"
+            [ngClass]="{'ng-invalid-select':!handoverForm.get('HandOverStatus').valid && handoverForm.get('HandOverStatus').touched}">
+          </ng-select>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field appearance="fill">
+            <mat-label>Handover Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="HandOverDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field class="textareafild" appearance="standard" [style.width.%]="100">
+            <mat-label>Remark</mat-label>
+            <textarea matInput rows="3" formControlName="HandOverRemark"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-12">
+            <ng-select  [ngModelOptions]="{standalone: true}" placeholder="TradeIn" [items]="TradeinDD.Data" [(ngModel)]="Tradein" bindLabel="TEXT" bindValue="Id">
+
+            </ng-select>
+           </div>
+
+        <div class="col-sm-12" style="display: flex; flex-direction: row; margin: 20px 0;">
+
+          <div class="col-sm-5" style="display: flex; flex-direction: column; gap: 4px;">
+            <label for="">Referral Name </label>
+            <input type="text" [(ngModel)]="ReferralName" [ngModelOptions]="{standalone: true}"
+              placeholder="Enter Referral Name">
+          </div>
+          <div class="col-sm-5" style="display: flex; flex-direction: column; gap: 4px;">
+            <label for="">Referral Mobile No. </label>
+            <input type="text" [(ngModel)]="ReferralMobileNo" [ngModelOptions]="{standalone: true}"
+              placeholder="Enter Referral Mobile No.">
+          </div>
+          <div class="col-sm-2" style="display: flex; flex-direction: column; gap: 4px;">
+            <label for="">&nbsp;</label>
+            <button class="btn btn-success" (click)="addReferralDetail()" [ngModelOptions]="{standalone: true}"> ADD
+            </button>
+          </div>
+
+        </div>
+
+        <div>
+          <table *ngIf="ReferralDetailsList.length > 0 " style="margin: 20px 0;">
+            <thead>
+              <tr>
+                <th scope="col">Referral Name</th>
+                <th scope="col">Referral Mobile No.</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let Referral of ReferralDetailsList">
+                <td style=" white-space: nowrap;">{{Referral.ReferralName}}</td>
+                <td> <span> {{ Referral.ReferralMobileNo}} </span></td>
+                <td style="text-align: center; "> <span><i style="color:red" (click)="deleteReferral(Referral)"
+                      class="fa-regular fa-trash"></i></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Contract Code  -->
+        <div class="col-sm-12" style="display: flex; flex-direction: row; margin: 20px 0;" >
+          <div class="col-sm-6" style="display: flex; flex-direction: column; gap: 4px;">
+            <label for="">Contract Applicable</label>
+            <input type="checkbox" name="" id="" [(ngModel)]="IsContractApplicable" [ngModelOptions]="{standalone: true}">
+          </div>
+          <div class="col-sm-6" style="display: flex; flex-direction: column; gap: 4px;">
+            <label for="">Contract Code</label>
+            <p *ngIf="IsContractApplicable"> {{ ContractCode }}</p>
+
+          </div>
+
+        </div>
+        <!-- Contract Code  -->
+
+
+
+      </div>
+
+      <!--  -->
+      <div *ngFor="let item of checklistTotalvalues; let i = index">
+        <div style="padding: 10px;" *ngIf="repa.JobType != 'SNR'">
+          <div class="switch-field" *ngIf="item.FldType=='COMBO'">
+            <div class="row">
+              <div class="col-lg-1">
+                <label style="font-size: 12px;font-weight: 400;padding: 1px;">{{ i + 1 }}.</label>
+              </div>
+              <div class="col-lg-5">
+                <label style="font-size: 12px;font-weight: 400;padding: 1px;">{{item.ChecklistDescription}}</label>
+              </div>
+              <div class="col-lg-3">
+                <mat-button-toggle-group formControlName="{{item.formControlName}}" aria-label="Font Style">
+                  <mat-button-toggle *ngFor="let item1 of item.arrFldValue;" [checked]="item1.value==item.defaultvalue"
+                    (change)="checklistvaluechange(item,item1)"
+                    [value]="item1.value">{{item1.value}}</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--  -->
+
+
+
+      <div class="swiperBox" style="height:60px;border:3px dashed black;">
+
+        <div
+          style="margin: 1% auto; width: 50%; height: 40px;    display: flex;text-align: center; align-items: center; justify-content: center;">
+
+          <div>
+            <i style="font-size: 40px;padding-right: 12px;" class="fa-duotone fa-file-signature"></i>
+          </div>
+          <div>
+            <button (click)="addSignature()" class="x_final_button x_active_btn x_save_button">Add Signature</button>
+          </div>
+
+        </div>
+
+      </div>
+      <br>
+
+      <div class="swiperBox" style="height:60px;border:3px dashed black;">
+        <div
+          style="margin: 1% auto; width: 50%; height: 40px;    display: flex;text-align: center; align-items: center; justify-content: center;">
+          <div>
+            <i style="font-size: 40px;padding-right: 12px;" class="fa-duotone fa-file-signature"></i>
+          </div>
+          <div>
+            <button (click)="addSignature()" class="x_final_button x_active_btn x_save_button"><span
+                style="white-space: nowrap;">Authorised Person Signature</span></button>
+          </div>
+        </div>
+        <br>
+      </div>
+
+      <div class=" " style="padding-top: 10px;display: flex;">
+        <div class="col-6" style="border: 1px dashed black;" *ngIf="isCustomerSignature ">
+
+          <div>
+            <div style="display: flex;justify-content: center;border-bottom: 1px solid black;">
+              <p style="font-weight: 600;font-size: 15px;">Customer Signature</p>
+            </div>
+            <div style="height: 185px;">
+              <span class="hd_header_content"> <img style="width: 200px;height:185px;border-radius: 10px;"
+                  [src]="CustomerSignature" alt="your image" /></span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-6" style="border: 1px dashed black;" *ngIf="isAuthPersonSignature">
+          <div>
+            <div style="display: flex;justify-content: center;border-bottom: 1px solid black;">
+              <p style="font-weight: 600;font-size: 15px;">Authorized Signature</p>
+            </div>
+            <div style="height: 185px;">
+              <span class="hd_header_content"> <img style="width: 200px;height:185px;border-radius: 10px;"
+                  [src]="AuthPersonSignature" alt="your image" /></span>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class="row">
+        <div class="col-sm-12 d-flex justify-content-end">
+          <button class="x_final_button x_active_btn x_save_button" type="submit"
+            (click)="validateHandOver()">SAVE</button>
+          <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onReset()">RESET</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div *ngIf="this.repa?.HANDOVER?.HandOverStatus == 'Release'">
+    <mat-card *ngFor="let item of HandOverViewList" style="margin:10px; border-radius:8px;">
+      <div class="row">
+        <div class="col-sm-6">
+          <mat-card-content>
+            <p> {{item.HandOverCode }}</p>
+          </mat-card-content>
+        </div>
+        <div class="col-sm-6">
+          <mat-card-content>
+            <p align="end">{{item.CreatedDate}}</p>
+          </mat-card-content>
+        </div>
+      </div>
+      <mat-card-content>
+        <p>HandOver Status: {{item.HandOverStatus }}</p>
+        <p>Remark: {{item.Remark }}</p>
+      </mat-card-content>
+      <mat-card-content align="end">
+        <p>{{repa.ASGTECH.CreatedBy}}</p>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+
+  <!-- CheckList Master  -->
+
+</form>
+
+
+<!-- END -->

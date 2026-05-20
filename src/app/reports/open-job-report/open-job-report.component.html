@@ -1,0 +1,72 @@
+<section class="content">
+    <ngx-spinner size="medium" [type]="typeSelected">
+      <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+  
+    <mat-card style="z-index: 9;">
+  
+      <div class="row" style="display: flex;justify-content: space-between;">
+        <div class="col-sm-4 col-lg-12 col-md-4">
+          <p class="HeaderText">Job Report </p>
+        </div>
+      </div>
+  
+      <div class="row" style="border: 1px solid #dddddd;padding: 10px;">
+        <div class="col-sm-5 locationDiv col-lg-5 col-md-3">
+          <label style="font-weight: 600;padding-bottom: 2px;">Select Location/s </label><br>
+
+            <ng-select  [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                        [(ngModel)]="LocationData" placeholder=""  [multiple]="true"> </ng-select>
+        </div>
+  
+        <div class="col-sm-2 col-md-3 col-lg-2 col-12">
+          <label style="font-weight: 600;padding-bottom: 2px;">Case Id</label><br>
+          <input type="text" style="border-radius: 4px; height: 30px; width: 100%; border: 1px solid rgb(211, 211, 211);"
+            placeholder="CaseId" [(ngModel)]="CaseIdData" />
+        </div>
+  
+        
+        <div class="col-sm-2 col-md-3 col-lg-2 col-12">
+            <ng-select placeholder="Job Open/Close" bindLabel="TEXT" bindValue="Id" [items]="JobOpenCloseDD"
+            [(ngModel)]="HandoverFlag"></ng-select>
+        </div>
+
+
+        <div class="col-sm-3 col-md-5 col-lg-3">
+          <label style="font-weight: 600;padding-bottom: 2px;">As On Date *</label><br>
+            <input class="form-control" type="date" 
+            [(ngModel)]="StartDate" [ngModelOptions]="{standalone: true}" />
+        </div>
+  
+      </div>
+  
+      <div class=" " style="padding-top: 10px;display: flex;justify-content: flex-end;">
+        <div style="padding-right: 40px;">
+          <button style="float:right" type="submit" (click)="exportReportData()" class="btn btnClass">Export Report</button>
+        </div>
+  
+        <div>
+          <button style="float:right" type="submit" (click)="getReportData()" class="btn btnClass">Generate Report</button>
+        </div>
+        <!-- <div class="col-sm- col-md-12 col-lg-12 ">
+            <button style="float:right"  type="submit" (click)="exportReportData()" class="btnClass">Export Report</button>
+            <button style="float:right"  type="submit" (click)="getReportData()" class="btnClass">Generate Report</button>
+          </div> -->
+      </div>
+    </mat-card><br />
+  
+    <mat-card *ngIf="results.length>0">
+  
+      <mat-card class="m-0 p-0">
+        <div class="row clearfix" *ngIf="columns.length > 0">
+          <div class="table-responsive">
+            <nitc-grid [gridcolumns]="columns" [dataSource]="detail" (actionEvent)="actionEmit($event)"
+              [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent" (changeEvent)="loadPageData($event)"
+              [isAllowSelect]="isChoose">
+            </nitc-grid>
+          </div>
+        </div>
+      </mat-card>
+  
+    </mat-card>
+  </section>

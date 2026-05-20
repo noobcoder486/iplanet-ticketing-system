@@ -1,0 +1,86 @@
+.card-footer
+{
+ position: absolute !important;
+ width: 100%;
+ bottom: 0 !important;
+
+}
+
+.card-body
+{
+    text-align: justify;
+    overflow: auto !important;
+}
+
+.runDignostics
+{
+height: 27px;
+align-items: center;
+display: flex;
+background-color: rgb(70, 70, 255);
+border: none;
+color: white;
+}
+
+.refreshBtn
+{
+    background-color: #797979;
+    text-align: center;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #eee;
+    height: 30px;
+    align-items: center;
+    display: flex; 
+    width: 130px;
+    justify-content: center;
+}
+
+         
+.btn-grad {
+    /* background-image: linear-gradient(to top, #b4b4b4 0%, #1A2980  100%); */
+    /* margin: 10px;
+    padding: 15px 45px; */
+    background-color: #1264cf;
+    text-align: center;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #eee;
+    height: 30px;
+    align-items: center;
+    display: flex;
+  }
+
+
+
+  /* .btn-grad:hover { */
+    /* background-position: right center;  */
+    /* color: #fff; */
+    /* text-decoration: none; */
+  /* } */
+ 
+  .headerText
+  {
+    font-size: 15px !important;color: black;font-weight: 600;
+  }
+
+  .valueText
+  {
+    font-size: 15px !important;color: black;
+  }
+  .fa-check
+  {
+    color: green;
+  }
+  
+  .fa-exclamation-triangle
+  {
+    color:#FFCC00;
+  }
+  
+  .fa-times
+  {
+    color: red;
+  }

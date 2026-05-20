@@ -1,0 +1,91 @@
+<section class="content">
+    <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+
+    <mat-card style="z-index: 9;">
+
+        <div class="row" style="display: flex;justify-content: space-between;padding-bottom: 10px;">
+            <div class="col-sm-4 col-lg-12 col-md-4">
+                <p class="HeaderText"><b>Lead Management Report</b></p>
+            </div>
+
+
+        </div> <br />
+
+        <div class="row">
+            <div class="col-sm-3 col-lg-2 col-md-3">
+                <ng-select [items]="LocationForJob.Data" placeholder="Location" [(ngModel)]="MultipleLocationCode"
+                    bindLabel="TEXT" bindValue="Id" [multiple]="true"></ng-select>
+
+                    
+              <div *ngIf="MultipleLocationCode?.length > 0" class="selected-locations-inline mt-2">
+                <label> <b>
+                  <span *ngFor="let code of MultipleLocationCode" class="location-code">{{ code }}</span>
+                  </b>
+                </label>
+              </div>
+
+            </div>
+
+            <div class="col-sm-3 col-lg-2 col-md-3">
+                <mat-label style="font-weight: bold;"> Unique Id </mat-label>
+                <input matInput [(ngModel)]="uniqueId"
+                    style="border: 1px solid #ccc; border-radius: 4px; padding: 8px; box-sizing: border-box;">
+            </div>
+
+
+            <div class="col-sm-3 col-lg-2 col-md-3">
+                <mat-label style="font-weight: bold;"> Lead Management Code </mat-label>
+                <input matInput [(ngModel)]="LeadManagementCode"
+                    style="border: 1px solid #ccc; border-radius: 4px; padding: 8px; box-sizing: border-box;">
+            </div>
+
+            <div class="col-sm-5 col-md-5 col-lg-2">
+                <mat-form-field appearance="fill">
+                    <mat-label style="padding-top: 3px;">Enter a date range</mat-label>
+
+                    <div style="display: flex;align-items: center;">
+                        <div>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate [(ngModel)]="StartDate" placeholder="Start date">
+                                <input matEndDate [(ngModel)]="EndDate" placeholder="End date">
+                            </mat-date-range-input>
+                        </div>
+
+                        <div>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                        </div>
+                    </div>
+                </mat-form-field>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm- col-md-12 col-lg-12 ">
+                <button style="float:right" type="submit" (click)="exportReportData()" class="btnClass">Export
+                    Report</button>
+                <button style="float:right" type="submit" (click)="getReportData()" class="btnClass">Generate
+                    Report</button>
+            </div>
+        </div>
+    </mat-card><br />
+
+    <mat-card *ngIf="results.length>0">
+
+        <mat-card class="m-0 p-0">
+            <div class="row clearfix" *ngIf="columns.length > 0">
+                <div class="table-responsive">
+                    <nitc-grid [gridcolumns]="columns" [dataSource]="detail" (actionEvent)="actionEmit($event)"
+                        [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent"
+                        (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+                    </nitc-grid>
+                </div>
+            </div>
+        </mat-card>
+
+    </mat-card>
+        
+</section>

@@ -1,0 +1,54 @@
+<style>
+    input[type=checkbox] {
+      transform: scale(1.5);
+  }
+  </style>
+  <div class="content-header" style="margin:auto 17% !important;width: 60% !important; top:6%;"  >
+    <div class="card pb-3" style="height: 50%;">
+        <div class="row">
+          <div class="col-12">
+            <div class="tabheader" style="display: flex;justify-content: space-between;">
+              <div>
+                <h3>Add Product</h3>
+              </div>
+              <div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="padding: 10px;">
+          <div class="" style="    max-height: 70vh;">
+           <div class="row">
+            <div class="col-6">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Product Description</mat-label>
+                    <input placeholder="Product Description" [(ngModel)]="productDescription" matInput type="text" >
+                  </mat-form-field>
+               </div>
+               <div class="col-6" >
+                <ng-select placeholder="Product Type" [(ngModel)]="productCategory" [items]="ProductType">
+                        </ng-select>
+               </div>
+               <div class="col-6" >
+                <ng-select placeholder="OS Type" [(ngModel)]="OSType" [items]="osType">
+                        </ng-select>
+               </div>
+           </div>
+            <div class="row" style="margin-top:5%;">
+              <div class="col-12 text-right">
+                <div class="col-12 d-flex justify-content-end">
+                  <button class="x_final_button x_active_btn x_save_button" type="submit" (click)=" onSubmit()" >Submit</button>
+                </div>
+              </div>
+            </div>
+
+            </div>
+          </div>
+        </div>
+        
+
+    </div>
+  
+  
+  
+  

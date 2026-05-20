@@ -1,0 +1,71 @@
+<section class="content">
+  <div class="container-fluid">
+    <mat-card class="p-2 mb-4">
+      <div class="row">
+        <div class="col-sm-6">
+          <ng-select [items]="callForm.Data" bindLabel="TEXT"
+                    bindValue="Id"
+                    placeholder="Select Call form"
+                    [(ngModel)]="selectedCallForm"
+                    (change)="onFormSelect($event)"
+                    (search)="onCallFormSearch($event)"  >
+          </ng-select>
+        </div>
+        <div class="col-sm-6 ">
+          <ng-select
+            [items]="LocationForJob.Data"
+            bindLabel="TEXT"
+            bindValue="Id"
+            placeholder="Location"
+            [(ngModel)]="selectedLocationForJob"
+            (change)="onLocationSelect($event)"
+            (search)="onLocationSearch($event)">
+          </ng-select>
+        </div>
+      </div>
+      <br>
+      <div *ngIf="assignTechnicianList?.length > 0">
+          <div class="row">
+            <div class="col-sm-12">
+              <nitc-grid [gridcolumns]="assignTechnicianColumns" [dataSource]="assignTechnicianDetail" [actions]="actionDetails"
+                          (actionEvent)="actionEmit($event)" [hideSpinnerEvents]="atHideSpinnerEvent"
+                          [isAllowSelect]="true"
+                          (changeEvent)="atLoadPageData($event)"></nitc-grid>
+            </div>
+          </div>
+          <br>
+          <form [formGroup]="atForm"  name="atForm" autocomplete="off">
+            <div class="row">
+              <div class="col-sm-6">
+                <ng-select
+                  [items]="technicians?.Data"
+                  bindLabel="TEXT"
+                  bindValue="Id"
+                  placeholder="Technician"
+                  formControlName="techSelect"
+                  [(ngModel)]="selectedTechnician"
+                  (search)="onTechnicianSearch($event)">
+                </ng-select>
+              </div>
+              <div class="col-sm-6">
+                <mat-form-field class="textareafild" appearance="standard" [style.width.%]="100" >
+                  <mat-label>Remark</mat-label>
+                  <textarea matInput rows="1" ([ngModel])="remarkString" formControlName="remark"></textarea>
+                </mat-form-field>
+                {{ remarkString }}
+              </div>
+            </div>
+            <div class="x_final_buttons">
+              <div class="col-6 text-right">
+                <span class="text-danger">{{msg }}</span>
+              </div>
+              <div class="col-6 d-flex justify-content-end">
+                <button [disabled] = 'msg == "Submitting..."' class="x_final_button x_active_btn x_save_button" type="submit" (click)="onSubmit()">Submit</button>
+              </div>
+            </div>
+          </form>
+      </div>
+    </mat-card>
+  </div>
+</section>
+

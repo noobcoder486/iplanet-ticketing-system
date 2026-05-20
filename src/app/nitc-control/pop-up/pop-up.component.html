@@ -1,0 +1,36 @@
+<div class="p-0">
+    <div class="d-flex primary border-bottom p-2">
+        <div class="col-sm-6">
+           <h4>Import</h4> 
+        </div>
+        <div class="d-flex col-sm-6 justify-content-end">
+            <mat-icon (click)="close(false)">close</mat-icon>
+        </div>
+    </div>
+   <div class="container p-2">
+       <div class="col-sm-12">
+           <form [formGroup]="formGroup">
+               <input type="file"  #fileInput name="file" (change)="onFileChange($event)" formControlName="importfile" />
+           </form>
+        
+       </div>
+       <div class="col-sm-12 text-right pt-4">
+        <a style="cursor: pointer;" (click)="downloadTemplate()">Download the Template</a>
+     </div>
+
+     <div class="col-sm-12 text-right pt-4">
+        <a style="cursor: pointer;" (click)="downloadTemplate1()">Download the Template123</a>
+     </div>
+   </div>
+    <div class="d-flex col-sm-12  border-top">
+        <div class="col-sm-6"></div>
+        <div class="d-flex  col-sm-6 justify-content-end p-2">
+            <button mat-button class="text-sm p-1 mr-6"  (click)="close(false)">
+                <mat-icon class="text-sm">cancel</mat-icon><span>Cancel</span>
+            </button>
+            <button mat-raised-button class="text-sm bg-blue-600 text-white p-1  pr-6" (click)="saveDetail()">
+                <mat-icon class="text-sm">save</mat-icon><span>Import</span>
+            </button>
+        </div>
+    </div>
+</div>

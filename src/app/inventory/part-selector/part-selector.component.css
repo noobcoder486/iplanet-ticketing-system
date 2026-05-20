@@ -1,0 +1,30 @@
+.Ux_close {
+    position:initial !important;
+    
+  }
+  
+
+ 
+
+
+
+
+@media (min-width:320px)  
+{ /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+    .scrollcntrDiv
+    {
+        height: 49vh;
+        overflow: auto;
+    } 
+
+}
+@media (min-width:480px) 
+ { 
+    /* smartphones, Android phones, landscape iPhone */ 
+    .scrollcntrDiv
+    {
+        height: 46vh;
+        overflow: auto;
+    } 
+}
+

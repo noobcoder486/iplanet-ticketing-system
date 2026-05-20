@@ -1,0 +1,48 @@
+<section class="content">
+    <div class="container-fluid">
+
+        <!-- <div *ngFor="let child of childMenu">
+                <div class="col-lg-4 pointer" (click)="redirectToPage(child.Url)">
+                    <div class="card">
+                        <div class="header text-center">
+                            <mat-icon>widgets</mat-icon>
+                        </div>
+                        <div class="body text-center">
+                            <h3>
+                                <strong> {{child.ModuleName}}</strong>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+
+        <mat-card class="p-2 mb-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="mt-11 ml-8">
+                        <span>{{getBreadCumbText()}}</span>
+                    </p>
+                </div>
+            </div>
+        </mat-card>
+
+
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-3" *ngFor="let child of childMenu">
+                <div class="card submenu-card text-center pointer div-shadow" (click)="redirectToPage(child)">
+                    <div class="card-content mt-2 p-40">
+                        <!-- <mat-icon class="widget-icon">{{child.SubHeadingLogo}}</mat-icon> -->
+                        <span class="widget-icon">
+                            <i [ngClass]="child.SubHeadingLogo ? child.SubHeadingLogo : 'fas fa-chart-pie'"></i>
+                        </span>
+                        <h4> <strong> {{child.ModuleName}}</strong></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</section>

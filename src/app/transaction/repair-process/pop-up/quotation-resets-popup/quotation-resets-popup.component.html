@@ -1,0 +1,108 @@
+<style>
+    input[type=checkbox] {
+        transform: scale(1.5);
+    }
+</style>
+<div class="content-header">
+    <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+    <div class="card px-3 pb-3">
+        <div class="row">
+            <div class="col-12">
+                <div class="tabheader">
+                    <h3>Quote Resets </h3>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-1 col-sm-6 col-md-6">
+                <span  [ngStyle]="{ color: isShowQuote ? 'blue' : 'black' }" style="cursor: pointer; font-size: 15px !important; font-weight: 600 !important;" (click)="isShowQuote = true; isShowQuoteParts = false"> Quote </span>
+            </div>
+            <div class="col-lg-2 col-sm-6 col-md-6">
+                <span [ngStyle]="{ color: isShowQuoteParts ? 'blue' : 'black' }" style="cursor: pointer; font-size: 15px !important; font-weight: 600 !important; " (click)="isShowQuote = false; isShowQuoteParts = true"> Quote Parts </span>
+            </div>
+            <div class="col-lg-9 col-sm-6 col-md-6"></div>
+        </div>
+        <!-- Quote -->
+        <div class="row mt-2" *ngIf="isShowQuote">
+            <div class="scrollcntr" style="    max-height: 60vh;">
+                <div class="items_details_grid">
+                    <table class="table table-success table-striped table-wrap">
+                        <thead>
+                            <tr style="height: auto !important;">
+                                <th scope="col">QuoteCode</th>
+                                <th scope="col">QuoteDate</th>
+                                <th scope="col">Reset Date</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">TotalNetAmount</th>
+                                <th scope="col">ResetReason</th>
+                                <th scope="col">Remarks</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of QuoteResetsList">
+                                <td> <span> {{ item?.QuoteCode}} </span></td>
+                                <td> <span> {{ item?.QuoteDate}} </span></td>
+                                <td> <span> {{ item?.CreatedDate}} </span></td>
+                                <td> <span>{{ item?.QuoteStatus}}</span></td>
+                                <td> <span>{{ item?.TotalNetAmount}}</span></td>
+                                <td> <span>{{ item?.ReasonDescription}}</span></td>
+                                <td> <span>{{ item?.ResetReason}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+        </div>
+        
+        <div class="row mt-2" *ngIf="isShowQuoteParts">
+            <div class="scrollcntr" style="max-height: 70vh; overflow-x: auto; overflow-y: auto; width: 100%;">
+                <div class="items_details_grid" style="min-width: max-content;">
+                    <table class="table table-success table-striped table-wrap">
+                        <thead>
+                            <tr style="height: auto !important;">
+                                <th scope="col">QuoteCode</th>
+                                <th scope="col">ItemCode</th>
+                                <th scope="col">ItemDescription</th>
+                                <th scope="col">ItemType</th>
+                                <th scope="col">ComponentCode</th>
+                                <th scope="col">ComponentDescription</th>
+                                <th scope="col">Coverage</th>
+                                <th scope="col">CoverageDescription</th>
+                                <th scope="col">ItemNo</th>
+                                <th scope="col">PriceType</th>
+                                <th scope="col">TaxableAmount</th>
+                                <th scope="col">TaxAmount</th>
+                                <th scope="col">NetAmount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of QuoteResetsPartList">
+                                <td>{{ item?.QuoteCode }}</td>
+                                <td>{{ item?.ItemCode }}</td>
+                                <td>{{ item?.ItemDescription }}</td>
+                                <td>{{ item?.ItemType }}</td>
+                                <td>{{ item?.ComponentCode }}</td>
+                                <td>{{ item?.ComponentDescription }}</td>
+                                <td>{{ item?.Coverage }}</td>
+                                <td>{{ item?.CoverageDescription }}</td>
+                                <td>{{ item?.ItemNo }}</td>
+                                <td>{{ item?.PriceType }}</td>
+                                <td>{{ item?.TaxableAmount }}</td>
+                                <td>{{ item?.TaxAmount }}</td>
+                                <td>{{ item?.NetAmount }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>

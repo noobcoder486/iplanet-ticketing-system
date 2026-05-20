@@ -1,0 +1,163 @@
+<section class="content" [ngClass]="{'blurred': !hidePopup}">
+  <ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+
+
+  <mat-card>
+    <div class="row">
+      <div class="col-lg-4 col-sm-2 justify-content-center">
+        <b style="font-size: 18px !important;">Discount Coupon Approval</b>
+      </div>
+      <div class="col-lg-4 col-sm-3" style="color: {{ DiscountStatus === 'APPROVED' ? 'green' : 'red'}};font-weight:600;display:flex;align-items:center;">
+        <b style="color: black;padding-right: 10px;">Discount Status: </b>{{ DiscountStatus }}
+      </div>
+      <!-- <div class="col-lg-2 col-sm-3" style="color: {{ DiscountStatusL2 === 'APPROVED' ? 'green' : 'red'}};font-weight:600;display:flex;align-items:center;">
+        <b style="color: black;padding-right: 10px;">Status L2: </b>{{  DiscountStatusL2 }}
+      </div> -->
+      <div class="col-lg-4 col-sm-4">
+        
+      </div>
+    </div>
+  </mat-card>
+
+
+ 
+  <mat-card class="mt-2">
+    <div class="row">
+      <div class="col-lg-6 col-sm-12 col-md-6" *ngFor="let item of CustomerObject">
+        <mat-card>
+          <p>Customer Details</p>
+          <hr />
+          <mat-card-title class="header">{{item?.FirstName}}&nbsp;{{item?.LastName}}</mat-card-title>
+          <mat-card-content>
+            <p>{{item?.Address1}}, {{item?.Address2}}, {{item?.City}}, {{item?.StateCode}}, {{item?.CountryCode}}</p>
+            <p><b>GST Registration No: </b>{{ item?.GSTRegistrationNo == null || item.GSTRegistrationNo == undefined
+              ?'N.A':item?.GSTRegistrationNo }}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-lg-6 col-sm-12 col-md-6 " *ngFor="let item of LocationObject">
+        <mat-card style="display: block !important">
+          <p>Location Details</p>
+          <hr />
+          <mat-card-title class="header">{{item?.LocationCode}} - {{item?.LocationName}}</mat-card-title>
+          <mat-card-content>
+            <p>{{item?.Address1}}, {{item?.Address2}}, {{item?.StateCode}}, {{item?.CountryCode}}, </p>
+            <p><b>GST Registration No: </b>&nbsp;{{item?.GSTRegistrationNo}}, &nbsp; <b>Ship To:</b>&nbsp;
+              {{item?.SHIP_TO_GSX}}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-card>
+
+
+
+<div class="mt-2" style="background-color: white; border-radius: 8px;" *ngIf="true" >
+
+<!-- <div style="display: flex;align-items: center; justify-content: space-between;padding: 5px; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+  <div>
+    <mat-card-title class="header">Discount</mat-card-title>
+  </div>
+  <div >
+    <button class="btnClass" style="height: 28px;" (click)="showAddParts()" [hidden]="isEdit">Add Parts</button>
+  </div>
+</div> -->
+
+
+
+  
+<mat-card  *ngIf="popUpArray.length>0">
+  <div class="MainDiv" style="padding: 10px;" >
+    <div class="row">
+      <div class="scrollcntr" style="height: 347px !important;">
+        <div class="contents table-responsive">
+          <table>
+            <thead>
+              <tr style="height: auto !important;">
+                <th scope="col">Coupon Code</th>
+                <th scope="col">Discount Status </th>
+                <th scope="col">Expiry Date</th>
+                <th scope="col">Material Code</th>
+                <th scope="col">Customer Code</th>
+                <th scope="col">Location Code</th>
+                <th scope="col">Is Consumed</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col">Discount Amount</th>
+    
+        
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of popUpArray">
+                  <td style="text-align: right;">{{ item?.CouponCode}}</td>
+                <td style="white-space: nowrap; "> <span> {{ item.DiscountCouponStatus}} </span></td>
+                <td style="white-space: nowrap; "> <span> {{ item.ExpiredDate |  date: 'dd/MM/yyyy'}} </span></td>
+                <td >{{ item?.MaterialCode}}</td>
+                <td >{{ item?.RetailCustomerCode}}</td>
+                <td>{{ item?.LocationCode}}</td>
+                <td>{{ item?.IsConsumed}}</td>
+                <td style="text-align: right;">{{ item?.UnitPrice | number: '1.2-2'}}</td>
+                <td style="text-align: right;">{{ item?.DiscountAmount | number: '1.2-2'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>
+</div>
+
+
+
+
+
+
+
+  <div style="position:sticky;bottom:0;background-color: gainsboro; padding: 5px;" *ngIf="popUpArray.length>0">
+    <div class="row" >
+
+      <div class="col-9" style=" padding: 5px;">
+          <!-- <div class="row">
+              <div class="col-sm-3 col-lg-3 col-md-3 col-12">
+              Part Quantity: <b>({{finalSelectedElements.length}})</b>
+              </div>
+              <div class="col-sm-3 col-lg-3 col-md-3 col-12">
+              Discount Bucket Amount: <b>{{totalTaxableAmount | number: '1.2-2'}}</b>
+              </div>
+              <div class="col-sm-3 col-lg-3 col-md-3 col-12">
+              Dicount Spent Amount: <b>{{totalTaxAmount | number: '1.2-2'}}</b>
+              </div>
+              <div class="col-sm-3 col-lg-3 col-md-3 col-12">
+              Discount Remaining Amount: <b>{{totalNetAmount | number: '1.2-2'}}</b>
+              </div>
+          </div> -->
+      </div>
+
+
+      <div class="col-3" >
+        <div class="row">
+         <div class="col-sm-12 col-lg-12 col-md-12">
+              <div style="display: flex;justify-content: end;">
+                <div style="padding-right: 10px;">
+                  <button [hidden]="isnotApprover" class="btn btn-success" style="border-radius: 10px;" (click)="updateDiscount('APPROVED')">Approve Discount</button>
+                </div>
+      
+                <div>
+                  <button [hidden]="isnotApprover" class="btn btn-danger" style="border-radius: 10px;" (click)="updateDiscount('REJECTED')">Reject Discount</button>
+                </div>
+              </div>
+        </div>
+        </div>
+      </div>
+
+    </div>
+   
+    <div>
+    </div>
+    <div>
+    </div>
+  </div>
+</section>

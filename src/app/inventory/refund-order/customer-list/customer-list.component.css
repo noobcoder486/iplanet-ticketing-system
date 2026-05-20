@@ -1,0 +1,38 @@
+.Ux_popup  {
+    position: fixed;
+    z-index: 9999;
+    top: 50px;
+    right: 50px;
+    color: red;
+    font-size: 41px;
+    border-radius: 48%;
+    background: #fff;
+    padding-top: 4px;
+    padding-right: 2px;
+    cursor: pointer;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    top: 38px;
+    right: 171px;
+    font-size: 30px;
+  }
+  /* ::ng-deep.Ux_popup .Ux_close 
+  
+  {
+    top: 38px !important;
+    right: 171px !important;
+  } */
+  
+  .card-body
+  {
+    overflow: auto;
+    height: 300px;
+  }
+  .Ux_close {
+    position:initial !important;
+    
+  }
+
+ 

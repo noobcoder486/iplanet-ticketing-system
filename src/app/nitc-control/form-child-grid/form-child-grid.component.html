@@ -1,0 +1,40 @@
+<mat-menu #menu="matMenu">
+    <ng-template matMenuContent let-rowDetail="element">
+        <ng-container *ngFor="let act of actions">
+            <button mat-menu-item (click)="action(act,rowDetail)">
+                <mat-icon>{{act.icon}}</mat-icon>{{act.title}}
+            </button>
+
+        </ng-container>
+    </ng-template>
+</mat-menu>
+<div class="items_details_grid">
+    <table mat-table [dataSource]="dataDetailSource" class="table-responsive">
+        <ng-container *ngFor="let columnName of gridcolumns" [matColumnDef]="columnName.title">
+            <th mat-header-cell *matHeaderCellDef>
+                {{ columnName.title }}
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <ng-container *ngIf="columnName.datatype == 'DATE'">
+                    {{ row[columnName.field] | date: 'dd/MM/yyyy' }}
+                </ng-container>
+                <ng-container *ngIf="columnName.datatype == 'STRING'">
+                    {{ getVal(row[columnName.field]) }}                   
+                </ng-container>
+                <ng-container *ngIf="columnName.datatype == 'NUMBER'">
+                    {{ row[columnName.field] | number }}
+                </ng-container>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="actions" *ngIf="actions?.length > 0" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let row">
+                <button mat-button [matMenuTriggerFor]="menu" [matMenuTriggerData]="{element:row}">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+</div>

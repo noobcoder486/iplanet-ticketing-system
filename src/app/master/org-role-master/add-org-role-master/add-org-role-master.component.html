@@ -1,0 +1,55 @@
+<section class="content">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="row">
+        <div class="col-12">
+          <h3 class="ml-2 p-10 text-dark">
+            {{formTitle}} Org Role 
+          </h3>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="card-body" style="padding: 10px;">
+        <form [formGroup]="orgRoleForm" name="orgRoleForm" autocomplete="off">
+          <div class="row">
+            <div class="col-sm-6">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Org Role Name<i style="color:red">*</i></mat-label>
+                <input matInput [readonly]="isEdit"  formControlName="OrgRoleName">
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Org Role Description<i style="color:red">*</i></mat-label>
+                <input matInput  formControlName="OrgRoleDescription">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8" style="text-align: right;">
+              <div class="text-danger" style="display: inline-block" role="alert">
+                <!-- {{errorMessage}} -->
+              </div>
+            </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-2 col-sm-4">
+            <button  type="submit" (click)="onSubmit()" class="btnClass">Save</button>
+            </div>
+            <div class="col-lg-2 col-sm-4">
+            <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+          </div>
+        </div>
+
+        </form>
+          </div>
+    </mat-card>
+
+
+    <mat-card class="mb-4" style="z-index: 9;">
+         
+      </mat-card>
+
+
+ </section>

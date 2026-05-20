@@ -1,0 +1,48 @@
+<div class="container" style="height: 430px; overflow: auto;">
+    <div class="row mt-2" *ngFor="let item of allEventDetail">
+        <div class="col-12">
+            <mat-card>
+                <div class="row mt-2">
+                    <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-left hd_header_heading" matTooltip="Repair Id">{{item?.repairId}}</div>
+                    <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-left hd_header_heading" matTooltip="Repair Type">{{item?.repairTypeDescription}}</div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-left hd_header_heading">Repair Status</div>
+                    <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-left">{{item?.repairStatusDescription}}</div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-left hd_header_heading">Created Date</div>
+                    <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-left">{{item?.repairCreateDate | date:'fullDate'}}</div>
+                </div>
+                <div class="row  mt-2">
+                    <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-left hd_header_heading">Closed Date</div>
+                    <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-left">{{item?.closedDate | date:'fullDate'}}</div>
+                </div>
+                    <div class="row  mt-2">
+                    <div class="col-12 d-flex justify-content-left">
+                        <mat-card-title style="font-size: 17px !important;font-weight:600">Components / Issue </mat-card-title>
+                    </div>
+                </div>
+                <div class="row" *ngFor="let obj of item?.componentIssues">
+                    <div class="col-12 d-flex justify-content-left hd_header_heading">{{obj?.componentCode}} - {{obj?.componentDescription}} / {{obj?.issueCode}} - {{obj?.issueDescription}}</div>
+                </div><br />
+                <mat-expansion-panel class="mt-2" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                      <mat-panel-description style="color: black;font-weight: 600;">
+                        Repair Parts
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                
+                    <div class="col-12" style=" border-bottom: 1px solid rgb(159, 159, 159);">
+                      <div class="row mt-2"  *ngFor="let obj of item?.parts" style="padding: 10px;box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;">
+                        <div class="col-4 d-flex justify-content-left">{{obj?.number}}</div>
+                        <div class="col-8 d-flex justify-content-left"><b>{{obj?.description}}</b></div>
+                       </div>
+                  </div>
+                    </mat-expansion-panel>
+            </mat-card>
+            <hr style="border: 1px solid rgb(63, 63, 63);    height: 1px;">
+        </div>
+    </div>
+</div>
+

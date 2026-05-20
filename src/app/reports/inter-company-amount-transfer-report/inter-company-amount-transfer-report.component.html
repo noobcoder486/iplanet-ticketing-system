@@ -1,0 +1,102 @@
+<section class="content">
+    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-clip-rotate" [fullScreen]="true">
+        <p style="color: white">Loading ,Please Wait...</p>
+    </ngx-spinner>
+
+    <mat-card class="mt-2">
+        <div class="row">
+            <div class="col-lg-8 col-sm-4 col-md-4">
+                <p style="font-size: 18px !important; font-weight: 600 !important">
+                    Inter Company Amount Transfer Report
+                </p>
+            </div>
+
+            <div class="col-lg-2 col-sm-4 col-md-4">
+                <button class="btn blue-button" (click)="GetInterCompanyAmountTransferReport()">Generate Report</button>
+            </div>
+
+            <div class="col-lg-2 col-sm-4 col-md-4">
+                <button class="btn btn-success" (click)="ExportInterCompanyAmountTransferReport()">Export Report
+                </button>
+
+            </div>
+        </div>
+
+
+
+    </mat-card>
+
+    <mat-card class="mt-2">
+        <div class="row">
+
+            <div class="col-lg-3 col-sm-6 col-sm-6">
+                <label style="font-size: 13px !important; font-weight: 600 !important;"   for="">From Customer Code </label>
+                <input type="text" [(ngModel)]="FromCustomerCode" style="width:80% !important;margin-top: 4px !important;" />
+            </div>
+            <div class="col-lg-3 col-sm-6 col-sm-6">
+                <label style="font-size: 13px !important; font-weight: 600 !important;"  for="">To Customer Code </label>
+                <input  type="text" [(ngModel)]="ToCustomerCode" style="width: 80% !important;margin-top: 4px !important;" />
+            </div>
+
+            <div class="col-lg-3 col-sm-6 col-sm-6">
+                <mat-form-field appearance="fill" style="width: 80%;">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="startPicker" [(ngModel)]="StartDate" name="StartDate"
+                        placeholder="Start date">
+                    <mat-datepicker-toggle matTooltip="Select Start Date" matSuffix
+                        [for]="startPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-lg-3 col-sm-6 col-sm-6">
+                <mat-form-field appearance="fill" style="width: 80%;">
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="endPicker" [(ngModel)]="EndDate" name="EndDate"
+                        placeholder="End date">
+                    <mat-datepicker-toggle matTooltip="Select End Date" matSuffix
+                        [for]="endPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-3 col-sm-6 col-sm-6">
+                <label style="font-size: 13px !important; font-weight: 600 !important;"  for="">Amount Transfer Code </label>
+                <input type="text" [(ngModel)]="AmountTransferCode" style="width: 80% !important;margin-top: 4px !important;" />
+            </div>
+
+            <div class="col-lg-3 col-sm-6 col-sm-6">
+                <ng-select [items]="LocationForJob.Data" bindLabel="TEXT" bindValue="Id"
+                    [(ngModel)]="LocationCode" placeholder="Location" style="width: 80% !important"></ng-select>
+            </div>
+
+            <div class="col-lg-3 col-sm-6 col-sm-6">
+
+                <ng-select [items]="CompanyDropDown.Data" bindLabel="TEXT" bindValue="Id" [(ngModel)]="FromCompanyCode"
+                    placeholder="From Company" style="width: 80% !important"></ng-select>
+
+            </div>
+
+            <div class="col-lg-3 col-sm-6 col-sm-6">
+
+                <ng-select [items]="CompanyDropDown.Data" bindLabel="TEXT" bindValue="Id" [(ngModel)]="ToCompanyCode"
+                    placeholder="To Company" style="width: 80% !important"></ng-select>
+
+            </div>
+
+
+        </div>
+    </mat-card>
+
+    <mat-card class="mt-2">
+        <div class="row clearfix" *ngIf="columns.length > 0">
+            <div class="table-responsive">
+                <nitc-grid [gridcolumns]="columns" [dataSource]="detail" (actionEvent)="actionEmit($event)"
+                    [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent"
+                    (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+                </nitc-grid>
+            </div>
+        </div>
+    </mat-card>
+</section>

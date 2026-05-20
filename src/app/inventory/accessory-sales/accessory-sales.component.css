@@ -1,0 +1,262 @@
+.btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(202, 212, 223), rgb(103, 163, 253)) !important;
+    height: 25px;
+}
+
+.header{
+    font-weight: bolder;
+    font-size: larger !important;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.jiopayBtn
+{
+  width: 40%;
+  background-color: #fc2626 !important;
+  border: 1px solid #07a527;
+  color:white;
+}
+
+.chequeBtn
+{
+  width: 100%;
+  background-color:#e4370c !important; 
+  border: 1px solid #cf7d68 !important;
+  color: white !important;
+}
+
+.creditReqBtn
+{
+  width: 100%;
+  background-color:#5f5f5f !important; 
+  border: 1px solid #d5d683 !important;
+  color: white;
+}
+
+.allStaffDebitBtn
+{
+  width: 100%;
+  background-color:#eb9797 !important; 
+  border: 1px solid #eb9797 !important;
+  color: white;
+}
+
+.paytmBtn
+{
+  width: 100%;
+  background-color:#07099b !important; 
+  border: 1px solid #f5e235 !important;
+  color: white;
+}
+
+
+.paymentBtn
+{
+  background: #ebebeb !important;
+  color: black !important;
+  font-size: 14px !important;
+  font-weight: 600;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  cursor: default;
+}
+
+.cashBtn
+{
+  width: 100%;
+  background-color: #39495a46 !important; 
+  border: 1px solid  #cfd5db; 
+  color: rgb(102, 12, 12);
+}
+
+.neftBtn
+{
+  width: 80%;
+  background-color:#d43c00 !important; 
+  border: 1px solid #ff4a04 !important;
+  color: white;
+}
+
+.pineLabsBtn
+{
+  width: 100%;
+  background-color: #0db323 !important;
+  border: 1px solid #3ae050;
+  color:white;
+}
+.UPIBtn
+{
+  width: 100%;
+  background-color: #a19de0 !important;
+  border: 1px solid #bb0909;
+  color:white;
+}
+
+.advance
+{
+  width: 100%;
+  background-color: #e7630b !important;
+  border: 1px solid #d2cce9;
+  color:white;
+}
+.instCashback
+{
+  width: 100%;
+  background-color: #f36d6d !important;
+  border: 1px solid #85e992;
+  color:white;
+}
+
+.content-header
+{
+  width: 100%;
+  height: 100%;
+  left: 18%;
+}
+
+.modal-backdrop {
+  visibility: hidden !important;
+}
+.modal.in {
+  background-color: rgba(0,0,0,0.5);
+}
+
+:host ::ng-deep .EDC-Machine.ng-select.ng-select-single .ng-select-container {
+  margin: 0px !important;
+  height: 32.5px !important;
+  border-radius: 0px;
+}
+
+:host ::ng-deep .paymentMode.ng-select.ng-select-single .ng-select-container {
+  margin: 0px !important;
+  height: 32.5px !important;
+  border-radius: 0px;
+}
+
+
+/* Pop Up  */
+
+.popup {
+  background-color: #fff; 
+  width: 50%; 
+  /* height: 100%; */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+}
+.cardPopup {
+  background-color: #fff; 
+  width: 80%; 
+  height: 90%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+}
+
+.card-body
+{
+  overflow: auto;
+  height: 300px;
+}
+.Ux_close {
+  position:initial !important;
+  
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 9999;
+}
+
+section.content {
+  filter: blur(0); /* Initial state without blur */
+  transition: filter 0.3s ease; /* Add transition for smooth effect */
+}
+
+section.blurred {
+  filter: blur(3px); /* Apply blur effect */
+}
+ 
+.loader1 {
+  width: 48px;
+  height: 48px;
+  border: 3px dotted #FFF;
+  border-style: solid solid dotted dotted;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 2s linear infinite;
+  position: absolute;
+  z-index: 9999;
+  margin: 30% 45%;
+}
+.loader1::after {
+  content: '';  
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 3px dotted #FF3D00;
+  border-style: solid solid dotted;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  animation: rotationBack 5s linear infinite;
+  transform-origin: center center;
+  position: absolute;
+  z-index: 9999;
+  margin: 30% 45%;
+}
+@keyframes rotationBack {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+} 
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #ece4f8;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  position: absolute;
+  z-index: 9999;
+  margin: 30% 45%;
+  }
+
+  @keyframes rotation {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+  } 

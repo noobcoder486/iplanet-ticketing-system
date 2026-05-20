@@ -1,0 +1,88 @@
+<section class="content">
+    <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+
+    <mat-card style="z-index: 9;">
+
+        <div class="row" style="display: flex;justify-content: space-between;padding-bottom: 10px;">
+            <div class="col-sm-4 col-lg-12 col-md-4">
+                <p class="HeaderText">Cash Register Report </p>
+            </div>
+
+
+        </div>
+
+        <div class="row" style="border: 1px solid #dddddd;padding: 10px;">
+
+            <div class="col-sm-3 col-lg-2 col-md-3">
+                <label style="font-weight: 600;padding-bottom: 2px;">Location</label><br>
+                <ng-select [items]="LocationForJob.Data" [(ngModel)]="LocationCode" bindLabel="TEXT" bindValue="Id"></ng-select>
+              </div>
+
+            <div class="col-sm-5 col-md-5 col-lg-2">
+                <mat-form-field appearance="fill">
+                    <mat-label>From Date</mat-label>
+
+                    <div style="display: flex; align-items: center;">
+                        <div>
+                            <input matInput [matDatepicker]="fromDatePicker" [(ngModel)]="StartDate"
+                                (ngModelChange)="ValidateDateRange()" placeholder="Start date"
+                                (dateChange)="onFromDateSelected()" [max]="maxDate">
+                        </div>
+
+                        <div>
+                            <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #fromDatePicker></mat-datepicker>
+                        </div>
+                    </div>
+                </mat-form-field>
+            </div>
+
+            <div class="col-sm-5 col-md-5 col-lg-2">
+                <mat-form-field appearance="fill">
+                    <mat-label>To Date</mat-label>
+
+                    <div style="display: flex; align-items: center;">
+                        <div>
+                            <input matInput [matDatepicker]="toDatePicker" [(ngModel)]="EndDate"
+                                (ngModelChange)="ValidateDateRange()" placeholder="End date"
+                                (dateChange)="onToDateSelected()" [max]="maxDate">
+                        </div>
+
+                        <div>
+                            <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #toDatePicker></mat-datepicker>
+                        </div>
+                    </div>
+                </mat-form-field>
+            </div>
+
+
+        </div>
+
+        <div class=" " style="padding-top: 10px;display: flex;justify-content: flex-end;">
+            <div style="padding-right: 40px;">
+                <button style="float:right" type="submit" (click)="exportReportData()" class="btn btnClass">Export
+                    Report</button>
+            </div>
+
+            <div>
+                <button style="float:right" type="submit" (click)="getReportData()" class="btn btnClass">Generate
+                    Report</button>
+            </div>
+        </div>
+    </mat-card><br />
+
+    <mat-card *ngIf="results.length>0">
+
+        <div class="table-responsive">
+            <nitc-grid [gridcolumns]="columns" [dataSource]="detail" (actionEvent)="actionEmit($event)"
+                [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent" (changeEvent)="loadPageData($event)"
+                [isAllowSelect]="isChoose">
+            </nitc-grid>
+        </div>
+
+    </mat-card>
+
+</section>

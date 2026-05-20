@@ -1,0 +1,94 @@
+<section class="content">
+    <div class="container-fluid">
+     <!-- ADD Button -->
+     <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row">
+          <div class="col-sm-10 ">
+            <b class="h4">Escalation Tracker List</b>
+            <p class="mt-11 ml-8">
+              <span *ngFor="let cumb of breadCumbList;let i = index">
+                <span *ngIf="breadCumbList.length-1 == i">
+                  <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>{{cumb.text}}
+                </span>
+                <a *ngIf="breadCumbList.length-1 != i" (click)="breadCumbClick(cumb.url)" class="breadcumb">
+                  <span *ngIf="i!=0">
+                    <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>
+                  </span> {{cumb.text}}
+                </a>
+              </span>
+            </p>
+  
+          </div>
+          <div class="col-sm-2 btn-head-group">
+            <div class="d-flex justify-content-end">
+              <ng-container *ngIf="toolBarAction.length > 0">
+                <ng-container *ngFor="let toolbar of toolBarAction">
+                  <button mat-raised-button color="primary" class="{{toolbar.title}}" (click)="actionEvent(toolbar)">
+                    <mat-icon>{{toolbar.icon}}</mat-icon>
+                    <span class="{{toolbar.title}}">{{toolbar.title}}</span>
+                  </button>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+
+          <!-- <div class="col-sm-2 btn-head-group">
+            <div class="d-flex justify-content-end">
+              <button class=" x_final_button x_active_btn x_save_button" (click)="getRepairDetails()" type="button"
+              style="align-items: center;  display: flex; left: 6%; top: 4px; position: relative;">Get Repair Details</button>
+            </div>
+          </div> -->
+          <!-- <div class="col-sm-2 btn-head-group">
+            <input #frontImage type="file" (click)="frontImage.value = null"
+              (change)="frontImageClick($event)" style="display:none" >
+            <i style="display: flex;justify-content: center; cursor: pointer; padding: 15px;"
+              (click)="frontImage.click()" class="fa fa-plus" aria-hidden="true" type="file"></i>
+          </div> -->
+
+        </div>
+  
+      </mat-card>
+      <mat-card class="p-2 mb-4">
+        <form>
+            <div class="mat-card-s3">
+                <div class="d-flex">
+                    <div class="col-sm-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <input type="text" class="x_input" matInput placeholder="Ticket Id"
+                                [(ngModel)]="ticketId" name="TicketID"
+                              >
+                        </mat-form-field>
+                    </div>
+                    <!-- first field -->
+                    <div class="col-sm-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <input type="text" class="x_input" matInput placeholder="Email Id"
+                                [(ngModel)]="emailId" name="EmailId">
+                        </mat-form-field>
+                    </div>
+                    <!-- 4rth field -->
+                    <div class="col-sm-2">
+                        <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+                            <button class="x_final_button x_active_btn x_save_button"
+                                (click)="search()">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-card>
+
+      
+  
+      <!-- Data -->
+      <mat-card class="m-0 p-0">
+        <div class="row clearfix" *ngIf="columns.length > 0">
+          <div class="table-responsive">  
+            <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent"
+            (actionEvent)="actionEmit($event)" (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+            </nitc-grid>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </section>

@@ -1,0 +1,90 @@
+ 
+<div class="pop_up_flex" style="padding-top: 20px;"> 
+        <div class="MainHeader" style="width:100%;"> 
+
+                <mat-card style="width: 90%; margin: 1% auto;"> 
+                <div class="row">
+                    <div class="col-12">
+                        <div class="invoice-header" style="padding-bottom: 20px;">
+                            <b class="invoice-b">Quotation </b>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-10" style="padding-bottom: 20px;">
+                        <span style="padding-bottom: 5px;"><b> Customer Name : </b> {{CustomerData.FirstName}} {{CustomerData.LastName}} </span><br>
+                        <span style="padding-bottom: 5px;"><b> Phone no :</b> {{CustomerData.MobileNo}} </span><br>
+                        <span style="padding-bottom: 5px;"><b> Email_id :</b> {{CustomerData.EmailID}} </span><br>
+                        <span style="padding-bottom: 5px;"><b>Address : </b> {{CustomerData.Address1}} {{CustomerData.Address2}} {{CustomerData.StateName}}</span><br>
+                    </div>
+
+                    <div class="col-2">
+                       
+                        
+                        <div class="col-12"  >
+                        
+                            <span style="white-space: nowrap;"> <b>QuotationNo : </b> {{QuoteData.QuoteCode}} </span><br>
+                            <span> <b>Date : </b> {{QuoteData.QuoteDate}}</span>
+                             
+                       
+                        </div>
+                    </div>
+                </div> 
+                <div class="contents table-responsive">
+                    <div class="fixTableHead"> 
+                            <table  style=" font-size: 13px !important;">
+                              <thead>
+                                <tr style="height: auto !important;">
+                                  <th style="width: 8%;" scope="col">Sr No</th>
+                                  <th style="width: 15%;"scope="col">Part <Noscript></Noscript></th>
+                                  <th style="width: 40%;"scope="col">Description</th>
+                                  <th style="width: 15%;"scope="col">Price</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let item of QuoteList"  >
+                                  <td style="width: 15%; "> <span> {{ item.ItemNo}} </span></td>
+                                  <td style="width: 15%; "> <span> {{ item.ItemCode}} </span></td>
+                                  <td style="width: 40%; "> <span> {{ item.ItemDescription}} </span></td>
+                                  <td style="width: 15%; "> <span> {{ item.UnitPrice}}</span></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            </div>
+                          </div>
+
+
+                <div class="row">
+                        <div class="col-12"> 
+                                <div style="width: 200px;float: right;">
+                                <div>
+                                    <p style="font-size:10px"></p>
+                                    <span  style="font-size:14px;padding-top: 10px;"><b>Base Amount : </b>{{QuoteData.TotalBaseAmount}}</span>
+                                </div>
+                                <div > 
+                                    <p style="font-size:10px"></p>
+                                    <span  style="font-size:14px;padding-top: 10px;"><b>Tax Amount : </b>{{QuoteData.TotalTaxAmount}}</span>
+                                </div>
+                                <div > 
+                                    <p style="font-size:10px"></p>
+                                    <span  style="font-size:14px;padding-top: 10px;"><b>Net Amount : </b>{{QuoteData.TotalNetAmount}}</span>
+                                </div>
+                            </div>                        
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">     
+                        <div style="float: right;padding-top: 30px;">       
+                             <button class="btn-success-2" (click)="Approval()">Approve</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn-success-1" aria-label="Close"
+                                    (click)="Rejected()">Reject</button>
+                        </div>  
+                    </div>
+                </div>
+                </mat-card>
+            <br>
+        </div> 
+</div> 
+ 
+

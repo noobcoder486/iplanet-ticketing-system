@@ -1,0 +1,46 @@
+<section class="content">
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="row" >
+          <div class="col-12">
+            <h3 class="ml-2 p-10 text-dark">
+              {{formTitle}} User Location
+            </h3>
+          </div>
+        </div>
+  </mat-card>
+<mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="card-body" style="padding: 10px;">
+        <div class="row">
+          <div class="col-sm-6">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>UserName</mat-label>
+                <input matInput [disabled]="isEdit" [(ngModel)]="UserName">
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+              <ng-select placeholder="Location Code*" [items]="LocationAccGroup.Data" bindLabel="TEXT" bindValue="Id"
+                [(ngModel)]="LocationCodeList" (search)="onLocationAccGroupCode($event)" [multiple]="true">
+              </ng-select>
+  
+              <div *ngIf="LocationCodeList?.length > 0" class="selected-locations-inline mt-2">
+                <label> <b>
+                  <span *ngFor="let code of LocationCodeList" class="location-code">{{ code }}</span>
+                  </b>
+                </label>
+              </div>
+            </div>
+          <div class="row">
+          <div class="col-sm-9" style="text-align: right;">
+            <div class="text-danger" style="display: inline-block" role="alert">
+              {{errorMessage}}
+            </div>
+          </div>
+          <div class="col-sm-3" style="text-align: right;">
+            <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+            <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+          </div>
+        </div>
+      </div>
+      </div>
+</mat-card>
+</section>

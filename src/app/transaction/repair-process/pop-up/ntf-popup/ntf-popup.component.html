@@ -1,0 +1,21 @@
+
+<div class="" style="font-size: 14px !important;">
+    <div *ngFor="let template of questions" >
+      <div *ngFor="let tree of template.trees" >
+        <app-ntf-popup-question [questions]="tree.questions"></app-ntf-popup-question>
+      </div>
+    </div>
+    <div class="row" *ngIf="questions != null" >
+      <div class="col-12 text-right">
+        <div class="col-12 d-flex justify-content-end">
+          <button
+          [hidden]="isToEnableSaveButton()"
+          class="x_final_button x_active_btn x_save_button"
+          type="submit"
+          (click)="onSave()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

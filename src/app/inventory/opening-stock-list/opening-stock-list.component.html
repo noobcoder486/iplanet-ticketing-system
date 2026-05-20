@@ -1,0 +1,89 @@
+<div class="container" style="    margin: 2% auto !important;max-width: 91% !important;">
+  <mat-card>
+    <ngx-spinner size="medium" [type]="typeSelected">
+      <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+
+    <mat-card class="p-2 mb-2" style="z-index: 9;">
+      <div class="row">
+        <div class="col-lg-3 col-sm-9 ">
+          <b style="font-size: 17px !important;">Opening Stock Order List</b>
+        </div>
+        <div class="col-lg-4 col-sm-9 ">
+          <p style="font-size: 14px !important;">{{stockTypeData}}</p>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="mb-2">
+      <div class="row" style="align-items: center; padding-left:10px;">
+        
+        <div class="col-sm-4 col-lg-4 col-md-4">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <input type="text" class="x_input" matInput placeholder="Material Code" [(ngModel)]="materialCode"
+              name="materialCode">
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-lg-4 col-md-4">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <input type="text" class="x_input" matInput placeholder="Material Name" [(ngModel)]="materialName"
+              name="materialName">
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-lg-4 col-md-4">
+          <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+            <button class="x_final_button x_active_btn x_save_button" (click)="search()">Search</button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <div class="row">
+      <mat-card class="mb-2">
+        <div class="scrollcntr" style="height: 370px;">
+         
+          <div class="items_details_grid" >
+            <table class="table">
+              <thead>
+                <tr style="height: 30px !important;">
+                  <th class="fontFamily"  style="width: 1%;" scope="col"></th>
+                  <th class="fontFamily" style="width: 9%;height: 30px !important;" scope="col">Material Code</th>
+                  <th class="fontFamily" style="width: 10%;height: 30px !important;" scope="col">Material Name</th>
+                  <th class="fontFamily" style="width: 30%;height: 30px !important;" scope="col">Material Description</th>
+                  <th class="fontFamily" style="width: 10%;height: 30px !important;" scope="col">Part Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of SelectedMaterialList" [ngClass]="{ 'selectedTr': item.selected == true, 'hide': isToShowTr(item) != true}">
+                  <td style="width: 1%; "></td>
+                  <td style="width: 9%; "><a class="tableBody" (click)="onClick(item)">{{item.MaterialCode}}</a></td>
+                  <td style="width: 10%; "> <span>{{item.MaterialName}}</span></td>
+                  <td style="width: 30%; "><span>{{item.MaterialDescription}}</span></td>
+                  <td style="width: 10%; "><span>{{item.PartType}}</span></td>
+                </tr><br />
+                <tr  style="border:2px solid black;"></tr><br />
+                <tr *ngFor="let item of results" [ngClass]="{ 'selectedTr': item.selected == true, 'hide': isToShowTr(item) != true}">
+                  <td style="width: 1%; "><input type="checkbox" [(ngModel)]="item.selected" (change)="UpdateSelectedCount(item)"/></td>
+                  <td style="width: 9%; "><a class="tableBody" (click)="onClick(item)">{{item.MaterialCode}}</a></td>
+                  <td style="width: 10%; "> <span>{{item.MaterialName}}</span></td>
+                  <td style="width: 30%; "><span>{{item.MaterialDescription}}</span></td>
+                  <td style="width: 10%; "><span>{{item.PartType}}</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          </div>
+      
+      </mat-card>
+    </div><br />
+    <div class="row">
+      <div class="col-12 d-flex justify-content-end">
+        <span> ({{ SelectedPartCount }}) Open Stock Selected &nbsp; &nbsp; &nbsp; </span>
+        <span><input type="checkbox" [(ngModel)]="showonlyselected" /> Show Selected  &nbsp; &nbsp; &nbsp; </span>
+        <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onSubmit()" >Submit</button>
+      </div>     
+    </div>
+  </mat-card>
+</div>

@@ -1,0 +1,283 @@
+/* .table tbody tr td, .table tbody tr th
+{
+    padding:0px; 
+} */
+
+.scrollcntr
+{
+    overflow: hidden !important;
+}
+
+.overlay
+{
+  position: fixed;
+    top: 10;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 999;
+}
+
+.Ux_close {
+  position:initial !important;
+  
+}
+ 
+:host ::ng-deep .drpdown.ng-select.ng-select-single .ng-select-container
+{ 
+  margin: 0px !important;
+  height: 32.5px !important;
+  border-radius: 0px;
+}
+/* td, th 
+{
+    padding: 2px;
+}
+    */
+
+
+/* 
+  table {
+    font-family: Verdana;
+    font-size: 14px;
+    border-collapse: collapse;
+    
+  } */
+  
+  /* td, th {
+    padding: 5px;
+    text-align: left;
+    margin: 0;
+  }
+   */
+
+ 
+/*   
+  th {
+    position: sticky;
+    top: 0;
+    background-color: #333;
+    color: white;
+  } */
+
+  /* .contents {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-area: content;
+  height: 300px;
+  overflow-y: scroll;
+} */
+
+.btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(231, 236, 241), rgb(103, 163, 253)) !important;
+    height: 25px;
+}
+
+.trash
+{
+  border: none;
+}
+
+.trash:hover
+{
+  color: red;
+}
+
+.bg-primary table tbody tr {
+  background-color: red !important;
+}
+
+.IsDeleted table tbody tr td
+{
+  color: red;
+  background-color: yellow !important;
+}
+
+.background-color
+{
+  background-color:red !important;
+  color: red;
+}
+
+
+ /* .bg-primary
+{
+    background-color: rgb(248, 13, 13) !important;
+    table tbody tr{
+      background-color: red !important;
+    }
+  
+} */
+
+.tableDelete
+{
+  background-color: rgb(255, 108, 108) !important;
+}
+
+::ng-deep td span .ng-select.ng-select-single .ng-select-container
+{ 
+  margin: -1px 0 15px !important;
+}
+
+.reject
+{
+  border-radius: 20px; 
+  border: none; 
+  background-color: rgb(210, 48, 39); 
+  color: white;
+  width: 100%;
+  font-weight: 600;
+}
+.needmoreinfo
+{
+  border-radius: 20px; 
+  border: none; 
+  background-color: rgb(172, 169, 3); 
+  color: white;
+  width: 100%;
+  font-weight: 600;
+}
+.reject:hover
+{
+  background-color:#198754 !important;
+}
+
+.needmoreinfo:hover
+{
+  background-color:#198754 !important;
+}
+
+.disabled-select {
+  pointer-events: none;
+  opacity: 1;
+}
+ 
+:host ::ng-deep .Transportation.ng-select.ng-select-single .ng-select-container
+{ 
+  margin: 0px !important;
+  height: 32.5px !important;
+  border-radius: 0px;
+}
+
+
+/* 
+ */
+
+ .Bold{
+    font-weight: 600 !important;
+}
+
+.BoldText{
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #0037dbed !important;
+}
+.tableRow{
+  background-color: rgb(255, 135, 124) !important;
+ }
+.deleted-row {
+  background-color: #d02c2c !important; 
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.popup-card {
+  width: 100%;
+  max-width: 700px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+  max-height: 90vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-header {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff;
+  z-index: 2;
+  position: sticky;
+  top: 0;
+}
+
+.popup-content {
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.popup-footer {
+  padding: 10px 20px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  background-color: #fff;
+}
+
+.popup-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.popup-content th,
+.popup-content td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+/* Sticky Table Header */
+.popup-content thead th {
+  position: sticky;
+  top: 0;
+  background-color: rgb(96, 96, 96);
+  color: white;
+  z-index: 1;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .popup-card {
+    padding: 15px;
+    border-radius: 6px;
+  }
+
+  .popup-buttons {
+    justify-content: center;
+  }
+}

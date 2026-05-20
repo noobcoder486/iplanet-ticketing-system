@@ -1,0 +1,369 @@
+<section class="content">
+    <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+    <div class="bq-topbar">
+        <div class="bq-topbar-left">
+            <button class="bq-back-btn" (click)="goBack()" matTooltip="Back to Ticketing">
+                <i class="fa fa-arrow-left"></i>
+            </button>
+            <div>
+                <h1 class="bq-topbar-title">Bulk Job Quotation</h1>
+                <span class="bq-topbar-sub" *ngIf="ticket">
+                    {{ ticket.TicketNo }} &nbsp;·&nbsp; {{ products.length }} device{{ products.length !== 1 ? 's' : ''
+                    }}
+                </span>
+            </div>
+        </div>
+        <div class="bq-topbar-right" *ngIf="ticket">
+            <span class="bq-ticket-status-pill" [ngClass]="getTicketStatusClass(ticket.TicketStatus)">
+                <span class="bq-tsp-dot"></span>{{ ticket.TicketStatus }}
+            </span>
+        </div>
+    </div>
+
+    <div class="bq-loading" *ngIf="isLoading">
+        <div class="bq-spinner"></div>
+        <p>Loading ticket details…</p>
+    </div>
+
+    <div class="bq-error-state" *ngIf="hasError && !isLoading">
+        <div class="bq-error-icon"><i class="fa fa-exclamation-triangle"></i></div>
+        <h3>Something went wrong</h3>
+        <p>{{ errorMessage }}</p>
+        <button class="bq-retry-btn" (click)="fetchTicketDetail()"><i class="fa fa-redo"></i> Retry</button>
+    </div>
+
+    <div class="bq-body" *ngIf="!isLoading && !hasError && ticket">
+
+        <div class="bq-ticket-card">
+            <div class="bq-ticket-meta">
+                <div class="bq-meta-item">
+                    <span class="bq-meta-label"><i class="fa fa-user"></i> Customer</span>
+                    <span class="bq-meta-value">{{ ticket.CustomerName || '—' }}</span>
+                </div>
+                <div class="bq-meta-item">
+                    <span class="bq-meta-label"><i class="fa fa-phone"></i> Phone</span>
+                    <span class="bq-meta-value">{{ ticket.CustomerNo || '—' }}</span>
+                </div>
+                <div class="bq-meta-item" *ngIf="ticket.CustomerCode">
+                    <span class="bq-meta-label"><i class="fa fa-id-card"></i> Customer Code</span>
+                    <span class="bq-meta-value bq-meta-code">{{ ticket.CustomerCode }}</span>
+                </div>
+                <div class="bq-meta-item" *ngIf="ticket.LocationCode">
+                    <span class="bq-meta-label"><i class="fa fa-map-marker-alt"></i> Partner Location</span>
+                    <span class="bq-meta-value bq-meta-code">{{ ticket.LocationCode }}</span>
+                </div>
+                <div class="bq-meta-item" *ngIf="ticket?.parsedTicketBody?.mails?.[0]?.from">
+                    <span class="bq-meta-label"><i class="fa fa-envelope"></i> Email</span>
+                    <span class="bq-meta-value">{{ ticket.parsedTicketBody.mails[0].from }}</span>
+                </div>
+                <div class="bq-meta-item">
+                    <span class="bq-meta-label"><i class="fa fa-calendar-alt"></i> Created</span>
+                    <span class="bq-meta-value">{{ ticket.CreatedDate | date:'medium' }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bq-split">
+
+            <div class="bq-product-rail">
+                <div class="bq-rail-header">
+                    <i class="fa fa-mobile-alt"></i>
+                    <span>Devices</span>
+                    <span class="bq-rail-count">{{ products.length }}</span>
+                </div>
+                <div class="bq-rail-list">
+                    <div class="bq-rail-item" *ngFor="let p of products; let i = index"
+                        [ngClass]="{ 'bq-rail-item--active': selectedProduct?.caseId === p.caseId, 'bq-rail-item--locked': isLocked(p) }"
+                        (click)="selectProduct(p)"
+                        [matTooltip]="isLocked(p) ? 'Save pending parts for the active device first' : ''">
+                        <div class="bq-rail-img-wrap">
+                            <img [src]="p.productImageURL" [alt]="p.productDescription" class="bq-rail-img"
+                                onerror="this.src='assets/images/Apple-Logo.png'" />
+                            <span class="bq-rail-index">{{ i + 1 }}</span>
+                        </div>
+                        <div class="bq-rail-info">
+                            <span class="bq-rail-serial">{{ p.serial }}</span>
+                            <span class="bq-rail-model">{{ p.productDescription | slice:0:26 }}{{
+                                p.productDescription?.length > 26 ? '…' : '' }}</span>
+                            <span class="bq-rail-status"
+                                [ngClass]="p.warrantyStatusCode === 'OO' ? 'bq-rail-status--oo' : 'bq-rail-status--ok'">
+                                {{ p.warrantyStatusDescription || 'Unknown' }}
+                            </span>
+                            <span class="bq-rail-parts-badge" *ngIf="getVisibleItems(p.caseId).length > 0">
+                                <i class="fa fa-layer-group"></i> {{ getVisibleItems(p.caseId).length }} part{{
+                                getVisibleItems(p.caseId).length !== 1 ? 's' : '' }}
+                            </span>
+                            <span class="bq-rail-unsaved-dot" *ngIf="getQuote(p.caseId) && !getQuote(p.caseId).saved"
+                                matTooltip="Unsaved changes"></span>
+                        </div>
+                        <div class="bq-rail-lock" *ngIf="isLocked(p)"><i class="fa fa-lock"></i></div>
+                        <div class="bq-rail-arrow" *ngIf="selectedProduct?.caseId === p.caseId && !isLocked(p)"><i
+                                class="fa fa-chevron-right"></i></div>
+                    </div>
+                    <div class="bq-rail-empty" *ngIf="products.length === 0">
+                        <i class="fa fa-inbox"></i>
+                        <p>No devices found</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bq-detail-panel">
+                <ng-container *ngIf="selectedProduct; else noSelection">
+
+                    <div class="bq-detail-header">
+                        <div class="bq-dh-left">
+                            <img [src]="selectedProduct.productImageURL" [alt]="selectedProduct.productDescription"
+                                class="bq-dh-img" onerror="this.src='assets/images/Apple-Logo.png'" />
+                            <div class="bq-dh-info">
+                                <div class="bq-dh-title-row">
+                                    <span class="bq-dh-model" style="cursor:pointer"
+                                        (click)="openJobDetail(selectedProduct.caseGuid)">{{ selectedProduct.caseId
+                                        }}</span>
+                                    <span class="bq-dh-sep">|</span>
+                                    <span class="bq-dh-casedate">{{ selectedProduct.caseDate | date:'mediumDate'
+                                        }}</span>
+                                </div>
+                                <div class="bq-dh-meta-row">
+                                    <span class="bq-dh-chip">{{ selectedProduct.configDescription || '—' }}</span>
+                                    <span class="bq-dh-pipe">|</span>
+                                    <span class="bq-dh-chip">{{ selectedProduct.imei || '—' }}</span>
+                                    <ng-container *ngIf="selectedProduct.imei2">
+                                        <span class="bq-dh-pipe">|</span>
+                                        <span class="bq-dh-chip">{{ selectedProduct.imei2 }}</span>
+                                    </ng-container>
+                                    <span class="bq-dh-pipe">|</span>
+                                    <span class="bq-dh-chip">{{ selectedProduct.productType || '—' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bq-dh-right">
+                            <div class="bq-unsaved-lock-notice"
+                                *ngIf="lockedProductCaseId && lockedProductCaseId !== selectedProduct.caseId">
+                                <i class="fa fa-lock"></i> Locked — save pending parts first
+                            </div>
+                            <button class="bq-discard-btn" *ngIf="getPartsForProduct(selectedProduct.caseId).length > 0"
+                                (click)="discardPendingParts(selectedProduct.caseId)">
+                                <i class="fa fa-trash-alt"></i> Discard
+                            </button>
+                            <button *ngIf="selectedProduct._isBillable=='1'" class="bq-add-parts-btn"
+                                (click)="openAddPartsPopup(selectedProduct)"
+                                [disabled]="lockedProductCaseId !== null && lockedProductCaseId !== selectedProduct.caseId">
+                                <i class="fa fa-plus-circle"></i> Add Parts
+                            </button>
+                        </div>
+                    </div>
+
+                    <ng-container *ngIf="getQuote(selectedProduct.caseId) as quote; else noQuote">
+
+                        <div class="bq-quote-meta-bar">
+                            <div class="bq-qmb-info">
+                                <span class="bq-qmb-code">{{ quote.quoteCode }}</span>
+                                <span class="bq-qmb-sep">·</span>
+                                <span class="bq-qmb-date">{{ quote.quoteDate | date:'mediumDate' }}</span>
+                                <span class="bq-qmb-status-pill bq-qs--{{ quote.quoteStatus?.toLowerCase() }}">{{
+                                    quote.quoteStatus }}</span>
+                                <span class="bq-unsaved-pill" *ngIf="!quote.saved"><i class="fa fa-circle"></i>
+                                    Unsaved</span>
+                            </div>
+                            <button class="bq-save-btn" (click)="saveQuote(selectedProduct)"
+                                [disabled]="isSaveDisabled(selectedProduct.caseId)">
+                                <i class="fa fa-save"></i> Save Quote
+                            </button>
+                        </div>
+
+                        <div class="bq-slider-section" *ngIf="getVisibleItems(selectedProduct.caseId).length > 0">
+                            <div class="bq-slider-controls">
+                                <span class="bq-slider-label">
+                                    <i class="fa fa-layer-group"></i>
+                                    {{ getVisibleItems(selectedProduct.caseId).length }} Part{{
+                                    getVisibleItems(selectedProduct.caseId).length !== 1 ? 's' : '' }}
+                                </span>
+                                <div class="bq-slider-nav">
+                                    <button class="bq-snav-btn" (click)="sliderPrev(selectedProduct.caseId)"
+                                        [disabled]="quote.sliderIndex === 0">
+                                        <i class="fa fa-chevron-left"></i>
+                                    </button>
+                                    <span class="bq-snav-page">
+                                        {{ quote.sliderIndex + 1 }}–{{ Math.min(quote.sliderIndex + 2,
+                                        getVisibleItems(selectedProduct.caseId).length) }}
+                                        of {{ getVisibleItems(selectedProduct.caseId).length }}
+                                    </span>
+                                    <button class="bq-snav-btn" (click)="sliderNext(selectedProduct.caseId)"
+                                        [disabled]="quote.sliderIndex + 2 >= getVisibleItems(selectedProduct.caseId).length">
+                                        <i class="fa fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="bq-cards-row">
+                                <ng-container
+                                    *ngFor="let item of getVisibleItems(selectedProduct.caseId); let vi = index">
+                                    <div class="bq-part-card"
+                                        *ngIf="vi >= quote.sliderIndex && vi < quote.sliderIndex + 2"
+                                        [class.bq-part-card--unsaved]="!quote.saved">
+
+                                        <div class="bq-pc-header">
+                                            <img class="bq-pc-img"
+                                                [src]="item.imageUrl || 'assets/images/Apple-Logo.png'"
+                                                [alt]="item.itemDescription"
+                                                onerror="this.src='assets/images/Apple-Logo.png'" />
+                                            <div class="bq-pc-title-block">
+                                                <span class="bq-pc-code">{{ item.itemCode }}</span>
+                                                <span class="bq-pc-desc">{{ item.itemDescription }}</span>
+                                            </div>
+                                            <button class="bq-pc-delete-btn"
+                                                (click)="toggleDeleteItem(selectedProduct.caseId, item)"
+                                                matTooltip="Remove item">
+                                                <i class="fa fa-trash-alt"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="bq-pc-body">
+                                            <div class="bq-pc-row">
+                                                <span class="bq-pc-lbl">Warranty</span>
+                                                <span class="bq-pc-val">{{ item.warrantyDescription || item.warranty ||
+                                                    '—' }}</span>
+                                            </div>
+                                            <div class="bq-pc-row">
+                                                <span class="bq-pc-lbl">Coverage</span>
+                                                <span class="bq-pc-val">{{ item.coverageDescription || '—' }}</span>
+                                            </div>
+
+                                            <div class="bq-pc-row bq-pc-row--editable">
+                                                <span class="bq-pc-lbl">Price Type</span>
+                                                <ng-container *ngIf="!item.editingPriceType">
+                                                    <span class="bq-pc-val bq-pc-val--link"
+                                                        (click)="item.editingPriceType = true">
+                                                        {{ item.priceType }}<i class="fa fa-pen bq-pc-edit-icon"></i>
+                                                    </span>
+                                                </ng-container>
+                                                <ng-container *ngIf="item.editingPriceType">
+                                                    <div class="bq-pc-inline-select">
+                                                        <select class="bq-pc-select" [value]="item.priceType"
+                                                            (change)="onPriceTypeChange(selectedProduct.caseId, item, $any($event.target).value)">
+                                                            <option *ngFor="let opt of PricingOptionDD.Data"
+                                                                [value]="opt.Id">{{ opt.TEXT }}</option>
+                                                        </select>
+                                                        <button class="bq-pc-cancel-edit"
+                                                            (click)="item.editingPriceType = false">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+
+                                            <div class="bq-pc-row bq-pc-row--editable">
+                                                <span class="bq-pc-lbl">Unit Price</span>
+                                                <input class="bq-pc-price-input" type="number"
+                                                    [(ngModel)]="item.unitPrice" [disabled]="!item.priceRangeApplicable"
+                                                    (blur)="onUnitPriceChange(selectedProduct.caseId, item)" />
+                                            </div>
+
+                                            <div class="bq-pc-row bq-pc-row--editable">
+                                                <span class="bq-pc-lbl">Discount</span>
+                                                <input class="bq-pc-price-input bq-pc-price-input--discount"
+                                                    type="number" [(ngModel)]="item.discountAmount" min="0"
+                                                    (blur)="onDiscountAmountChange(selectedProduct.caseId, item)" />
+                                            </div>
+
+                                            <div class="bq-pc-divider"></div>
+
+                                            <div class="bq-pc-row">
+                                                <span class="bq-pc-lbl">Base Amount</span>
+                                                <span class="bq-pc-val bq-pc-val--num">{{ item.baseAmount |
+                                                    number:'1.2-2' }}</span>
+                                            </div>
+                                            <div class="bq-pc-row">
+                                                <span class="bq-pc-lbl">Taxable Amount</span>
+                                                <span class="bq-pc-val bq-pc-val--num">{{ item.taxableAmount |
+                                                    number:'1.2-2' }}</span>
+                                            </div>
+                                            <div class="bq-pc-row">
+                                                <span class="bq-pc-lbl">GST ({{ item.gstPercentage }}%)</span>
+                                                <span class="bq-pc-val bq-pc-val--num">{{ item.taxAmount |
+                                                    number:'1.2-2' }}</span>
+                                            </div>
+                                            <div class="bq-pc-row bq-pc-row--net">
+                                                <span class="bq-pc-lbl"><b>Net Amount</b></span>
+                                                <span class="bq-pc-val bq-pc-val--net">{{ item.netAmount |
+                                                    number:'1.2-2' }}</span>
+                                            </div>
+
+                                            <ng-container *ngIf="item.priceRangeApplicable == '1'">
+                                                <div class="bq-pc-divider"></div>
+                                                <div class="bq-pc-row">
+                                                    <span class="bq-pc-lbl">Price Range</span>
+                                                    <span class="bq-pc-val bq-pc-val--range">{{ item.priceRangeStart }}
+                                                        – {{ item.priceRangeEnd }}</span>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+
+                                        <div class="bq-pc-footer">
+                                            <span class="bq-pc-type-pill">{{ item.itemType || item.partType || '—'
+                                                }}</span>
+                                            <span class="bq-pc-pt-pill"
+                                                [class.bq-pc-pt--stock]="item.priceType === 'StockPrice'"
+                                                [class.bq-pc-pt--exchange]="item.priceType === 'ExchangePrice'"
+                                                [class.bq-pc-pt--other]="item.priceType !== 'StockPrice' && item.priceType !== 'ExchangePrice'">
+                                                {{ item.priceType }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+
+                        <div class="bq-totals-bar">
+                            <div class="bq-total-cell">
+                                <span class="bq-total-lbl">Base</span>
+                                <span class="bq-total-val">{{ quote.baseAmount | number:'1.2-2' }}</span>
+                            </div>
+                            <div class="bq-total-cell">
+                                <span class="bq-total-lbl">Taxable</span>
+                                <span class="bq-total-val">{{ quote.taxableAmount | number:'1.2-2' }}</span>
+                            </div>
+                            <div class="bq-total-cell">
+                                <span class="bq-total-lbl">Tax</span>
+                                <span class="bq-total-val">{{ quote.taxAmount | number:'1.2-2' }}</span>
+                            </div>
+                            <div class="bq-total-cell bq-total-cell--net">
+                                <span class="bq-total-lbl">Net Total</span>
+                                <span class="bq-total-val bq-total-net">{{ quote.netAmount | number:'1.2-2' }}</span>
+                            </div>
+                        </div>
+
+                    </ng-container>
+
+                    <ng-template #noQuote>
+                        <div class="bq-no-parts-yet">
+                            <div class="bq-npy-icon"><i class="fa fa-receipt"></i></div>
+                            <p class="bq-npy-text">No parts added yet</p>
+                            <p class="bq-npy-sub">Click <strong>Add Parts</strong> to fetch from GSX and build the quote
+                            </p>
+                        </div>
+                    </ng-template>
+
+                </ng-container>
+
+                <ng-template #noSelection>
+                    <div class="bq-no-selection">
+                        <div class="bq-ns-icon"><i class="fa fa-hand-pointer"></i></div>
+                        <h3>Select a Device</h3>
+                        <p>Click on a device from the left panel to view its quote</p>
+                    </div>
+                </ng-template>
+            </div>
+
+        </div>
+    </div>
+
+    <ng-container *ngIf="showAddPartsPopup && popupProduct">
+        <app-add-quote-parts [product]="popupProduct" (partsSubmitted)="onPartsSubmitted($event)"
+            (closed)="closeAddPartsPopup()">
+        </app-add-quote-parts>
+    </ng-container>
+
+</section>

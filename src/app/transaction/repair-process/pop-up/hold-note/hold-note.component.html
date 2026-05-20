@@ -1,0 +1,48 @@
+
+<style>
+    input[type=checkbox] {
+      transform: scale(1.5);
+  }
+  </style>
+  <div class="content-header" style="width: 70%;margin: auto 9%;" >
+    <div class="card px-3 pb-3" >
+        <div class="row">
+          <div class="col-12">
+            <div class="tabheader">
+              <h3>Hold Reason</h3>
+            </div>
+          </div>
+        </div>
+        
+        <br />
+        <div class="row">
+          <div class="col-12">
+            <form [formGroup]="Hold"  name="reasonForm" autocomplete="off">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <mat-form-field class="textareafild" appearance="standard" [style.width.%]="100" >
+                      <mat-label>Hold Reason Notes</mat-label>
+                      <textarea matInput rows="4"  formControlName="notes"></textarea>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-12">
+                    <label>Reason For Hold*</label>
+                    <ng-select
+                    [items]="HoldRepairListDD.Data"
+                    bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                    [(ngModel)]="HoldRepairData" [ngModelOptions]="{standalone: true}" >
+                  </ng-select>
+                 </div>
+                </div>
+                <br />
+                  <div class="col-12 d-flex justify-content-end">
+                    <button  class="x_final_button x_active_btn x_save_button" type="submit" (click)="HoldRepairSubmit()" >Submit</button>
+                  </div>
+              </form>
+          </div>
+        </div>
+    </div>
+  </div>
+  
+  
+  

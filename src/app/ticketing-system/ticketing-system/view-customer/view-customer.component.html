@@ -1,0 +1,137 @@
+<div class="vc-container">
+
+  <!-- Header -->
+  <div class="vc-header">
+    <div class="vc-header-left">
+      <div class="vc-header-icon">
+        <i class="fa fa-id-card"></i>
+      </div>
+      <div>
+        <h2 class="vc-title">Ticket Details</h2>
+        <p class="vc-subtitle">Customer & location information</p>
+      </div>
+    </div>
+    <button class="vc-close-btn" (click)="close()" matTooltip="Close">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Tabs -->
+  <div class="vc-tabs">
+    <button class="vc-tab" [class.vc-tab--active]="activeTab === 'customer'" (click)="activeTab = 'customer'">
+      <i class="fa fa-user"></i>
+      Customer
+    </button>
+    <button class="vc-tab" [class.vc-tab--active]="activeTab === 'location'" (click)="activeTab = 'location'">
+      <i class="fa fa-map-marker-alt"></i>
+      Location
+    </button>
+  </div>
+
+  <!-- Body -->
+  <div class="vc-body">
+
+    <!-- Customer Tab -->
+    <div *ngIf="activeTab === 'customer'" class="vc-section">
+      <div *ngIf="customerObject.length === 0" class="vc-empty">
+        <i class="fa fa-user-slash"></i>
+        <p>No customer mapped to this ticket</p>
+      </div>
+
+      <div *ngIf="customerObject.length > 0" class="vc-grid">
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-user"></i> First Name</span>
+          <span class="vc-field-value">{{ customerObject[0]?.FirstName || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-user"></i> Last Name</span>
+          <span class="vc-field-value">{{ customerObject[0]?.LastName || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-hashtag"></i> Customer Code</span>
+          <span class="vc-field-value vc-field-value--code">{{ customerObject[0]?.CustomerCode || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-phone"></i> Mobile No</span>
+          <span class="vc-field-value">{{ customerObject[0]?.MobileNo || '—' }}</span>
+        </div>
+        <div class="vc-field vc-field--full">
+          <span class="vc-field-label"><i class="fa fa-map-pin"></i> Address 1</span>
+          <span class="vc-field-value">{{ customerObject[0]?.Address1 || '—' }}</span>
+        </div>
+        <div class="vc-field vc-field--full">
+          <span class="vc-field-label"><i class="fa fa-map-pin"></i> Address 2</span>
+          <span class="vc-field-value">{{ customerObject[0]?.Address2 || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-globe"></i> Country</span>
+          <span class="vc-field-value">{{ customerObject[0]?.CountryCode || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-flag"></i> State</span>
+          <span class="vc-field-value">{{ customerObject[0]?.StateCode || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-city"></i> City</span>
+          <span class="vc-field-value">{{ customerObject[0]?.City || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-mail-bulk"></i> Zip Code</span>
+          <span class="vc-field-value">{{ customerObject[0]?.ZipCode || '—' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location Tab -->
+    <div *ngIf="activeTab === 'location'" class="vc-section">
+      <div *ngIf="locationObject.length === 0" class="vc-empty">
+        <i class="fa fa-map-marker-alt"></i>
+        <p>No location mapped to this ticket</p>
+      </div>
+
+      <div *ngIf="locationObject.length > 0" class="vc-grid">
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-hashtag"></i> Location Code</span>
+          <span class="vc-field-value vc-field-value--code">{{ locationObject[0]?.LocationCode || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-building"></i> Location Name</span>
+          <span class="vc-field-value">{{ locationObject[0]?.LocationName || '—' }}</span>
+        </div>
+        <div class="vc-field vc-field--full">
+          <span class="vc-field-label"><i class="fa fa-map-pin"></i> Address 1</span>
+          <span class="vc-field-value">{{ locationObject[0]?.Address1 || '—' }}</span>
+        </div>
+        <div class="vc-field vc-field--full">
+          <span class="vc-field-label"><i class="fa fa-map-pin"></i> Address 2</span>
+          <span class="vc-field-value">{{ locationObject[0]?.Address2 || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-city"></i> City</span>
+          <span class="vc-field-value">{{ locationObject[0]?.City || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-mail-bulk"></i> Zip Code</span>
+          <span class="vc-field-value">{{ locationObject[0]?.ZipCode || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-user-tie"></i> Contact Person</span>
+          <span class="vc-field-value">{{ locationObject[0]?.ContactPerson || '—' }}</span>
+        </div>
+        <div class="vc-field">
+          <span class="vc-field-label"><i class="fa fa-phone"></i> Contact Number</span>
+          <span class="vc-field-value">{{ locationObject[0]?.MobileNo || '—' }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="vc-footer">
+    <button class="vc-close-footer-btn" (click)="close()">
+      Close
+    </button>
+  </div>
+
+</div>

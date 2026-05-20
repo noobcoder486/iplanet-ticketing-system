@@ -1,0 +1,136 @@
+
+<div class="container" style="    margin: 2% auto !important;max-width: 91% !important;">
+    <mat-card>
+
+      <!--<ngx-spinner size="medium" [type]="typeSelected">
+            <p style="font-size: 20px; color: white">Loading...</p>
+          </ngx-spinner> -->
+
+
+          <mat-card class="p-2 mb-2" style="z-index: 9;">
+            <div class="row">
+              <div class="col-lg-3 col-sm-9 ">
+                <b style="font-size: 17px !important;">Payment List</b>
+              </div>
+               <div>
+                <i (click)="closeBtn()" class="Ux_close fa-duotone fa-circle-xmark" ></i>
+              </div>
+            </div>
+          </mat-card>
+
+    
+          <mat-card class="mb-2">
+            <div class="row" style="align-items: center; padding-left:10px;">
+              
+              <div class="col-sm-3 col-lg-3 col-md-3">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <input type="text" class="x_input" matInput placeholder="search Payment Date" [(ngModel)]="PaymentDate"
+                    name="paymentDate">
+                </mat-form-field>
+              </div>
+      
+              <div class="col-sm-3 col-lg-3 col-md-3">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <input type="text" class="x_input" matInput placeholder="search Payment Amount" [(ngModel)]="PaymentAmount"
+                    name="paymentAmount">
+                </mat-form-field>
+              </div>
+      
+              <div class="col-sm-3 col-lg-3 col-md-3">
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <input type="text" class="x_input" matInput placeholder="search GLCode" [(ngModel)]="GLCode"
+                    name="glCode">
+                </mat-form-field>
+              </div>
+      
+              <div class="col-sm-3 col-lg-3 col-md-3">
+                <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+                  <button class="x_final_button x_active_btn x_save_button" (click)="search()">Search</button>
+                </div>
+              </div>
+            </div>
+          </mat-card>
+    
+
+
+        <!-- Repair Content -->  
+        <div class="MainDiv" style="padding: 10px;" *ngIf="true">
+            <div class="row">
+            <div class="scrollcntr" style="height: 347px !important;">
+                <div class="contents table-responsive">
+                <table>
+                    <thead>
+                    <tr style="height: auto !important;">
+                        <th scope="col">Select</th>
+                        <th scope="col">CaseId</th>
+                        <th scope="col">Payment Date</th>
+                        <th scope="col">Payment Type</th>
+                        <th scope="col">Mode Of Payment</th>
+                        <!-- <th scope="col">Case ID</th> -->
+                        <th scope="col">GLCode</th>
+                        <th scope="col"> Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of selectedItemList" >
+                        <td>
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                            <!-- <input type="checkbox" [readOnly]="true" > -->
+                        </td>
+                        <td >{{ item?.CaseId}}</td>
+                        <td >{{ item?.TransactionDate | date: 'dd/MM/yyyy : hh:mm a' }}</td>
+                        <td *ngIf="true" style="white-space: nowrap; "> <span> {{ item?.TranType}} </span></td>
+                        <!-- <td *ngIf="true" style="white-space: nowrap; "> <span> {{ item?.CaseId}} </span></td> -->
+                        <td >{{ item?.ModeOfPayment}}</td>
+                        <td >{{ item?.GLCode}}</td>
+                        <td >{{ item?.Amount | number: '1.2-2'}}</td>
+                    </tr> <br/>
+
+                    <tr  style="border:2px solid black;"></tr><br />
+                    <tr *ngFor="let item of resultList" [ngClass]="{ 'hide': showOnlySelected && !item.selected}">
+                        <td style="width: 1%; "><input type="checkbox" [(ngModel)]="item.selected" (change)="UpdateSelectedCount(item)"/></td>
+                        <td >{{ item?.CaseId}}</td>
+                        <td >{{ item?.TransactionDate | date: 'dd/MM/yyyy : hh:mm a' }}</td>
+                        <td *ngIf="true" style="white-space: nowrap; "> <span> {{ item?.TranType}} </span></td>
+                        <!-- <td >{{ item?.InvoiceHeaderGUID}}</td> -->
+                        <!-- <td *ngIf="true" style="white-space: nowrap; "> <span> {{ item?.CaseId}} </span></td> -->
+                        <td >{{ item?.ModeOfPayment}}</td>
+                        <td >{{ item?.GLCode}}</td>
+                        <td >{{ item?.Amount | number: '1.2-2'}}</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+      
+
+
+  </mat-card>
+  <div style="position:sticky;bottom:0;background-color: gainsboro;padding-bottom: 7px;">
+    <div class="row" style="padding-top: 5px; padding-left: 20px;">
+        <div class="col-sm-3 col-lg-3 col-md-3">
+            No. of Payments Selected:- <b>({{selectedItemList.length}})</b>
+        </div>
+        <div class="col-sm-3 col-lg-3 col-md-3">
+            <input type="checkbox" [(ngModel)]="showOnlySelected" >Show Only Selected
+        </div>
+        <div class="col-sm-3 col-lg-3 col-md-3">
+            Total Amount: <b>{{totalAmount | number: '1.2-2'}}</b>
+        </div>
+
+        <div class="col-sm-3 col-lg-3 col-md-3" style="padding-right: 20px;">
+            <button class="btn btnClass" style="float: right;" (click)="onSubmit()" > Submit </button>
+        </div>
+    </div>
+
+    <div>
+    </div>
+    <div>
+    </div>
+</div>
+</div>

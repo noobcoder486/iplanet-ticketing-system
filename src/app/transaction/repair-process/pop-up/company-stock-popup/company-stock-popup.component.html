@@ -1,0 +1,53 @@
+<style>
+    input[type=checkbox] {
+        transform: scale(1.5);
+    }
+</style>
+<div class="content-header">
+    <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+    <div class="card px-3 pb-3">
+        <div class="row">
+            <div class="col-12">
+                <div class="tabheader">
+                    <h3>Select Stock </h3>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="scrollcntr" style=" max-height: 60vh;">
+            <div class="items_details_grid">
+                <table class="table table-success table-striped table-wrap">
+                    <thead>
+                        <tr style="height: auto !important;">
+                            <th scope="col">Select</th>
+                            <th scope="col">MaterialCode</th>
+                            <th scope="col">Material Desc </th>
+                            <th scope="col">Serial No</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of CompanyStockList">
+                            <td> <span> <input type="checkbox" [(ngModel)]="item.IsSelected"> </span></td>
+                            <td> <span> {{ item?.MaterialCode}} </span></td>
+                            <td> <span> {{ item?.MaterialDescription}} </span></td>
+                            <td> <span> {{ item?.SerialNo}} </span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+        <div>
+            <button (click)="onSubmit()"> Submit </button>
+        </div>
+
+    </div>
+
+
+
+</div>

@@ -1,0 +1,101 @@
+<section class="">
+
+    <div class="container-fluid">
+      <mat-card class="p-2 mb-4">
+  
+        <div class="row" style="display: flex; align-items: center; justify-content: center;">
+          <mat-card>
+            <div class="row">
+              <div class="col-lg-3 col-sm-4 mt-2">
+                <label style="font-weight:600; padding-bottom: 2%;">Approval Status</label>
+                    <ng-select  [items]="ApprovalStatusDD" 
+                        [(ngModel)]="ApprovalStatus" bindLabel="TEXT" bindValue="Id"
+                        placeholder="">
+                    </ng-select>
+              </div>
+  
+              <div class="col-lg-3 col-sm-4 mt-2">
+                <label style="font-weight:600; padding-bottom: 2%;">Select Location</label>
+                <ng-select [items]="Location.Data" bindLabel="TEXT" bindValue="Id"
+                    [(ngModel)]="LocationCode" ></ng-select>
+              </div>
+  
+              <div class="col-lg-3 col-sm-4 mt-2">
+                <label style="font-weight:600; padding-bottom: 2%;">Customer Code</label>
+                <div class="form-group">
+                <input type="text" class="form-control"
+                [(ngModel)]="customerCode" placeholder="Search Customer Code" >
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-sm-4 mt-2" style="display: flex; align-items: center;">
+                <button class="btn btnClass" style="height: 30px;" (click)="GetSalesReturnRequestList()">Search <i
+                    style="padding-left: 10px;" class="fa fa-search" aria-hidden="true"></i></button>
+              </div>
+            </div>
+          </mat-card>
+          
+
+          <div style="display: flex; align-items: center; justify-content: center; "
+            *ngIf="isLoading; else SalesReturnSection">
+            <!-- Your spinner component or HTML here -->
+            <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+          </div>
+          <div class="col-sm-12" #SalesReturnSection>
+          
+            <br>
+            <mat-card  >
+                <div class="MainDiv" style="padding: 10px;" *ngIf="results.length>0 " >
+                  <div class="row">
+                    <div class="scrollcntr" style="height: 347px !important;">
+                      <div class="contents table-responsive">
+                        <table>
+                          <thead>
+                            <tr style="height: auto !important;">
+                              <th scope="col">Request Code</th>
+                              <th scope="col">Sales Return Date</th>
+                              <th scope="col">Approval Status</th>
+                              <th scope="col">Sales Return Status</th>
+                              <th scope="col">Sales Return Doc Type</th>
+                              <th scope="col">Invoice Code</th>
+                              <th scope="col">Customer Code</th>
+                              <th scope="col">Customer Name</th>
+                              <th scope="col">Mobile No</th>
+                              <th scope="col">Customer GSTNo</th>
+                              <th scope="col">Location Code</th>
+                              <th scope="col">Taxable Amount</th>
+                              <th scope="col">Tax Amount</th>
+                              <th scope="col">Net Amount</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of results">
+                              <td><a style="color:blue;text-decoration: underline;cursor: pointer;position: relative;padding: 10px;" (click)="redirectToSalesReturnPage(item)">{{ item.RequestCode }}</a></td>
+                              <td style="white-space: nowrap; "> <span> {{ item.SalesReturnDate |  date: 'dd/MM/yyyy : hh:mm a'}} </span></td>
+                              
+                              <td style="white-space: nowrap; "> <span> {{ item.ApprovalStatus}} </span></td>
+                              <td  style="white-space: nowrap; "> <span> {{item.SalesReturnStatus}} </span></td>
+                              <td>{{ item?.SalesReturnDocType}}</td>
+                              <td >{{ item?.InvoiceCode}}</td>
+                              <td >{{ item?.RetailCustomerCode}}</td>
+                              <td>{{ item?.CustomerName}}</td>
+                              <td>{{ item?.MobileNo}}</td>
+                              <td>{{ item?.GSTRegistrationNo == null || item?.GSTRegistrationNo == undefined?'N.A':item?.GSTRegistrationNo}}</td>
+                              <td style="text-align: right;">{{ item?.LocationCode}}</td>
+                              <td style="text-align: right;">{{ item?.TotalTaxableAmount | number: '1.2-2'}}</td>
+                              <td style="text-align: right;">{{ item?.TotalTaxAmount | number: '1.2-2'}}</td>
+                              <td style="text-align: right;">{{ item?.TotalNetAmount | number: '1.2-2'}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </mat-card>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  
+  </section>

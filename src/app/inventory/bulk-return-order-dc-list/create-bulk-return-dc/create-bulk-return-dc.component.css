@@ -1,0 +1,112 @@
+.Bold{
+    font-weight: 600 !important;
+}
+
+.BoldText{
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #0037dbed !important;
+}
+.tableRow{
+  background-color: rgb(255, 135, 124) !important;
+ }
+.deleted-row {
+  background-color: #d02c2c !important; 
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.popup-card {
+  width: 100%;
+  max-width: 700px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+  max-height: 90vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-header {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ccc;
+  background-color: #fff;
+  z-index: 2;
+  position: sticky;
+  top: 0;
+}
+
+.popup-content {
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.popup-footer {
+  padding: 10px 20px;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  background-color: #fff;
+}
+
+.popup-content table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.popup-content th,
+.popup-content td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+/* Sticky Table Header */
+.popup-content thead th {
+  position: sticky;
+  top: 0;
+  background-color: rgb(96, 96, 96);
+  color: white;
+  z-index: 1;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .popup-card {
+    padding: 15px;
+    border-radius: 6px;
+  }
+
+  .popup-buttons {
+    justify-content: center;
+  }
+}

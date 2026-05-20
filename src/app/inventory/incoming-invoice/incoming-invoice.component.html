@@ -1,0 +1,324 @@
+<section class="content">
+    <ngx-spinner size="medium" [type]="typeSelected">
+      <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+    <div class="card" style="margin-bottom: 0px;min-height: 0% !important;border-radius: 5px;"> 
+      <div class="row">
+        
+        <div class="col-lg-6 col-sm-12">
+          <div class="row">
+                <div class="col-lg-4 col-sm-6 col-6 " >
+                <!-- inside Box -->
+                <div style="float: left;padding-left: 10px;padding-top: 8px;padding-right: 24px;">
+                    <i class="fa-sharp fa-solid fa-boxes-stacked"></i> 
+                </div>
+                    <div align="center" style="margin-top: 6px; border-right: 1px solid rgb(112, 111, 111); flex: auto;">
+                    <h4><span style="color: black;font-size: 14px !important;  font-weight: 500;">{{InvoiceCode}}</span> </h4>
+                    </div>
+                    <!-- </div> -->
+                </div>
+                <div class="col-lg-8 col-sm-6 col-6 " >
+                    <div style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+                    <h4><span style="color: black;font-size: 14px; font-weight: 500; ">Status: {{InvoiceObject?.InvoiceStatusDesc}}</span></h4>
+                    </div>
+                </div>
+        </div>
+        </div>
+        <div class="col-lg-6 col-sm-12">
+          <div class="row">
+            <div class="col-lg-6 col-sm-6 col-6 " >    
+                <div style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+                    <!-- <div *ngIf="stockData?.orderStatusCode == 'CLOSED'" class="col-lg-3 col-sm-12" style="    padding-top: 6px; padding-right: 18px;">
+                      <button (click)="getInvoicePdf()"  class="btnClass" style="float: right;"> Download Invoice </button>
+                    </div> -->
+                </div>  
+            </div>
+            <div class="col-lg-6 col-sm-6 col-6 " >
+                <div style="text-align: center; margin-top: 6px;">
+                  <h4><span style="color: black;font-size: 14px; font-weight: 500; ">CreatedDate: {{CreatedDate | date: 'dd/MM/YYYY : hh:mm a'}}</span></h4>
+                </div>
+            </div>
+            </div>
+        </div>
+      </div>
+  </div>
+
+
+
+      <div  class="row" style="padding:10px;padding-bottom: 10px;">
+          <!-- Background -->
+                <div class="col-lg-12" style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+                  <div class="row">
+                     <!-- Details -->
+                    <div class="col-lg-4 col-sm-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-right: 1px solid hsl(0, 0%, 92%);    border-top-left-radius: 5px;    border-bottom-left-radius: 5px;">
+                      <!-- Details Heading -->
+                      <div  style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;    border-top-left-radius: 5px;">
+                        <span style="font-size: 16px !important;color:black;font-weight: 600;">Details</span>
+                      </div>
+                      <!-- Details Content -->
+                      <div >
+                        <div class="MainDiv"  style="padding: 10px;">
+                          <div class="row">
+                              <div  class="col-lg-12 col-sm-6">
+                                <div class="row">
+                                  <div class="row">
+                                    <div class="col-lg-4" >
+                                      <h5><span style="color: black;font-size: 13px !important;  font-weight: 600;">SAP GRN Code:</span> </h5>
+                                    </div>
+                                    <div class="col-lg-6" style="flex: auto;">
+                                      <div class=" " appearance="standard" [style.width.%]="100">
+                                        <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{InvoiceObject?.SAPGrnCode}} </span> </h4>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  </div>
+                                  <div class="row">
+                                        <div class="row">
+                                        <div class="col-lg-4">
+                                        <h4><span style="color: black;font-size: 13px !important;  font-weight: 600;">Created By:</span> </h4>
+                                        </div>
+                                        <div class="col-lg-6">
+                                        <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{InvoiceObject?.CreatedBy}} </span> </h4>
+                                        </div>
+                                        </div>
+                                    </div>
+                                     <div class="row">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                            <h4><span style="color: black;font-size: 13px !important;  font-weight: 600;">Remark </span> </h4>
+                                        </div>
+                                        <div class="col-lg-6" >
+                                          <textarea rows="4" style="width: 100%;" cols="50" maxlength="4000" 
+                                          [(ngModel)]="Remark" placeholder="Write Your Remarks here:- "> </textarea>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <!--<div class="row">
+                                      <div class="row">
+                                          <div class="col-lg-4">
+                                          <h4><span style="color: black;font-size: 13px !important;  font-weight: 600;">Repair Id : </span> </h4>
+                                      </div>
+                                      <div class="col-lg-6" >
+                                      <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{InvoiceObject?.RepairId}}</span> </h4>
+                                      </div>
+                                      </div>
+                                  </div> -->
+                              </div>
+                          </div>
+                       </div>
+                      </div>
+                    </div>
+        
+                    <!--Location Code -->
+                  <div class="col-lg-3 col-sm-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+                    <!-- Ship To  -->
+                    <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+                     <div class="row">
+                      <div class="col-6">
+                        <span style="font-size: 16px !important;color:black;font-weight: 600;">Location </span>
+                      </div>
+                      
+                     </div>
+                    </div>
+                     <!-- Customer Content -->
+                     <div  >
+                      <div class="MainDiv"  style="padding: 10px;">
+                          <div class="row">
+                              <div class="col-lg-12 col-sm-6">
+                                <ng-select [items]="LocationForJob.Data" 
+                                [disabled]="true"
+                                [(ngModel)]="LocationCode" bindLabel="TEXT" bindValue="Id"
+                                placeholder="Location">
+                            </ng-select>
+                              </div>
+                          </div>
+                         </div>
+                        </div>
+                  </div>
+                  <div class="col-lg-5 col-sm-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+                      <!-- Order Heading -->
+                      <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+                       <div class="row">
+                        <div class="col-6">
+                          <span style="font-size: 16px !important;color:black;font-weight: 600;">Invoice Amount</span>
+                        </div>
+                        <div class="row" style="padding: 10px;">
+                          <div class="row">
+                          <div class="col-lg-3">
+                          <h4><span style="color: black;font-size: 13px !important;  font-weight: 600;">Total Gross:</span> </h4>
+                          </div>
+                          <div class="col-lg-9">
+                          <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{InvoiceObject?.TotalGrossAmount}}</span> </h4>
+                          </div>
+                          </div>
+                          <div  class="row">
+                          <div class="col-lg-3">
+                          <h4><span style="color: black;font-size: 13px !important;  font-weight: 600;">Total Tax:</span> </h4>
+                          </div>
+                          <div class="col-lg-9">
+                          <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{InvoiceObject?.TotalTaxAmount}}</span> </h4>
+                          </div>
+                          </div>
+                          <div class="row">
+                          <div class="col-lg-3">
+                          <h4><span style="color: black;font-size: 13px !important;  font-weight: 600;">Total Net: </span> </h4>
+                          </div>
+                          <div class="col-lg-9">
+                          <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{InvoiceObject?.TotalNetAmount}}</span> </h4>
+                          </div>
+                          </div>
+                        </div>
+                        </div>
+                        </div>
+                  </div>
+                      </div>
+                    </div>
+                    </div>
+  
+  <div class="row">
+  <div class="col-lg-7 col-sm-6  col-12" style="flex-grow: 1;">
+      <div class="col-lg-12 col-sm-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+          <!-- Order Heading -->
+          <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;border-top-left-radius: 5px;">
+           <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 16px !important;color:black;font-weight: 600;">Parts</span>
+            </div>
+           </div>
+          </div>
+           <!-- Order Content -->
+  
+  
+           <div  class="MainDiv"  style="padding: 10px;">
+           <div class="row">
+            <div class="scrollcntr" style="height: 347px !important;"> 
+              <div class="contents table-responsive">
+                    <table  >
+                    <thead >
+                        <tr style="height: auto !important;">
+                        <th style="width: 15%;"scope="col">Part Code</th>
+                        <th style="width: 15%;"scope="col">Part Type</th>
+                        <th style="width: 40%;"scope="col">Description</th>
+                        <th style="width: 40%;"scope="col">Purchase Order No</th>
+                        <th style="width: 15%;"scope="col">Gross Amount</th>
+                        <th style="width: 10%;"scope="col">Quantity</th>
+                        <th style="width: 10%;"scope="col">Select</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of InvoiceDetailList"  [ngClass]="{'bg-primary': selectedPart === item}">
+                        <td  style="width: 15%;white-space: nowrap; "> <span> {{ item.ItemCode}} </span></td>
+                        <td  style="width: 15%;white-space: nowrap; "> <span> {{ item.PartType}} </span></td>
+                        <td style="width: 40%; "> <span> {{ item.ItemDescription}} </span></td>
+                        <td style="width: 40%; "> <span> {{ item.PurchaseOrderNumber}} </span></td>
+                        <td style="width: 15%; "> <span> {{ item.GrossAmount}}</span></td>
+                        <td style="width: 10%;text-align: center; "> {{item.Quantity}} </td>
+                        <td style="width: 10%;text-align: center; "> 
+                            <button
+                            (click)="openSerialList(item)" 
+                            *ngIf="item.PartType == 'Material'"
+                            class="open"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+                </div>
+              </div>
+              </div>
+        </div>
+  </div>
+  <div  class="col-lg-5 col-sm-6 col-12" style="flex-grow: 1;">
+    <div class="col-lg-12 col-sm-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+        <!-- Order Heading -->
+        <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;border-top-left-radius: 5px;">
+         <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <span style="font-size: 16px !important;color:black;font-weight: 600;">Serial No/s For: {{ItemCode ? ItemCode : '-'}}</span>
+          </div>
+         </div>
+        </div>
+         <!-- Order Content -->
+         <div  >
+          <div  class="MainDiv"  style="padding: 10px;">
+              <div class="row">
+                <div class="scrollcntr" style="height: 288px !important;"> 
+                  <div class="contents table-responsive">
+                      <table>
+                        <thead  style="position: sticky; top: 0; z-index: 1;">
+                          <tr style="height: auto !important;">
+                            <th style="width: 20%;" scope="col">Sr. No.</th>
+                            <th style="width: 20%;" scope="col">Serial No</th>
+                            <th style="width: 30%;" scope="col">Last Updated Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr  *ngFor="let item of showSerialNoList">
+                                <td style="width: 20%;"> <span>{{item.Index + 1}}</span></td>
+                                <td style="width: 20%;"> 
+                                    <input type="text" [readonly]="!isEdit"
+                                    (input)="storeSerialNo(item)"
+                                    [(ngModel)]="item.SerialNo"
+                                     />
+                                </td>
+                                <td style="width: 20%;"> <span>{{item.LastUpdatedDate == null ? 'N/A' : item.LastUpdatedDate | date: 'dd/MM/YYYY : hh:mm a'}}</span></td>
+                              </tr>
+                              <!-- <ng-container *ngIf="selectedInvoiceDetailGuid">
+                                <ng-container *ngFor="let item of  getFilteredSerialNos(selectedInvoiceDetailGuid); let index = index">
+                                  <ng-container *ngFor="let serialNo of item.SerialNos; let serialIndex = index">
+                                    <tr>
+                                      <td style="width: 20%;"> <span>{{serialIndex + 1}}</span></td>
+                                      <td style="width: 20%;"> 
+                                        <input type="text" [(ngModel)]="item.SerialNos[serialIndex]" />
+                                      </td>
+                                    </tr>
+                                  </ng-container>
+                                </ng-container>
+                              </ng-container> -->
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+              </div>
+             </div>
+            </div>
+      </div>
+  </div>
+  </div>  
+  
+  
+  <!-- <div *ngIf="isPartSelector" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isPartSelector = false"></i>
+      <app-part-selector (partSelector)="partSelector($event)" (closePartSelector)="closePartSelector($event)"  (CancelBtn)="Cancel($event)"> </app-part-selector>
+    </div> -->
+    <div class="card-footer">
+      <div class="row" style="padding-top: 5px;" >
+        <div class="col-6 col-lg-6 col-sm-6">
+          <!-- Part Quantity: ({{addedPartCount}}) -->
+        </div>
+        <div class="col-3 col-lg-3 col-sm-3" *ngIf="isLocalApprover" >
+          <mat-slide-toggle [(ngModel)]="EnableBillingFlag" ></mat-slide-toggle>
+          <label style="font-size:16px !important; margin-left: 5%;"><b>Ignore this Invoice while Billing</b></label>
+        </div>
+        <div class="col-1 col-lg-1 col-sm-1" *ngIf="isLocalApprover" >
+          <button (click)="UpdateIncomingInvoice()" class="btn btn-warning" 
+            style="letter-spacing: 2px;text-align: center;float: right; white-space:nowrap; height: 30px;">
+           {{EnableBillingFlag == false ? 'Ignore' : 'Disable Ignore' }}  
+          </button>
+        </div>
+
+        <div class="col-4 col-lg-4 col-sm-4" *ngIf="!isLocalApprover" >
+        </div>
+        <div  class="col-2 col-lg-2 col-sm-2">
+            <button appDebounceClick *ngIf="isEdit" (debounceClick)="onSubmit()"  [disabled]="submitClicked" class="btnClass" 
+            style="letter-spacing: 2px;text-align: center;float: right; white-space:nowrap; height: 30px;"
+          [debounceTime]="700">Save
+          </button>
+          <!-- <button class="btnClass" style="letter-spacing: 2px;text-align: center;float: right;" (click)="()"> Save </button> -->
+        </div>
+      </div> 
+      <div>
+      </div>
+      <div >
+      </div>
+  </div>
+</section>

@@ -1,0 +1,130 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+
+<section class="content">
+  <div class="container-fluid">
+      <mat-card class="p-2 mb-4" style="z-index: 9;">
+          <div class="row">
+            <div class="col-sm-8 ">
+              <b >Cash Desposit List</b>
+    
+            </div>
+            <div class="col-sm-2 btn-head-group">
+              <div class="d-flex justify-content-end">
+                  <button [hidden]="!isApproverPermission" matTooltip="Enable Invoicing for Today"  class="btn btn-primary" 
+                  (click)="hideCashEnablePopUp = false"> 
+                  <span style="font-size: 12px !important; font-weight: 600;">Enable Invoicing for Today</span></button>
+              </div>
+            </div>
+            <div class="col-sm-2 btn-head-group">
+              <div class="d-flex justify-content-start">
+                  <button  matTooltip="Create Cash Deposit Entry" style="white-space: nowrap;  width: 50%;  font-size: 12px !important;" class="create_btn_content" 
+                  (click)="routeToDeposit()">  <i style="font-size:18px !important;color: blue; font-weight: 600; position: relative; top:3px;padding-right: 5px;"  
+                  class="iconbtn fa-light fa-plus">      
+                  </i> <span style="font-size: 12px !important; font-weight: 600;">Deposit</span></button>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+
+
+      <mat-card class="p-2 mb-4">
+          <div class="row"  style="display: flex; align-items: center; justify-content: center;">
+  
+              <!-- First Field -->
+              <div class="col-lg-4 col-sm-4 mt-2">
+                  <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Location </label>
+                  <ng-select  [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                  [(ngModel)]="LocationCode" placeholder="" ></ng-select>
+              </div>
+              
+              <!-- Second Field -->
+              <div class="col-lg-4 col-sm-2 mt-2"  style="padding-top: 2%;">
+                  <label style="font-weight:600; padding-bottom: 2%;">Cash Deposit Code</label>
+                  <div class="form-group">
+                      <input type="text" class="form-control"
+                      [(ngModel)]="CashDepositCode" placeholder="Search Cash Deposit Code" >
+                  </div>
+              </div>
+              
+              
+              <!-- Search Field -->
+              <div class="col-lg-2 col-sm-2 mt-2" style="margin: 20px 0 15px !important;padding-top: 2%; ">
+                  <!-- <label style="font-weight:600; padding-bottom: 2%;"></label> -->
+                  <button class="x_final_button x_active_btn x_save_button" (click)="Search()">Search</button>
+              </div>
+
+              <div class="col-lg-2 justify-content-center col-md-4 col-sm-4" style="display: flex; align-items: center;">
+                  
+             </div>
+  
+          </div>
+      </mat-card>
+
+      <div class="col-sm-12">
+          <br>
+
+          <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+              [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+              (changeEvent)="PageChange($event)">
+          </nitc-grid>
+         
+      </div>
+  </div>
+
+</section>
+
+
+<!-- Enable Cash Deposit Popupp Starts Here -->
+<div class="container" style="  width: 50% !important;  margin: 2% auto !important;max-width: 61% !important;">
+  <div class="background" [hidden]="hideCashEnablePopUp">
+    <div class="Ux_popup popup" style="position: relative; width: 50% !important;">
+  
+    <!-- ************************************** POPUP  ************************************************ -->
+    <mat-card>
+      <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+      </ngx-spinner>
+    
+      <div>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <b style="font-size: 17px !important;">Enable Invoicing without Cash Deposit For Today</b>
+          </div>
+          <div>
+            <i class="Ux_close fa-duotone fa-circle-xmark" (click)="hideCashEnablePopUp = true"></i>
+          </div>
+        </div>
+      </div>
+      <hr>
+    
+
+     
+      <div>
+        <div class="row" style="display: flex; align-items: center; justify-content: space-between;">
+          <div class="col-12 locationDiv">
+            <label style="font-weight:600; padding-bottom: 0%; padding-bottom: 2%;">Location</label>
+            <div style="margin-top: 10px;">
+              <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()" />
+              <label style="font-weight:600;">Select All Locations</label>
+            </div>
+            <ng-select [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id" [(ngModel)]="MultipleLocationCode" placeholder="" [multiple]="true"></ng-select>
+           
+          </div>
+          <div class="col-12">
+            <label style="font-weight:600; padding-bottom: 0%; padding-bottom: 2%;">Remark</label>
+            <textarea rows="4" style="width: 100%;" cols="50" maxlength="4000" [(ngModel)]="ReasonForUnlock" placeholder="Write Your Remarks here:-"></textarea>
+          </div>
+          <br>
+          <div class="col-12" style="padding-right: 20px; display: flex; align-items: center; justify-content: center;">
+            <button class="x_final_button x_active_btn x_save_button" (click)="enableCashDeposit()">Enable</button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  
+  </div>
+  </div>
+</div>

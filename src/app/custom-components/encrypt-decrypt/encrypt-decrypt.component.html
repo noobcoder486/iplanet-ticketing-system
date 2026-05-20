@@ -1,0 +1,17 @@
+<mat-card class="mb-4" style="margin:400px;">
+  <div class="row">
+    <div class="col-sm-6 ">
+      <form (submit)="$event.preventDefault()">
+        <mat-form-field appearance="outline">
+          <mat-label>Enter Text</mat-label>
+          <input type="text" matInput [(ngModel)]="encryptText" name="first">
+        </mat-form-field>
+        <!-- <input [(ngModel)]="encryptText" name="first"> -->
+        <button mat-raised-button (click)="encrypt()">Submit</button>
+        <!-- <label [value]="encryptValue" name="fieldName" ngDefaultControl></label> -->
+      </form>
+    </div>
+    <div class="col-sm-6 text-right">
+    </div>
+  </div>
+</mat-card>

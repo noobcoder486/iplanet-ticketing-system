@@ -1,0 +1,131 @@
+<style>
+  input[type=checkbox] {
+    transform: scale(1.5);
+}
+</style>
+<div style="margin: 3% 28%;">
+<div>
+  <div class="card" >
+      <div class="row">
+        <div class="col-12">
+          <div class="tabheader" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h3>Communication Details </h3>
+            </div>
+
+            <div>
+              <img (click)="CancelBtn1()" src="assets/images/close.png" alt="logo-full">
+            </div>
+         
+          </div>
+        </div>
+      </div>
+      
+      <form  [formGroup]="communicationForm"   name="atForm" autocomplete="off">      
+      <div class="row" style="padding: 10px;">
+        <div class="col-12">
+          <div class="form-group"> 
+              <label>Call Type  <span  style="color: red; font-weight:600">*</span></label>
+              <ng-select
+                 style="margin-top: -20px;"
+                [items]="callTypes"
+                bindLabel="TEXT"
+                bindValue="Id" 
+                formControlName="CallType"
+                >
+              </ng-select> 
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label>Connect <span  style="color: red;">*</span></label><br>
+            <label style="padding-right: 5px;">
+              <input (change)="onOptionChange('yes')" type="radio" name="toggle"  formControlName="selectedOption" [(ngModel)]="selectedOption" [value]="'yes'">
+              Yes
+          </label>
+
+          <label>
+            <input  (change)="onOptionChange('no')" type="radio" name="toggle" formControlName="selectedOption" [(ngModel)]="selectedOption" [value]="'no'">
+            No
+        </label>
+          </div>
+        </div>
+
+
+        <div class="col-12">
+          <div class="form-group">
+            <label>Name of the Agent <span  style="color: red;">*</span></label>
+            <div>
+                <!-- <input type="text" formControlName="AgentName" class="form-control"> -->
+                <ng-select style="margin-top: -20px;"
+                          [items]="technicians?.Data"
+                          bindLabel="TEXT"
+                          bindValue="TEXT"
+                          placeholder=""
+                          formControlName="AgentName"
+                          (search)="onTechnicianSearch($event)">
+                        </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label>Connect Disposition <span  style="color: red;">*</span></label>
+            <div>
+              <ng-select
+              style="margin-top: -20px;"
+              [items]="DispositionDD.Data"
+              bindLabel="TEXT"
+              bindValue="Id"
+              formControlName="ConnectDisposition" 
+              >
+            </ng-select> 
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="form-group">
+            <label>Remark <span  style="color: red;">*</span></label>
+            <div>
+                <textarea class="form-control" formControlName="Remark"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          
+        </div>
+
+      <br>
+        
+        <div class="mt-2" style="position: absolute;bottom: 0;display: flex; align-items: center; justify-content: end;padding: 5px;">
+          <button (click)="SaveCommunicationDetails()" class="btn btn-primary">Save</button>
+        </div>
+
+        
+       
+      </div>
+      </form>
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

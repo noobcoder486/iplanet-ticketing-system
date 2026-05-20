@@ -1,0 +1,253 @@
+<section class="content">
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+    <div class="row">
+      <div class="col-12">
+        <h3 class="ml-2 p-10 text-dark">
+          {{formTitle}} User
+        </h3>
+      </div>
+    </div>
+  </mat-card>
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+    <form [formGroup]="userForm" name="userForm" autocomplete="off">
+      <div class="card-body" style="padding: 10px;">
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>UserName<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="user.UserName" formControlName="UserName" >
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Email Id<i style="color: red">*</i></mat-label>
+              <input type="email" matInput [(ngModel)]="user.PrimaryEmail" formControlName="PrimaryEmail">
+            </mat-form-field>
+          </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Mobile No<i style="color: red">*</i></mat-label>
+                <input type="number" matInput [(ngModel)]="user.MobileNo" formControlName="MobileNo">
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6">
+              <ng-select placeholder="Select MenuGroup" [items]="MenuGroup.Data" bindLabel="TEXT" bindValue="Id"
+              [(ngModel)]="user.MenuGroup" formControlName="MenuGroup">
+            </ng-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>First Name<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="user.FirstName" formControlName="FirstName">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Last Name<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="user.LastName" formControlName="LastName">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row" [hidden]="isEdit">
+          <div class="col-sm-6" style="display: flex; align-items: center;">
+            <mat-form-field appearance="standard" [style.width.%]="100" style="margin-right: 8px;">
+              <mat-label>Password<i style="color: red">*</i></mat-label>
+              <input type="{{showPassword ? 'text' : 'password'}}" matInput [(ngModel)]="user.Password" formControlName="Password">
+            </mat-form-field>
+            <button [hidden]="isEdit" type="button" style="border:none;" class="password-toggle" (click)="togglePasswordVisibility()">
+              <i class="material-icons" style="vertical-align: middle;">{{showPassword ? 'visibility' : 'visibility_off'}}</i>
+            </button>
+          </div>
+          <div class="col-sm-6" style="display: flex; align-items: center;">
+            <mat-form-field appearance="standard" [style.width.%]="100" style="margin-right: 8px;">
+              <mat-label>Confirm Password<i style="color: red">*</i></mat-label>
+              <input type="{{showConfirmPassword ? 'text' : 'password'}}" matInput formControlName="ConfirmPassword">
+            </mat-form-field>
+            <button [hidden]="isEdit" type="button" style="border:none;" class="password-toggle" (click)="toggleConfirmPasswordVisibility()">
+              <i class="material-icons" style="vertical-align: middle;">{{showConfirmPassword ? 'visibility' : 'visibility_off'}}</i>
+            </button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <ng-select placeholder="Select JobRole" [items]="jobRole.Data" bindLabel="TEXT" bindValue="Id"
+              [(ngModel)]="user.JobRole" formControlName="JobRoleId">
+            </ng-select>
+          </div>
+          <div class="col-sm-6">
+            <ng-select placeholder="Select OrgRole" (change)="onCompany4OrgRoleSearch($event)" [items]="orgRole.Data" bindLabel="TEXT" bindValue="Id"
+              [(ngModel)]="user.OrgRole" formControlName="OrgRoleId">
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <ng-select placeholder="Select TimeZone" [items]="timeZone.Data" bindLabel="TEXT" bindValue="Id"
+              [(ngModel)]="user.TimeZone" formControlName="TimeZoneId">
+            </ng-select>
+          </div>
+          <div class="col-sm-6">
+            <ng-select placeholder="Select Language" [items]="language.Data" bindLabel="TEXT" bindValue="Id"
+              [(ngModel)]="user.Language" formControlName="LanguageCode">
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Address 1<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="user.AddressLine1" formControlName="AddressLine1">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Address 2<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="user.AddressLine2" formControlName="AddressLine2">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>City<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="user.AddressCity" formControlName="AddressCity">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Postal Code<i style="color: red">*</i></mat-label>
+              <input type="input" matInput [(ngModel)]="user.AddressPostalCode" formControlName="AddressPostalCode">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <ng-select placeholder="Select Country" [items]="Countries.Data" bindLabel="TEXT" bindValue="Id"
+              [(ngModel)]="user.AddressCountry" formControlName="AddressCountry" (search)="onCountrySearch($event)">
+            </ng-select>
+          </div>
+          <div class="col-sm-6">
+            <ng-select placeholder="Select State" [items]="States.Data" bindLabel="TEXT" bindValue="Id"
+              (search)="onStatesSearch($event)" formControlName="AddressStateCode"
+              [(ngModel)]="user.AddressStateCode"></ng-select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>GSX User Id<i style="color: red">*</i></mat-label>
+              <input type="email" matInput [(ngModel)]="user.GsxUserId" formControlName="GsxUserId">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>GSX Tech Id<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="user.GSXTechId" formControlName="GSXTechId">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-sm-12 col-lg-6 col-md-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Signature<i style="color: red">*</i></mat-label>
+              <textarea matInput [(ngModel)]="user.Signature" formControlName="Signature"></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-12 col-lg-6 col-md-6">
+            <ng-select placeholder="Select Default Company" (search)="onCompany4OrgRoleSearch($event)" formControlName="DefaultCompany" [(ngModel)]="companyCodeData" bindLabel="TEXT" bindValue="Id" [items]="companyCode.Data"></ng-select>
+          </div>  
+        </div>
+         <div class="row">
+
+          <div class="col-sm-12 col-lg-6 col-md-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Employee Code</mat-label>
+              <input type="input" matInput [(ngModel)]="user.EmployeeCode" formControlName="EmployeeCode">
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-12 col-lg-6 col-md-6">
+            <ng-select placeholder="Select Base Location" (search)="onBaseLocationSearch($event)" [items]="BaseLocationDropDown.Data" bindValue="Id" bindLabel="TEXT" formControlName="BaseLocationCode"></ng-select>
+          </div>  
+        </div>
+        <br />
+
+        <div class="row">
+          <div class="col-sm-1 col-lg-1 col-md-1">
+            <mat-checkbox type="checkbox" (click)="gsxFlagdata()" placeholder="GsxIdFlag"
+              formControlName="GsxIdFlag"></mat-checkbox>
+          </div>
+          <div class="col-sm-5 col-lg-5 col-md-5">
+            <h5><mat-label>GsxIdFlag</mat-label></h5>
+          </div>
+          <div [hidden]="!isImageUploaded" class="col-lg-6 col-sm-12 col-md-6"
+          style="width: 35px;height:35px;margin-top:19px;">
+          <label for="filetype" class="x_final_button" id="FileTypeBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+              class="bi bi-card-image" viewBox="0 0 16 16">
+              <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+              <path
+                d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5h13z" />
+            </svg>
+          </label>
+          <input class="x_final_button " (click)="fileInput.click()" accept="image/png, image/gif, image/jpeg"
+            type="file" (click)="fileInput.value = null" (change)="OnFileUploadClick($event)" #fileInput
+            multiple="true" bindValue="Id" id="filetype" type="file"
+            style="border-radius:-10%;display: none;width: 35px !important;height: 35px !important;">
+        </div>
+
+        <div [hidden]="isImageUploaded" class="swaper-card col-lg-6 col-sm-12 col-md-6"
+          style="background-color: white;box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;">
+          <div class="row">
+            <div class="col-lg-8 col-sm-12">
+              <div class="hd_column text-center">
+                <span class="hd_header_content"> <img style="width: 80px;height:80px;border-radius: 10px;"
+                    [src]="imagefilelink || 'http://placehold.it/180'" alt="image" /></span>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-12" style="justify-content: left;">
+              <i class="fa-duotone fa-trash-can" class="btn btn-danger"
+                (click)="removeSelectedFile()"><span>Delete</span></i>
+            </div>
+          </div>
+        </div>
+          
+        </div>
+
+        <div class="row">
+
+          
+          <div class="col-sm-6">
+            <div class="text-danger" style="display: inline-block" role="alert">
+              {{errorMessage}}
+            </div>
+          </div>
+          <div class="col-sm-3" style="text-align: right;">
+            <button *ngIf="isApproverPermission && isEdit" (click)="SetDefaultPassword()" class="btn btn-warning">Set Default Password</button>
+          </div>
+          <div class="col-sm-2" style="text-align: right;">
+            <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+          </div>
+          <div class="col-sm-1">
+            <button type="button" style="border:1px solid black" (click)="returnPrevious()"
+              class="btn btn-light">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+</section>

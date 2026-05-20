@@ -1,0 +1,113 @@
+.btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(231, 236, 241), rgb(103, 163, 253));
+    height: 25px;
+}
+
+.card
+{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    margin-bottom: 0px;
+    border-radius: 5px;
+    min-height: 0px;
+}
+
+.trash
+{
+  border: none;
+}
+
+.trash:hover
+{
+  color: red;
+}
+
+.HeaderCard
+{
+    padding-left:0px ;
+    padding-right:0px;
+    background-color:rgb(255, 255, 255);
+    border-right: 1px solid hsl(0, 0%, 92%);    
+    border-top-left-radius: 5px;    
+    border-bottom-left-radius: 5px;  
+    border-top-right-radius: 5px;   
+    border-bottom-right-radius: 5px;
+}
+
+.HeaderTitle
+{
+    color:rgb(0, 0, 0);
+    padding-left: 10px;
+    background-color: #dddddd;
+    height: 31px;
+    padding-top: 4px;    
+    border-top-left-radius: 5px;  
+    border-top-right-radius: 5px; 
+}
+
+.fontFamily
+{
+    font-family: 'Saira', sans-serif;
+    font-weight: 500;
+    width: 10%;
+    height: 23px !important;
+    text-align: center;
+}
+
+.Header
+{
+    display: flex;
+    /* justify-content: space-evenly; */
+    background-color: rgb(136, 136, 136);
+    color: white !important;
+     
+}
+.Header label
+{
+    color: white;
+    font-size: 14px;
+    padding: 7px;
+}
+
+.Body
+{
+    display: flex;
+    /* justify-content: space-evenly; */
+    color: white !important;
+}
+
+ 
+    .arrowDivRotate{
+        transform: rotateZ(90deg);
+    }
+
+  .arrowDiv
+  {
+    display: flex;
+    justify-content: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    align-items: center; 
+  }
+
+  .arrowDiv i {
+    padding: 5px;
+    display: block;
+    transition: all 0.4s ease;
+    color: white !important;
+  }
+  
+  .contents
+  {
+    white-space: nowrap !important;
+  }
+
+  table thead tr th
+  {
+    background-color: rgb(136, 136, 136) !important;
+
+  }

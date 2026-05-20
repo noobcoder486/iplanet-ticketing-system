@@ -1,0 +1,70 @@
+<style>
+    input[type=checkbox] {
+      transform: scale(1.5);
+  }
+  </style>
+  <div class="content-header" style="margin:auto 17% !important;width: 60% !important; top:6%;"   >
+    <div class="card pb-3" >
+        <div class="row">
+          <div class="col-12">
+            <div class="tabheader" style="display: flex;justify-content: space-between;">
+
+              <div>
+                <h3>Convert To Stock</h3>
+              </div>
+  
+              <div>
+                <i class="Ux_close fa-duotone fa-circle-xmark" ></i>
+  
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="row"  style="padding: 10px;">
+          <div class="scrollcntr" style="    max-height: 60vh;">
+            <div class="col-lg-12"  >
+              <label style="font-size: 18px;font-weight:bold;padding-bottom: 20px;">This part will be converted to regular inventory</label>
+            </div>
+
+            <div class="row"  style="padding-bottom: 10px;">
+                <div class="col-lg-4 col-sm-4 col-12"  >
+                    <div class="col-lg-12"  ><b>Part Code</b></div>
+                </div>
+                <div class="col-lg-8"  >
+                    <div class="col-lg-12"  >{{data?.PartCode}}</div>
+                </div>
+            </div>
+            <div class="row" style="padding-bottom: 10px;">
+              <div class="col-lg-4 col-sm-4 col-12"  >
+                    <div class="col-lg-12"  ><b>Part Description</b></div>
+                </div>
+                <div class="col-lg-8"  >
+                    <div class="col-lg-12"  >{{data?.PartDescription}}</div>
+                </div>
+            </div>
+            <div class="row" style="padding-bottom: 10px;">
+                <div class="col-lg-4 col-sm-4 col-12"  >
+                    <div class="col-lg-12"><b>Stock Price</b></div>
+                </div>
+                <div class="col-lg-8"  >
+                    <div class="col-lg-12"  >{{data?.NetPrice}}</div>
+                </div>
+            </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-right">
+              <div class="col-12 d-flex justify-content-end">
+                <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onSubmit()" >Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+     
+    </div>
+  
+  
+  
+  

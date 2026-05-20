@@ -1,0 +1,63 @@
+<section class="content">
+    <mat-card >
+        <div class="row" >
+            <div class="col-lg-8">
+                <strong>
+                    Check-In | Check-Out Report
+                </strong>
+            </div>
+            <div class="col-lg-2" style="display: flex;flex-direction: column;align-items: end;">
+
+                <button class="btn" style="background-color: #0d6efd; color: #ffffff;" (click)="getCheckInCheckReportList()">
+                    Generate Report </button>
+            </div>
+            <div class="col-lg-2" style="display: flex;flex-direction: column;align-items: end;">
+
+                <button class="btn btn-success" (click)="ExportCheckInCheckOut()"> Export Report </button>
+            </div>
+
+        </div>
+    </mat-card>
+    <mat-card class="mt-2">
+        <div class="row">
+            <div class="col-lg-12" style="display: flex; flex-direction: row;">
+                <div class="col-lg-2">
+                    <strong> <label for="UserName"> <b>UserName </b></label> </strong>
+                    <input id="UserName" type="text" [(ngModel)]="UserName">
+                </div>
+                <div class="col-lg-4" style="gap: 20px;">
+                    <mat-form-field appearance="fill" style="width: 47%;">
+                        <mat-label>Start Date</mat-label>
+                        <input matInput [matDatepicker]="startPicker" [(ngModel)]="StartDate" placeholder="Start date">
+                        <mat-datepicker-toggle matTooltip="Select Start Date" matSuffix
+                            [for]="startPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #startPicker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" style="width: 47%; margin-left: 10px;">
+                        <mat-label>End Date</mat-label>
+                        <input matInput [matDatepicker]="endPicker" [(ngModel)]="EndDate" placeholder="End date">
+                        <mat-datepicker-toggle matTooltip="Select End Date" matSuffix
+                            [for]="endPicker"></mat-datepicker-toggle>
+                        <mat-datepicker #endPicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+ </div>
+        </div>
+    </mat-card>
+
+    <mat-card class="mt-2">
+
+        <mat-card class="m-0 p-0">
+            <div class="row clearfix" *ngIf="columns.length > 0">
+                <div class="table-responsive">
+                    <nitc-grid [gridcolumns]="columns" [dataSource]="detail" (actionEvent)="actionEmit($event)"
+                        [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent"
+                        (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+                    </nitc-grid>
+                </div>
+            </div>
+        </mat-card>
+
+    </mat-card>
+</section>

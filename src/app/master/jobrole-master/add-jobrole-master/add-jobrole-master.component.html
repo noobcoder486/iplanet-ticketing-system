@@ -1,0 +1,103 @@
+<section class="content">
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+    <div class="row">
+      <div class="col-12">
+        <h3 class="ml-2 p-10 text-dark">
+          {{formTitle}} JobRoleId
+        </h3>
+      </div>
+    </div>
+  </mat-card>
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+    <form [formGroup]="jobRoleForm" name="jobRoleForm" autocomplete="off">
+      <div class="card-body" style="padding: 10px;">
+        <div class="row">
+          <!-- <div class="col-sm-6">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>JobRoleId </mat-label>
+                  <input matInput  [(ngModel)]="jobRole.JobRoleId" [readonly]="isEdit" formControlName="JobRoleId">
+                </mat-form-field>
+              </div> -->
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>JobRole Name </mat-label>
+              <input matInput [readonly]="isEdit" formControlName="JobRoleName">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>JobRole Description </mat-label>
+              <input matInput formControlName="JobRoleDescription">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Report To JobRoleId</mat-label>
+              <input matInput formControlName="ReportToJobRoleId">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Profile Id</mat-label>
+              <input matInput formControlName="ProfileId">
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-6">
+            <label>Start Time</label><br>
+            <input class="form-control" type="time" formControlName="startTime"
+              style="width: 100%; padding: 5px; font-size: 14px;">
+          </div>          
+
+          <div class="col-sm-6">
+            <label>End Time</label><br>
+            <input class="form-control" type="time" formControlName="endTime"
+              style="width: 100%; padding: 5px; font-size: 14px;">
+          </div>
+
+          <!-- <div class="col-sm-6">
+            <label>Start Time</label><br>
+            <input class="form-control" [ngxTimepicker]="startPicker" 
+              style="background-color: #f5f5f5; border-radius: 5px;">
+            <ngx-material-timepicker #startPicker [format]="12"></ngx-material-timepicker>
+          </div>
+
+          <div class="col-sm-6">
+            <label>End Time</label><br>
+            <input class="form-control" [ngxTimepicker]="endPicker" 
+              style="background-color: #f5f5f5; border-radius: 5px;">
+            <ngx-material-timepicker #endPicker [format]="12"></ngx-material-timepicker>
+          </div> -->
+
+          <br />
+          <div class="row">
+            <div class="col-sm-9" style="text-align: right;">
+              <div class="text-danger" style="display: inline-block" role="alert">
+                {{errorMessage}}
+              </div>
+            </div>
+            <!-- <div class="col-sm-3" style="text-align: right;">
+              <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+              <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+
+  <mat-card class="mb-4" style="z-index: 9;">
+    <div class="row">
+      <div class="col-sm-8" style="text-align: right;">
+        <div class="text-danger" style="display: inline-block" role="alert">
+          <!-- {{errorMessage}} -->
+        </div>
+      </div>
+      <div class="col-sm-4" style="text-align: right;">
+        <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+
+        <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+      </div>
+    </div>
+  </mat-card>
+</section>

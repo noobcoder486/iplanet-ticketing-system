@@ -1,0 +1,20 @@
+<mat-card class=" mb-4">
+    <div class="row">
+      <div class="col-sm-6 ">
+        <p class="h4">Profile Setting</p>
+      </div>
+      <div class="col-sm-6 text-right">
+        <button type="button" (click)="addProfileSetting()" class="btn btn-primary">
+          Add Profile
+        </button>
+      </div>
+    </div>
+    
+  </mat-card>
+  
+  <mat-card>
+    <ng2-smart-table style="width: 100%;" [settings]="settings" [source]="source"
+     (deleteConfirm)="onDeleteConfirm($event)"
+     (create)="add($event)" (edit)="edit($event)">
+    </ng2-smart-table>
+  </mat-card>

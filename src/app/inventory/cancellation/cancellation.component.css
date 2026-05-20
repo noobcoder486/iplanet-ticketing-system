@@ -1,0 +1,89 @@
+.btnClass {
+    border: 1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(202, 212, 223), rgb(103, 163, 253)) !important;
+    height: 25px;
+  }
+  
+  .header {
+    font-weight: bolder;
+    font-size: larger !important;
+  }
+  
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  .overlay {
+    margin: 25% 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 80%;
+    z-index: 9999;
+    /* Ensure it appears above other elements */
+    color: white;
+    /* Optional: Change text color for better visibility */
+    background-color: transparent !important;
+  }
+  
+  section.content {
+    filter: blur(0);
+    /* Initial state without blur */
+    transition: filter 0.3s ease;
+    /* Add transition for smooth effect */
+  }
+  
+  section.blurred {
+    filter: blur(3px);
+    /* Apply blur effect */
+  }
+  
+  .card-body {
+    overflow: auto;
+    height: 300px;
+  }
+  
+  .Ux_close {
+    position: initial !important;
+  
+  }
+  
+  .background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent background */
+    z-index: 9999;
+  }
+  
+  .popup {
+    background-color: #fff;
+    width: 40%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+  }
+  
+  .discountTag {
+    display: block;
+    margin-top: 5px;
+    cursor: pointer;
+    border: 1px solid rgb(192, 192, 192);
+    text-align: center;
+    padding: 5px;
+    border-radius: 8px;
+    background-color: rgb(223, 223, 223);
+  }
+  
+  .discountTag:hover
+  {
+    background-color: #fff;
+  }

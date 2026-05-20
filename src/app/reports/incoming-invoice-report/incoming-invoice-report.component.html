@@ -1,0 +1,120 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+      <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row">
+          <div class="col-sm-5">
+            <p style="font-size: 16px !important;color:black;font-weight: 600;">Incoming Invoices Report </p>
+          </div>
+        
+  
+        </div>
+      </mat-card>
+      </div>
+  
+      <mat-card>
+  
+        <div class="row">
+  
+          <div class="col-12" style="width: 100%;">
+            <div class="row"> 
+              <div class="col-lg-3 col-sm-5 col-md-5">
+                <b>Invoice Code:</b>&nbsp;<br>
+                <input type="text" placeholder="Invoice Code" style="width: 100%; border:1px solid rgb(194, 193, 193);border-radius:2px;height:35px" 
+                [(ngModel)]="InvoiceCode" />
+              </div>
+              <div class="col-lg-3 col-sm-5 col-md-5 justify-content-end">
+                <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Location </label>
+                <ng-select  [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                [(ngModel)]="LocationCode" placeholder="" ></ng-select>
+              </div>
+              <div class="col-lg-3 col-sm-5 col-md-5 justify-content-end">
+                <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Incoming Status </label>
+                <ng-select  [items]="IncomingInvStatusDD.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                [(ngModel)]="InvoiceStatus" placeholder="" ></ng-select>
+      
+              </div> 
+  
+              <div class="col-lg-2 col-sm-5 col-md-6"  >
+                <mat-form-field appearance="fill">
+                  <mat-label>Enter Export date range</mat-label>
+        
+                  <div style="display: flex;align-items: center;">
+                    <div>
+                      <mat-date-range-input [rangePicker]="exportpicker">
+                        <input matStartDate [(ngModel)]="StartDate" placeholder="Start date">
+                        <input matEndDate [(ngModel)]="EndDate" placeholder="End date">
+                      </mat-date-range-input>
+                    </div>
+        
+                    <div>
+                      <mat-datepicker-toggle matIconSuffix [for]="exportpicker"></mat-datepicker-toggle>
+                      <mat-date-range-picker #exportpicker></mat-date-range-picker>
+                    </div>
+                  </div>
+                </mat-form-field>
+              </div>
+  
+              <div class="col-lg-1 col-sm-5 col-md-5 justify-content-end mt-3">
+  
+                <div style="display: flex;align-content: center;column-gap: 20px;">
+                    <div><button class="btnClass" (click)="GetIncomingInvoiceList()">Generate Report</button></div>
+                    <div>  <button style="float:right"  class="btn needmoreinfo" 
+                      (click)="exportReportData()">Export Report</button></div>
+                </div>
+                
+              </div>
+            </div>
+  
+          </div>
+   
+        </div>
+  
+  
+  
+  
+  
+      </mat-card><br />
+  
+       
+         
+          
+          <div class="row">
+            <mat-card class="table-responsive">
+              <div  style="height: 300px;overflow: auto;overflow-x:auto;">
+                <table class="table" style="width: 100%;"> 
+                    <tr style="height: 30px !important;">
+                      <th class="Tableheader" scope="col">Invoice Code</th>
+                      <th class="Tableheader"  scope="col">Invoice Date</th>
+                      <th class=" Tableheader"  scope="col">Invoice Status</th>
+                      <th class=" Tableheader"  scope="col">Location Code</th>
+                      <th class=" Tableheader"  scope="col">Purchase Order No</th>
+                      <th class=" Tableheader"  scope="col">Invoice Type</th>
+                      <th class=" Tableheader"  scope="col">Serial Nos</th>
+                      <th class=" Tableheader"  scope="col">Ship To GSX Code</th>
+                      <th class=" Tableheader"  scope="col">SAP GRN No</th>
+                    </tr> 
+                  <tbody>
+                    <tr *ngFor="let item of IncomingInvoiceList">
+                      <td><a class="tableBody" (click)="onClick(item)">{{item.InvoiceCode}}</a>
+                      </td>
+                      <td> <span>{{item.InvoiceDate | date: 'dd/MM/YYYY : hh:mm a'}} </span></td>
+                      <td> <span> {{ item.InvoiceStatusDesc}} </span></td>
+                      <td> <span> {{item?.LocationCode}} </span></td>
+                      <td> <span> {{item?.PurchaseOrderNumber}} </span></td>
+                      <td> <span> {{item?.InvoiceTypeDescription}} </span></td>
+                      <td> <span>{{ item?.SerialNos}}</span></td>
+                      <td> <span> {{item?.ShipToGsxCode}} </span></td>
+                      <td> <span>{{ item?.SAPGrnCode}}</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+          </mat-card>
+          </div>
+       
+    </div>
+  </section>

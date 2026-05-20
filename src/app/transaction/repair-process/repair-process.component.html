@@ -1,0 +1,1150 @@
+<section class="content">
+  <ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+  <div class="container-fluid">
+    <div class="card" style="background-color: transparent !important;">
+      <div class="card-body" style="padding: 0px !important;background-color: transparent !important;">
+        <div style="padding-bottom: 5px;">
+          <div class="card" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+            <div class="row">
+
+              <div class="col-lg-4 col-sm-12">
+                <div class="row">
+                  <div class="col-lg-6 col-sm-6 col-6 ">
+
+                    <!-- inside Box -->
+                    <div style="text-align: center;margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+                      <h4><i class="fa-light fa-wrench"></i> <span matTooltip="Job Number"
+                          style="color: black;font-size: 14px !important;  font-weight: 500;">
+                          {{objCaseDetail?.CaseId}}</span> </h4>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 col-sm-6 col-6 ">
+                    <!-- inside Box -->
+                    <div class="JobTypeDesc"
+                      style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+                      <h4><span matTooltip="Job Type" style="color: black;font-size: 14px; font-weight: 500; ">{{ objCaseDetail?.JobTypeDesc
+                          }}</span></h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-8 col-sm-12" >
+                <div class="row">
+                  <div class="col-lg-5 col-sm-5 col-6 " >
+                    <!-- inside Box -->
+                    <div style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+                      <h4><span matTooltip="Job Status"
+                          style="color: black;font-size: 14px; font-weight: 500; ">{{objCaseDetail?.JobStatusDesc}}</span>
+                      </h4>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-sm-4 col-6">
+                    <div style="text-align: center;  padding-top: 5px;">
+                      <h4><span matTooltip="Technician Id" style="color: black;font-size: 14px; font-weight: 500; ">{{
+                          objCaseDetail?.ASGTECH?.TechCode}}</span></h4>
+                    </div>
+                  </div> 
+                  <div class="col-lg-3 col-sm-2" align="end">
+                    <div class="row" style="font-size: 18px;float: right;column-gap: 15px; padding-top: 3px;">
+                      <!-- for second repair -->
+                      <div  (click)="ShowSecondRepairPopUp()" class="col-1" style="text-align: center;padding-top: 5px;">
+                        <i style="font-weight: 300;" matTooltip="Second Repair" class="fa-regular fa-screwdriver-wrench"></i>
+                      </div>
+
+                      <div (click)="isAssignTechPop = true" class="col-1" style="text-align: center;padding-top: 5px;">
+                        <i style="font-weight: 300;" matTooltip="Assign Technician" class="fa-thin fa-user-gear"></i>
+                      </div>
+
+                      <div (click)="isImageUpload = true" class="col-2"
+                        style="text-align: center;padding-top: 5px;">
+                        <i class="iconbtn" matTooltip="Job Attachments" class="fa-light fa-paperclip"></i>
+                      </div>
+
+                      <div class="col-2" style="text-align: center;    padding-top: 5px;">
+                        <i [matMenuTriggerFor]="menu" matTooltip="Download Job Reports" class="fa-light fa-file-import"></i>
+                        <mat-menu #menu="matMenu">
+                          <button  *ngIf="objCaseDetail?.JobType != 'SNR'" mat-menu-item (click)="downloadServiceReport('SERVICE')">Job Sheet</button>
+                          <button *ngIf="objCaseDetail?.JobType == 'SNR'" mat-menu-item (click)="downloadServiceReport('SNR')">SNR Job Sheet</button>
+                          <button mat-menu-item (click)="downloadServiceReport('DIAGNOSIS')">Diagnosis</button>
+                          <button mat-menu-item (click)="downloadServiceReport('QUOTE')">Quote</button>
+                          <button mat-menu-item (click)="downloadServiceReport('INVOICE')">Invoice</button>
+                          <div *ngIf="objCaseDetail?.RFPFlag ==1" >
+                            <button mat-menu-item (click)="downloadServiceReport('DELIVERY')">Delivery</button>
+                          </div>
+                          <div *ngIf="objCaseDetail?.RFPFlag ==1  && objCaseDetail?.DIAG?.RepairType == 'WUMS' " ><button mat-menu-item (click)="printDocument()">Inbox Letter</button>
+                          </div>
+                        </mat-menu>
+                      </div>
+
+                      <div (click)="isCommunicationDetailPopup = true" class="col-2" style="text-align: center;padding-top: 5px;padding-right: 5px;">
+                        <i style="font-weight: 300;" matTooltip="Communication Call Details" class="far fa-comment"></i>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div *ngIf="isOpenPanelDetails" class="row" style="padding:10px;padding-bottom: 15px;">
+          <!-- Background -->
+          <div class="col-lg-12"
+            style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+            <div class="row">
+              <!-- Device -->
+              <div class="col-lg-3 col-sm-12"
+                style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-right: 1px solid hsl(0, 0%, 92%);    border-top-left-radius: 5px;    border-bottom-left-radius: 5px;">
+                <!-- Device Heading -->
+                <div
+                  style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;    border-top-left-radius: 5px;">
+                  <span class="HeaderText" style="font-size: 17px;color:black;">Device</span>
+                </div>
+
+                <!-- Device Content -->
+                <div>
+
+                  <div class="MainDiv" style="padding: 10px;">
+
+                    <div class="row">
+                      <div class="col-lg-12 col-sm-6">
+                        <span class="hd_header_content fontstyle " style="font-size: 17px;"> <b> {{
+                            objCaseDetail?.productDescription }} </b></span>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-12 col-sm-6 mb-2" style="text-align: center;">
+                        <img [src]="objCaseDetail?.ProductImageURL" width="30%">
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-5  col-sm-3 ">
+                        <span class="headerTag"> Serial No: </span>
+                      </div>
+                      <div class="col-lg-7  col-sm-9 ">
+                        <span class="hd_header_content fontstyle"> {{ objCaseDetail?.SerialNo1 | uppercase }} </span>
+                      </div>
+
+
+
+                      <div class="col-lg-5  col-sm-3 "
+                        *ngIf="objCaseDetail?.ConfigurationDescription != null  &&  objCaseDetail?.ConfigurationDescription != undefined">
+                        <span class="headerTag"> Config Description:</span>
+                      </div>
+
+                      <div class="col-lg-7  col-sm-9"
+                        *ngIf="objCaseDetail?.ConfigurationDescription != null  &&  objCaseDetail?.ConfigurationDescription != undefined">
+                        <span class="hd_header_content fontstyle"> {{ objCaseDetail?.ConfigurationDescription }} </span>
+                      </div>
+                      
+                      <div class="col-lg-5  col-sm-3">
+                        <span class="headerTag">Warranty: </span>
+                      </div>
+                      <div class="col-lg-7  col-sm-9 ">
+                        <span class=" fontstyle"> {{ objCaseDetail?.GSXWarrantyStatusDesc }} </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Customer -->
+              <div class="col-lg-9 col-sm-12"
+                style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+                <!-- Customer Heading -->
+                <div
+                  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+                  <div class="row">
+                    <div class="col-6">
+                      <span class="HeaderText" style="font-size: 17px;color:black;">Customer</span>
+                    </div>
+                    <div align="end" class="col-6">
+                      <i (click)="CustomerDetails()" class="fa-solid fa-angle-up"
+                        style="padding-right: 10px;  padding-top: 8px; cursor: pointer;"></i>
+                    </div>
+                  </div>
+                </div>
+                <!-- Customer Content -->
+                <div>
+                  <div class="MainDiv" style="padding: 10px;">
+                    <div class="row">
+                      <!-- 1st column details -->
+                      <div class="col-lg-5 col-sm-4">
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-5 col-sm-12">
+                            <label class="headerTag">Case Date:</label>
+                          </div>
+                          <div class="col-lg-7 col-sm-12">
+                            <label>{{ objCaseDetail?.CaseDate }}</label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-5 col-sm-12">
+                            <label class="headerTag"> Customer Remark: </label>
+                          </div>
+                          <div class="col-lg-7 col-sm-12">
+                            <label> {{ objCaseDetail?.ComplainDesc }} </label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-5 col-sm-12">
+                            <label class="headerTag">Product Type: </label>
+                          </div>
+                          <div class="col-lg-7 col-sm-12">
+                            <label>{{ objCaseDetail?.ProductType }} </label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-5 col-sm-12">
+                            <label class="headerTag">Labor Covered:</label>
+                          </div>
+                          <div class="col-lg-7 col-sm-12">
+                            <label>{{laborCover}}</label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-5 col-sm-12">
+                            <label class="headerTag">Part Covered: </label>
+                          </div>
+                          <div class="col-lg-7 col-sm-12">
+                            <label>{{partCover}}</label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-5 col-sm-12">
+                            <label class="headerTag">ELS Status: </label>
+                          </div>
+                          <div class="col-lg-7 col-sm-12">
+                            <label>{{ objCaseDetail?.ElsStatusDesc }} </label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-5 col-sm-12">
+                            <label class="headerTag">Purchase Country: </label>
+                          </div>
+                          <div class="col-lg-7 col-sm-12">
+                            <label>{{ objCaseDetail?.PurchaseCountryDesc }} </label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-5 col-sm-12">
+                            <label  class="headerTag">Insurance/Type:</label>
+                          </div>
+                          <div class="col-lg-7 col-sm-12">
+                            <label>{{ objCaseDetail?.CUSTOMER?.InsuranceApplicableDesc}} <span *ngIf="objCaseDetail?.CUSTOMER?.InsuranceTypeDesc"> / {{objCaseDetail?.CUSTOMER?.InsuranceTypeDesc}} </span> </label>
+                          </div>
+                        </div>
+
+                      
+
+                      </div>
+
+                      <!-- 2nd column details -->
+                      <div class="col-lg-4 col-sm-5" style="word-wrap: break-word;">
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-4 col-sm-12">
+                            <label class="headerTag">First Name:</label>
+                          </div>
+                          <div class="col-lg-8 col-sm-12">
+                            <label>{{ objCaseDetail?.CUSTOMER?.FirstName }} </label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-4 col-sm-12">
+                            <label class="headerTag">Last Name: </label>
+                          </div>
+                          <div class="col-lg-8 col-sm-12">
+                            <label>{{ objCaseDetail?.CUSTOMER?.LastName }}</label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-4 col-sm-12">
+                            <label class="headerTag">Email:</label>
+                          </div>
+                          <div class="col-lg-8 col-sm-12" style="word-wrap: break-word;">
+                            <label>{{ objCaseDetail?.CUSTOMER?.EmailID }}</label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-4 col-sm-12">
+                            <label class="headerTag">Mobile No: </label>
+                          </div>
+                          <div class="col-lg-8 col-sm-12">
+                            <label>{{ objCaseDetail?.CUSTOMER?.MobileNo }}</label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-4 col-sm-12">
+                            <label class="headerTag">GST Registration No: </label>
+                          </div>
+                          <div class="col-lg-8 col-sm-12">
+                            <label>{{ objCaseDetail?.CUSTOMER?.GSTRegistrationNo }}</label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-4 col-sm-12">
+                            <label class="headerTag">Table Replacement: </label>
+                          </div>
+                          <div class="col-lg-8 col-sm-12">
+                            <label>{{ objCaseDetail?.TableReplacement }}</label>
+                             <i (click)="IsTableReplacementResetPopup = true" style="margin-left: 10px;cursor: pointer;" class="fa-solid fa-pen clickable-icon"></i>
+
+                          </div>
+                        </div>
+                          <!-- Data Backup -->
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-4 col-sm-12">
+                            <label class="headerTag">DataBackup: </label>
+                          </div>
+                          <div class="col-lg-8 col-sm-12">
+                            <label>{{ objCaseDetail?.DataBackup }}</label>
+                            <i (click)="IsDataBackupResetPopup = true" style="margin-left: 10px;cursor: pointer;"
+                              class="fa-solid fa-pen clickable-icon"></i>
+
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- 3rd column details -->
+                      <div class="col-lg-3 col-sm-3" style="height: 210px;">
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-6 col-sm-12">
+                            <label class="headerTag">Company: </label>
+                          </div>
+                          <div class="col-lg-6 col-sm-12">
+                            <label style="display: contents;">{{ objCaseDetail?.CustomerCompanyName}}</label>
+                          </div>
+                        </div>
+                        
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-6 col-sm-12">
+                            <label class="headerTag">Address Line 1:</label>
+                          </div>
+                          <div class="col-lg-6 col-sm-12">
+                            <label style="display: contents;">{{ objCaseDetail?.CUSTOMER?.Address1 }}</label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-6 col-sm-12">
+                            <label class="headerTag">City:</label>
+                          </div>
+                          <div class="col-lg-6 col-sm-12">
+                            <label>{{ objCaseDetail?.CUSTOMER?.City }} </label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-6 col-sm-12">
+                            <label class="headerTag">State:</label>
+                          </div>
+                          <div class="col-lg-6 col-sm-12">
+                            <label>{{ objCaseDetail?.CUSTOMER?.StateName }}</label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-6 col-sm-12">
+                            <label class="headerTag">Zip Code:</label>
+                          </div>
+                          <div class="col-lg-6 col-sm-12">
+                            <label>{{ objCaseDetail?.CUSTOMER?.ZipCode }} </label>
+                          </div>
+                        </div>
+
+                        <div class="row" style="padding:5px;">
+                          <div class="col-lg-6 col-sm-12">
+                            <label class="headerTag">Country/Region:</label>
+                          </div>
+                          <div class="col-lg-6 col-sm-12">
+                            <label>{{ objCaseDetail?.CUSTOMER?.CountryName }}</label>
+                          </div>
+                        </div>
+                      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isDetails" style="padding-bottom: 10px;">
+          <div class="row"
+            style="padding: 10px;background-color: rgb(255, 255, 255);margin: 5px;box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;border-radius: 5px;margin: 0%;">
+            <div class="col-lg-8" >
+              <div class="row" style="row-gap: 10px;">
+                <div class="col-lg-3 col-sm-3">
+                  <span matTooltip="Product Name" class="hd_header_content"> {{ objCaseDetail?.productDescription }} </span>
+                </div>
+                <div class="col-lg-3 col-sm-3">
+                  <span matTooltip="Product Serial No" class="hd_header_content"> {{ objCaseDetail?.SerialNo1 | uppercase }} </span>
+                </div>
+                <div class="col-lg-3 col-sm-3">
+                  <span class="hd_header_content">{{ objCaseDetail?.GSXWarrantyStatusDesc }}</span>
+                </div>
+                <div class="col-lg-3 col-sm-3">
+                  <span matTooltip="ELS Status" class="hd_header_content" style="white-space: nowrap;"> {{ objCaseDetail?.ElsStatusDesc }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="row mt-3">
+                <div class="col-lg-3 col-sm-3">
+                  <span matTooltip="Customer Email Id" class="hd_header_content"><b style="white-space: nowrap;">Email-Id:</b> {{ objCaseDetail?.CUSTOMER?.EmailID }} </span>
+                </div>
+
+                <div class="col-lg-3 col-sm-3">
+                  <span matTooltip="Inward Date" class="hd_header_content"><b style="white-space: nowrap;">Date:</b> {{ objCaseDetail?.CaseDate | date:'dd/MMMM/yyyy'}} </span>
+                </div>
+
+                <div class="col-lg-3 col-sm-3" *ngIf="objCaseDetail?.JobStatus == 'S14'">
+                  <span matTooltip="Hold Details" class="hd_header_content"><b style="white-space: nowrap; color: red !important;"> On Hold: {{ objCaseDetail?.HOLDLIST?.Hold[0]?.HoldTypeDesc == null || objCaseDetail?.HOLDLIST?.Hold[0]?.HoldTypeDesc == undefined ? objCaseDetail?.HOLDLIST?.Hold?.HoldTypeDesc :  objCaseDetail?.HOLDLIST?.Hold[0]?.HoldTypeDesc}} </b></span>
+                </div>
+                <div class="col-lg-3 col-sm-3" *ngIf="objCaseDetail?.JobStatus == 'S14'">
+                  <span matTooltip="Hold Remark" class="hd_header_content"><b style="white-space: nowrap; color: red !important;"> Remark: {{ objCaseDetail?.HOLDLIST?.Hold[0]?.Notes == null || objCaseDetail?.HOLDLIST?.Hold[0]?.Notes == undefined ? objCaseDetail?.HOLDLIST?.Hold?.Notes :  objCaseDetail?.HOLDLIST?.Hold[0]?.Notes}} </b></span>
+                </div>
+
+              </div>
+              
+            </div>
+
+            <div class="col-lg-4">
+              <div class="row" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                <div class="col-12">
+                  <span  class="hd_header_content" style="font-weight: 600;">Technician Remark: </span>
+                  <!-- text -->
+                  <div>
+                    <p>{{ objCaseDetail?.ASGTECH?.Remark}}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12"> 
+                    <i style="float: right;position: relative;padding: 5px;cursor: pointer;" matTooltip="Expand" (click)="CustomerDetails()" class="fa-solid fa-angle-down"></i>
+                </div>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+
+        <swiper class="mySwiper" #swiperRef [config]="config" [navigation]="true" [scrollbar]="{draggable: true }"
+          touchRatio="0" class="swiper-container">
+          <!-- Diagnosis Tab -->
+          <ng-template *ngIf="isDiagShow" class="swiper-slide" swiperSlide data-name="tab 1">
+            <div class="card text-dark cardshadow">
+              <div class="card-header Header" style="display: flex;justify-content: space-between;">
+
+                <div style="display: flex;align-items: center;">
+                  <div style="float: left;padding-right: 10px;">
+                    <i class="fa-solid fa-file-contract HeaderText"></i>
+                  </div>
+                  <div style="float: left;">
+                    <span class="HeaderText">Diagnosis</span>
+                  </div>
+
+                </div>
+
+                <div *ngIf="!isJobOnHold" style="float: right;align-items: center;display: flex;">
+                  <i (click)="editDaig()" class="swiper-edit fa-duotone fa-pen-to-square HeaderText"
+                    matTooltip="Edit Daignosis" matTooltipClass="example-tooltip-red" matTooltipPosition="below"></i>
+                </div>
+
+              </div>
+
+              <div class="card-body" style="height: 100%;overflow: auto;padding: 0px;">
+                <app-diagnostic [repa]="objCaseDetail"></app-diagnostic>
+              </div>
+            </div>
+          </ng-template>
+          <!-- Diagnosis Tab -->
+
+
+    <!-- table - replacement  -->
+    <ng-template  *ngIf="objCaseDetail?.TableReplacement == 'YES' " class="swiper-slide " swiperSlide data-name="tab 10">
+            <div class="card text-dark cardshadow">
+              <div class="card-header text-center text-dark">
+                <div style="display: flex;align-items: center;">
+                  <div style="display: flex; align-items: center; gap: 15px;"> 
+                    <span class="swiper-header-title HeaderText">Table Replacement</span>
+                      <i (click)="isCompanyStockPopup = true" class="fas fa-plus-circle" matTooltip="Add Stock" matTooltipPosition="below" style="cursor: pointer; margin-left: 250px !important;"> </i>
+                      <!-- <i (click)="isReplenishPopup = true" class="fa-duotone fa-rotate HeaderText" matTooltip="Add Replenish" matTooltipPosition="below" style="cursor: pointer;"> </i>  -->
+                    </div>
+                </div>
+              </div>
+               <div class="formcntr" *ngIf="SelectedCompanyStockList.length == 0  " >
+                <!-- <button class="x_center x_final_button x_active_btn x_save_button"
+                  (click)="openCompanyStockPopup()" type="button">Create</button> -->
+              </div>
+
+              <div class="card-body" style="height: 100%;overflow: auto;padding: 0px;">
+
+              <app-table-replacement [repa]="objCaseDetail" [CompanyStockList]="SelectedCompanyStockList"  [ReplenishList]="SelectedReplenishList"  (UpdateTableReplacement)="UpdateTableReplacement($event)"></app-table-replacement>
+             </div> 
+              <!-- </div> -->
+
+            </div>
+          </ng-template>
+          <!-- table - replacement  -->
+
+
+
+          <!--All Event-->
+          <ng-template *ngIf="isAllEventPop" class="swiper-slide"
+          swiperSlide data-name="tab 9">
+          <div class="card text-dark cardshadow">
+            <div class="card-header text-center text-dark">
+              <div style="display: flex;align-items: center;">
+                <div style="float: left;padding-right: 10px;">
+                  <i class="fa fa-archive"></i>
+                </div>
+                <div style="float: left;">
+                  <span class="swiper-header-title HeaderText">All Events</span>
+                </div>
+              </div>
+
+            </div>
+            <!-- <div class="card-body"> -->
+            <div class="formcntr">
+              <!-- <button  class="x_center x_final_button x_active_btn x_save_button" type="button">Create</button> -->
+            </div>
+
+            <app-all-event [repa]="objCaseDetail"></app-all-event>
+
+            <!-- </div> -->
+
+          </div>
+        </ng-template>
+          <!--All Events-->
+
+          <!-- Diagnosis Tab -->
+          <ng-template *ngIf="isDiagShow" class="swiper-slide" swiperSlide data-name="tab 1">
+            <div class="card text-dark cardshadow">
+              <div class="card-header Header" style="display: flex;justify-content: space-between;">
+
+                <div style="display: flex;align-items: center;">
+                  <div style="float: left;padding-right: 10px;">
+                    <i class="fa-solid fa-file-contract HeaderText"></i>
+                  </div>
+                  <div style="float: left;">
+                    <span class="HeaderText">Repair Detail</span>
+                  </div>
+
+                </div>
+
+                <div *ngIf="!isJobOnHold" style="float: right;align-items: center;display: flex;">
+                  <i  (click)="editDaig()" class="swiper-edit fa-duotone fa-pen-to-square HeaderText"
+                    matTooltip="Edit Daignosis" matTooltipClass="example-tooltip-red" matTooltipPosition="below"></i>
+                </div>
+
+              </div>
+
+              <div class="card-body" style="height: 100%;overflow: auto;padding: 0px;">
+                <app-diagnosis [repa]="objCaseDetail" (DiagUpdated)="DiagUpdated($event)"
+                  (openComponentIssuePopupEvent)="openComponentIssuePopup($event)"
+                  [compoissuelist]="objcomponentissuelist"
+                  (openResetDiagnosisPopupComponent)="openResetDiagnosisPopup($event)"
+                  ></app-diagnosis>
+              </div>
+            </div>
+          </ng-template>
+          <!-- Diagnosis Tab -->
+
+          <!-- Quote Tab -->
+          <ng-template *ngIf="isQuoteShow" class="swiper-slide " swiperSlide data-name="tab 2">
+            <div class="card text-dark cardshadow">
+              <div class="card-header Header" style="display: flex;justify-content: space-between;">
+                <div style="display: flex;align-items: center;">
+                  <div style="float: left;padding-right: 10px;">
+                    <i class="fa-solid fa-file-invoice-dollar HeaderText"></i>
+                  </div>
+                  <div style="float: left;">
+                    <span class="HeaderText">Quote</span>
+                  </div>
+                </div>
+
+
+ 
+                <div style="float: right;align-items: center;display: flex;">
+                  <div style="float: right;">
+  
+                    <span class="swiper-header-status HeaderText">({{"Open"}})</span>
+                    <i (click)="isQoutePop = true" *ngIf="quoteView?.objQuote?.QuoteDetail?.length > 0"
+                      class="swiper-edit fa-duotone fa-pen-to-square HeaderText" matTooltip="Add Parts"
+                      matTooltipClass="example-tooltip-red" matTooltipPosition="below">
+                    </i>
+                         <!-- Quote Resets  -->
+                    <i (click)="isQuotationResetsPop = true"  *ngIf="objCaseDetail?.QuotationResetsList"
+                      class="fa-duotone fa-clock-rotate-left" matTooltip="Quotation Reset List"
+                      matTooltipPosition="below" style=" margin-left: 15px; "></i>
+                      <!-- Reset Button  -->
+                      <button (click)="ResetQuote()" *ngIf="objCaseDetail?.QUOTE?.QuoteStatus &&   objCaseDetail?.QUOTE?.QuoteStatus != 'OPEN' " matTooltip="Requote" class="btn btn-danger" style=" margin-left: 15px;">
+                          Requote
+                      </button>
+
+ 
+
+                  </div>
+                </div>
+              </div>
+              <div class="card-body" style="height: 100%;overflow: auto;padding: 0px;">
+                <div class="formcntr" style="max-height: 79% !important;"
+                  *ngIf="quoteView?.objQuote?.QuoteDetail== undefined ||  quoteView?.objQuote?.QuoteDetail?.length == 0 ">
+                  <button *ngIf="!isJobOnHold"  class="x_center x_final_button x_active_btn x_save_button" (click)="isQoutePop = true"
+                    type="button">Create</button>
+                </div>
+                <app-quote-view [repa]="objCaseDetail" [partlist]="quotePartList"
+                (discountpopUp)="DiscountCouponPopup($event)"    [discountApprovedObject]="applyDiscountObj"
+                  (setQuoteStatus)="setQuoteStatus($event)" (UpdateQuote)="UpdateQuote($event)"></app-quote-view>
+              </div>
+            </div>
+          </ng-template>
+          <!-- Quote Tab -->
+
+          <!-- Notes Tab  -->
+          <ng-template *ngIf="isNoteShow" class="swiper-slide  " swiperSlide data-name="tab 4">
+            <div class="card text-dark cardshadow">
+              <div class="card-header" style="display: flex;justify-content: space-between;">
+                <div style="display: flex;align-items: center;">
+
+                  <div style="float: left;padding-right: 10px;">
+                    <i class="fa-solid fa-notes HeaderText"></i>
+                  </div>
+                  <div style="float: left;">
+                    <span class="HeaderText">Notes</span>
+                  </div>
+                </div>
+
+                <div style="float: right;align-items: center;display: flex;">
+                  <div style="float: right;">
+                    <span class="swiper-header-status HeaderText">({{ "Add Note" }})</span>
+                    <i (click)="addsNotes()" class="swiper-edit fa-duotone fa-pen-to-square HeaderText"
+                      matTooltip="Add Notes" matTooltipClass="example-tooltip-red" matTooltipPosition="below"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body" style="overflow: auto;">
+                <app-notes [repa]="objCaseDetail" (ADDNotesTemplate)="openNotesTemplate($event)"
+                  [selectedNotesTemplate]="selectedNotesTemplate" (NotesUpdated)="NotesUpdated($event)"></app-notes>
+              </div>
+            </div>
+          </ng-template>
+          <!-- Notes Tab  -->
+
+          <!-- Repair Tab  -->
+          <ng-template *ngIf="isRepairShow && objCaseDetail?.DIAG?.RepairType != 'SVNR'" class="swiper-slide" swiperSlide data-name="tab 5">
+            <div class="card text-dark cardshadow">
+              <div class="card-header" style="display: flex;justify-content: space-between;">
+                <div style="display: flex;align-items: center;">
+                  <div style="float: left;padding-right: 10px;">
+                    <i class="fa-regular fa-screwdriver-wrench HeaderText"></i>
+                  </div>
+                  <div style="float: left;">
+                    <span class="swiper-header-title HeaderText">Repair Parts</span>
+                    
+                  </div>
+                </div>
+
+
+                <div style="float: right;align-items: center;display: flex;">
+                  <div style="float: right;">
+                    <span class="swiper-header-status HeaderText">({{"Open"}})</span>
+                    <span
+                      *ngIf=" objCaseDetail?.JobStatus != 'S14' && objCaseDetail?.REPAIR?.GSXRepairStatus != 'GX02' && objCaseDetail?.REPAIR?.GSXRepairStatus != 'GX08' && objCaseDetail?.REPAIR?.GSXRepairStatus != 'SCNC'">
+                      <i (click)="isRepairPop = true" *ngIf="repairView?.selectedpartlist?.length > 0"
+                        class="swiper-edit fa-duotone fa-pen-to-square HeaderText" matTooltip="Add Parts"
+                        matTooltipClass="example-tooltip-red" matTooltipPosition="below"></i></span>
+                    <span
+                      *ngIf="objCaseDetail?.REPAIR?.GSXRepairStatus == 'GX02' || objCaseDetail?.REPAIR?.GSXRepairStatus == 'GX08' || objCaseDetail?.REPAIR?.GSXRepairStatus == 'SCNC'">
+                      <i (click)="onResetRepair()" class="fa-duotone fa-arrows-spin HeaderText"></i></span>
+
+                  </div>
+                </div>
+              </div>
+
+
+
+              <!-- <div class="card-body" style="overflow: auto;"> -->
+                <div *ngIf="repairView?.selectedpartlist==undefined || repairView?.selectedpartlist?.length == 0" >
+                  <div class="">
+                    <div style="display: flex;margin-top: 27%; flex-direction: column; left: 35%;align-items: center;">
+                      <div>
+                        <button class=" x_final_button x_active_btn x_save_buttons" (click)="ValidRepair()" type="button">Create</button>
+                      </div>
+                      <div>
+                        <button class=" x_final_button x_active_btn x_save_button" (click)="toggleGIDPopUp()" type="button"
+                          style="align-items: center;  display: flex; left: 6%; top: 4px; position: relative;">MAP GID</button>
+                      </div>
+                    </div>  
+                  </div>  
+                </div>
+              <div style="overflow:auto;height: 395px;">
+                <app-repair-view [repa]="objCaseDetail"  (toggleLoaner)="toggleLoanerVisibility()"  [receivedGidNumber]="receivedGidNumber"  [repairpartlist]="repairPartList"
+                  [verifiedPartList]="verifiedPartList" (RepairUpdated)="RepairUpdated($event)"
+                  (RepairRejectReason)="RepairRejectReason($event)" (RepairOption)="RepairOption($event)"
+                  (RepairHoldReason) ="RepairHoldReason($event)" (HoldUpdated)="HoldUpdated($event)"
+                  (Un_HoldUpdated)="Un_HoldUpdated($event)"
+                  (NotesUpdated)="NotesUpdated($event)"
+                  (RepairOptionValue)="RepairOptionValue($event)" [ConvertStock]="convertStockData" [DOAData]="DOAData"
+                  [GoodPartReturn]="goodPartReturn" [StockDOAData]="stockDOAData"
+                  (getRepairQuestions)="getRepairQuestions()"
+                  (PartConstraintStatusChange)="PartConstraintStatusChange($event)">
+                </app-repair-view>
+              </div>
+
+              <!-- </div> -->
+            </div>
+
+          </ng-template>
+          <!-- Repair Tab  -->
+
+             <!--Loaner-->
+             <ng-template *ngIf="showLoaner" class="swiper-slide  " swiperSlide data-name="tab 4">
+              <div class="card text-dark cardshadow">
+                <div class="card-header" style="display: flex;justify-content: space-between;">
+                  <div style="display: flex;align-items: center;">
+                    <div style="float: left;padding-right: 10px;">
+                      <i class="fa-duotone fa-notes HeaderText"></i>
+                    </div>
+                    <div style="float: left;">
+                      <span class="swiper-header-title HeaderText">Loaner</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body" style="height: 100%;overflow: auto;padding: 0px;">
+                  <app-loaner (openComponentIssuePopupEvent)="openComponentIssuePopup($event)"
+                    [compoissuelist]="objcomponentissuelist" [selectedItems]="selectedLoanerPopUpItems"
+                    [repa]="objCaseDetail" [repairPartListVerification]="repairPartListVerification"></app-loaner>
+                </div>
+              </div>
+            </ng-template>
+
+          <!-- Verification -->
+
+          <ng-template class="swiper-slide  " swiperSlide data-name="tab 4">
+            <div class="card text-dark cardshadow">
+              <div class="card-header" style="display: flex;justify-content: space-between;">
+                <div style="display: flex;align-items: center;">
+                  <div style="float: left;padding-right: 10px;">
+                    <i class="fa-duotone fa-notes HeaderText"></i>
+                  </div>
+                  <div style="float: left;">
+                    <span class="swiper-header-title HeaderText">Verification</span>
+                  </div>
+
+
+                </div>
+
+              </div>
+              <div class="card-body" style="height: 100%;overflow: auto;padding: 0px;">
+                <app-verification [repa]="objCaseDetail" [repairPartListVerification]="repairPartListVerification"
+                  (verifiedPartsList)="verifiedPartsList($event)"></app-verification>
+              </div>
+            </div>
+          </ng-template>
+
+          <!-- Feedback Tab -->
+          <ng-template *ngIf="isQuestionShow" class="swiper-slide  " swiperSlide data-name="tab 4">
+            <div class="form-container text-left">
+
+
+              <div class="card text-dark cardshadow">
+                <div class="card-header" style="display: flex;justify-content: space-between;">
+                  <div style="display: flex;align-items: center;">
+                    <div style="float: left;padding-right: 10px;">
+                      <i class="fa-duotone fa-notes HeaderText"></i>
+                    </div>
+                    <div style="float: left;">
+                      <span class="swiper-header-title HeaderText">Questions</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="swiper-header">
+              <i class="fa-duotone fa-notes HeaderText"></i>
+              <span class="swiper-header-title HeaderText">Questions</span>
+            </div> -->
+                <div class="card-body" style="height: 100%;overflow: auto;padding: 0px;">
+                  <app-feedback [repa]="objCaseDetail" (RepairQuestions)="UpdateRepairQuestions($event)"></app-feedback>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <!-- Feedback Tab -->
+
+
+          <!-- Payment Tab -->
+          <ng-template *ngIf="isPaymentShow" class="swiper-slide  " swiperSlide data-name="tab 6">
+
+            <div class="card text-dark cardshadow">
+              <div class="card-header" style="display: flex;justify-content: space-between;">
+                <div style="display: flex;align-items: center;">
+                  <div style="float: left;padding-right: 10px;">
+                    <i class="fa-solid fa-money-check-dollar-pen  HeaderText"></i>
+                  </div>
+                  <div style="float: left;">
+                    <span class="swiper-header-title HeaderText">Payment</span>
+                  </div>
+                </div>
+
+                <div style="float: right;">
+                  <mat-button-toggle-group style="height:32px;bottom: 6px;">
+                    <mat-button-toggle class="paymentbtn" style="display: flex;line-height: 19px !important;"
+                      (click)="addPayment()">Add Payment</mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+
+              </div>
+              <div class="card-body" style="padding: 20px;height: 329px;overflow: auto;">
+                <app-payment [repa]="objCaseDetail" (PaymentUpdated)="PaymentUpdated($event)"></app-payment>
+              </div>
+            </div>
+
+
+          </ng-template>
+          <!-- Payment Tab -->
+          <!-- Invoice Tab -->
+          <ng-template *ngIf="isInvoiceShow" class="swiper-slide " swiperSlide data-name="tab 7">
+            <div class="card text-dark cardshadow">
+              <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center;">
+                  <div style="padding-right: 10px;">
+                    <i class="fa-solid fa-file-invoice HeaderText"></i>
+                  </div>
+                  <div>
+                    <span class="swiper-header-title HeaderText">Invoice</span>
+                  </div>
+                </div>
+                <div>
+                  <mat-button-toggle-group style="height: 32px;">
+                    <mat-button-toggle class="paymentbtn" style="display: flex; line-height: 19px !important;" (click)="generateInvoice()">Create</mat-button-toggle>
+                  </mat-button-toggle-group>
+                </div>
+              </div>
+
+              <div class="card-body" style="height: 47vh; overflow: auto;">
+                <app-invoice [repa]="objCaseDetail" (InvoiceFlag)="InvoiceFlag($event)" (InvoiceSet)="InvoiceSet($event)"></app-invoice>
+              </div>
+            </div>
+          </ng-template>
+          <!-- Invoice Tab -->
+
+
+
+          <!-- Ready To Pickup Tab -->
+          <ng-template *ngIf="isRFPShow" class="swiper-slide " swiperSlide data-name="tab 8">
+
+            <div class="card text-dark cardshadow">
+              <div class="card-header text-center text-dark" style="display: flex;justify-content: space-between;">
+
+                <div style="display: flex;align-items: center;">
+                  <div style="float: left;padding-right: 10px;">
+                    <i class="fa-solid fa-person-carry-box HeaderText"></i>
+                  </div>
+                  <div style="float: left;">
+                    <span class="swiper-header-title HeaderText">Ready to Pickup</span>
+                  </div>
+                </div>
+                <div style="float: right;">
+                  <span class="swiper-header-status HeaderText ">({{ objCaseDetail?.REPAIR?.RepairDocStatus ?? ""
+                    }})</span>
+                  <i (click)="isReadyToPickup = true" *ngIf="objCaseDetail?.POFlag == '1' "
+                    class="swiper-edit fa-duotone fa-pen-to-square HeaderText"></i>
+                </div>
+              </div>
+              <div class="card-body" style="overflow:auto">
+                <div class="formcntr" *ngIf="objCaseDetail?.RFPFlag == 0">
+                  <button *ngIf="isRFPButton == true" class="x_center x_final_button x_active_btn x_save_button"
+                    (click)="validRFP()" type="button">Create</button>
+                </div>
+
+                <app-ready-to-pickup [repa]="objCaseDetail" 
+                (UnclaimedUpdated)="UnclaimedUpdated($event)"
+                (RPFUpdated)="RPFUpdated($event)"></app-ready-to-pickup>
+
+              </div>
+            </div>
+          </ng-template>
+          <!-- Ready To Pickup Tab -->
+
+
+          <!-- Call CLose  -->
+          <ng-template *ngIf="isHandOverShow" class="swiper-slide " swiperSlide data-name="tab 9">
+            <div class="card text-dark cardshadow">
+              <div class="card-header text-center text-dark">
+                <div style="display: flex;align-items: center;">
+                  <div style="float: left;padding-right: 10px;">
+                    <i class="fa-solid fa-badge-check HeaderText"></i>
+                  </div>
+                  <div style="float: left;">
+                    <span class="swiper-header-title HeaderText">Handover</span>
+                  </div>
+                </div>
+
+              </div>
+              <!-- <div class="card-body"> -->
+              <div class="formcntr" *ngIf="objCaseDetail?.HandoverFlag == 0">
+                <button *ngIf="isHandoverButton == true" class="x_center x_final_button x_active_btn x_save_button"
+                  (click)="addHandOverDevice()" type="button">Create</button>
+              </div>
+
+              <app-hand-over [repa]="objCaseDetail" (HanOverUpdated)="HanOverUpdated($event)" [Signature]="signature"
+                [AuthPerson]="AuthPersonSignature" (AddSignature)="AddSignature($event)"></app-hand-over>
+
+              <!-- </div> -->
+
+            </div>
+          </ng-template>
+          <!-- Call CLose  -->
+
+
+
+      
+
+
+          <!-- If we need pagination -->
+          <div class="swiper-pagination"></div>
+          <!-- If we need scrollbar -->
+          <div class="swiper-scrollbar"></div>
+        </swiper>
+      </div>
+
+
+
+
+
+    </div>
+    <!-- Pop Up  -->
+    <div *ngIf="isQoutePop" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isQoutePop = false"></i>
+      <app-quote-popup [repa]="objCaseDetail" (closePartSelectionEvent)="quoteFormClose($event)"
+        [locationCode]="objCaseDetail?.locationCode" [materialCode]="objCaseDetail?.MaterialCode"
+        *ngIf="stepIndex == 1"> </app-quote-popup>
+    </div>
+    <!-- Quotation Resets -->
+    <div *ngIf="isQuotationResetsPop" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isQuotationResetsPop = false"></i>
+      <app-quotation-resets-popup [repa]="objCaseDetail" (closeQuotationResetsPop)="closeQuotationResetsPop($event)"
+        *ngIf="stepIndex == 1"> </app-quotation-resets-popup>
+    </div>
+
+      <!-- app-reset-quote-popup  -->
+       <div *ngIf="IsResetQuotePopup" class="Ux_popup">
+       <i class="Ux_close fa-duotone fa-circle-xmark" (click)="IsResetQuotePopup = false"></i>
+      <app-reset-quote-popup [repa]="objCaseDetail" (closeQuotationResetsPop)="closeResetQuotePopup($event)"
+        *ngIf="stepIndex == 1"> </app-reset-quote-popup>
+    </div>
+
+    <div *ngIf="isRepairPop" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isRepairPop = false"></i>
+      <app-repair-pop [repa]="objCaseDetail" (repairPartEvent)="repairFormClose($event)"
+        (repairPartsVerification)="repairPartsVerification($event)"> </app-repair-pop>
+    </div>
+    <div *ngIf="isGIDMAP" class="Ux_popup">
+      <app-map-gid [repa]="objCaseDetail" (closeBtn)="CloseGIDMAP($event)" (gidnumber)="getGID($event)"
+        (repairPartEvent)="repairFormClose($event)" (repairPartsVerification)="repairPartsVerification($event)">
+      </app-map-gid>
+    </div>
+    <div *ngIf="isComponentIssuesPop" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isComponentIssuesPop = false"></i>
+      <app-diagnosis-view [repa]="objCaseDetail" (addComponentIssueEvent)="addComponentIssueinDiag($event)"
+        *ngIf="stepIndex == 1"> </app-diagnosis-view>
+    </div>
+    <div *ngIf="isNotesListOpen" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isNotesListOpen = false"></i>
+      <app-notes-list (selectedNotesList)="selectedNotesList($event)" (NotesListClose)="NotesListClose($event)">
+      </app-notes-list>
+    </div>
+    <div *ngIf="isAssignTechPop" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isAssignTechPop = false"></i>
+      <app-assign-tech [repa]="objCaseDetail" (AssignTechFlagSet)="assignTechFlagSet($event)" *ngIf="stepIndex == 1">
+      </app-assign-tech>
+    </div>
+
+    <div *ngIf="isImageUpload" class="Ux_popup">
+      <app-image-upload [repa]="objCaseDetail" (CancelBtn)="Cancel($event)"> </app-image-upload>
+    </div>
+    <div *ngIf="isSignature" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isSignature = false"></i>
+      <app-signature [repa]="objCaseDetail" (signatureValidate)="signatureValidate($event)"
+        (authorisedSignature)="authorisedSignature($event)"> </app-signature>
+    </div>
+    <div *ngIf="isRejectReason" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isRejectReason = false"></i>
+      <app-reject-note (RejectRepair)="RepairRejectSubmit($event)" > </app-reject-note>
+    </div>
+    <div *ngIf="isHoldReason" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isHoldReason = false"></i>
+      <app-hold-note (HoldRepair)="RepairHoldSubmit($event)" > </app-hold-note>
+    </div>
+    <div *ngIf="repairOptionValue == 'Dead On Arrival' " class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="repairOptionValue = ''"></i>
+      <app-dead-on-arrival-pop [data]="repairOptionData" [repa]="objCaseDetail" (DOAData)="DOAData($event)">
+      </app-dead-on-arrival-pop>
+    </div>
+    <div *ngIf="repairOptionValue == 'Stock DOA' " class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="repairOptionValue = ''"></i>
+      <app-stock-doa-pop [data]="repairOptionData" [repa]="objCaseDetail" (StockDOA)="StockDOA($event)">
+      </app-stock-doa-pop>
+    </div>
+    <div *ngIf="repairOptionValue == 'Convert to Stock' " class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="repairOptionValue = ''"></i>
+      <app-convert-to-stock-pop [data]="repairOptionData" [repa]="objCaseDetail"
+        (ConvertStockData)="ConvertStockData($event)"> </app-convert-to-stock-pop>
+    </div>
+    <div *ngIf="repairOptionValue == 'Good Parts Return' " class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="repairOptionValue = ''"></i>
+      <app-good-part-return-pop [data]="repairOptionData" [repa]="objCaseDetail"
+        (GoodPartReturn)="GoodPartReturn($event)"> </app-good-part-return-pop>
+    </div>
+    <div *ngIf="isOtpVerification" class="Ux_popup">
+      <app-otp-verification [Data]="objCaseDetail" (CloseOTPVerification)="validatedOTP($event)"></app-otp-verification>
+    </div>
+    <div *ngIf="isCommunicationPopup" class="Ux_popup"> 
+      <app-communication-history 
+      [repa]="objCaseDetail" 
+      (CancelBtn)="Cancel($event)">
+      </app-communication-history>
+    </div> 
+    <div *ngIf="isCommunicationDetailPopup" class="Ux_popup"> 
+      <app-communication-details (CommDetailsUpdated)="onCommDetailsUpdated($event)" [repa]="objCaseDetail"  (CancelBtn)="Cancel($event)">
+      </app-communication-details>
+    </div> 
+    <div *ngIf="isRepairPopup" class="Ux_popup"> 
+      <app-repair-logs [repa]="objCaseDetail" (CancelBtn)="Cancel($event)">
+      </app-repair-logs>
+    </div> 
+    <div *ngIf="isCallPopup" class="Ux_popup"> 
+      <app-call-customer [repa]="objCaseDetail" (CancelBtn)="Cancel($event)">
+      </app-call-customer>
+    </div> 
+    <div *ngIf="isDiscountPopup" class="Ux_popup"  >  
+      <app-discount-coupon  style="width:500% !important;" [discountObjToPopUp]="discountObj" (discountpopUp)="DiscountCouponPopup($event)" 
+      (CancelBtn)="Cancel($event)" (applyDiscount)="applyDiscount($event)">
+      </app-discount-coupon>
+    </div> 
+    <div *ngIf="IsSecondRepair" class="Ux_popup"  >  
+      <app-second-repair-popup  style="width:500% !important;" [repa]="objCaseDetail" (ShowSecondRepairPopUp)="ShowSecondRepairPopUp($event)"
+       (CancelBtn)="HideSecondRepairPopUp($event)" (SaveSecondRepairPopUp)="SaveSecondRepairPopUp($event)">
+      </app-second-repair-popup>
+    </div> 
+
+       <!-- company stock selector popup -->
+    <div *ngIf="isCompanyStockPopup" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isCompanyStockPopup = false"></i>
+      <app-company-stock-popup [repa]="objCaseDetail" [type]="{ type: 'STOCK' }" (closeCompanyStockPopup)="closeCompanyStockPopup($event)" (closeCompanyStockPopupEvent)="closeCompanyStockPopupEvent($event,'STOCK')"
+        *ngIf="stepIndex == 1"> </app-company-stock-popup>
+    </div>
+
+        <!-- replenish stock selector popup -->
+    <!-- <div *ngIf="isReplenishPopup" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isReplenishPopup = false"></i>
+      <app-company-stock-popup [repa]="objCaseDetail" [type]="{ type: 'REPLENISH' }" (closeReplenishPopup)="closeReplenishPopup($event)" (closeReplenishPopupEvent)="closeReplenishPopupEvent($event,'REPLENISH')"
+        *ngIf="stepIndex == 1"> </app-company-stock-popup>
+    </div> -->
+
+       <div *ngIf="IsTableReplacementResetPopup" class="Ux_popup">
+      <!-- <i class="Ux_close fa-duotone fa-circle-xmark" (click)="IsTableReplacementResetPopup = false" style="top: 20% !important; right: 230px !important;"></i> -->
+        <app-table-replacement-reset-popup  [repa]="objCaseDetail"  (CloseResetTableReplacementPopupEvent)="CloseResetTableReplacementPopup($event)"  *ngIf="stepIndex == 1">
+        </app-table-replacement-reset-popup>
+    </div>
+
+     <div *ngIf="IsResetDiagnosisBillableFlag" class="Ux_popup">
+      <!-- <i class="Ux_close fa-duotone fa-circle-xmark" (click)="IsTableReplacementResetPopup = false" style="top: 20% !important; right: 230px !important;"></i> -->
+        <app-reset-diagnosis-popup  [repa]="objCaseDetail"   (CloseResetDiagnosisPopupComponentEvent)="CloseResetDiagnosisPopupComponentEvent($event)"  *ngIf="stepIndex == 1">
+        </app-reset-diagnosis-popup>
+</div>
+ <div *ngIf="IsDataBackupResetPopup" class="Ux_popup">
+        <app-data-backup-reset-popup [repa]="objCaseDetail"
+          (CloseDataBackupPopupEvent)="CloseDataBackupPopupEvent($event)" *ngIf="stepIndex == 1">
+        </app-data-backup-reset-popup>
+      </div>
+
+
+
+
+  </div>
+  <div class="card-footer" style="z-index: 1;position: sticky !important;">
+    <!-- <div class="" style="display: flex;justify-content: space-between;    align-items: center;"> -->
+    <div class="row">
+      <div class="col-lg-6 col-sm-6 col-12">
+        <mat-button-toggle-group style="height:34px; line-height: 34px !important;">
+          <mat-button-toggle [style.backgroundColor]="isDiagSliderButtonStatus" *ngIf="isDiagShow" class="paymentbtn"
+            (click)="SildesTo(DiagIndexNo)"><i style="color: white;"
+              class="fa-solid fa-file-contract"></i></mat-button-toggle>
+          <mat-button-toggle [style.backgroundColor]="isQuoteSliderButtonStatus" *ngIf="isQuoteShow" class="paymentbtn"
+            (click)="SildesTo(QuoteIndexNo)"><i style="color: white;"
+              class="fa-solid fa-file-invoice-dollar"></i></mat-button-toggle>
+          <mat-button-toggle [style.backgroundColor]="isNotesSliderButtonStatus" *ngIf="isNoteShow" class="paymentbtn"
+            (click)="SildesTo(NotesIndexNo)"><i style="color: white;" class="fa-solid fa-notes"></i></mat-button-toggle>
+          <mat-button-toggle *ngIf="isQuestionShow" class="paymentbtn" (click)="SildesTo(QuestionIndexNo)"><i
+              style="color: white;" class="fa-solid fa-notes"></i></mat-button-toggle>
+          <mat-button-toggle [style.backgroundColor]="isRepairSliderButtonStatus" *ngIf="isRepairShow"
+            class="paymentbtn" (click)="SildesTo(RepairIndexNo)"><i style="color: white;"
+              class="fa-regular fa-screwdriver-wrench"></i></mat-button-toggle>
+          <mat-button-toggle *ngIf="isPaymentShow" class="paymentbtn" (click)="SildesTo(PaymentIndexNo)"><i
+              style="color: white;" class="fa-solid fa-money-check-dollar-pen"></i></mat-button-toggle>
+          <mat-button-toggle *ngIf="isInvoiceShow" class="paymentbtn" (click)="SildesTo(InvoiceIndexNo)"><i
+              style="color: white;" class="fa-solid fa-file-invoice"></i></mat-button-toggle>
+          <mat-button-toggle *ngIf="isRFPShow" class="paymentbtn" (click)="SildesTo(RFPIndexNo)"><i
+              style="color: white;" class="fa-solid fa-person-carry-box"></i></mat-button-toggle>
+          <mat-button-toggle *ngIf="isHandOverShow" class="paymentbtn" (click)="SildesTo(HandOverIndexNo)"><i
+              style="color: white;" class="fa-solid fa-badge-check"></i></mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="row" style="column-gap: 2px; ">
+          <div class="col-2">
+            <span (click)="isCommunicationPopup = true"  matTooltip="Communication History"><i class="fa fa-history" aria-hidden="true"></i></span>
+          </div>
+          <div class="col-2">
+            <span (click)="isRepairPopup = true"  matTooltip="Repair Logs"><i class="fa fa-archive" aria-hidden="true"></i></span>
+          </div>
+
+          <div class="col-2">
+            <span (click)="isCallPopup = true"  matTooltip="Call Customer"><i class="fa fa-phone-alt" ></i></span>
+          </div>
+
+          <div class="col-2">
+            <!-- <span matTooltip="GSX Audit"  (click)="isGSXaudit = true" class="logo-full"><img src="assets/images/icon3.png" style="height: 15px;" alt="logo-full"></span> -->
+          </div>
+        </div>    
+      </div>
+    
+
+
+      <div class="col-lg-3 col-sm-6 col-12">
+        <b style="font-size: 15px;float: right;">Next Step:- {{isstatusShow}}</b>
+      </div>
+
+  
+    </div>
+    <!-- </div> -->
+
+
+  </div>
+</section>

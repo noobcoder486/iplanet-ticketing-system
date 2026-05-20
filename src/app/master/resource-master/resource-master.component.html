@@ -1,0 +1,90 @@
+<section class="content">
+  <div class="container-fluid">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="row">
+        <div class="col-sm-10 ">
+          <p class="h4"> Resource Master</p>
+          <p class="mt-11 ml-8">
+            <span *ngFor="let cumb of breadCumbList;let i = index">
+              <span *ngIf="breadCumbList.length-1 == i">
+                <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>{{cumb.text}}
+              </span>
+              <a *ngIf="breadCumbList.length-1 != i" (click)="breadCumbClick(cumb.url)" class="breadcumb">
+                <span *ngIf="i!=0">
+                  <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>
+                </span> {{cumb.text}}
+              </a>
+            </span>
+          </p>
+
+        </div>
+        <div class="col-sm-2 btn-head-group">
+          <div class="d-flex justify-content-end">
+            <ng-container *ngIf="toolBarAction.length > 0">
+              <ng-conainer *ngFor="let toolbar of toolBarAction">
+                <button mat-raised-button color="primary" class="{{toolbar.title}}" (click)="actionEvent(toolbar)">
+                  <mat-icon>{{toolbar.icon}}</mat-icon>
+                  <span class="{{toolbar.title}}">{{toolbar.title}}</span>
+                </button>
+              </ng-conainer>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+
+    <mat-card class="p-2 mb-4">
+      <form>
+        <div class="mat-card-s3">
+          <div class="d-flex">
+            <div class="col-sm-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <input type="text" class="x_input" matInput placeholder="Resource Code" [(ngModel)]="resourceCode"
+                  name="resourceCode">
+              </mat-form-field>
+            </div>
+            <!-- first field -->
+            <div class="col-sm-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <input type="text" class="x_input" matInput placeholder="Resource Name" [(ngModel)]="resourceName"
+                  name="resourceName">
+              </mat-form-field>
+            </div>
+            <!-- 2end Field -->
+            <div class="col-sm-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <input type="text" class="x_input" matInput placeholder="Resource Type" [(ngModel)]="resourceType"
+                  name="resourceType">
+              </mat-form-field>
+            </div>
+            <!-- 3rd field -->
+            <div class="col-sm-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <input type="text" class="x_input" matInput placeholder="Product Category" [(ngModel)]="productCategory"
+                  name="productCategory">
+              </mat-form-field>
+            </div>
+            <!-- 4rth field -->
+            <div class="col-sm-2">
+              <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+                <button class="x_final_button x_active_btn x_save_button" (click)="search()">Search</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+
+    <mat-card class="m-0 p-0">
+      <div class="row clearfix" *ngIf="columns.length > 0">
+        <div class="table-responsive">
+          <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+            [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+            (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+          </nitc-grid>
+        </div>
+      </div>
+    </mat-card>
+
+  </div>
+</section>

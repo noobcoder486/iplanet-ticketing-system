@@ -1,0 +1,377 @@
+<section class="content">
+    <div class="container-fluid">
+        <mat-card class="p-2 mb-4">
+            <div class="row">
+                <div class="col-sm-6">
+                    <p class="mt-11 ml-8">
+                        <span *ngFor="let cumb of breadCumbList;let i = index">
+                            <span *ngIf="breadCumbList.length-1 == i">
+                                <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon> {{cumb.text}}
+                            </span>
+                            <a *ngIf="breadCumbList.length-1 != i" (click)="breadCumbClick(cumb.url)" class="breadcumb">
+                                <span *ngIf="i!=0">
+                                    <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>
+                                </span> {{cumb.text}}
+                            </a>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-sm-6 ">
+                    <div class="d-flex justify-content-end">
+                        <button mat-button color="primary" (click)="backToProfileList()">
+                            <mat-icon>arrow_back_ios</mat-icon>Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+
+        <form [formGroup]="profileForm">
+            <mat-card>
+                <div class="container" style="position: unset">
+                    <div class="margtop10">
+                        <div class="row">
+                            <ng-container>
+                                <div class="col-md-12 pt-8">
+                                    <div class="bor-box">
+
+                                        <div class="row">
+                                            <div class="row margtop10">
+                                                <div class="col-md-6">
+                                                    <mat-form-field style="width: 100%;" appearance="outline">
+                                                        <mat-label> Profile Name </mat-label>
+                                                        <input matInput formControlName="profilename"
+                                                            (keypress)="onKeyPressEvent($event)"
+                                                            (blur)="onBlurEvent($event)" maxlength="100">
+                                                        <mat-error>Profile Name is required.</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <mat-form-field class="textareafild" style="width: 100%;" appearance="outline">
+                                                        <mat-label> Profile Description </mat-label>
+                                                        <textarea matInput formControlName="description"
+                                                            (keypress)="onKeyPressEvent($event)"
+                                                            (blur)="onBlurEvent($event)" maxlength="100"></textarea>
+                                                        <mat-error>Profile Description is required.</mat-error>
+                                                    </mat-form-field>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </div>
+
+            </mat-card>
+        </form>
+
+
+        <mat-card>
+            <div>
+                <span class="fa fa-check clrgreen"></span> <span class="fontstyle"> View All
+                    <i class="fa fa-info-circle"></i> Can view all the modules information
+                </span>
+            </div>
+            <div>
+                <span class="fa fa-check clrgreen"></span> <span class="fontstyle"> Edit All
+                    <i class="fa fa-info-circle"></i> Can edit all the modules
+                    information</span> 
+            </div>
+
+            <div class="row margtop10">
+                <div class="col-md-12">
+                    <div *ngIf="loading" class="spinner-border items_details_grid"></div>
+
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="th-color headbg" style="width:40%">
+                                    Modules</th>
+                                <th scope="col" class="th-color headbg" style="width:10%">
+                                    <!-- <input type="checkbox" [checked]="allViewChecked" (change)="onAllChange($event,'View')" /> -->
+                                    <mat-checkbox [checked]="allViewChecked" (change)="onAllChange($event,'View')">
+                                    </mat-checkbox>
+                                    View
+                                </th>
+                                <th scope="col" class="th-color headbg" style="width:10%">
+                                    <mat-checkbox [checked]="allCreateChecked" (change)="onAllChange($event,'Create')">
+                                    </mat-checkbox>
+                                    Create
+                                </th>
+                                <th scope="col" class="th-color headbg" style="width:10%">
+                                    <mat-checkbox [checked]="allEditChecked" (change)="onAllChange($event,'Edit')">
+                                    </mat-checkbox>
+                                    Edit
+                                </th>
+                                <th scope="col" class="th-color headbg" style="width:10%">
+                                    <mat-checkbox [checked]="allDeleteChecked" (change)="onAllChange($event,'Delete')">
+                                    </mat-checkbox>
+                                    Delete
+                                </th>
+                                <th scope="col" class="th-color headbg" style="width:10%">
+                                    <mat-checkbox [checked]="allImportChecked" (change)="onAllChange($event,'Import')">
+                                    </mat-checkbox>
+                                    Import
+                                </th>
+                                <th scope="col" class="th-color headbg" style="width:10%">
+                                    <mat-checkbox [checked]="allExportChecked" (change)="onAllChange($event,'Export')">
+                                    </mat-checkbox>
+                                    Export
+                                </th>
+                                <!-- <th scope="col" class="th-color headbg" style="width:20%">
+                            Field and Tool Previleges</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let mod of profileModuleList">
+                                <td> <span class="fa fa-check clrgreen"></span>
+                                    {{mod.ModuleName}} </td>
+                                <td>
+                                    <mat-checkbox [checked]="mod.View" (change)="onChange($event,mod.ModuleId,'View')">
+                                    </mat-checkbox>
+                                </td>
+                                <td>
+                                    <mat-checkbox [checked]="mod.Create"
+                                        (change)="onChange($event,mod.ModuleId,'Create')">
+                                    </mat-checkbox>
+                                </td>
+                                <td>
+                                    <mat-checkbox [checked]="mod.Edit" (change)="onChange($event,mod.ModuleId,'Edit')">
+                                    </mat-checkbox>
+                                </td>
+                                <td>
+                                    <mat-checkbox [checked]="mod.Delete"
+                                        (change)="onChange($event,mod.ModuleId,'Delete')">
+                                    </mat-checkbox>
+                                </td>
+                                <td>
+                                    <mat-checkbox [checked]="mod.Import"
+                                        (change)="onChange($event,mod.ModuleId,'Import')">
+                                    </mat-checkbox>
+                                </td>
+                                <td>
+                                    <mat-checkbox [checked]="mod.Export"
+                                        (change)="onChange($event,mod.ModuleId,'Export')">
+                                    </mat-checkbox>
+                                </td>
+
+                                <!-- <td class="text-right">
+                            <button type="button" class="btn btn-sm btn-default dropbtn" id=""
+                                style="padding-right: 20px; padding-left: 20px;">
+                                <i class="fa fa-chevron-down"></i>
+                            </button>
+                        </td> -->
+                            </tr>
+                            <!-- <tr>
+                                <td colspan="6" class="paddlr5 openpopup2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="floatleft">
+                                                Fields
+                                            </label>
+                                            <div class="floatright">
+                                                <span>
+                                                    <a class="blackround"></a>
+                                                </span>
+                                                <span style="margin: 0 20px;" class="font13">Invisible</span>
+                                                &nbsp;&nbsp;
+                                                <span>
+                                                    <a class="orangeround2"></a>
+                                                </span>
+                                                <span style="margin: 0 20px;" class="font13">Read only</span>
+                                                &nbsp;&nbsp;
+                                                <span>
+                                                    <a class="greenround2"></a>
+                                                </span>
+                                                &nbsp;
+                                                <span style="margin: 0 14px;" class="font13">Write</span>
+                                            </div>
+                                        </div>
+                                        <table class="wid100">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <a class="greenround"></a>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;"
+                                                            class="marginleft14 font13">Opportunity Name&nbsp;
+                                                            <span class="colred">*</span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <a class="greenround"></a>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;"
+                                                            class="marginleft14 font13">Opportunity Name&nbsp;
+                                                            <span class="colred">*</span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <a class="greenround"></a>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;"
+                                                            class="marginleft14 font13">Opportunity Name&nbsp;
+                                                            <span class="colred">*</span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <a class="greenround"></a>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;"
+                                                            class="marginleft14 font13">Opportunity Name&nbsp;
+                                                            <span class="colred">*</span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <a class="greenround"></a>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;"
+                                                            class="marginleft14 font13">Opportunity Name&nbsp;
+                                                            <span class="colred">*</span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <a class="greenround"></a>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;"
+                                                            class="marginleft14 font13">Opportunity Name&nbsp;
+                                                            <span class="colred">*</span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <a class="orangeround"></a>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;"
+                                                            class="marginleft14 font13">Opportunity Name&nbsp;
+                                                            <span class="colred">*</span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <a class="orangeround"></a>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;"
+                                                            class="marginleft14 font13">Opportunity Name&nbsp;
+                                                            <span class="colred">*</span>
+                                                        </span>
+                                                    </td>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <a class="orangeround"></a>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;"
+                                                            class="marginleft14 font13">Opportunity Name&nbsp;
+                                                            <span class="colred">*</span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="paddlr5 openpopup2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="floatleft">
+                                                Tools
+                                            </label>
+
+                                        </div>
+                                        <table class="wid100">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <span class="fa fa-check clrgreen"></span>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;" class=" font13">Import&nbsp;
+
+                                                        </span>
+                                                    </td>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <span class="fa fa-check clrgreen"></span>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;" class=" font13">Export&nbsp;
+
+                                                        </span>
+                                                    </td>
+                                                    <td class="col-md-4 wid33">
+                                                        <span style="width: 0px;">
+                                                            <span class="fa fa-check clrgreen"></span>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;" class=" font13">Merge&nbsp;
+
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <span style="width: 0px;">
+                                                            <span class="fa fa-check clrgreen"></span>
+                                                        </span>&nbsp;
+                                                        <span style="padding-right: 0px;"
+                                                            class=" font13">DuplicatesHandling&nbsp;
+
+                                                        </span>
+                                                    </td>
+                                                </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row bor-box margtop10 pt-8" style="text-align: right;">
+                <div class="col-md-8"></div>
+
+                <div class="col-md-4">
+                    <button mat-button class="btn btn-secondary" (click)="backToProfileList()"
+                        style='margin-right: 10px;'>
+                        <mat-icon>cancel</mat-icon> Cancel
+                    </button>
+                    <button mat-raised-button color="primary" *ngIf="permission.Edit && isEdit"
+                        (click)="saveProfileModule()">
+                        <mat-icon *ngIf="!loading">save</mat-icon>
+                        <span *ngIf="!loading">Save</span>
+                        <i *ngIf="loading" class="fa fa-spinner fa-spin btn-loading"></i>
+                    </button>
+                    <button mat-raised-button color="primary" *ngIf="permission.Create && !isEdit"
+                        (click)="saveProfileModule()">
+                        <mat-icon *ngIf="!loading">save</mat-icon>
+                        <span *ngIf="!loading">Save</span>
+                        <i *ngIf="loading" class="fa fa-spinner fa-spin btn-loading"></i>
+                    </button>
+                </div>
+            </div>
+
+        </mat-card>
+
+    </div>
+</section>

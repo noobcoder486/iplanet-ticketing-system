@@ -1,0 +1,104 @@
+.card-footer
+{
+    position: fixed;
+    bottom: 0;
+    height: 30px;
+    background-color: #f7f7f7;
+    width: 100%;
+    padding-bottom: 40px;
+    padding-right: 75px;
+    margin-left: -5px;
+
+}
+
+.btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(231, 236, 241), rgb(103, 163, 253)) !important;
+    height: 25px;
+}
+
+.col-lg-7
+{
+    width: 53%;
+}
+
+td, th 
+{
+    padding: 2px;
+}
+   
+
+  table {
+    font-family: Verdana;
+    font-size: 14px;
+    border-collapse: collapse;
+    
+  }
+  
+  td, th {
+    padding: 5px;
+    text-align: left;
+    margin: 0;
+  }
+  
+  thead th{
+    background-color: #f8f8f8 !important;
+    color: rgb(0, 0, 0);
+  }
+ 
+  
+  th {
+    position: sticky;
+    top: 0;
+    background-color: #333;
+    color: white;
+  }
+
+  .contents {
+  /* display: grid; */
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-area: content;
+  height: 100%;
+  /* overflow-y: scroll; */
+  
+}
+::ng-deep .bg-primary
+{
+    background-color: rgb(252, 175, 175) !important;
+}
+
+
+ .purchaseDiv
+ {
+  color: #333;
+  background-color: #fff;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+  align-items: center;
+  padding-right: 0.5em;
+ 
+  min-height: 30px !important;
+  height: 30px !important;
+  position: unset !important;
+ }
+
+
+
+ .open
+{
+  border: none;
+}
+
+.open:hover
+{
+  color: blue;
+}
+
+table thead tr th
+{
+  background-color: rgb(211, 206, 219) !important;
+}

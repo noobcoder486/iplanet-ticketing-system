@@ -1,0 +1,286 @@
+::ng-deep body
+{
+  min-height: 0px !important;
+}
+.header_details_content
+{
+  padding: 0px !important;
+}
+.btnBackground
+{
+  background-color: rgb(3, 146, 58);
+}
+.brd{
+  border:1px solid black;
+}
+.contentBox
+{
+  text-align: left;
+  padding: 10px;
+}
+.tabheader{
+display: flex;
+justify-content: space-between;
+}
+.x_final_button:hover
+{
+    background-color: white;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+     
+}
+.x_final_button:not(.btn-check)+.btn:active {
+  outline: none !important;
+  border: none !important;
+  }
+.x_final_button
+{
+  border: none;
+  
+}
+@media screen and (max-width: 800px) {
+.cdk-overlay-pane
+{
+  margin-left: -131px !important;
+}
+}
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active
+{
+  border-color:white !important ;
+}
+.HeaderFlex
+{
+  display: flex;
+  justify-content: space-between;
+}
+ 
+.Flex
+{
+  background-color: white;
+  display: flex;
+  flex-wrap: wrap;
+   
+  justify-content: flex-start;
+
+}
+.FlexDiv
+{
+   width: 180px;
+   padding-bottom: 20px;
+  
+}
+
+/* Mobile */
+@media screen and (max-width: 800px) 
+{
+  .FlexDiv
+  {
+    width: 102px;
+    padding-bottom: 20px;
+  }
+ .startdate
+ {
+  padding-right: 20px;
+ }
+ .PurchaseCountry
+ {
+  padding-right: 150px;
+ }
+ .Complain
+ {
+  padding-left: 30px;
+ }
+}
+
+.swiper-button-prev
+{
+  background-color: red !important;
+}
+/* ::ng-deep .swiper-slide
+{
+  height: 96%;
+} */
+
+.swiper-footer{
+background-color: #f7f7f7;
+border-radius: 5px 5px 0 0;
+padding: 10px 10px 5px;
+position: relative;
+width: 100%;
+min-height: 40px;
+height: 25px;
+display: flex;
+align-items: center;
+font-weight: 500;
+font-size: 17px;
+line-height: 1.1;
+color: #000 !important;
+margin-top: 81% !important;
+/* margin: 0px !important; */
+text-transform: capitalize;
+/* box-shadow: 0px 1px 4px rgb(0 0 0 / 10%);
+box-shadow: 0px 3px 4px rgb(0 0 0 / 25%); */
+/* border-radius: 10px; */
+border-top-left-radius: 10px;
+border-top-right-radius: 10px;
+
+}
+::ng-deeep .section.content
+{
+  padding-bottom: 0px !important;
+}
+
+.iconbtn
+{
+  background-color: transparent;
+  border: none;
+}
+ .fa-caret-down
+ {
+  color: #233f76 !important;
+ }
+
+ /*  */
+
+ .card {
+  background: #fff;
+  min-height: 0px;
+  box-shadow: none;
+  position: relative;
+  margin-bottom: 0px;
+  border-radius: 5px; 
+}
+
+.fa-wrench
+{
+  font-size: 17px; 
+  padding-right: 7px; 
+  padding-top: 5px;
+}
+/* section.content 
+{
+  margin: 50px 0px 0px 58px;
+} */
+
+.fontstyle
+{
+  font-size: 12px;
+}
+ 
+::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content
+{
+  line-height: 34px !important;
+}
+
+
+/* Card Desgin  */
+ .card-footer
+{
+ position: absolute !important;
+ width: 100%;
+ bottom: 0 !important;
+ background-color: rgb(255, 255, 255) !important;
+
+}
+.card
+{
+  margin-bottom: 0px !important;
+}
+
+.card-header
+{
+ background-color: #f7f7f7;
+ /* border-top-left-radius:8px ;
+ border-top-right-radius:8px ; */
+ height: 40px;
+ border-radius: 10px;
+ box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+}
+
+.card-body
+{
+  text-align: justify;
+ /* overflow: auto; */
+ 
+}
+
+
+/* Card Desgin  */
+.card-footer
+{
+ position: fixed !important;
+ width: 100%;
+ bottom: 0 !important;
+ background-color: rgb(255, 255, 255) !important;
+
+}
+
+ 
+.card
+{
+  margin-bottom: 0px !important;
+  width: 100%;
+  
+  /* box-shadow: rgba(50, 50, 93, 0.2) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
+}
+
+.card-header
+{
+ background-color: #f7f7f7;
+ /* border-top-left-radius:8px ;
+ border-top-right-radius:8px ; */
+ height: 35px;
+ box-shadow: rgb(50 50 93 / 25%) 0px 50px 100px -20px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(10 37 64 / 35%) 0px -2px 6px 0px inset;
+ 
+border-radius: 0px;
+
+}
+
+.cardshadow
+{
+  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  /* box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
+}
+
+@media only screen and (max-width: 1000px) {
+  .JobTypeDesc {
+    border: none !important;
+  }
+}
+
+.headerTag
+{
+  font-weight: 600;
+}
+
+/* .mat-button-toggle-appearance-standard
+{
+  background: #a2a0a0 !important;
+} */
+
+.mat-button-toggle{
+  background-color: #bdbdbd;
+  color: #ffffff;
+}
+
+.mat-button-toggle:hover {
+  background-color: transparent;
+  color: #2c2c2c !important;    
+}
+
+.mat-button-toggle-checked {
+  background-color: #575757;
+   
+}
+
+.HeaderText
+{
+  font-size: 17px !important;
+  font-weight: 600 !important;
+  align-items: center !important;
+}
+
+.fa-phone {
+  direction: ltr;
+}

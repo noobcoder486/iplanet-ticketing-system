@@ -1,0 +1,28 @@
+ 
+
+<!-- <body> -->
+    <ng-template [ngIf]="display">
+        <app-token-form></app-token-form>
+    </ng-template><br><br>
+
+<ng-template [ngIf]="Maindisplay"> 
+<div class="container" style="background-color: #f7f7f7; width: 80%;height: 400px; margin-top: 20px; border-radius: 10px; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+    <div class="row">
+        <div class="MainBox">
+            <div style="text-align: center; padding-bottom: 20px; margin-top: 50px" >
+                <h1  style="font-size: 30px !important; font-weight: 600;"> Welcome</h1>
+                <img src="assets/images/iPlanet.jpg" style="width: 50%;">
+                <!-- <h1><span style="font-size: 30px !important; font-weight: 600; color:rgb(0, 0, 0)" >Hello ! </span > <br><span  style="font-size: 30px !important; font-weight: 600; color:rgb(0, 0, 0);">Welcome To iPlanet </span><span style="color: rgb(222, 226, 1); font-size: 20px !important;letter-spacing: 2px; font-weight: 600;">CARE</span></h1> -->
+            </div>
+            <div style="text-align: center;padding-bottom: 40px;">
+                <!-- <h1  style="font-size: 30px !important; font-weight: 600; color: #f89815;">[ MUMBAI ]</h1> -->
+            </div>
+            <div style="text-align: center;display: flex; justify-content: center;">
+                <button class="btn-grad" (click)="generateToken()">Create New Token</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</ng-template>
+<!-- </body> -->
+ 

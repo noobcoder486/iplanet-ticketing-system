@@ -1,0 +1,75 @@
+<div class="popup" style="     margin: 2% auto !important;max-width: 91% !important;">
+    <mat-card>
+      <!-- <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+      </ngx-spinner> -->
+  
+      <mat-card class="p-2 mb-2" style="z-index: 9;">
+        <div style="display: flex; align-items: center;justify-content: space-between;">
+
+          <!-- First Div -->
+              <div style="display: flex; align-items: center;">
+                  <div>
+                    <label style="font-weight: 600; font-size: 18px !important;">Customer List</label>
+                  </div>
+              </div>
+
+              <!-- Close Icon -->
+              <div>
+                <i (click)="closeBtn()" class="Ux_close fa-duotone fa-circle-xmark" ></i>
+              </div>
+        </div>
+      </mat-card>
+  
+      <mat-card class="mb-2">
+        <div class="row" style="align-items: center; padding-left:10px;">
+          
+          <div class="col-sm-2 col-lg-2 col-md-2">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <input type="text" class="x_input" matInput placeholder="Enter Customer Code" [(ngModel)]="customerCode"
+                name="customerCode">
+            </mat-form-field>
+          </div>
+  
+          <div class="col-sm-2 col-lg-2 col-md-2">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <input type="text" class="x_input" matInput placeholder="Enter Customer Name" [(ngModel)]="customerName"
+                name="customerName">
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-2 col-lg-2 col-md-2">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <input type="text" class="x_input" matInput placeholder="Enter Phone Number" [(ngModel)]="phonenumber"
+                name="phonenumber">
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-2 col-lg-2 col-md-2">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <input type="text" class="x_input" matInput placeholder="Enter Email" [(ngModel)]="email"
+                name="email">
+            </mat-form-field>
+          </div>
+  
+          <div class="col-sm-2 col-lg-2 col-md-2">
+            <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+              <button class="x_final_button x_active_btn x_save_button" (click)="search()">Search</button>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+  
+      <div class="row">
+        <mat-card class="mb-2">
+          
+            <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+             (actionEvent)="actionEmit($event)"
+            (changeEvent)="PageChange($event)">
+            </nitc-grid>
+    
+        </mat-card>
+    </div>
+
+  </mat-card>
+</div>

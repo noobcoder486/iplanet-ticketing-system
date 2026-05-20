@@ -1,0 +1,20 @@
+
+<div *ngFor = "let item of data" class="card_layout first_card_row">
+  <h2 class="card_heading_text">{{item.header}}</h2>
+  <!-- <div class="card_layout_content"> -->
+    <div class="row" id="TilesRow">
+     
+    <div (click)="onCardSelect(job)" *ngFor ="let job of item.list; let i = index" class="inventory_card" [ngClass]="getColClass(i)">
+      <span class="card_icon">
+        <img src="../../../assets/images/inventory/file.png" alt="file icon" />
+      </span>
+      <div class="card_body_conent">
+        <span class="card_number"> {{job.JobCount}} </span>
+        <span class="card_heading"> {{job.JobStatusDesc}} </span>
+      </div>
+    </div>
+     
+    </div>
+  <!-- </div> -->
+</div>
+

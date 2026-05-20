@@ -1,0 +1,203 @@
+<section class="content">
+  <ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+    <div class="row">
+      <div class="col-lg-10  col-sm-10 ">
+        <p class="h4"> Stock Finder/Report </p>
+        <p class="mt-11 ml-8">
+          <span *ngFor="let cumb of breadCumbList;let i = index">
+            <span *ngIf="breadCumbList.length-1 == i">
+              <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>{{cumb.text}}
+            </span>
+            <a *ngIf="breadCumbList.length-1 != i" (click)="breadCumbClick(cumb.url)" class="breadcumb">
+              <span *ngIf="i!=0">
+                <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>
+              </span> {{cumb.text}}
+            </a>
+          </span>
+        </p>
+
+      </div>
+
+      <div class="col-lg-2 col-sm-2 btn-head-group">
+        <div  style="display: flex;align-items: center; justify-content: end;column-gap: 20px;">
+
+          <div >
+            <!-- <label style="white-space: nowrap;"><b>Add Material  </b></label> -->
+            <div class="d-flex justify-content-end"> 
+
+              <ng-container *ngIf="toolBarAction.length > 0">
+                <ng-container *ngFor="let toolbar of toolBarAction">
+                  <button mat-raised-button color="primary" class="{{toolbar.title}}" (click)="actionEvent(toolbar)">
+                    <mat-icon>{{toolbar.icon}}</mat-icon>
+                    <span class="{{toolbar.title}}">{{toolbar.title}}</span>
+                  </button>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+
+
+        
+
+        </div>
+      </div>
+   
+    </div>
+
+  </mat-card>
+
+
+  <mat-card style="z-index: 9;">
+    <div class="row" style="border: 1px solid #dddddd;padding: 10px;">
+      <div class="col-sm-3 col-lg-2 col-md-3">
+        <label style="font-weight: 600;padding-bottom: 2px;">Location</label>
+        <ng-select [items]="LocationForJob.Data" [(ngModel)]="LocationCode" (change)="getLocationData()"
+          bindLabel="TEXT" bindValue="Id"></ng-select>
+      </div>
+
+
+      <div class="col-lg-4 col-sm-12 col-md-12 ">
+        <label style="font-weight: 600;padding-bottom: 2px;">Search for Report </label>
+        <input placeholder="Search by Serial Number/Material"
+          style="width:100% !important;border-radius:5px;height:35px !important" (input)="filterData()"
+          [(ngModel)]="SerialNo" />
+      </div>
+      
+      <div class="col-lg-4 col-sm-12 col-md-12 ">
+        <label style="font-weight: 600;padding-bottom: 2px;">Search for Location Info </label>
+        <input placeholder="Search by Material Code"
+          style="width:100% !important;border-radius:5px;height:35px !important" (input)="filterData()"
+          [(ngModel)]="MaterialCode" />
+      </div>
+
+    </div>
+
+
+    <div class=" " style="padding-top: 10px;display: flex;justify-content: flex-end;">
+      <div style="padding-right: 40px;">
+        <button style="float:right" type="submit" (click)="getLocationReport(false)" class="btn btnClass">Generate Location Report</button>
+      </div>
+
+      <div style="padding-right: 40px;">
+        <button style="float:right" type="submit" (click)="getReportData(true)" class="btn btnClass">Export
+          Report</button>
+      </div>
+
+      <div>
+        <button style="float:right" type="submit" (click)="getReportData(false)" class="btn btnClass">Generate
+          Report</button>
+      </div>
+    </div>
+
+
+  </mat-card>
+
+  <mat-card *ngIf="sapMaterialList.length>0">
+
+    <div class="table-responsive">
+      <nitc-grid [gridcolumns]="SapMaterialColumns" [dataSource]="sapMaterialDetails" [actions]="actionDetails"
+      [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+      (changeEvent)="PageChange($event, 'LOCATION')">
+      </nitc-grid>
+    </div>
+
+
+    <!-- <div class="table-responsive">
+      <table class="table-responsive table" style="border:none !important">
+        <thead>
+          <th style="background-color: rgb(66, 66, 66); color: white;">SAP Location Description</th>
+          <th style="background-color: rgb(66, 66, 66); color: white;">SAP Plant Code </th>
+          <th style="background-color: rgb(66, 66, 66); color: white;">SAP Storage Location</th>
+          <th style="background-color: rgb(66, 66, 66); color: white;">Batch Number</th>
+          <th style="background-color: rgb(66, 66, 66); color: white;">Material Code</th>
+          <th style="background-color: rgb(66, 66, 66); color: white;">Material Name</th>
+          <th style="background-color: rgb(66, 66, 66); color: white;">Serial Number</th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of displayData()">
+            <tr
+              *ngIf="showAllRows || item.SerialNumber.toLowerCase().includes(SerialNo.toLowerCase()) || item.Material.toLowerCase().includes(SerialNo.toLowerCase())"
+              style="border:none !important">
+              <td>{{LocationObject[0]?.SearchName}}</td>
+              <td>{{LocationObject[0]?.SAPPlantCode}}</td>
+              <td>{{LocationObject[0]?.SAPStorageLocation}}</td>
+              <td>{{item.Batch}}</td>
+              <td>{{item.Material}}</td>
+              <td>{{item.MaterialName}}</td>
+              <td>{{item.SerialNumber}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <div>
+
+
+        <div style="float: right;display: flex;align-items: center;">
+          <button class="btn mt-2" (click)="onPreviousPage()">
+            <i style="font-size: 19px !important;" class="fa fa-arrow-left" aria-hidden="true"></i>
+          </button>
+          <ng-select [items]="options" [(ngModel)]="UpdatedpageSize" (change)="togglePageSize()"></ng-select>
+          <button class="btn mt-2" (click)="onNextPage()">
+            <i style="font-size: 19px !important;" class="fa fa-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div> -->
+  </mat-card>
+
+
+  <mat-card  *ngIf="SapLocationStockList.length>0" >
+    <div class="table-responsive">
+      <nitc-grid [gridcolumns]="SapLocationColumns" [dataSource]="SapLocationDetails" [actions]="actionDetails"
+      [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+      (changeEvent)="PageChange($event, 'MATERIAL')">
+      </nitc-grid>
+    </div>
+
+
+    <!-- <div class="table-responsive">
+      <table class="table-responsive table" style="border:none !important">
+        <thead>
+          <th style="background-color: rgb(66, 66, 66); color: white;" *ngFor="let field of column">{{ field.title }}</th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of SapLocationStockList">
+            <tr  style="border:none !important">
+              <td *ngFor="let field of column">{{ item[field.field] }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <table class="table-responsive table" style="border:none !important">
+        <thead>
+          <th style="background-color: rgb(66, 66, 66); color: white;">Location Code</th>
+          <th style="background-color: rgb(66, 66, 66); color: white;">Location Name</th>
+          <th style="background-color: rgb(66, 66, 66); color: white;">SAP Plant Code</th>
+          <th style="background-color: rgb(66, 66, 66); color: white;">SAP Storage Location</th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of SapLocationStockList">
+            <tr  style="border:none !important">
+           
+              <td>{{item.LocationCode}}</td>
+              <td>{{item.LocationName}}</td>
+              <td>{{item.SAPPlantCode}}</td>
+              <td>{{item.SAPStorageLocation}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+      <div>
+      </div>
+    </div> -->
+
+  </mat-card>
+
+
+</section>
+
+

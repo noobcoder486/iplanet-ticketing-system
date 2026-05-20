@@ -1,0 +1,55 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<section class="content">
+    <div class="container-fluid"><br />
+        <mat-card class="p-2 mb-4" style="z-index: 9;">
+            <div class="row">
+                <div class="col-lg-6 col-sm-10 col-6 d-flex align-items-center">
+                    <label style="font-size: 20px !important; font-weight: 600;">Discount Kitty Approval</label>
+                </div>
+                <div class="col-lg-6 col-sm-2 d-flex justify-content-end align-items-center">
+                    <ng-container *ngIf="toolBarAction.length > 0">
+                        <ng-container *ngFor="let toolbar of toolBarAction">
+                            <button mat-raised-button color="primary" class="{{toolbar.title}}"
+                                (click)="actionEvent(toolbar)">
+                                <mat-icon>{{toolbar.icon}}</mat-icon>
+                                <span class="{{toolbar.title}}">{{toolbar.title}}</span>
+                            </button>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+        </mat-card>
+
+        <mat-card class="m-0 p-0">
+            <div class="row clearfix align-items-center">
+                <!-- First Field -->
+                <div class="col-lg-3 col-sm-4 pt-1">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <input matInput type="text" [(ngModel)]="ApproverName" placeholder="Search Approver Name">
+                    </mat-form-field>
+                </div>
+                <!-- Search Field -->
+                <div class="col-lg-3 col-sm-4 pt-1 d-flex align-items-end">
+                    <button class="btn btnClass" style="height: 30px;" (click)="search($event)">
+                        Search
+                        <i style="padding-left: 10px;" class="fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </mat-card>
+
+        <mat-card *ngIf="results?.length > 0">
+            <div class="table-responsive">
+                <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+                    (actionEvent)="actionEmit($event)" [hideSpinnerEvents]="hideSpinnerEvent"
+                    (changeEvent)="PageChange($event)" [isAllowSelect]="isChoose">
+                </nitc-grid>
+            </div>
+        </mat-card>
+    </div>
+   
+
+</section>

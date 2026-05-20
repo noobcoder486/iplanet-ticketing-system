@@ -1,0 +1,42 @@
+.card-footer
+{
+ position: absolute !important;
+ width: 100%;
+ bottom: 0 !important;
+ background-color: aliceblue !important;
+
+}
+.fixTableHead
+{
+    height: 220px;
+    overflow: auto;
+}
+.fixTableHead thead th { 
+    position: sticky; 
+    top: 0; 
+  } 
+
+           
+.btn-grad {
+    /* background-image: linear-gradient(to top, #b4b4b4 0%, #1A2980  100%); */
+    /* margin: 10px;
+    padding: 15px 45px; */
+    background-color: #1264cf;
+    text-align: center;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #eee;
+    height: 30px;
+    align-items: center;
+    display: flex;
+  }
+
+  .btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(231, 236, 241), rgb(103, 163, 253)) !important;
+    width: 20%;
+}

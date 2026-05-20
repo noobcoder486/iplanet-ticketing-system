@@ -1,0 +1,50 @@
+
+
+<div class="content-header" style="padding-top: -20px; padding-right: -20px;">
+  <div class="card px-6 pb-6"   >
+      <div class="row">
+        <div class="col-12">
+          <div class="tabheader">
+            <h3>Add Component Issues</h3> 
+          </div>
+        </div>
+      </div>
+    <div class="row">
+          <div class="form-container text-left">
+              <form [formGroup]="diagnosisViewForm1">
+                <ngx-spinner size="medium" [type]="typeSelected">
+                  <p style="font-size: 20px; color: white">Loading...</p>
+              </ngx-spinner>
+                <div class="row">
+                  <div class="col-sm-11" style="padding-left:50px;">
+                    <ng-select placeholder="Components" [items]="ComponentList" formControlName="component"
+                      bindLabel="componentDescription" (change)="onSelectComponent($event)">
+                    </ng-select>
+                  </div>
+                  <div class="col-sm-11" style="padding-left:50px;">
+                    <ng-select placeholder="Issues" [items]="IssuesList" formControlName="issues" bindLabel="description"
+                      (search)="onSelectIssue($event)">
+                    </ng-select>
+                  </div>
+                  <div class="col-sm-11" style="padding-left:50px;" >
+                      <ng-select placeholder="Reproducibility" [items]="reproducibility.Data"  bindLabel="TEXT" formControlName="Reproducibility"></ng-select>
+                  </div> 
+                </div>
+              </form>
+          </div>
+    </div> 
+    <div class="row">
+      <div class="col-12 text-right">
+        <div class="col-12 d-flex justify-content-end">
+          <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onComponentIssuesSubmit()">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+

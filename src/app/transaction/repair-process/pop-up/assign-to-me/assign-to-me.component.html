@@ -1,0 +1,50 @@
+<style>
+    input[type=checkbox] {
+      transform: scale(1.5);
+  }
+  </style>
+<div class="content-header"  style="padding: 80px !important;">
+    <div class="card pb-3" >
+        <div class="row">
+          <div class="col-12">
+            <div class="tabheader">
+              <h3>Assign To Me </h3>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row" style="padding: 20px !important;">
+          <div class="col-12">
+         
+                <div class="row">
+
+                  <div class="col-sm-6">
+                      <div class="row">
+                        <label>Assigned To </label>
+                       <ng-select
+                       [items]="Approvers?.Data"
+                       bindLabel="TEXT"
+                       bindValue="Id"
+                       [(ngModel)] = "Approver"
+                       (search)="onApproverSearch($event)">
+                     </ng-select>
+                      </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <mat-form-field class="textareafild" appearance="standard" [style.width.%]="80" >
+                      <mat-label>Remark</mat-label>
+                      <textarea matInput rows="1"  [(ngModel)]="remark" ></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+                  <div class="col-11 d-flex justify-content-end">
+                    <button  class="x_final_button x_active_btn x_save_button" type="submit"  (click)="onSubmit()">Assign </button>
+                    <button  class="btn btn-warning" style="border-radius: 8px; border: black 20px;"  type="button"  (click)="Back()">Back </button>
+                 
+                  </div>
+           
+          </div>
+        </div>
+    </div>
+  </div>

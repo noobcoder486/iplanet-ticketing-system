@@ -1,0 +1,218 @@
+<section class="content">
+   <ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+
+    <mat-card class="p-2 mb-4" >
+      <div class="row">
+        <div class="col-3">
+          <h3 class="ml-2 p-10 text-dark">
+            Price Finder
+          </h3>
+        </div>
+        <div class="col-3">
+          <div class="col-12">
+            <ng-select [items]="MaterialDD.Data" placeholder="Search Material" [(ngModel)]="materialCode" bindLabel="TEXT"
+              bindValue="Id" (search)="onMaterial($event)"></ng-select>
+          </div>
+            <!-- <input matInput type="text" style="margin-top: 1px !important" matInput placeholder="Enter Material Code"
+                [(ngModel)]="materialCode" name="materialCode"> -->
+        </div>
+        <div class="col-3 mt-2">
+          <div class="x_final_buttons1" style="margin: 10px 0 10px !important;">
+            <button class="x_final_button x_active_btn x_save_button"
+                (click)="search()">Search</button>
+          </div>
+        </div>
+        <div class="col-3">
+        </div>
+      </div>
+    </mat-card>
+
+
+
+    <mat-card class="p-2 mb-4" style="z-index: 9;" *ngIf="this.params.nc && IsShowTable == true">
+          
+        <!-- Material Details -->
+        <div class="row" style="padding:10px;padding-bottom: 15px;" >
+          <!-- Background -->
+          <div class="col-lg-6"
+            style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+            <div class="row">
+              
+
+              <!-- Location  -->
+              <div class="col-lg-12 col-sm-12"
+                style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+                <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+                  <div class="row">
+                    <div class="col-6">
+                      <span style="font-size: 16px !important;color:black;font-weight: 600;">Material Details</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Location Content -->
+                <div >
+                  <div class="MainDiv" style="padding: 10px;">
+                      <mat-card-title >Material Name:- {{MaterialName}}</mat-card-title>
+                      <mat-card-content>
+                        <p>ERP Material Code:- {{ERPMaterialCode}}</p>
+                        <p>Item Type:- {{ItemType}}</p>
+                        <p>Part Type:- {{PartType}}</p>
+                        <p>Price Group:- {{PriceGroup}}</p>
+                        <!-- <p><b>GST Registration No: </b>&nbsp;{{item?.GSTRegistrationNo[0]}}, &nbsp; <b>Ship To:</b>&nbsp; {{item?.SHIP_TO_GSX[0]}}</p> -->
+                      </mat-card-content>
+                    </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-lg-6"
+          style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+          <div class="row">
+            
+
+            <!-- Location  -->
+            <div class="col-lg-12 col-sm-12"
+              style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+              <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+                <div class="row">
+                  <div class="col-6">
+                    <span style="font-size: 16px !important;color:black;font-weight: 600;">Material Tax Details</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Location Content -->
+              <div >
+                <div class="MainDiv" style="padding: 10px;">
+                    <mat-card-title >HSN Code :- {{MaterialObject?.HSNSACCode}}</mat-card-title>
+                    <mat-card-content>
+                      <p>GST Group Code:- {{MaterialObject?.GSTGroupCode}}</p>
+                      <p>Serialized:- {{MaterialObject?.SerializedModule == '0' ? 'False' : 'True' }}</p>
+                      <p>Revenue Type:- {{MaterialObject?.RevenueType }}</p>
+                      <p>Default Material Code:- {{MaterialObject?.DefaultMaterialCode }}</p>
+                      <!-- <p><b>GST Registration No: </b>&nbsp;{{item?.GSTRegistrationNo[0]}}, &nbsp; <b>Ship To:</b>&nbsp; {{item?.SHIP_TO_GSX[0]}}</p> -->
+                    </mat-card-content>
+                  </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        </div>
+    </mat-card>
+
+
+    <mat-card>
+          
+    <div class="mt-2"  style="padding: 5px;" *ngIf="this.params.nc">
+      <!-- <div *ngIf="PriceListDetailsList.length>0">
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="scrollcntr" style="height: 347px !important;">
+              <div class="contents table-responsive">
+                <table>
+                  <thead>
+                    <tr style="height: auto !important;text-align: center;">
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Material Code</th>
+                      <th style="white-space: nowrap;text-align: center; "scope="col">Pricing Option</th>
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Unit Price</th>
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Tax Amount</th>
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Net Amount</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of PriceListDetailsList">
+                      <td style="white-space: nowrap;text-align: center; ">{{item?.MaterialPriceGroup}}</td>
+                      <td style="white-space: nowrap;text-align: center; "> <span> {{ item?.PricingOption}} </span></td>
+                      <td style="text-align: center;">{{ item?.UnitPrice | number: '1.2-2'}}</td>
+                      <td style="text-align: center;">{{ item?.TaxAmount | number: '1.2-2'}}</td>
+                      <td style="text-align: center;">{{ item?.NetAmount | number: '1.2-2'}}</td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+
+          <div *ngIf="FinalPriceListDetailsList.length>0 && IsShowTable == true">
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="scrollcntr" style="height: 347px !important;">
+              <div class="contents table-responsive">
+                <table>
+                  <thead>
+                    <tr style="height: auto !important;text-align: center;">
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Material Code</th>
+                      <th style="white-space: nowrap;text-align: center; "scope="col">Pricing Option</th>
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Unit Price</th>
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Tax Amount</th>
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Net Amount</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of FinalPriceListDetailsList">
+                      <td style="white-space: nowrap;text-align: center; ">{{item?.ItemCode}}</td>
+                      <td style="white-space: nowrap;text-align: center; "> <span> {{ item?.PricingOptions}} </span></td>
+                      <td style="text-align: center;">{{ item?.UnitPrice | number: '1.2-2'}}</td>
+                      <td style="text-align: center;">{{ item?.TaxAmount | number: '1.2-2'}}</td>
+                      <td style="text-align: center;">{{ item?.NetAmount | number: '1.2-2'}}</td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+
+
+    </mat-card>
+
+    <mat-card class="p-2 mb-4" style="z-index: 9;" *ngIf="this.params.nc && IsShowTable == true">
+          
+      <!-- Material Details -->
+      <div class="row" style="padding:10px;padding-bottom: 15px;" >
+        <!-- Background -->
+        <div class="col-lg-12"
+          style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+          <div class="row">
+            
+
+            <!-- Location  -->
+            <div class="col-lg-12 col-sm-12"
+              style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+              <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+                <div class="row">
+                  <div class="col-6">
+                    <span style="font-size: 16px !important;color:black;font-weight: 600;">Material Configuration:- </span>
+                  </div>
+                </div>
+              </div>
+              <!-- Location Content -->
+              <div >
+                <div class="MainDiv" style="padding: 10px;">
+                    <mat-card-content>
+                      <p>Valid Item Type:- {{ItemType}}</p>
+                      <p>Valid Part Types:- <b>{{MaterialObject?.ValidPartTypes}}</b> </p>
+                    </mat-card-content>
+                  </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+  </mat-card>
+  </section>

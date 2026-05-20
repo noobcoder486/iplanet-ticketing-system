@@ -1,0 +1,81 @@
+<section class="content">
+  <div class="container-fluid">
+   <!-- ADD Button -->
+   <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="row">
+        <div class="col-sm-10 ">
+          <b class="h4"> Company Master</b>
+     
+        </div>
+        <div class="col-sm-2 btn-head-group">
+          <div class="d-flex justify-content-end"> 
+            <ng-container *ngIf="toolBarAction.length > 0">
+              <ng-container *ngFor="let toolbar of toolBarAction">
+                <button mat-raised-button color="primary" class="{{toolbar.title}}" (click)="actionEvent(toolbar)">
+                  <mat-icon>{{toolbar.icon}}</mat-icon>
+                  <span class="{{toolbar.title}}">{{toolbar.title}}</span>
+                </button>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+        </div>
+    </mat-card>
+    
+    <mat-card class="p-2 mb-4">
+      <form [formGroup]="searchForm">
+        <div class="mat-card-s3">
+          <div class="d-flex">
+            <div class="col-sm-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <input type="text" name="CompanyCode" formControlName="CompanyCode" class="x_input" matInput placeholder="Company Code">    
+                    </mat-form-field>
+                </div>
+                <!-- first field -->
+                <div class="col-sm-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <input type="text" formControlName="CompanyName"  class="x_input" matInput placeholder="Company Name">
+                    </mat-form-field>
+                  </div>
+                  <!-- 2end Field -->
+                  <div class="col-sm-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <input type="text" formControlName="CompanyAddress"  class="x_input" matInput placeholder="Company Address">
+                            
+                    </mat-form-field>
+                </div>
+                <!-- 3rd field -->
+                <div class="col-sm-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <input type="text" formControlName="City"  class="x_input" matInput placeholder="City"> 
+                    </mat-form-field>
+                  </div>
+                  <!-- 4rth field -->  
+                  <div class="col-sm-2">
+                    <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+                      <button class="x_final_button x_active_btn x_save_button"
+                      (click)="search()">Search</button>
+                    </div>
+                  </div>
+                  <div class="col-sm-2 btn-head-group">
+                  </div>
+              </div>
+            </div>
+        </form>
+    </mat-card>
+<mat-card>
+    <div class="row">
+        <div class="col-sm-12">
+            <div>
+                <nitc-grid 
+                [gridcolumns]="columns" [dataSource]="detail"[actions]="actionDetails"
+                (actionEvent)="actionEmit($event)"(changeEvent)="PageChange($event)"
+                >
+                
+                </nitc-grid>
+            </div> 
+        </div>
+    </div>
+</mat-card>
+<section>
+

@@ -1,0 +1,236 @@
+ 
+  <div class="card-body"   style="font-size: 14px !important;">
+    <div class="" style="display: flex;justify-content: flex-end;align-items: center;">
+      <div style="padding-right: 5px;">
+            <button class="btn refreshBtn" (click)="fetch_DiagnosisLookup()">Refresh</button>
+      </div>
+          <div>
+            <button class="btn btn-grad ">Run Diagnostics</button>
+         </div>
+      </div>
+    
+      <hr>
+    <div *ngFor="let item of diagnosticData">
+
+    
+      <div class="row">
+        <div class="header_details_content_row" style="padding-bottom: 13px;">
+          <div >
+            <span class="headerText" >{{item.context.suite}}</span>
+          </div>
+          <div>
+            <span class="valueText"> {{item.context.diagnosticEndTimeStamp}} </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="header_details_content_row" style="padding-bottom: 13px;">
+          <div>
+            <span class="headerText" >{{item.context.diagnosticEventEndResult}}</span>
+          </div>
+          <!-- <div>
+            <span class="valueText"> <a href="">Diagnostics Details </a><i class="fa fa-external-link" aria-hidden="true"></i> </span>
+          </div> -->
+        </div>
+      </div>
+
+      <div class="row"> 
+          <div  class="col-2">
+            <span >Event ID</span>
+          </div>
+          <div class="col-4">
+            <span>{{item.context.diagnosticEventNumber}}</span>
+          </div> 
+      </div>
+
+
+      <div class="col-12 mt-2">
+
+        <mat-expansion-panel (click)="openDialog(item.testResults)" (opened)="panelOpenState = true"
+          (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <!-- <mat-panel-title>
+            Diagnostics Details 
+          </mat-panel-title> -->
+            <mat-panel-description style="color: black;font-weight: 600;">
+              Diagnostics Details
+              <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}} -->
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div class="col-12" style=" border-bottom: 1px solid rgb(159, 159, 159);"
+            *ngFor="let item of item.testResults">
+            <div class="row mt-2">
+              <div class="col-6">
+                <span style="font-size: 14px !important; font-weight: 600;">{{item.moduleName}}</span> - <span
+                  style="font-size: 14px !important; font-weight: 600;"> {{item.testId}} </span>
+              </div>
+
+              <div class="col-6">
+                <span style="font-size: 14px !important; font-weight: 600;">{{item.testName}}</span>
+              </div>
+
+              <div class="col-12 mt-2">
+                <i style="font-size: 14px !important;"
+                  [ngClass]="(item.testStatus === 'PASSED') ? 'fa fa-check' : (item.testStatus === 'WARNING') ? 'fa fa-exclamation-triangle' : 'fa fa-times'"
+                  aria-hidden="true"></i>
+                <!-- <i style="font-size: 14px !important; " [ngClass]="(item.testStatus === 'PASSED') ? 'fa fa-check' : 'fa fa-exclamation-triangle'" aria-hidden="true"></i> -->
+                {{item.testStatus}}
+              </div>
+
+              <div class="col-12 mt-2">
+                <span style="font-size: 14px !important;">{{item.testMessage}}</span>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+        <!-- <span class="valueText" (click)="openDialog(item.testResults)"> <a style="color: rgb(94, 94, 249);text-decoration: underline;" >Diagnostics Details </a><i class="fa fa-external-link" aria-hidden="true"></i> </span> -->
+
+      </div>
+      <hr>
+
+
+  
+    <!-- <div class="row">
+      <div class="header_details_content_row" style="padding-bottom: 13px;">
+        <div>
+          <span class="headerText" > Diagnosis Code</span>
+        </div>
+        <div>
+          <span class="valueText"> {{objDiagnosis.DiagnosisCode}} </span>
+        </div>
+
+      </div>
+    </div>
+
+
+    <div class="row" style="padding-bottom: 13px;">
+      <div class="header_details_content_row">
+        <div>
+          <span class="headerText"> Diagnosis Date</span>
+          </div>
+          <div>
+          <span class="valueText"> {{objDiagnosis.DiagnosisDate}} </span>
+        </div>
+      </div>
+    </div>
+    <div class="row" style="padding-bottom: 5px;">
+          <div class="header_details_content_row" >
+            <div class="hd_column">
+              <span class="headerText"> Repair Type</span>
+              </div>
+              <div>
+              <span class="valueText"> {{objDiagnosis.RepairType}} - {{objDiagnosis.RepairTypeDesc}} </span>
+            </div>
+          </div>
+    </div>
+    <hr>
+        
+    <div class="row" style="padding-bottom: 13px;">
+      <div class="header_details_content_row">
+        <div class="hd_column">
+          <span class="headerText"> Status</span>
+          </div>
+          <div>
+          <span class="valueText"> {{objDiagnosis.DiagStatus}}  </span>
+        </div>
+      </div>
+    </div>
+        
+    <div class="row" style="padding-bottom: 13px;">
+      <div class="header_details_content_row">
+        <div class="hd_column">
+          <span class="headerText"> Billing Option</span>
+          </div>
+          <div>
+          <span class="valueText"> {{objDiagnosis.BillingOption}} - {{objDiagnosis.BillingOptionDesc}} </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="padding-bottom: 5px;">
+      <div class="header_details_content_row">
+        <div class="hd_column">
+          <span class="headerText"> Submission Type</span>
+          </div>
+          <div>
+          <span class="valueText"> {{objDiagnosis.SubmissionType}} - {{objDiagnosis.SubmissionTypeDesc}} </span>
+        </div>
+      </div>
+    </div>
+    <hr>
+    
+    <div class="row" style="padding-bottom: 13px;">
+      <div class="header_details_content_row">
+        <div class="hd_column">
+          <span class="headerText"> No Of days</span>
+          </div>
+          <div>
+          <span class="valueText"> {{objDiagnosis.NoOfDays}} - {{objDiagnosis.NoOfDaysDesc}} </span>
+        </div>
+      </div>
+    </div>  
+    
+    <div class="row"  style="padding-bottom: 13px;">
+      <div class="header_details_content_row">
+        <div class="hd_column">
+          <span class="headerText"> Billable Repair</span>
+          </div>
+          <div>
+          <span class="valueText"> {{objDiagnosis.BillableRepair}}  </span>
+        </div>
+      </div>
+    </div>
+   
+    
+    <div class="row"  style="padding-bottom: 5px;">
+      <div class="header_details_content_row">
+        <div class="hd_column">
+          <span class="headerText"> Payment Terms</span>
+          </div>
+          <div>
+          <span class="valueText"> {{objDiagnosis.PaymentTerms}}  </span>
+        </div>
+      </div>
+    </div>
+
+    <hr> -->
+    <!-- <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="example-viewport" style="height:135px;">
+      <mat-card class="example-card" style="margin-left: 2px;box-shadow: 0px 1px 4px rgb(0 0 0 / 25%);margin-bottom: 20px;" >
+        <div class="row" style="height:43px;">
+          <div class="col-sm-9">
+            <mat-card-header>
+              <mat-card-title class="headerText">Components / Issue </mat-card-title>
+            </mat-card-header>
+            </div>
+        </div>
+      <mat-card-content> -->
+      
+          <!-- <div  *ngFor="let item of objDiagnosis.SelectedComponentIssue">
+            <mat-card class="example-card" (mouseenter)="compissuehoverguid=item.DiagnosisDetailGUID" (mouseleave)="compissuehoverguid=''">
+              <div class="row">
+                <div class="col-sm-11 col-11" >
+                 
+                  <mat-card-content style="margin-top:-25">{{item.ComponentDesc}} / {{item.IssueDesc}} / {{item.ReproducibilityDescription}}</mat-card-content>
+                  
+                </div>
+                <div class="col-sm-1 col-1" >
+                  <i *ngIf="item.DiagnosisDetailGUID==compissuehoverguid" matTooltip="Delete" matTooltipClass="example-tooltip-red" matTooltipPosition="left" (click)="removeComponent(item)" style="align-content:right;color:red"  class="fa-duotone fa-trash-can"></i>
+                </div>
+              </div>
+            </mat-card>   
+            <div style="border:2px solid white"></div>          
+          </div> -->
+<!--          
+      </mat-card-content>
+      </mat-card>
+    </cdk-virtual-scroll-viewport> -->
+  </div>
+  </div>
+ 
+     
+
+<!-- Edit Mode  -->
+
+ 

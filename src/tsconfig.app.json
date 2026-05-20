@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "types": [],
+    "allowJs": true
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ],
+  "files": ["main.ts", "polyfills.ts"],
+  "types": [ "node" ],
+  "typeRoots": [ "../node_modules/@types" ],
+  "scripts": {
+  "start": "node --max_old_space_size=8096 ./node_modules/@angular/cli/bin/ng serve"
+  }
+}

@@ -1,0 +1,71 @@
+<section class="content">
+    <mat-card class="p-2 mb-2" style="z-index: 9;">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div>
+          <label style="font-weight: 600; font-size: 16px !important;"> {{formTitle}} Module Profile</label>
+        </div>
+        <div>
+          <label style="font-size: 16px !important;"> Profile Name : <span
+              style="font-weight: 600; padding-left: 10px; font-size: 16px !important;">{{profileName}}</span></label>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class="p-2 mb-2">
+      <div class="row">
+        <div class="col-sm-5">
+          <label style="font-weight: 600;font-size: 16px !important;">Search Module Name </label><br>
+          <input type="text" class="form-control" (input)="filterData()" [(ngModel)]="searchedTerm"><br>
+        </div>
+        <div class="col-sm-5 mt-4">
+          <label style="font-weight: 600;font-size: 16px !important; padding-right: 10px;">Select All</label>
+          <input type="checkbox" [(ngModel)]="selectAll" (change)="SelectAllCheckBox()" />
+        </div>
+      </div>
+      <!-- profile-Module-TABLE -->
+      <div class=" mt-2" style="height: 60vh; overflow: auto;">
+        <table class="table">
+          <thead>
+            <th>Module Name </th>
+            <th>View Allowed</th>
+            <th>Create Allowed</th>
+            <th>Edit</th>
+            <th>Delete Allowed</th>
+            <th>Import</th>
+            <th>Export</th>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of SelectedModule">
+              <tr *ngIf="showAllRows || item?.TEXT.toLowerCase().includes(searchedTerm.toLowerCase()) ">
+                <td>{{item?.TEXT}}</td>
+                <td><input [readonly]="isEdit" type="checkbox" [(ngModel)]="item.viewAllowed"
+                    [checked]="item.SelectedModule" /></td>
+                <td><input type="checkbox" [(ngModel)]="item.createAllowed" [checked]="item.SelectedModule" /></td>
+                <td><input type="checkbox" [(ngModel)]="item.edit" [checked]="item.SelectedModule" /></td>
+                <td><input type="checkbox" [(ngModel)]="item.deleteAllowed" [checked]="item.SelectedModule" /></td>
+                <td><input type="checkbox" [(ngModel)]="item.import" [checked]="item.SelectedModule" /></td>
+                <td><input type="checkbox" [(ngModel)]="item.export" [checked]="item.SelectedModule" /></td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+  
+    </mat-card>
+    <div class="row mt-4">
+      <div class="col-sm-8" style="text-align: right;">
+        <div class="text-danger" style="display: inline-block" role="alert">
+          <!-- {{errorMessage}} -->
+        </div>
+      </div>
+      <div class="col-sm-4" style="text-align: right;">
+        <div style="display: flex; align-items: center;justify-content: end;">
+          <div style="padding-right: 10px;">
+            <button type="submit" (click)="onSubmit()" class="btn btnClass">Save</button>
+          </div>
+          <div>
+            <button type="button" (click)="returnPrevious()" class="btn btnClass">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

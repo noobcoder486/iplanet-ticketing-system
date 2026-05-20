@@ -1,0 +1,976 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+<section class="content">
+
+  <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+    <div class="row">
+
+      <div class="col-lg-6 col-sm-12">
+        <div class="row">
+
+          <div class="col-lg-6 col-sm-6 col-6 ">
+            <div style="float: left;padding-left: 60px;padding-top: 8px;padding-right: 24px;">
+              <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+            </div>
+            <div style="margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+              <h4><span style="color: black;font-size: 14px !important;  font-weight: 600;" title="Payment Code">{{PaymentCode== null || PaymentCode== undefined ? 'NA': PaymentCode }} </span></h4>
+            </div>
+          </div>
+
+          <div class="col-lg-6 col-sm-6 col-6 ">
+            <div class="JobTypeDesc"
+              style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+              <h4><span style="color: black;font-size: 14px; font-weight: 500; ">Advance Payment</span></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-sm-12">
+        <div class="row" style="align-items: center;">
+         
+          <!-- Print Button -->
+          <div class="col-lg-4 col-sm-6 col-2 ">
+            <div class="JobTypeDesc" style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+                <button class="btnClass" [disabled]="isEdit"  (click)="downloadPaymentReport()" >Print Advance Payment</button>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-4 col-4" >
+            <div *ngIf="postToSAPButton == true" >
+              <button class="btnClass"  (click)="saveSapAdvancePayment()" >Post Payment to SAP</button>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-6 col-6 " >
+            <div class="JobTypeDesc" style="text-align: center; margin-top: 6px; ">
+              <h4><span style="color: black;font-size: 14px; "><b>{{ PaymentCode!= null || PaymentCode!= undefined ? 'Payment ' : ''}} Date:-  </b> {{ PaymentCode!= null || PaymentCode != undefined ?  (PaymentDate | date: 'dd/MM/yyyy') : (currentDate | date: 'dd/MM/yyyy') }}</span></h4>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- <mat-card>
+      <div class="row">
+        <div class="col-6 justify-content-left">
+          <h1 class="header">Advance Payment</h1>
+        </div>
+        <div class="col-6 justify-content-left">
+          <h1 class="header">Advance Payment</h1>
+        </div>
+        <div class="col-6 d-flex justify-content-end">
+          {{ currentDate | date:'medium' }}
+        </div>
+      </div>
+    </mat-card> -->
+
+
+    
+    <div class="container-fluid mt-2" >
+      <div class="row" >
+
+          <!-- Customer  -->
+        
+          <div class="col-lg-6 col-sm-6 col-12"
+              style="background-color:rgb(252, 255, 255); border-radius: 5%;">
+              <!-- Customer Heading -->
+              <div
+                style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;   
+                border-top-left-radius: 5px; border-top-right-radius: 5px;" >
+                <span style="font-size: 16px !important;color:black;font-weight: 600;">Customer Details</span>
+              </div>
+              <!-- Details Content -->
+              <div  *ngFor="let item of CustomerObject" >
+                <div class="MainDiv" style="padding: 10px;">
+                    <mat-card-title >Customer Code:- {{item?.CustomerCode}}</mat-card-title>
+                    <mat-card-title>Name:- {{item?.FirstName}}&nbsp;{{item?.LastName}}</mat-card-title>
+                    <mat-card-content>
+                      <p> Address:- {{item?.Address1}}, {{item?.Address2}}, {{item?.City}} -  {{item?.ZipCode}}, {{item?.StateCode}}, {{item?.CountryCode}}</p>
+                      <p>Email:- {{item?.EmailID}}</p>
+                      <!-- <p><b>GST Registration No: </b>{{ item?.GSTRegistration ? item?.GSTRegistration : 'N.A' }}</p> -->
+                    </mat-card-content>
+                </div>
+              </div>
+            </div>
+
+            <!-- Location  -->
+            <div class="col-lg-6 col-sm-6 col-12"  style="background-color:rgb(255, 255, 255);border-radius: 5%">
+                <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;
+                font-size: 10px !important;padding-top:3px;border-top-left-radius: 5px; border-top-right-radius: 5px;">
+                  <div class="row">
+                    <div class="col-6">
+                      <span style="font-size: 16px !important;color:black;font-weight: 600;">Location Details</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- Location Content -->
+                <div *ngFor="let item of LocationObject">
+                  <div class="MainDiv" style="padding: 10px;">
+                      <mat-card-title >Location Name:- {{item?.LocationName}}</mat-card-title>
+                      <p>Address:- {{item?.Address1}}, {{item?.Address2}}, {{item?.City}} - {{item?.ZipCode}}, {{item?.StateCode}}.</p>
+                      <mat-card-content>
+                        <p>Email:- {{item?.EmailId}}</p>
+                        <p>Mobile No:- {{item?.MobileNo}}</p>
+                        <!-- <p><b>GST Registration No: </b>&nbsp;{{item?.GSTRegistrationNo[0]}}, &nbsp; <b>Ship To:</b>&nbsp; {{item?.SHIP_TO_GSX[0]}}</p> -->
+                      </mat-card-content>
+                    </div>
+                </div>
+              </div>
+
+      </div>
+    </div>
+  
+ 
+    <mat-card class="mt-2" *ngIf="isEdit" >
+      <div class="row" >
+            <div class="col-lg-6 col-sm-12 col-md-12" style=" border-radius:8px" >
+              <div style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                <div style="background-color: gainsboro;color:black; height: 35px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                  <div style="display: flex; align-items: center;column-gap: 10px;margin-top: 5px;">
+                    <div style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;   
+                      border-top-left-radius: 5px; border-top-right-radius: 5px;" >
+                      <span style="font-size: 16px !important;color:black;font-weight: 600;">Payment Options</span>
+                    </div>
+                  </div>
+                </div>
+      
+                <!-- For Payment -->
+                <div  class="row mt-2" style="padding:5px;">
+                  <div class="col-4 mt-2">
+                    <div>
+                      <button [disabled]="!isCashAllowed" class="btn cashBtn" (click)="openPayment('CASH')">Cash</button>
+                    </div>
+                  </div>
+      
+                  <div class="col-4 mt-2">
+                    <div>
+                      <button [disabled]="!isPineLabsAllowed" class="btn pineLabsBtn" (click)="openPayment('PINELABS')">Pine Labs</button>
+                    </div>
+                  </div>
+
+                  <div class="col-4 mt-2">
+                    <div>
+                      <button  [disabled]="!isPaytmAllowed" class="btn paytmBtn" (click)="openPayment('PAYTM')">Paytm</button>
+                    </div>
+                  </div>
+                         
+                </div>
+                
+                <div  class="row mt-2"  style="padding:5px;">
+                  <div class="col-4 mt-2">
+                    <div style="display: flex;align-items: center;justify-content: center;">
+                      <button  [disabled]="!isCreditCardAllowed" class="btn creditCardBtn"  (click)="openPayment('Credit Card/UPI')">Credit Card/UPI</button>
+                    </div>
+                  </div> 
+
+                  <div class="col-4 mt-2">
+                    <div>
+                      <button [disabled]="!isChequeAllowed" class="btn chequeBtn"  (click)="openPayment('CHEQUE')">Cheque/NEFT/RTGS</button>
+                    </div>
+                  </div>
+
+                  <div class="col-4 mt-2"  style="display: flex;align-items: center;justify-content: center;"> 
+                      <button [disabled]="!isStafDebitAllowed" class="btn allStaffDebitBtn"  (click)="openPayment('STAFDEBIT')">Staff Debit</button>
+                  </div>
+                </div>
+
+                <div  class="row mt-2"  style="padding:5px;">
+                  <div class="col-4 mt-2"> 
+                    <button [disabled]="!isCreditReqAllowed" class="btn creditReqBtn"  (click)="openPayment('CREDITREQ')">Credit Request</button>  
+                  </div>
+                  <div class="col-4 mt-2">
+                    <button [disabled]="!isManualPaytm" class="btn creditReqBtn" (click)="openManualPayment('MANUALPAYTM')"
+                      style="background-color: #233f76  !important">Manual Paytm</button>
+                  </div>
+                  <div class="col-4 mt-2">
+                    <button [disabled]="!isManualPinelabs" class="btn creditReqBtn"
+                      (click)="openManualPayment('MANUALPINELABS')" style="background-color: #198754 !important">Manual
+                      Pinelabs</button>
+                  </div>
+                  
+                </div>
+                <!-- <div  class="row mt-2"  style="padding:5px;">
+                 
+                  <div class="col-4 mt-2">
+                    <div>
+                      <button class="btn paymentLinkBtn"  (click)="openPayment('PAYMENTLINK')">Payment Link</button>
+                    </div>
+                  </div>
+                </div> -->
+
+              </div> 
+            </div>
+  
+            <div class="col-lg-6 col-sm-12 col-md-12" style="border-radius:8px;height: 250px;" >
+              <div style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                <div style="background-color: gainsboro;color:black; height: 35px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                  <div style="background-color: gainsboro;color:black; height: 35px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                    <div style="display: flex; align-items: center;column-gap: 10px;margin-top: 5px;">
+                      <div style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;   
+                        border-top-left-radius: 5px; border-top-right-radius: 5px;" >
+                        <span style="font-size: 16px !important;color:black;font-weight: 600;">Payment List:- </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row" *ngIf="true">
+                    <div class="col-lg-12 col-sm-12 col-md-12"> 
+                        <div class="contents table-responsive" style="padding: 5px;height: 180px;">
+                          <table>
+                            <thead>
+                              <tr style="height:auto !important">
+                                <th scope="col">Payment Type</th>
+                                <th scope="col">Mode of Payment</th>
+                                <th scope="col">Reference No (If any)</th>
+                                <th scope="col">Amount</th>
+                                <th   scope="col"> Delete</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let paymentDetail of paymentDetailArray">
+                                <td>{{ paymentDetail?.TranType}}</td>
+                                <td>{{ paymentDetail?.ModeOfPayment}}</td>
+                                <td>{{ paymentDetail?.UPITransactionId}}</td>
+                                <td>{{ paymentDetail?.Amount}}</td>
+                                <td style="text-align: center; ">
+                                  <span><i style="color:red" (click)="deletePaymentitem(paymentDetail)"
+                                      class="fa-regular fa-trash"></i></span>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!-- <p><b>Total Paid Amount:</b>&nbsp;{{totalPaidAmount}}</p>  -->
+                    </div>
+                  </div>  
+
+              </div>
+            </div>
+            </div>
+      </div>
+    </mat-card>
+
+
+    <mat-card class="mt-2" *ngIf="!isEdit" >
+      <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" >
+              <div style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                <div style="background-color: gainsboro;color:black; height: 35px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                  <div style="background-color: gainsboro;color:black; height: 35px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                    <div style="display: flex; align-items: center;column-gap: 10px;margin-top: 5px;">
+                      <div style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;   
+                        border-top-left-radius: 5px; border-top-right-radius: 5px;" >
+                        <span style="font-size: 16px !important;color:black;font-weight: 600;">Payment List:- </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="row" *ngIf="true">
+                    <div class="col-lg-12 col-sm-12 col-md-12">
+                      <div class="scrollcntr" style="height: 347px !important;">
+                        <div class="contents table-responsive" style="padding: 5px;">
+                          <table>
+                            <thead>
+                              <tr style="height:auto !important">
+                                <th scope="col">Payment Type</th>
+                                <th scope="col">Mode of Payment</th>
+                                <th scope="col">Reference No (If any)</th>
+                                <th scope="col">EDC Reference Id (If any)</th>
+                                <th scope="col">Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let paymentDetail of paymentDetailArray">
+                                <td>{{ paymentDetail?.TranType}}</td>
+                                <td>{{ paymentDetail?.ModeOfPayment}}</td>
+                                <td>{{ paymentDetail?.UPITransactionId}}</td>
+                                <td>{{ paymentDetail?.EDCMachineReferenceID}}</td>
+                                <td>{{ paymentDetail?.Amount}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                       
+                      </div>
+                    </div>
+                  </div>  
+
+              </div>
+            </div>
+            </div>
+      </div>
+    </mat-card>  
+   
+     
+    
+
+    <div class="col-12" style="position:fixed;bottom:0;background-color: gainsboro;height:40px" *ngIf="paymentDetailArray.length>0">
+      <div class="row" style="padding-top: 5px;">
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          Payment Quantity: <b>({{paymentDetailArray.length}})</b>
+        </div>
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          <!-- Net Amount: <b>{{totalNetAmount | number: '1.2-2'}}</b> -->
+        </div>
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          Advance Amount: <b>{{advancePaymentAmount | number: '1.2-2'}}</b>
+        </div>
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          <!-- Paid Amount : <b>{{totalPaidAmount | number: '1.2-2'}}</b> -->
+        </div>
+        <div class="col-sm-3 col-lg-3 col-md-3">
+          <button appDebounceClick [debounceTime]="1000"  
+          [disabled]="submitClicked" class="btnClass" *ngIf="isEdit" style="float: right;" (debounceClick)="onSubmit()" > Save  </button>
+
+          <!-- <button  class="btnClass" *ngIf="isEdit == false && PaymentSuccess == false" style="float: right;" (click)="saveSapAdvancePayment()" > Save to SAP  </button> -->
+        </div>
+      </div>
+  
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-lg-12 col-md-12">
+          
+      </div>
+      <div>
+      </div>
+      <div>
+      </div>
+    </div>
+  
+  </section>
+
+
+
+<!-- Popupp Starts Here -->
+<div  *ngIf="isPaymentpopUp" class="container" style="margin: 2% auto !important;max-width: 40% !important;">
+
+  
+
+  <div class="background" >
+    <div class="Ux_popup popup" style="position: relative;">
+      <div *ngIf="isPaymentProcessing" style="position: absolute;width: 100%; height: 100%;z-index: 9999;background: gray;opacity: 0.8;">
+        <span class="loader"></span>
+      </div>
+      <!-- <ngx-spinner *ngIf="isPaymentProcessing" [type]="typeSelected" style="z-index: 99999;position: absolute; border: 2px solid red;width: 100%; height: 100%;"  >
+        <p style="font-size: 20px; color: white">Loading...</p>
+      
+      </ngx-spinner> -->
+      
+      <!-- ************************************** POPUP  ************************************************ -->
+      <div class="card px-6 pb-6" style="width: 100%;margin: 3% auto;">
+        <div class="formcntr" style="padding: 20px;" *ngIf=" modeofPaymentData !='PINELABS' && modeofPaymentData != 'PAYTM'">
+          <div class="row">
+
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <b style="font-size: 17px !important;">PAYMENT</b>
+                </div>
+  
+                <div>
+                  <i class="Ux_close fa-duotone fa-circle-xmark" (click)="closePaymentPopUp()" ></i>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div class="row">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <h4 >Mode of Payment :- {{ modeofPaymentData }}</h4>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+  
+          <!-- MOP Extra Fields -->
+          <div class="row" >
+          
+          <div class="row" *ngIf="modeofPaymentData == 'CHEQUE'">
+ 
+            <div class="row">
+              <div class="col-lg-12 col-sm-3 col-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Transaction Reference Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row" *ngIf="modeofPaymentData == 'CREDITREQ'">
+            <div class="row">
+              <div class="col-lg-12 col-sm-3 col-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Transaction Reference Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+		  
+          <!-- <div  class="row" *ngIf="modeofPaymentData == 'PAYMENTLINK'">
+            
+            <div class="col-12  mt-1">
+              <div class="d-flex p-2 justify-content-around" *ngIf="true">
+                <div>
+                  <button  (click)="newPayment()" class="btn" style="background-color: rgb(113, 113, 251);border: none;color: white;">New Payment Link</button>
+                </div>
+             
+              </div>
+            </div>
+ 
+          </div>   -->
+
+          <div  class="row" *ngIf="modeofPaymentData == 'Credit Card/UPI'">
+            
+            <div class="d-flex p-2 justify-content-around" *ngIf="true">
+              <div>
+                <button  (click)="uploadPaymentLink()" class="btn" style="background-color: rgb(113, 113, 251);border: none;color: white;">New Payment Link</button>
+              </div>
+            </div>
+
+
+            <div class="col-12 mt-1" >
+              <label>Payment Mode</label>
+              <ng-select class="paymentMode"
+              (change)="changePineLabsMOP()"
+              [items]="pinelabsPaymentArray.Data" bindValue="Id" bindLabel="TEXT"
+                [(ngModel)]="allowedPaymentMode"></ng-select>
+            </div>
+
+            <div class="row" *ngIf="allowedPaymentMode == '1'">
+              <div class="col-12 " >
+                  <ng-select placeholder="Card Type" [items]="CardType" [(ngModel)]="CardTypeData">
+                  </ng-select>
+                </div>
+                <div class="col-12 " >
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Card No</mat-label>
+                    <input matInput type="text" autocomplete="off" [(ngModel)]="CardNo">
+                  </mat-form-field>
+                </div>
+                <div class="col-12 " >
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Adjudication</mat-label>
+                    <input matInput type="text" autocomplete="off" [(ngModel)]="Adjudication">
+                  </mat-form-field>
+                </div>
+                <div class="col-12" >
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Terminal Id</mat-label>
+                    <input matInput type="text" autocomplete="off" [(ngModel)]="TerminalId">
+                  </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="allowedPaymentMode == '10'">
+              <div class="col-12 mt-1" >
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>UPI Transaction Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+                </div>
+            </div> 
+        
+         
+          </div>  
+
+          <!-- MOP Card Payment -->
+          <!-- <div class="row" *ngIf="modeofPaymentData == 'Credit Card/UPI'">
+            <div class="col-lg-3 col-sm-3 col-12" >
+              <ng-select placeholder="Card Type" [items]="CardType" [(ngModel)]="CardTypeData">
+              </ng-select>
+            </div>
+            <div class="col-lg-3 col-sm-3 col-12" style="display: flex; align-items: center;">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Card No</mat-label>
+                <input matInput type="text" autocomplete="off" [(ngModel)]="CardNo">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-sm-3 col-12" style="display: flex; align-items: center;">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Adjudication</mat-label>
+                <input matInput type="text" autocomplete="off" [(ngModel)]="Adjudication">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-sm-3 col-12" style="display: flex; align-items: center;">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Terminal Id</mat-label>
+                <input matInput type="text" autocomplete="off" [(ngModel)]="TerminalId">
+              </mat-form-field>
+            </div>
+          </div> -->
+          <!-- MOP RTGS -->
+          <!-- <div class="row" *ngIf="modeofPaymentData == 'NEFT/RTGS'" >
+
+            <div class="row">
+              <div class="col-lg-12 col-sm-3 col-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Account Holder Name</mat-label>
+                  <input matInput type="text" autocomplete="off" [(ngModel)]="AccountHolderName">
+                </mat-form-field>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-lg-12 col-sm-3 col-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Bank Code</mat-label>
+                  <input matInput type="text" autocomplete="off" [(ngModel)]="BankCode">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 col-sm-3 col-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Bank Account No</mat-label>
+                  <input matInput type="number" autocomplete="off" [(ngModel)]="BankAccountNumber">
+                </mat-form-field>
+              </div>
+            </div>
+          </div> -->
+          
+          <!-- <div class="row" *ngIf="modeofPaymentData == 'UPI'">
+            <div class="col-lg-3 col-sm-3 col-12" style="display: flex; align-items: center;">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>UPI Transaction Number</mat-label>
+                <input matInput type="text" [(ngModel)]="UPITransactionId">
+              </mat-form-field>
+            </div>
+          </div> --> 
+        </div>
+  
+
+
+          <br/>
+          <div class="row" >
+            <div class="col-lg-12 col-sm-3 col-12">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Amount</mat-label>
+                <input matInput autocomplete="off" type="number" [(ngModel)]="Amount">
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="row" style="display: flex; align-items: center;justify-content: center;"   >
+            <div class="col-lg-6 col-sm-2 col-12" style="display: flex; align-items: center;justify-content: center;">
+                <label  style="padding-left: 5px;"><b>GL Code: </b>   <span style="padding-left: 5px;">{{GLCodeData}}</span></label>
+            </div>
+              
+            <div class="col-lg-6 col-sm-2 col-12" style="display: flex; align-items: center;">
+                <label  style="padding-left: 5px;"><b>House Of Bank: </b>  <span style="padding-left: 5px;">{{houseofBank}}</span></label>            
+            </div>
+          </div>
+          <hr />
+
+          <div class="row"   >
+            <div class="col-lg-8">
+            </div>
+            <div class="col-lg-4 col-sm-2 col-12" style="display: flex; align-items: right;" >
+              
+              <button class="btn btn-success" style="width: 100% !important;" (click)="validatePaymentiPlanet()">Add Payment</button>
+            </div>
+          </div>
+  
+  
+        </div>
+
+
+        <div class="formcntr" style="padding: 20px;" *ngIf=" modeofPaymentData =='PINELABS'">
+          <div class="row">
+
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <b style="font-size: 17px !important;">PAYMENT</b>
+                </div>
+  
+                <div>
+                  <i class="Ux_close fa-duotone fa-circle-xmark" (click)="closePaymentPopUp()" ></i>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div class="row">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <h4 >Mode of Payment :- {{ modeofPaymentData }}</h4>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+  
+          <!-- MOP Extra Fields -->
+          <div class="row" >
+
+          <div  class="row" *ngIf="modeofPaymentData == 'PINELABS'">
+            
+            <!-- New Payment -->
+            <div class="col-12  mt-1">
+              <div class="d-flex p-2 justify-content-around" *ngIf="true">
+                <div>
+                  <button  (click)="newPayment()" class="btn" style="background-color: rgb(113, 113, 251);border: none;color: white;">New Transaction</button>
+                </div>
+                <!-- [disabled]="!isNewTxnBtn" -->
+                <div>
+                  <button class="btn" style="background-color: rgb(255, 68, 68); border: none;color: white;" (click)="getPreviousEDCPaymentObj4Customer()">Previous made Transaction</button>
+                </div>
+              </div>
+            </div>
+ 
+              <div class="col-12  mt-1">
+                  <label>Select EDC Machine</label>
+                  <ng-select class="EDC-Machine" [items]="edcMachineObject" bindValue="PODDeviceName"
+                    bindLabel="PODDeviceName" [(ngModel)]="edcMachineName"></ng-select>
+              </div> 
+
+
+            <div class="col-12  mt-1">
+            <div *ngIf="previousRecordsFound">
+           
+              <div class="row">
+                <label>Select Transaction</label><br>
+                <ng-select [items]="previousEDCPaymentRecords" bindValue="TransactionReferenceID" [(ngModel)]="transactionNumber" 
+                bindLabel="TEXT"></ng-select>
+              </div>
+              <div class="row">
+                <div class="col-3">
+                <button class="btnClass" (click)="callEDCStatus()">Get Status</button>
+              </div>
+              </div>
+            </div>
+            </div>
+ 
+            
+            <div class="col-12 mt-1" *ngIf="isNewPayment">
+              <label>Payment Mode</label>
+              <ng-select class="paymentMode"
+              (change)="changePineLabsMOP()"
+              [items]="pinelabsPaymentArray.Data" bindValue="Id" bindLabel="TEXT"
+                [(ngModel)]="allowedPaymentMode"></ng-select>
+            </div> 
+
+          </div>  
+		  
+         
+          <div  class="row" *ngIf="modeofPaymentData == 'Credit Card/UPI'">
+            
+            <div class="d-flex p-2 justify-content-around" *ngIf="true">
+              <div>
+                <button  (click)="uploadPaymentLink()" class="btn" style="background-color: rgb(113, 113, 251);border: none;color: white;">New Payment Link</button>
+              </div>
+            </div>
+
+
+            <div class="col-12 mt-1" >
+              <label>Payment Mode</label>
+              <ng-select class="paymentMode"
+              (change)="changePineLabsMOP()"
+              [items]="pinelabsPaymentArray.Data" bindValue="Id" bindLabel="TEXT"
+                [(ngModel)]="allowedPaymentMode"></ng-select>
+            </div>
+
+            <div class="row" *ngIf="allowedPaymentMode == '1'">
+              <div class="col-12 " >
+                  <ng-select placeholder="Card Type" [items]="CardType" [(ngModel)]="CardTypeData">
+                  </ng-select>
+                </div>
+                <div class="col-12 " >
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Card No</mat-label>
+                    <input matInput type="text" autocomplete="off" [(ngModel)]="CardNo">
+                  </mat-form-field>
+                </div>
+                <div class="col-12 " >
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Adjudication</mat-label>
+                    <input matInput type="text" autocomplete="off" [(ngModel)]="Adjudication">
+                  </mat-form-field>
+                </div>
+                <div class="col-12" >
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Terminal Id</mat-label>
+                    <input matInput type="text" autocomplete="off" [(ngModel)]="TerminalId">
+                  </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="allowedPaymentMode == '10'">
+              <div class="col-12 mt-1" >
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>UPI Transaction Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+                </div>
+            </div> 
+        
+         
+          </div>  
+        </div>
+  
+
+
+          <br/>
+          <div class="row"  *ngIf="!previousRecordsFound || modeofPaymentData != 'PINELABS'" >
+            <div class="col-lg-12 col-sm-3 col-12">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Amount</mat-label>
+                <input matInput autocomplete="off" type="number" [(ngModel)]="Amount">
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="row" style="display: flex; align-items: center;justify-content: center;"   *ngIf="!previousRecordsFound || modeofPaymentData != 'PINELABS'">
+            <div class="col-lg-6 col-sm-2 col-12" style="display: flex; align-items: center;justify-content: center;">
+                <label  style="padding-left: 5px;"><b>GL Code: </b>   <span style="padding-left: 5px;">{{GLCodeData}}</span></label>
+            </div>
+              
+            <div class="col-lg-6 col-sm-2 col-12" style="display: flex; align-items: center;">
+                <label  style="padding-left: 5px;"><b>House Of Bank: </b>  <span style="padding-left: 5px;">{{houseofBank}}</span></label>            
+            </div>
+          </div>
+          <hr />
+
+          <div class="row"  *ngIf="!previousRecordsFound"  >
+            <div class="col-lg-8">
+            </div>
+            <div class="col-lg-4 col-sm-2 col-12" style="display: flex; align-items: right;" >
+              
+              <button class="btn btn-success" style="width: 100% !important;" (click)="validatePaymentiPlanet()">Add Payment</button>
+            </div>
+          </div>
+  
+  
+        </div>
+
+        <div class="formcntr" style="padding: 20px;" *ngIf=" modeofPaymentData =='PAYTM'">
+          <div class="row">
+
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <b style="font-size: 17px !important;">PAYMENT</b>
+                </div>
+  
+                <div>
+                  <i class="Ux_close fa-duotone fa-circle-xmark" (click)="closePaymentPopUp()" ></i>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div class="row">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <h4 >Mode of Payment :- {{ modeofPaymentData }}</h4>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+  
+          <!-- MOP Extra Fields -->
+          <div class="row" >
+
+
+          <div  class="row">
+            
+            <!-- New Payment -->
+            <div class="col-12  mt-1">
+              <div class="d-flex p-2 justify-content-around" >
+                <div>
+                  <button  (click)="newPayment()" class="btn" style="background-color: rgb(113, 113, 251);border: none;color: white;">New Transaction</button>
+                </div>
+                <!-- [disabled]="!isNewTxnBtn" -->
+                <div>
+                  <button class="btn" style="background-color: rgb(255, 68, 68); border: none;color: white;" (click)="getPreviousPaytmEDCObj4Customer()">Previous made Transaction</button>
+                </div>
+              </div>
+            </div>
+ 
+              <div class="col-12  mt-1">
+                  <label>Select EDC Machine</label>
+                  <ng-select class="EDC-Machine" [items]="edcMachineObject" bindValue="PODDeviceName"
+                    bindLabel="PODDeviceName" [(ngModel)]="edcMachineName"></ng-select>
+              </div> 
+
+
+            <div class="col-12  mt-1">
+              <div *ngIf="previousRecordsFound">
+            
+                <div class="row">
+                  <label>Select Transaction</label><br>
+                  <ng-select [items]="previousEDCPaymentRecords" bindValue="TransactionReferenceID" [(ngModel)]="transactionNumber" 
+                  bindLabel="TEXT"></ng-select>
+                </div>
+                <div class="row">
+                  <div class="col-3">
+                  <button class="btnClass" (click)="callEDCStatus()">Get Status</button>
+                </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 mt-1" *ngIf="!previousRecordsFound">
+              <label>Payment Mode</label>
+              <ng-select class="paymentMode"
+              (change)="changePineLabsMOP()"
+              [items]="pinelabsPaymentArray.Data" bindValue="Id" bindLabel="TEXT"
+                [(ngModel)]="allowedPaymentMode"></ng-select>
+            </div> 
+
+          </div> 
+		      </div>
+  
+
+
+          <br/>
+          <div class="row"  *ngIf="!previousRecordsFound " >
+            <div class="col-lg-12 col-sm-3 col-12">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Amount</mat-label>
+                <input matInput autocomplete="off" type="number" [(ngModel)]="Amount">
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="row" style="display: flex; align-items: center;justify-content: center;"   *ngIf="!previousRecordsFound">
+            <div class="col-lg-6 col-sm-2 col-12" style="display: flex; align-items: center;justify-content: center;">
+                <label  style="padding-left: 5px;"><b>GL Code: </b>   <span style="padding-left: 5px;">{{GLCodeData}}</span></label>
+            </div>
+              
+            <div class="col-lg-6 col-sm-2 col-12" style="display: flex; align-items: center;">
+                <label  style="padding-left: 5px;"><b>House Of Bank: </b>  <span style="padding-left: 5px;">{{houseofBank}}</span></label>            
+            </div>
+          </div>
+          <hr />
+
+          <div class="row"  *ngIf="!previousRecordsFound "  >
+            <div class="col-lg-8">
+            </div>
+            <div class="col-lg-4 col-sm-2 col-12" style="display: flex; align-items: right;" >
+              
+              <button class="btn btn-success" style="width: 100% !important;" (click)="validatePaymentiPlanet()">Add Payment</button>
+            </div>
+          </div>
+  
+  
+        </div>
+
+
+
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+<!-- Manual Mode of payment  -->
+
+<div *ngIf="isManualPayment" class="container" style="margin: 2% auto !important;max-width: 40% !important;">
+
+
+
+  <div class="background">
+    <div class="Ux_popup popup" style="position: relative;">
+      <div *ngIf="isPaymentProcessing"
+        style="position: absolute;width: 100%; height: 100%;z-index: 9999;background: gray;opacity: 0.8;">
+        <span class="loader"></span>
+      </div>
+
+      <!-- ************************************** Manual POPUP  ************************************************ -->
+      <div class="card px-6 pb-6" style="width: 100%;margin: 3% auto;">
+
+        <div class="formcntr" style="padding: 20px;"
+          *ngIf="ModeOfManualPayment =='MANUALPAYTM' || ModeOfManualPayment =='MANUALPINELABS'">
+          <div class="row">
+
+
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div *ngIf="ModeOfManualPayment =='MANUALPAYTM'">
+                <b style="font-size: 17px !important;"> Manual Paytm Payment</b>
+              </div>
+              <div *ngIf="ModeOfManualPayment =='MANUALPINELABS'">
+                <b style="font-size: 17px !important;">Manual Pinelabs Payment</b>
+              </div>
+
+              <div>
+                <i class="Ux_close fa-duotone fa-circle-xmark" (click)="closeManualPayment()"></i>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div >
+            <label for=""> Payment Type</label>
+            <!-- <ng-select placeholder="Payment Type" [items]="ManualPaymentTypes" bindValue="ID" bindLabel="TEXT"
+              [(ngModel)]='ManualPaymentType'  (change)="ResetFiedlsOnChange()"> </ng-select> -->
+              <ng-select class="paymentMode"
+              (change)="changePineLabsMOP()"
+              [items]="pinelabsPaymentArray.Data" bindValue="Id" bindLabel="TEXT"
+                [(ngModel)]="ManualPaymentType"></ng-select>
+          </div>
+
+          <div *ngIf="ManualPaymentType == '1'">
+            <div class="mt-1">
+              <!-- <label>Card Type </label>  <br> -->
+              <ng-select style="width: 100%;" placeholder="Card Type" [items]="CardType"
+                [(ngModel)]="CardTypeData"></ng-select>
+            </div>
+
+            <div class="mt-1">
+              <label>Card Number </label>
+              <br>
+              <input style="width: 100%;" type="text" placeholder="Enter Card Number"  [(ngModel)] = "CardNo">
+            </div>
+            <div class="mt-2">
+              <label>Adjudication</label> <br>
+              <input style="width: 100%;" type="text" placeholder="Enter Adjudication"  [(ngModel)] = "Adjudication">
+            </div>
+            <div class="mt-2">
+              <label>Terminal Id </label> <br>
+              <input style="width: 100%;" type="text" placeholder="Enter Terminal Id" [(ngModel)] = "TerminalId">
+            </div>
+            <div class="mt-2">
+              <label>Amount</label> <br>
+              <input style="width: 100%;" type="number" placeholder="Enter Amount"  [(ngModel)]="Amount">
+            </div>
+          </div>
+          <div *ngIf="ManualPaymentType == '10'">
+            <div class="mt-2">
+              <label for="">UPI Transaction Number </label> <br>
+              <input type="text" style="width: 100%;" placeholder="Enter UPI Transaction Number"
+                [(ngModel)]="UPITransactionId">
+            </div>
+            <div class="mt-2">
+              <label>Amount</label> <br>
+              <input style="width: 100%;" type="number" placeholder="Enter Amount"  [(ngModel)]="Amount">
+            </div>
+
+          </div>
+
+          <div class="row mt-4" style="float: right;">
+            <div class="col-12">
+              <button class="btn btn-success" (click)="ValidateManualPayment(ManualPaymentType)">Add Payment</button>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

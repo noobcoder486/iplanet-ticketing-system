@@ -1,0 +1,65 @@
+
+    <div class="" >
+      <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+      </ngx-spinner>
+      <div class="card  pb-3" style="width: 50%;margin: 2% auto;" >
+          <div class="row">
+            <div class="col-12">
+              <div class="tabheader" style="display: flex;justify-content: space-between;">
+
+
+                <div>
+                <h3 style="font-size: 17px !important;">Diagnostic</h3> 
+                </div>
+
+                <div>
+                  <i (click)="isdiagnosticPopClose()" class="Ux_close  fa-duotone fa-circle-xmark"></i>
+                </div>
+                
+              </div>
+
+            </div>
+          </div>
+          <div class="row">
+          </div>
+          <div class="row" style="padding-bottom: 20px;padding-right: 20px;">
+            <div  class="col-sm-12 d-flex justify-content-end">
+            <button  (click)="fetch_DiagnosisStatus()" class="btn refreshBtn" style="float:right;margin-right: 16px;">Refresh </button>
+            <button  (click)="fetch_DiagnosisSuit()" class="btn btn-grad" style="float:right;margin-right: 16px;">Run Diagnostics </button>
+            <button  (click)="closeEvent()" class="btn refreshBtn" style="float:right;">Close </button>
+            </div>
+        
+          </div>
+          <hr>
+          <div class="">
+            <div class="scrollcntr" style="    max-height: 60vh;">
+              
+              <mat-card *ngFor="let item of DiagnosticData" style="margin:10px; border-radius:8px;">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <mat-card-content>
+                      <p> <b>{{item.suiteId}} - {{item.suiteName}} </b></p>
+                      <p *ngIf="!(item.testStatus ==undefined)">{{item.testStatus.suiteStatus}}</p>
+                    </mat-card-content>
+                  </div>
+                </div>
+            
+                  <div class="row">
+                  <div class="col-lg-3 col-sm-6">
+
+                    <button  (click)="run_Diagnostics(item)" class="btn btn-grad" style="float: right;" >Run Diagnostics </button>
+
+                </div>
+
+                <div *ngIf="showBar == item" style="padding-top: 10px;" >
+                  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+                </div>
+              </mat-card>
+          </div>
+      </div>
+    </div>
+    
+    
+    

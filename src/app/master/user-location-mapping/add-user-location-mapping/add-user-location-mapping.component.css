@@ -1,0 +1,20 @@
+
+.selected-locations-inline {
+    margin-top: 10px;
+}
+
+.selected-codes {
+    display: flex;
+    flex-wrap: wrap; 
+}
+
+.location-code {
+    display: flex;
+    flex-wrap: wrap; 
+    background-color: #f0f0f0;
+    margin-right: 10px;
+    margin-bottom: 10px; 
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block; 
+}

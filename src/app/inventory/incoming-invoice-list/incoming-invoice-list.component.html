@@ -1,0 +1,326 @@
+<ngx-spinner style="width: 100%; height: 100%; position: absolute;" size="medium" *ngIf="Spinner" [type]="typeSelected"  [fullScreen]="true">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<section class="content">
+  
+  <div class="container-fluid">
+
+
+
+
+
+
+    <div class="row">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="row">
+        <div class="col-sm-1">
+          <p style="font-size: 16px !important;color:black;font-weight: 600;">Incoming Invoices</p>
+        </div>
+        <div class="col-sm-1"  >
+          <div class="row" *ngIf="isApproverPermission == true">
+    
+            <div class="col-sm-12">
+                <div class="d-flex justify-content-end">
+                  <button [hidden]="!isApproverPermission" matTooltip="Enable Billing for Today"  class="btn btn-primary" 
+                  (click)="hideCashEnablePopUp = false"> 
+                  <span style="font-size: 12px !important; font-weight: 400;">Enable Billing</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-sm-10"  >
+          <div class="row" *ngIf="isApproverPermission == true">
+          
+            <div class="col-2">
+              <div class="form-group">
+                <label>Start Date</label><br>
+                <input class="form-control" type="date" [value]="StartDate" 
+                  [(ngModel)]="StartDate"  [max]="maxDate" [ngModelOptions]="{standalone: true}" />
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-group">
+                <label>Start time</label><br>
+                <input class="form-control" id="startTimeInput"  [(ngModel)]="StartTime"
+                  [ngModelOptions]="{standalone: true}" type="time" #startTimeInput />
+              </div>
+            </div>
+
+            <div class="col-2">
+              <div class="form-group">
+                <label>End Date</label><br>
+                <input class="form-control" type="date" [value]="EndDate" 
+                  [(ngModel)]="EndDate" [max]="maxDate" [ngModelOptions]="{standalone: true}" />
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="form-group">
+                <label>End time</label><br>
+                <input class="form-control" id="endTimeInput"  [(ngModel)]="EndTime"
+                  [ngModelOptions]="{standalone: true}" type="time" #endTimeInput />
+              </div>
+            </div>
+
+    
+            <div class="col-2 " style="display: flex;align-items: center;">
+              <button class="btnClass"   [disabled]="submitClicked"
+              appDebounceClick   [debounceTime]="2000"  (debounceClick)="GetSummary('')">Get Incoming Invoice Summary</button>
+            </div>
+        
+            <div class="col-sm-1">
+              <div style="margin-top: 15px; display: flex;align-items: center;">
+                <input type="file" id="fileInput" accept=".xls, .xlsx" style="display: none;" (change)="FileUploadSAPGrn($event)">
+                <button (click)="selectFile()" 
+                matTooltip="Bulk Upload SAP Grn Code/s" class="btn " style="width:40px; padding: 3px; border-radius: 4px;background-color: #233f76;">
+                <img src="assets/images/uploadNew.png">
+              </button>
+              </div>
+              </div>
+            <div class="col-sm-1">
+              <div style="margin-top: 15px; display: flex;align-items: left;">
+                <button class="btn btn-warning btn-download"  style="width:40px;height: 35px; padding: 3px; border-radius: 4px;background-color: #5cb945;" 
+                  matTooltip="Download Sample Excel" (click)="downloadSampleFile()" >
+                  <i style="color: white;" class="fa fa-download" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+       
+      </div>
+    </mat-card>
+    </div>
+
+    <mat-card>
+
+      <div class="row">
+
+        <div class="col-12" style="width: 100%;">
+          <div class="row"> 
+            <div class="col-lg-3 col-sm-5 col-md-5">
+              <b>Invoice Code:</b>&nbsp;<br>
+              <input type="text" placeholder="Invoice Code" style="width: 100%; border:1px solid rgb(194, 193, 193);border-radius:2px;height:35px" 
+              [(ngModel)]="InvoiceCode" />
+            </div>
+            <div class="col-lg-3 col-sm-5 col-md-5 justify-content-end">
+              <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Location </label>
+              <ng-select  [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+              [(ngModel)]="LocationCode" placeholder="" ></ng-select>
+            </div>
+            <div class="col-lg-3 col-sm-5 col-md-5 justify-content-end">
+              <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Incoming Status </label>
+              <ng-select  [items]="IncomingInvStatusDD.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+              [(ngModel)]="InvoiceStatus" placeholder="" ></ng-select>
+    
+            </div>
+
+            <div class="col-lg-1 col-sm-5 col-md-5 justify-content-end mt-3">
+
+              <div class="mt-2" style="display: flex;align-content: center;">
+                  <div><button class="btn btn-primary"  (click)="GetIncomingInvoiceList('')">Search</button></div>
+              </div>
+              
+            </div>
+          </div>
+
+        </div>
+ 
+      </div>
+
+
+
+
+
+    </mat-card><br />
+
+     
+       
+      <mat-card>
+        <div class="row">
+          <mat-card class="table-responsive">
+            <div  style="height: 400px;overflow: auto;overflow-x:auto;">
+              <table class="table" style="width: 100%;"> 
+                  <tr style="height: 30px !important;">
+                    <th class="Tableheader" scope="col">Invoice Code</th>
+                    <th class="Tableheader"  scope="col">Invoice Date</th>
+                    <th class="Tableheader"  scope="col">Lock Date</th>
+                    <th class=" Tableheader"  scope="col">Invoice Status</th>
+                    <th class=" Tableheader"  scope="col">Location Code</th>
+                    <th class=" Tableheader"  scope="col">Purchase Order No</th>
+                    <th class=" Tableheader"  scope="col">Invoice Type</th>
+                    <th class=" Tableheader"  scope="col">Serial Nos</th>
+                    <th class=" Tableheader"  scope="col">Total Net Amount</th>
+                    <th class=" Tableheader"  scope="col">Remark</th>
+                    <th class=" Tableheader"  scope="col">Ship To GSX Code</th>
+                    <th class=" Tableheader"  scope="col">SAP GRN No</th>
+                    <th *ngIf="isApproverPermission == true"
+                     class="Tableheader" style="width: 10%;height: 30px !important;" scope="col">Update SAP GRN No</th>
+                  </tr> 
+                <tbody>
+                  <tr *ngFor="let item of IncomingInvoiceList">
+                    <td><a class="tableBody" (click)="onClick(item)">{{item.InvoiceCode}}</a>
+                    </td>
+                    <td> <span>{{item.InvoiceDate | date: 'dd/MM/YYYY : hh:mm a'}} </span></td>
+                    <td>  <span>   <a (click)="LockDatePopUp(item)" [style.color]="getDateDifference(item.InvoiceDate, item.LockDate)">  {{ item.LockDate | date: 'dd/MM/yyyy' }}</a></span></td>
+                    <td> <span> {{ item.InvoiceStatusDesc}} </span></td>
+                    <td> <span> {{item?.LocationCode}} </span></td>
+                    <td> <span> {{item?.PurchaseOrderNumber}} </span></td>
+                    <td> <span> {{item?.InvoiceTypeDescription}} </span></td>
+                    <td> <span>{{ item?.SerialNos}}</span></td>
+                    <td> <span> {{item?.TotalNetAmount}} </span></td>
+                    <td> <span> {{item?.Remark}} </span></td>
+                    <td> <span> {{item?.ShipToGsxCode}} </span></td>
+                    <td> <span>{{ item?.SAPGrnCode}}</span></td>
+
+                    <td ><button  class="x_final_button x_active_btn x_save_button" *ngIf="item.InvoiceStatus == 'SERIALNOUPDATED' && isApproverPermission == true" 
+                      style="float: right; height: 40px; width: 50px" 
+                      (click)="openDialog(item)"> Update SAP</button> 
+                      <ng-template #callUpdateDialog>
+                        <mat-card>
+                          <h1 mat-dialog-title><b>Update SAP</b></h1>
+                          <div mat-dialog-content>
+                            <label>SAP Grn Code:</label>&nbsp;<br>
+                            <input 
+                            mat-input
+                            type="text" placeholder="Enter SAP Grn Code" style="border:1px solid rgb(194, 193, 193);border-radius:5px;height:35px" 
+                            [(ngModel)]="SAPGrnCode" />
+                          </div>
+                          <div mat-dialog-actions>
+                            <button style="background-color: rgb(253, 201, 201) !important; "  mat-button matDialogClose="no">Cancel</button>
+                            <button style="background-color: rgb(185, 185, 189) !important" mat-button matDialogClose="yes">Submit</button>
+                          </div>  
+                        </mat-card>
+                      </ng-template>
+
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+        </mat-card>
+
+       
+      </div>
+      </mat-card>
+     
+
+      <mat-card>
+        <div style="display: flex; align-items: center; justify-content: end;">
+          <span style="margin: 0 10px;">{{currentRange}}</span>
+      
+          <button class="btn mt-2 arrow-button" (click)="onPreviousPage()">
+            <span class="fa fa-arrow-left" aria-hidden="true"></span>  Previous 
+          </button>
+      
+          <ng-select [items]="options" [(ngModel)]="UpdatedpageSize" (change)="togglePageSize()"></ng-select>
+      
+          <button class="btn mt-2 arrow-button" (click)="onNextPages()">
+              Next <span class="fa fa-arrow-right" aria-hidden="true"></span>
+          </button>
+      </div>
+      </mat-card>
+     
+  </div>
+</section>
+
+
+<!-- Enable Cash Deposit Popupp Starts Here -->
+<div class="container" style="  width: 50% !important;  margin: 2% auto !important;max-width: 61% !important;">
+  <div class="background" [hidden]="hideCashEnablePopUp">
+    <div class="Ux_popup popup" style="position: relative; width: 50% !important;">
+  
+    <!-- ************************************** POPUP  ************************************************ -->
+    <mat-card>
+      <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+      </ngx-spinner>
+    
+      <div>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <b style="font-size: 17px !important;">Enable Billing for Today</b>
+          </div>
+          <div>
+            <i class="Ux_close fa-duotone fa-circle-xmark" (click)="hideCashEnablePopUp = true"></i>
+          </div>
+        </div>
+      </div>
+      <hr>
+    
+
+     
+      <div>
+        <div class="row" style="display: flex; align-items: center; justify-content: space-between;">
+          <div class="col-12 locationDiv">
+            <label style="font-weight:600; padding-bottom: 0%; padding-bottom: 2%;">Location</label>
+            <div style="margin-top: 10px;">
+              <input type="checkbox" [(ngModel)]="selectAll" (change)="toggleSelectAll()" />
+              <label style="font-weight:600;">Select All Locations</label>
+            </div>
+            <ng-select [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id" [(ngModel)]="MultipleLocationCode" placeholder="" [multiple]="true"></ng-select>
+           
+          </div>
+          <div class="col-12">
+            <label style="font-weight:600; padding-bottom: 0%; padding-bottom: 2%;">Remark</label>
+            <textarea rows="4" style="width: 100%;" cols="50" maxlength="4000" [(ngModel)]="ReasonForUnlock" placeholder="Write Your Remarks here:-"></textarea>
+          </div>
+          <br>
+          <div class="col-12" style="padding-right: 20px; display: flex; align-items: center; justify-content: center;">
+            <button class="x_final_button x_active_btn x_save_button" (click)="enableBilling()">Enable</button>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  
+  </div>
+  </div>
+</div>
+
+
+<!-- Lock Date Update PopUp  -->
+ <div class="popup-overlay" *ngIf="ShowLockDatePopUp">
+  <mat-card class="popup-card">
+    <div>
+        <p>Update Locked Date</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      
+      <div style="display: flex; flex-direction: column; ">
+        <label>Invoice Code</label>
+        <input disabled="true" type="text" [(ngModel)]="CurrentInvoiceCode">
+      </div>
+      <div style="display: flex; flex-direction: column; ">
+        <label>Location Code</label>
+        <input disabled="true" type="text" [(ngModel)]="CurrentLocationCode">
+      </div>
+
+      <div style="display: flex; flex-direction: column; ">
+        <label>Invoice Date</label>
+        <input disabled="true" type="text" [(ngModel)]="CurrentInvoiceDate">
+      </div>
+
+      <div style="display: flex; flex-direction: column; ">
+        <label>Current Locked Date</label>
+        <input  disabled="true" type="text" [(ngModel)]="CurrentLockDate">
+      </div>
+
+      <mat-form-field appearance="fill" style="display: flex; flex-direction: column;"> 
+                <mat-label>UpDated Lock Date</mat-label>
+                <input matInput [matDatepicker]="Picker" [(ngModel)]="UpdatedLockDate" placeholder="Updated Date" >
+                <mat-datepicker-toggle matSuffix [for]="Picker"></mat-datepicker-toggle>
+                <mat-datepicker #Picker></mat-datepicker>
+             
+      </mat-form-field>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn btn-warning" (click)="CloseLockDatePopUp()">Close</button>
+        <button class="btn btn-success" (click)="UpdateInvoiceLockDate()">Update</button>
+      </div>
+
+    </div>
+  </mat-card>
+</div>

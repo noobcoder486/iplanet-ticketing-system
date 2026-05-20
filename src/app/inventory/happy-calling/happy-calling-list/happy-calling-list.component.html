@@ -1,0 +1,119 @@
+<ngx-spinner style="width: 100%; height: 100%; position: absolute;" size="medium" *ngIf="Spinner" [type]="typeSelected"  [fullScreen]="true">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+  
+  <section class="content">
+    
+    <div class="container-fluid">
+  
+  
+  
+  
+  
+  
+      <div class="row mt-4">
+        <mat-card>
+          <div class="row">
+           <div class="col-12" style="width: 100%;">
+             <div class="row">
+               <div class="col-lg-6 col-sm-3 col-md-3">
+                 <p style="font-size: 16px !important;color:black;font-weight: 600;">Happy Calling List</p>
+               </div>
+            
+               <div class="col-lg-2 col-sm-3 col-md-3 justify-content-end">
+                 <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Location </label>
+                 <ng-select [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                   [(ngModel)]="LocationCodeForExport" placeholder=""></ng-select>
+               </div>
+     
+               <div class="col-lg-2 col-sm-3 col-md-3">
+                 <mat-form-field appearance="fill">
+                   <mat-label style="padding-top: 3px;">Enter a date range</mat-label>
+     
+                   <div style="display: flex;align-items: center;justify-content: space-between;">
+                     <div> 
+                       <mat-date-range-input [rangePicker]="picker">
+                         <input matStartDate [(ngModel)]="StartDate" placeholder="Start date">
+                         &nbsp;&nbsp; <!-- Adds a quick and simple space --> 
+                         <input matEndDate [(ngModel)]="EndDate" placeholder="End date">
+                       </mat-date-range-input>
+                     </div>
+     
+                     <div>
+                       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                       <mat-date-range-picker #picker></mat-date-range-picker>
+                     </div>
+                   </div>
+                 </mat-form-field>
+               </div>
+     
+               <div class="col-lg-2 col-sm-3 col-md-3 justify-content-end mt-3">
+                 <div class="mt-2" style="display: flex;align-content: center;">
+                   <button class="btn btnClass" style="height: 30px; display: flex; align-items: center;"
+                   (click)="exportHappyCallingData()">Export </button>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </mat-card>
+      </div>
+  
+      <mat-card>
+  
+        <div class="row mt-6">
+  
+          <div class="col-12" style="width: 100%;">
+            <div class="row"> 
+              <div class="col-lg-3 col-sm-5 col-md-5">
+                <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Happy Calling Status </label>
+                <ng-select  [items]="StatusDD" 
+                [(ngModel)]="LeadStatus" placeholder="" ></ng-select>
+              </div>
+              <div class="col-lg-3 col-sm-5 col-md-5">
+                <b>Mobile No:</b>&nbsp;<br>
+                <input type="text" placeholder="Mobile No" style="width: 100%; border:1px solid rgb(194, 193, 193);border-radius:2px;height:35px" 
+                [(ngModel)]="MobileNo" />
+              </div>
+              <div class="col-lg-3 col-sm-5 col-md-5 justify-content-end">
+                <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Location </label>
+                <ng-select  [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                [(ngModel)]="LocationCode" placeholder="" ></ng-select>
+              </div>
+              <div class="col-lg-3 col-sm-5 col-md-5">
+                <b>Case Id:</b>&nbsp;<br>
+                <input type="text" placeholder="CaseId" style="width: 100%; border:1px solid rgb(194, 193, 193);border-radius:2px;height:35px" 
+                [(ngModel)]="CaseId" />
+              </div>
+  
+              <div class="col-lg-1 col-sm-5 col-md-5 justify-content-end mt-3">
+  
+                <div class="mt-2" style="display: flex;align-content: center;">
+                    <div><button class="btn btn-primary"  (click)="GetLeadManagementList('')">Search</button></div>
+                </div>
+                
+              </div>
+            </div>
+  
+          </div>
+   
+        </div>
+      </mat-card><br />
+  
+       
+   
+       
+  
+      <mat-card class="m-0 p-0">
+        <div class="row clearfix" >
+          <div class="table-responsive">
+            <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+            [hideSpinnerEvents]="jobListHideSpinnerEvent" (actionEvent)="actionEmit($event)"
+            [isAllowSelect]="false" (changeEvent)="PageChange($event)">
+            </nitc-grid>
+          </div>
+        </div>
+      </mat-card>
+       
+    </div>
+  </section>

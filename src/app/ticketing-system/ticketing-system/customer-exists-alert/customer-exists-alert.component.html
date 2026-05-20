@@ -1,0 +1,36 @@
+<div class="alert-dialog-container">
+  <span class="d-flex justify-content-end">
+    <mat-icon style="color: white;
+    background-color: red;
+    border-radius: 10px;" (click)="closePopUp()">close</mat-icon>
+  </span>
+  <div class="alert-icon-wrap">
+    <div class="alert-icon">
+      <mat-icon>person_search</mat-icon>
+    </div>
+  </div>
+
+  <h2 class="alert-title">Customer Found</h2>
+  <p class="alert-subtitle">
+    A customer record already exists for this ticket's contact.<br />
+    Would you like to link the existing customer or create a new one?
+  </p>
+
+  <div class="customer-preview-chip">
+    <mat-icon class="chip-icon">account_circle</mat-icon>
+    <span class="chip-name">{{ data.customer?.FirstName }} {{ data.customer?.LastName }}</span>
+    <span class="chip-code">{{ data.customer?.CustomerCode }}</span>
+  </div>
+
+  <div class="alert-actions">
+    <button class="btn-secondary" (click)="onAddNew()">
+      <mat-icon>person_add</mat-icon>
+      Create New
+    </button>
+    <button class="btn-primary" (click)="onMapExisting()">
+      <mat-icon>link</mat-icon>
+      Map Existing
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,59 @@
+<style>
+    input[type=checkbox] {
+        transform: scale(1.5);
+    }
+</style>
+<div class="content-header">
+    <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+    <div class="card px-3 pb-3">
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="tabheader">
+                    <h3>Repair Detail Billable flag Reset </h3>
+                </div>
+            </div>
+        </div>
+         
+        <div class="row">
+
+            <div class="col-lg-6">
+                <label>Diagnosis Code</label> <br>
+                <input style="width: 100%; margin-top: 3px; height: 29px;" [disabled]="true" type="text" [(ngModel)]="DiagnosisCode">
+            </div>
+
+            <div class="col-lg-6">
+                <ng-select
+                 placeholder="Select Billable Repair"
+                 [items]="DiagnosisBillableFlagList"
+                 bindValue="Id"
+                 bindLabel="TEXT"
+                 [(ngModel)]="SelectedBillableRepair"
+                 style="width: 100%;"
+                >
+                </ng-select>
+            </div>
+            <div class="col-lg-12">
+                <label>Remark </label> <br>
+                <input style="width: 100%; margin-top: 3px; height: 29px;" [(ngModel)]="Remark" placeholder="Eneter Remarks here ">
+            </div>
+
+        </div>
+
+
+
+        <div class="row mt-3">
+            <div class="col-lg-5"></div>
+            <div class="col-lg-1">
+                <button class="btn btn-success" (click)="ResetDiagnosisBillableFlag()">Save</button>
+            </div>
+            <div class="col-lg-1">
+                <button class="btn btn-warning" (click)="CloseResetDiagnosisBillableFlagPopup()"> Cancel </button>
+            </div>
+            <div class="col-lg-5"></div>
+
+
+        </div>
+    </div>
+</div>

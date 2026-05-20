@@ -1,0 +1,76 @@
+<section class="content">
+     <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-clip-rotate" [fullScreen]="true">
+        <p style="color: white"> Loading... </p>
+    </ngx-spinner>
+
+    <mat-card>
+        <div class="row" style="display: flex; align-items: center;">
+            <div class="col-lg-8">
+                <h2><strong style="font-size: 19px !important;">Tote Report</strong></h2>
+
+            </div>
+            <div class="col-lg-2 d-flex flex-column align-items-end">
+                <button class="btn" style="background-color: #0d6efd; color: #ffffff;" (click)="GetToteReport()">Generate Report</button>
+            </div>
+            <div class="col-lg-2 d-flex flex-column align-items-end">
+                <button class="btn btn-success" (click)="ExportToteReport()">Export Report</button>
+            </div>
+        </div>
+    </mat-card>
+
+    <mat-card class="mt-2">
+        <div class="row">
+            <div class="col-sm-3 col-lg-2 col-md-3">
+                <ng-select [ngModelOptions]="{standalone: true}" [items]="LocationForJob.Data" [(ngModel)]="LocationCode"
+                    bindLabel="TEXT" bindValue="Id" placeholder="LocationCode"></ng-select>
+            </div>
+            <div class="col-2">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>Tote No.</mat-label>
+                    <input matInput [(ngModel)]="ToteNo" name="ToteNo">
+                </mat-form-field>
+            </div>
+            <div class="col-sm-3 col-lg-2 col-md-3">
+                 <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label>BulkReturnId</mat-label>
+                    <input matInput [(ngModel)]="BulkReturnId">
+                </mat-form-field> 
+            </div>
+
+            <div class="col-lg-4 d-flex" style="gap: 20px;">
+                <mat-form-field appearance="fill" style="width: 47%;">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="startPicker" [(ngModel)]="StartDate" name="StartDate"
+                        placeholder="Start date">
+                    <mat-datepicker-toggle matTooltip="Select Start Date" matSuffix
+                        [for]="startPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill" style="width: 47%;">
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="endPicker" [(ngModel)]="EndDate" name="EndDate"
+                        placeholder="End date">
+                    <mat-datepicker-toggle matTooltip="Select End Date" matSuffix
+                        [for]="endPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-card>
+
+    <mat-card class="mt-2">
+
+        <mat-card class="m-0 p-0">
+            <div class="row clearfix" *ngIf="columns.length > 0">
+                <div class="table-responsive">
+                    <nitc-grid [gridcolumns]="columns" [dataSource]="detail" (actionEvent)="actionEmit($event)"
+                        [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent"
+                        (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+                    </nitc-grid>
+                </div>
+            </div>
+        </mat-card>
+
+    </mat-card>
+</section>

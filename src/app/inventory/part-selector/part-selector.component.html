@@ -1,0 +1,94 @@
+<style>
+    input[type=checkbox] {
+      transform: scale(1.5);
+  }
+  </style>
+  
+
+  <div class="content-header" >
+    <ngx-spinner size="medium" [type]="typeSelected">
+      <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+      <div class="card px-6 pb-6"  >
+        <div class="row" >
+          <div class="col-12"> 
+          <div class="tabheader" style="display: flex;justify-content: space-between;">
+               <div>
+            <h3>Part Selector</h3> 
+            </div> 
+          </div>
+          </div>
+        </div>
+        <div class="row" style="align-items: center; padding-left:10px;">
+          <div class="col-sm-5">
+            <ng-select placeholder="Product Category" (change)="onProductName($event)" [(ngModel)]="productCategory" [items]="ProductCategory.Data" bindLabel="TEXT" bindValue="Id" [ngModelOptions]="{standalone: true}">
+            </ng-select>
+             
+          </div>
+          <div class="col-sm-5">
+            <ng-select placeholder="Product Name"  [(ngModel)]="productName" (search)="onProductName($event)" [items]="ProductName.Data" bindLabel="TEXT" bindValue="TEXT">
+            </ng-select>
+          </div>
+          <div class="col-sm-2 mt-2">
+            
+              <i  (click)="getPartSummaryData()" style="border: 2px solid black;font-size: 13px;border-radius: 7px;padding: 6px;" class="fa-solid fa-magnifying-glass"></i>
+          </div>
+        </div>
+        <div class="row" style="padding-left:10px;">
+          <div class="col-sm-11">
+            <mat-form-field appearance="fill">
+              <mat-label>Search</mat-label>
+              <input [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)"  matInput>
+            </mat-form-field>
+          </div>
+          <div  class="col-sm-1">
+          </div>
+        </div>
+        <div class="row" style="padding: 10px;">
+          <div class="scrollcntrDiv">
+  
+              <div  class="items_details_grid" >
+                <table class="table table-success table-striped table-wrap">
+                  <thead style="    position: sticky; top: 0; z-index: 1;">
+                    <tr style="height: auto !important;">
+                      <th style="width: 1%;" scope="col"></th>
+                      <th style="width: 10%;" scope="col">Preview</th>
+                      <th style="width: 15%;" scope="col">Part Code</th>
+                      <th style="width: 44%;" scope="col">Part</th>
+                      <th style="width: 15%;"scope="col">Type</th>
+                      <th style="width: 15%;"scope="col">Stock Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of partList" [ngClass]="{ 'selectedTr': item.selected == true, 'hide': isToShowTr(item) != true}">
+                      <td style="width: 1%; "><input type="checkbox" [(ngModel)]="item.selected" (change)="UpdateSelectedCount()"/></td>
+                      <td style="width: 10%; "> <img width="45px" src={{item.imageUrl}}/></td>
+                      <td style="width: 15%; "> <span> {{ item.partNumber}} </span></td>
+                      <td style="width: 44%; "> <span> {{ item.description}} </span></td>
+                      <td style="width: 15%; "> <span>{{ item.typeDescription}}</span></td>
+                      <td style="width: 15%; "> <span>{{ item.stockPrice}}</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+           
+          </div>
+        </div>
+       
+        <br />
+        <div class="row">
+          <div class="col-12 text-right">
+  
+            <div class="col-12 d-flex justify-content-end">
+              <span> ({{ SelectedPartCount }}) Parts Selected &nbsp; &nbsp; &nbsp; </span>
+              <span><input type="checkbox" [(ngModel)]="showonlyselected" /> Show Selected  &nbsp; &nbsp; &nbsp; </span>
+              <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onSubmit()" >Submit</button>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  
+  

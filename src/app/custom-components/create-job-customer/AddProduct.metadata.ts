@@ -1,0 +1,60 @@
+export class AddProduct {
+  JobType: String;
+  ServiceType: String;
+  CustomerVoice: String;
+  CREVoice: String;
+  ProductTypeValues: String;
+  SerialNo: String;
+  coverageStartDate: string
+  JobWarranty: String;
+  ImageUrl: String;
+  GsxWarrantyStatusCode: String;
+  GsxWarrantyStatusDescription: String;
+  ConfigCode: String;
+  ConfigDescription: String;
+  PurchaseDate: Date;
+  ProductVersion: String;
+  OnsiteCoverage: boolean;
+  LaborCovered: boolean;
+  TableReplacement:string;
+  PartnerList: string;
+  DataBackup: string;
+  PartCovered: boolean;
+  DeviceCoverageDetails: String;
+  Imei: String;
+  Meid: String;
+  ProductDescription: String;
+  RetailCustomerCode: String;
+  locationcode: String;
+  ConfigurationCode: String;
+  ConfigurationDescription: String;
+  SoldToName: String;
+  FirstActivationDate: String;
+  PopDate: String;
+  CoverageStartDate: String;
+  CoverageEndDate: String;
+  ElsStatus: String;
+  ComplainDesc: String;
+  Remark: String;
+  AttachmentList: any;
+  JobStatus: String;
+  PurchaseCountryCode: String;
+  PurchaseCountryDesc: String;
+  TestingSroringData: any;
+  BillingOptionX: String;
+  BillingOptions: String;
+  LocationCode: any;
+  ChecklistE:any;
+  ChecklistDescription: any
+  checklistTotalvalues: any[]
+  Condition: String
+  DetailCondition: String
+  CustomerCompanyName: String
+  // SelectedProduct:String
+  TechnicianRemark: string
+  EstimatedServiceCharges : number
+  EstimatedPartsCost: number
+  PouchNo: string
+  MembershipCardNo: string
+  SecurityNo: string
+}

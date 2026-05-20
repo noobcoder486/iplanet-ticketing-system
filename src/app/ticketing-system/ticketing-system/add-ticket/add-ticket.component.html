@@ -1,0 +1,143 @@
+<section class="at-wrap">
+
+  <!-- Header -->
+  <div class="at-header">
+    <div class="at-header-left">
+      <div class="at-header-icon">
+        <i class="fa fa-ticket-alt"></i>
+      </div>
+      <div>
+        <h2 class="at-title">{{ formTitle }} Ticket</h2>
+        <p class="at-subtitle">Fill in the details below to {{ formTitle === 'Create' ? 'open a new support ticket' :
+          'update this ticket' }}</p>
+      </div>
+    </div>
+    <button class="at-close-btn" type="button" (click)="onCancel()" matTooltip="Close">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="addTicketForm" (ngSubmit)="onSubmit()" autocomplete="off" class="at-form">
+
+    <!-- Row 1: Name + Phone -->
+    <div class="at-row">
+
+      <div class="at-field">
+        <label class="at-label">
+          <i class="fa fa-user at-label-icon"></i>
+          Customer Name
+        </label>
+        <input type="text" class="at-input" placeholder="Enter full name" formControlName="customerName"
+          [class.at-input--error]="addTicketForm.get('customerName')?.touched && addTicketForm.get('customerName')?.invalid" />
+        <div class="at-error"
+          *ngIf="addTicketForm.get('customerName')?.touched && addTicketForm.get('customerName')?.invalid">
+          <i class="fa fa-exclamation-circle"></i>
+          <span *ngIf="addTicketForm.get('customerName')?.errors?.['required']">Customer name is required</span>
+          <span *ngIf="addTicketForm.get('customerName')?.errors?.['minlength']">Minimum 3 characters required</span>
+        </div>
+      </div>
+
+      <div class="at-field">
+        <label class="at-label">
+          <i class="fa fa-phone at-label-icon"></i>
+          Customer Phone
+        </label>
+        <input type="text" class="at-input" placeholder="10-digit mobile number" formControlName="customerNo"
+          [class.at-input--error]="addTicketForm.get('customerNo')?.touched && addTicketForm.get('customerNo')?.invalid" />
+        <div class="at-error"
+          *ngIf="addTicketForm.get('customerNo')?.touched && addTicketForm.get('customerNo')?.invalid">
+          <i class="fa fa-exclamation-circle"></i>
+          <span *ngIf="addTicketForm.get('customerNo')?.errors?.['required']">Phone number is required</span>
+          <span *ngIf="addTicketForm.get('customerNo')?.errors?.['pattern']">Enter a valid 10-digit number</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Row 2: Email + Status -->
+    <div class="at-row">
+
+      <div class="at-field">
+        <label class="at-label">
+          <i class="fa fa-envelope at-label-icon"></i>
+          Customer Email
+        </label>
+        <input type="email" class="at-input" placeholder="email@example.com" formControlName="customerEmail"
+          [class.at-input--error]="addTicketForm.get('customerEmail')?.touched && addTicketForm.get('customerEmail')?.invalid" />
+        <div class="at-error"
+          *ngIf="addTicketForm.get('customerEmail')?.touched && addTicketForm.get('customerEmail')?.invalid">
+          <i class="fa fa-exclamation-circle"></i>
+          <span *ngIf="addTicketForm.get('customerEmail')?.errors?.['required']">Email is required</span>
+          <span *ngIf="addTicketForm.get('customerEmail')?.errors?.['email']">Enter a valid email address</span>
+        </div>
+      </div>
+
+      <div class="at-field">
+        <label class="at-label">
+          <i class="fa fa-tag at-label-icon"></i>
+          Ticket Status
+        </label>
+        <div class="at-status-wrap">
+          <span class="at-status-dot"></span>
+          <input type="text" class="at-input at-input--readonly" formControlName="ticketStatus" readonly />
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Subject -->
+    <div class="at-field at-field--full">
+      <label class="at-label">
+        <i class="fa fa-heading at-label-icon"></i>
+        Ticket Subject
+      </label>
+      <input type="text" class="at-input" placeholder="Brief summary of the issue" formControlName="ticketSubject"
+        [class.at-input--error]="addTicketForm.get('ticketSubject')?.touched && addTicketForm.get('ticketSubject')?.invalid" />
+      <div class="at-error"
+        *ngIf="addTicketForm.get('ticketSubject')?.touched && addTicketForm.get('ticketSubject')?.invalid">
+        <i class="fa fa-exclamation-circle"></i>
+        <span *ngIf="addTicketForm.get('ticketSubject')?.errors?.['required']">Subject is required</span>
+        <span *ngIf="addTicketForm.get('ticketSubject')?.errors?.['minlength']">Minimum 5 characters required</span>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="at-field at-field--full">
+      <label class="at-label">
+        <i class="fa fa-align-left at-label-icon"></i>
+        Ticket Description
+      </label>
+      <textarea class="at-input at-textarea" rows="4" placeholder="Describe the issue in detail..."
+        formControlName="ticketDescription"
+        [class.at-input--error]="addTicketForm.get('ticketDescription')?.touched && addTicketForm.get('ticketDescription')?.invalid"></textarea>
+      <div class="at-error"
+        *ngIf="addTicketForm.get('ticketDescription')?.touched && addTicketForm.get('ticketDescription')?.invalid">
+        <i class="fa fa-exclamation-circle"></i>
+        <span *ngIf="addTicketForm.get('ticketDescription')?.errors?.['required']">Description is required</span>
+        <span *ngIf="addTicketForm.get('ticketDescription')?.errors?.['minlength']">Minimum 10 characters
+          required</span>
+      </div>
+    </div>
+
+    <!-- Global error -->
+    <div class="at-global-error" *ngIf="errorMessage">
+      <i class="fa fa-exclamation-triangle"></i>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Footer actions -->
+    <div class="at-footer">
+      <button type="button" class="at-btn at-btn--cancel" (click)="onCancel()">
+        <i class="fa fa-times"></i>
+        Cancel
+      </button>
+      <button type="submit" class="at-btn at-btn--submit" [disabled]="addTicketForm.invalid">
+        <i class="fa fa-check-circle"></i>
+        {{ formTitle === 'Create' ? 'Create Ticket' : 'Update Ticket' }}
+      </button>
+    </div>
+
+  </form>
+
+</section>

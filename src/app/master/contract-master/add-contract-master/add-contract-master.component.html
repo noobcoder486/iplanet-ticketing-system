@@ -1,0 +1,336 @@
+
+<section class="content ">
+    <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+        <div class="row">
+            <div class="col-lg-5 col-sm-12">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-6 col-6 "
+                        style=" border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+                        <div class="mt-1" style=" padding-right: 15px;">
+                            <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+                        </div>
+                        <div class="mt-1">
+                            <h3><span style="color: black;font-size: 14px; " title=""><b>Contract Id </b></span></h3>
+                            <div class="mt-1">
+                                <h4><span style="color: blue ;font-size: 14px; font-weight: 600; " title="">
+                                        {{deliveryChallanNo == null || deliveryChallanNo == undefined ? 'NA' :
+                                        deliveryChallanNo}}</span> </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-6 ">
+                        <div class="JobTypeDesc"
+                            style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+                            <h3><span style="color: black;font-size: 14px; font-weight: 500; "><b>Contract</b></span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 col-sm-12">
+                <div class="row" style="align-items: center;">
+                    <div class="col-lg-3 col-sm-4 col-4">
+                        <!-- inside Box -->
+                        <div *ngIf="deliveryChallanNo!=undefined">
+                            <!--<h4><span style="color: black;font-size: 14px; font-weight: 500; ">New</span></h4>-->
+                            <ng-select style="margin-top: -15px;" [items]="printTypeArray" bindLabel="TEXT"
+                                bindValue="Id" [(ngModel)]="printTypeData"></ng-select>
+
+                        </div>
+                    </div>
+                    <!-- Print Button -->
+                    <div class="col-lg-2 col-sm-2 col-2 ">
+                        <!-- inside Box -->
+                        <div *ngIf="deliveryChallanNo!=undefined"
+                            style="text-align: center; border-right: 1px solid rgb(112, 111, 111);margin-top: -15px;">
+                            <button class="btnClass" (click)="printDocument()">Print</button>
+                            <!--<h4><span style="color: black;font-size: 14px; font-weight: 500; ">{{deliveryChallanNo}}</span></h4>-->
+                        </div>
+                    </div>
+
+                    <!-- Print Button -->
+                    <!-- <div class="col-lg-3 col-sm-2 col-2 ">
+                        <div *ngIf="deliveryChallanNo!=undefined"
+                            style="text-align: center; border-right: 1px solid rgb(112, 111, 111);margin-top: -15px;">
+                            <h3><span style="color: black;font-size: 14px; font-weight: 600; "
+                                    title="Bulk Return Order Status">Status:-</span> {{ ApprovalStatus == 'SHPCF' ?
+                                'SHIPMENT COMPLETED' : (ApprovalStatus =='INTR' ? 'In Transit' : ApprovalStatus) }}
+                            </h3>
+
+                        </div>
+                    </div> -->
+                    <div class="col-lg-4 col-sm-2 col-2 ">
+                        <div *ngIf="deliveryChallanNo!=undefined" style="text-align: center;margin-top: -15px; ">
+                            <h3><span style="color: black;font-size: 14px; "><b>Created Date:-</b> {{ CreatedDate |
+                                    date: 'dd/MM/yyyy' }}</span></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" style="padding: 10px 10px 15px;">
+        <div class="col-12 card-container">
+            <div class="col-lg-12 col-sm-12">
+                <!-- Contract Details -->
+                <div class="col-lg-12 col-sm-12 card-section">
+                    <div class="section-header" style="font-size: 16px !important;color:black;font-weight: 600;">
+                        Contract Details</div>
+                    <div class="main-content">
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-3 col-md-3 dropdown-container">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <input type="text" class="x_input" matInput placeholder="Contract Code"
+                                        [(ngModel)]="contractCode" name="contractCode">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3 col-sm-3 col-md-3 dropdown-container">
+                                <mat-form-field class="example-full-width" appearance="outline">
+                                    <input type="text" class="x_input" matInput placeholder="Contract Name"
+                                        [(ngModel)]="contractName" name="contractName">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-lg-3 col-sm-3 col-md-3 dropdown-container">
+                                    <label>Expiry Date <i style="color:red">*</i></label><br>
+                                    <input class="form-control" type="date" [value]="ExpiryDate" 
+                                      [(ngModel)]="ExpiryDate"  />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================BULK RETURN ORDER DETAILS PARTS -->
+    <div class="row">
+        <div class=" col-12">
+            <div class="col-lg-12 col-sm-12"
+                style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+                <!-- Order Heading -->
+                <div
+                    style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;border-top-left-radius: 5px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-size: 16px !important;color:black;font-weight: 600;">Service Details</span>
+                        </div>
+                        <div>
+                            <button *ngIf="ApprovalStatus == 'NEW'" (click)="showAddParts()" class="btnClass">Add Service</button>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Order Content -->
+                <div>
+                    <div class="MainDiv" style="padding: 10px;">
+                        <div class="row">
+                            <div class="scrollcntr" style="height: 270px;">
+                                <div class="contents" style="overflow: auto;height: 268px;">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 1%;" scope="col">Sr. No.</th>
+                                                <th style="padding-right: 50px;background-color: rgb(96, 96,96);"> Service Type Code
+                                                </th>
+                                                <th style="padding-right: 50px;text-align: center;background-color: rgb(96, 96,96);">
+                                                    Service Type Description</th>
+                                                <th style="padding-right: 50px;text-align: center;background-color: rgb(96, 96,96);">
+                                                    Max Quantity Allowed</th>
+                                                <th style="padding-right: 50px;text-align: center;background-color: rgb(96, 96,96);">
+                                                    Max Value Allowed</th>
+                                                <th *ngIf="ApprovalStatus == 'NEW' "
+                                                    style="padding-right: 50px;z-index: 1;background-color: rgb(96, 96,96);">
+                                                    Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of finalSelectedParts; let index = index">
+                                                <td [ngClass]="{'tableRow':item.IsDeleted == 1 }"
+                                                    style="text-align: center !important;"> <span>{{ index + 1 }}
+                                                    </span></td>
+                                                <td [ngClass]="{'tableRow':item.IsDeleted == 1 }"
+                                                    style="padding-right: 50px;text-align: center !important;"> <span
+                                                        style="padding: 20px;">{{item.ServiceTypeCode}}</span></td>
+                                                <td [ngClass]="{'tableRow':item.IsDeleted == 1 }"
+                                                    style="text-align: center !important;"> <span
+                                                        style="padding: 20px;">{{ item.ServiceTypeName}}</span></td>
+                                                <td [ngClass]="{'tableRow':item.IsDeleted == 1 }"
+                                                style="text-align: center !important;"> <span
+                                                    style="padding: 20px;">{{ item.MaxQtyAllowed}}</span></td>
+                                                <td [ngClass]="{'tableRow':item.IsDeleted == 1 }"
+                                                style="text-align: center !important;"> <span
+                                                    style="padding: 20px;">{{ item.MaxValueAllowed}}</span></td>
+                                                <td *ngIf="ApprovalStatus == 'NEW' "
+                                                    style="padding-right: 50px;text-align: center !important;">
+                                                    <button matTooltip="Delete"
+                                                        *ngIf="item.DeliveryChallanDetailGUID != null && item?.DeliveryChallanDetailGUID != undefined"
+                                                        style="color: red; cursor: pointer;"
+                                                        (click)="deletesaveitem(item)" [disabled]="submitClicked"
+                                                        class="fa-regular fa-trash">
+                                                    </button>
+                                                    <button
+                                                        *ngIf="item.DeliveryChallanDetailGUID == null  && item?.DeliveryChallanDetailGUID == undefined"
+                                                        (click)="removeItem(item)" class="trash">
+                                                        <i class="fa-regular fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-2 col-lg-7" style="display: felx;justify-content:space-around;">
+                <b>Part Quantity: ({{finalSelectedParts.length}})</b>
+                <b style="padding-left:40px;"> TotalPrice: ({{totalUnitPrice}})</b>
+            </div>
+
+            <div class="col-6 col-lg-5" *ngIf="ApprovalStatus == 'NEW' ">
+                <div style="float: right;">
+                    <button appDebounceClick [debounceTime]="2000" [disabled]="submitClicked" class="btn btn-success"
+                        style="border-radius: 10px;" (debounceClick)="onSubmit()" *ngIf="finalSelectedParts.length > 0">
+                        Save </button>
+                </div>
+            </div>
+
+            <div class="col-6 col-lg-5" *ngIf="isReceivedButton">
+                <div style="float: right;">
+                    <button appDebounceClick [debounceTime]="2000" [disabled]="submitClicked" class="btn btn-success"
+                        style="border-radius: 10px;" (debounceClick)="shipmentReceived()"
+                        *ngIf="finalSelectedParts.length > 0"> Shipment Received </button>
+                </div>
+            </div>
+
+        </div>
+        <div>
+        </div>
+        <div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Popupp Starts Here -->
+<div class="container" style="  width: 50% !important;  margin: 2% auto !important;max-width: 61% !important;">
+    <div class="background" [hidden]="hidePopup">
+        <div class="Ux_popup popup" style="position: relative; width: 50% !important;">
+
+            <!-- ************************************** POPUP  ************************************************ -->
+
+            <mat-card>
+
+                <ngx-spinner size="medium" [type]="typeSelected">
+                    <p style="font-size: 20px; color: white">Loading...</p>
+                </ngx-spinner>
+
+                <div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div>
+                            <b style="font-size: 17px !important;">Contract Part List</b>
+                        </div>
+
+                        <div>
+                            <i class="Ux_close fa-duotone fa-circle-xmark" (click)="hideAddParts()"></i>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <!-- Unclaimed Content -->
+
+                <div class="row">
+                    <div class="col-sm-11">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Search</mat-label>
+                        <input [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)" matInput aria-label="Search">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  
+                  <div class="MainDiv" style="padding: 10px;">
+                    <div class="row">
+                      <div class="scrollcntr" style="height: 270px;">
+                        <div class="contents" style="overflow: auto; height: 268px;">
+                          <table>
+                            <thead>
+                              <tr>
+                                <th style="width: 1%;"></th>
+                                <th style="width: 15%;">Service Type Code</th>
+                                <th style="width: 37%;">Service Type Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let item of popUpArray" [ngClass]="{ 'selectedTr': item.selected, 'hide': !isToShowTr(item) }">
+                                <td style="width: 1%;">
+                                  <input type="checkbox" [(ngModel)]="item.selected" (change)="UpdateSelectedCount()" aria-label="Select item" />
+                                </td>
+                                <td style="width: 15%;">{{ item.ServiceTypeCode }}</td>
+                                <td style="width: 37%;">{{ item.ServiceTypeName }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+
+            </mat-card>
+
+
+
+            <div style="position:inherit;bottom:0;">
+                <div style="background-color: gainsboro; padding-bottom: 10px;">
+                    <div class="row" style="padding-top: 5px; padding-left: 20px;">
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <label style="color: black;"> No. of Devices Selected:-
+                                <b>({{SelectedList.length}})</b></label>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2">
+                            <label style="color: black;">Total Devices Available:-
+                                <b>({{popUpArray.length}})</b></label>
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2" style="display: flex; ">
+                            <div style="padding-right: 5px;">
+                                <input type="checkbox" [(ngModel)]="showOnlySelected">
+                            </div>
+
+                            <div>
+                                <label style="color: black;">Show Only Selected</label>
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-sm-4 col-lg-4 col-md-4" style="display: flex; ">
+                        </div>
+                        <div class="col-sm-2 col-lg-2 col-md-2"
+                            style="padding-right: 20px;display: flex; align-items: center; justify-content: end;">
+                            <button class="btnClass" style="float: right; height: 35px;" (click)="onPopUpSubmit()">
+                                Submit </button>
+                        </div>
+                    </div>
+
+                    <div>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

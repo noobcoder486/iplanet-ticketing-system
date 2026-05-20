@@ -1,0 +1,451 @@
+<section class="content">
+    <ngx-spinner size="medium" [type]="typeSelected">
+      <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+    <mat-card>
+      <div class="row">
+        <div class="col-3 justify-content-left">
+          <h1 class="header">{{InvoiceStatus == 'RELEASED' ? title : 'Cancelled Invoice History'}}</h1>
+        </div>
+        <div class="col-3 d-flex justify-content-center">
+            <span ><b> Invoice Status: {{ InvoiceStatus  }}</b></span>&nbsp;
+        </div>
+        <div class="col-3 d-flex justify-content-center">
+            <span ><b> SAP Delivery Code: {{ SAPDeliveryCode  }}</b></span>&nbsp;
+        </div>
+        <div class="col-3 d-flex justify-content-center">
+            <span ><b> SAP Payment Code: {{ SAPPaymentCode  }}</b></span>&nbsp;
+        </div>
+      </div>
+    </mat-card>
+  
+    <div class="container-fluid mt-2">
+      <div class="row" >
+        <div class="col-lg-6 col-sm-12 col-md-6" *ngFor="let item of CustomerObject" style="padding: 0px;">
+          <mat-card>
+            <p>Customer Details</p>
+            <hr />
+            <mat-card-title class="header">{{item?.FirstName}}&nbsp;{{item?.LastName}}</mat-card-title>
+            <mat-card-content>
+              <p>{{item?.Address1}}, {{item?.Address2}}, {{item?.City}}, {{item?.StateCode}}, {{item?.CountryCode}}</p>
+              <p>
+                <b>GST Registration No: </b>{{ item?.GSTRegistrationNo == null || item.GSTRegistrationNo == undefined ?'N.A':item?.GSTRegistrationNo }}
+                <span style="padding-left: 5px; padding-right: 5px;" *ngIf="!isEdit"><b>Total Advance: </b> <span style="font-weight: 600; color: {{ TotalCustomerAdvance < 0 ? 'red' : 'blue' }};">{{ TotalCustomerAdvance == null || TotalCustomerAdvance == undefined ? 0 : TotalCustomerAdvance }} </span>   </span>
+                <span style="padding-left: 5px; padding-right: 5px;" *ngIf="!isEdit"><b>Advance against Job: </b>  <span style="font-weight: 600; color: {{ item?.ARAgainstJob < 0 ? 'red' : 'blue' }};"> {{ item?.ARAgainstJob == null || item.ARAgainstJob == undefined ? 0 :item?.ARAgainstJob }} </span> </span>
+              </p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="col-lg-6 col-sm-12 col-md-6 " *ngFor="let item of LocationObject" style="padding-right: 0px;">
+          <mat-card style="display: block !important">
+            <p>Location Details</p>
+            <hr />
+            <mat-card-title class="header">{{item?.LocationCode}} - {{item?.LocationName}}</mat-card-title>
+            <mat-card-content>
+              <p>{{item?.Address1}}, {{item?.Address2}}, {{item?.StateCode}}, {{item?.CountryCode}}, </p>
+              <p><b>GST Registration No: </b>&nbsp;{{item?.GSTRegistrationNo}}, &nbsp; <b>Ship To:</b>&nbsp;
+                {{item?.SHIP_TO_GSX}}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  
+  
+
+  
+    <mat-card class="mt-2">
+      <div class="row" style="background-color: gainsboro;color:black;">
+        <div class="col-lg-6 col-sm-6 col-md-6">
+          <span style="font-size: 16px !important;color:black;font-weight: 600;height:30px">Parts {{ InvoiceStatus== 'CANCELLED' ? ' History' : '' }}</span>
+        </div>
+        <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-end ml-auto">
+        
+        </div>
+      </div>
+  
+      <div class="row mt-2" *ngIf="finalSelectedElements?.length > 0">
+        <div class="col-lg-8 col-sm-12 col-md-12">
+          <div class="scrollcntr" style="height: 347px !important;">
+            <div class="contents table-responsive" >
+              <table>
+                <thead>
+                  <tr style="height: auto !important;">
+                    <th scope="col">Material Code</th>
+                    <th scope="col">Material Name</th>
+                    <th scope="col">Batch</th>
+                    <th *ngIf="!isEdit && InvoiceDocTypeData === 'RSALES'" scope="col">Pricing Option</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col" style="white-space: nowrap;padding-right: 40px;">Unit Price</th>
+                    <th scope="col">Discount Amount</th>
+                    <th scope="col">Tax Amount</th>
+                    <th scope="col">Total Net Amount</th>
+                    <th scope="col" style="padding-right: 150px; white-space: nowrap;">Serial No</th>
+                    <th scope="col" style="padding-right: 150px; white-space: nowrap;">Cost Price</th>
+             
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of finalSelectedElements">
+                    <td *ngIf="!isEdit" style=" white-space: nowrap;">{{item?.MaterialCode}}</td>
+                    <td *ngIf="isEdit">{{item?.ItemCode}}</td>
+                    <td *ngIf="!isEdit"> <span> {{ item?.MaterialName}} </span></td>
+                    <td *ngIf="isEdit" style="white-space: nowrap; "> <span> {{ item?.ItemDescription}} </span></td>
+                    <td style="white-space: nowrap; ">{{ item?.Batch }}</td>
+                    <td *ngIf="!isEdit && InvoiceDocTypeData === 'RSALES'" style="white-space: nowrap; ">
+                      <span>
+                        <ng-select [items]="PricingOptionDD.Data" bindLabel="TEXT" bindValue="Id" [(ngModel)]="item.PriceType" (ngModelChange)="fetchGSTDetails()" [appendToBody]="true"></ng-select>
+                      </span>
+                    </td>
+                    <td style="text-align: center;">{{ item?.Quantity}}</td>
+                    <td *ngIf="isEdit" style="text-align: right; ">{{ item?.UnitPrice | number: '1.2-2'}}</td>
+                    <td *ngIf="!isEdit" style="text-align: right;white-space: nowrap;"><input matTooltip="{{item.UnitPrice}}" (change)="calculatePrices(item)"  type="text" style="width: 100% !important;"
+                      [(ngModel)]="item.UnitPrice"></td>
+                      <td style="text-align: right;"><input readonly (ngModelChange)="calculatePrices(item)"
+                        type="text" style="width: 100% !important;border:none" [(ngModel)]="item.DiscountAmount" /><br /><span>
+                         <i *ngIf="!isEdit" class="fa fa-tag fa-lg discountTag" matTooltip="Apply for Discount"  (click)="showAddParts(item)"></i>
+                       </span>
+                     </td>                  
+                     <td style="text-align: right;">{{ item?.TaxAmount | number: '1.2-2'}}</td>
+                    <td style="text-align: right;">{{ item?.NetAmount | number: '1.2-2'}}</td>
+                    <td *ngIf="!isEdit && item.ItemType=='Material' && (item.Batch==undefined || item.Batch=='')"><input matTooltip="{{item?.SerialNo}}" type="text" style="width: 100% !important;"
+                        [(ngModel)]="item.SerialNo">
+                    </td>
+                    <td *ngIf="isEdit || item.ItemType=='Resource' || !(item.Batch==undefined || item.Batch=='')">{{item.SerialNo}}</td>
+                    <td style="text-align: right;">{{ item?.CostPrice | number: '1.2-2'}}</td>
+                  
+  
+                  
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+  
+        <div class="col-lg-4 col-sm-12 col-md-12" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+          <div class="row" style="background-color: gainsboro;color:black;">
+            <span style="font-size: 16px !important;color:black;font-weight: 600;height:30px">Payment {{ InvoiceStatus== 'CANCELLED' ? ' History' : '' }}</span>
+            <!-- <span style="font-size: 16px !important;color:black;font-weight: 600;height:30px">Credit Amount:- </span> -->
+          </div>
+          <br />
+          <div class="row" *ngIf="!isEdit">
+            <br />
+            <div class="col-12">
+              <ng-select (change)="setfunction()" placeholder="Mode Of Payment" [items]="ModeofPayment.Data" bindValue="Id"
+              bindLabel="TEXT" [(ngModel)]="modeofPaymentData"></ng-select>
+            </div>
+            <div class="col-12">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Amount</mat-label>
+                <input matInput type="number" [(ngModel)]="Amount">
+              </mat-form-field>
+            </div>
+            <div style="padding-bottom: 5px;">
+              <div class="row">
+                <div class="col-6">
+                  <label><b>GL Code</b></label>
+                </div>
+                <div class="col-6">
+                  <label>{{GLCodeData}}</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <label><b>House Of Bank</b></label>
+                </div>
+                <div class="col-6">
+                  <label>{{houseofBank}}</label>
+                </div>
+              </div>    
+              </div>
+            <br />
+            <hr>
+            <!--methods-->
+            <div *ngIf="modeofPaymentData == 'PINELABS'">
+              <div class="col-12 mt-2"  style="padding: 0px;">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Treansaction Reference Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+              </div>
+            </div>
+            <div *ngIf="modeofPaymentData == 'OLDSYSTEM'">
+              <div class="col-12 mt-2"  style="padding: 0px;">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Treansaction Reference Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+              </div>
+            </div>
+            <!-- MOP Card Payment -->
+            <div *ngIf="modeofPaymentData == 'CREDITCARD'">
+              <div class="col-sm-12 mt-2"  style="padding: 0px;">
+                <ng-select placeholder="Card Type" [items]="CardType" [(ngModel)]="CardTypeData">
+                </ng-select>
+              </div>
+              <div class="col-sm-12 mt-2"  style="padding: 0px;">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Card No</mat-label>
+                  <input matInput type="text" [(ngModel)]="CardNo">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12 mt-2"  style="padding: 0px;">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Adjudication</mat-label>
+                  <input matInput type="text" [(ngModel)]="Adjudication">
+                </mat-form-field>
+              </div>
+              <div class="col-sm-12 mt-2"  style="padding: 0px;">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Terminal Id</mat-label>
+                  <input matInput type="text" [(ngModel)]="TerminalId">
+                </mat-form-field>
+              </div>
+            </div>
+            <!-- MOP RTGS -->
+            <div *ngIf="modeofPaymentData == 'CHEQUE'">
+              <div class="col-sm-12"  style="padding: 0px;">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Transaction Reference Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+              </div>
+            </div>
+            <div *ngIf="modeofPaymentData == 'CREDITREQ'">
+              <div class="col-sm-12"  style="padding: 0px;">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Transaction Reference Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+              </div>
+            </div>
+            <div *ngIf="modeofPaymentData == 'UPI'">
+              <div class="col-sm-12"  style="padding: 0px;">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>UPI Transaction Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="!isEdit">
+            <div class="col-sm-12 col-md-12 col-lg-12 d-flex justify-content-end ml-auto" style="padding-bottom: 5px;">
+              <!-- <button class="btn btn-success" style="width:30% !important;position: relative;" (click)="validatePayment()">Add
+                Payment</button> -->
+            </div>
+          </div>
+          <div class="row" *ngIf="paymentDetailArray?.length > 0">
+            <div class="col-lg-12 col-sm-12 col-md-12">
+              <div class="scrollcntr" style="height:auto !important;">
+                <div class="contents table-responsive">
+                  <table>
+                    <thead>
+                      <tr style="height:auto !important">
+                        <th scope="col">Payment Code</th>
+                        <th scope="col">Payment Date</th>
+                        <th scope="col">Mode of Payment</th>
+                        <th scope="col">Transaction Reference Number</th>
+                        <th scope="col">GLCode</th>
+                        <th scope="col">House Of Bank</th>
+                        <th scope="col">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let paymentDetail of paymentDetailArray">
+                        <td>{{ paymentDetail?.PaymentCode}}</td>
+                        <td>{{ paymentDetail?.TranDate}}</td>
+                        <td>{{ paymentDetail?.ModeOfPayment}}</td>
+                        <td>{{ paymentDetail?.UPITransactionId}}</td>
+                        <td>{{ paymentDetail?.GLCode}}</td>
+                        <td>{{ paymentDetail?.HouseOfBank}}</td>
+                        <td>{{ paymentDetail?.Amount}}</td>
+                        <td [hidden]="isEdit || paymentDetail?.NEWPAYMENT == 0" style="text-align: center; ">
+                          <span><i style="color:red" (click)="deletePaymentitem(paymentDetail)"
+                              class="fa-regular fa-trash"></i></span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p><b>Total Paid Amount:</b>&nbsp;{{totalPaidAmount}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2" *ngIf="refundObject?.length > 0">
+            <div style="background-color: gainsboro;color:black;">
+              <span style="font-size: 16px !important;color:black;font-weight: 600;height:30px">Refund Amount</span>
+            </div>
+            <div class="col-lg-12 col-sm-12 col-md-12">
+              <div class="scrollcntr" style="height: auto !important;">
+                <div class="contents table-responsive mt-2">
+                  <table>
+                    <thead>
+                      <tr style="height:auto !important">
+                        <th scope="col">Case Id</th>
+                        <th scope="col">Refund Code</th>
+                        <th scope="col">Refund Type</th>
+                        <th scope="col">Refund Date</th>
+                        <th scope="col">Customer Code</th>
+                        <th scope="col">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let refundDetail of refundObject">
+                        <td>{{ refundDetail?.CaseId}}</td>
+                        <td>{{ refundDetail?.RefundCode}}</td>
+                        <td>{{ refundDetail?.RefundDocType}}</td>
+                        <td>{{ refundDetail?.RefundDate}}</td>
+                        <td>{{ refundDetail?.RetailCustomerCode}}</td>
+                        <td>{{ refundDetail?.Amount}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p><b>Total Refund Amount:</b>&nbsp;{{totalRefundAmount}}</p>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+  
+  
+    </mat-card>
+  
+    <div class="row">
+
+      <div class="col-6">
+        <mat-card class="mt-2" >
+          <!-- Headers -->  
+          <div class="row" style="padding-bottom: 05px;height: 15px;padding-left: 0px;" >
+            <!-- Customer Ledger Header  -->
+            <div>
+              <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+                
+                <div class="row">
+                  <div class="col-6">
+                    <span style="font-size: 16px !important;color:black;font-weight: 600;">Customer Ledger {{ InvoiceStatus== 'CANCELLED' ? ' History' : '' }}</span>
+                  </div>
+                  <div class="col-6">
+                    <span style="font-size: 16px !important;color:black;font-weight: 600;">Total Balance : {{ TotalBalanceAmount }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+           <!-- GRIDS  -->
+        <div class="row" style="padding:10px">
+            <!-- Customer Ledger List  -->
+            <div  style=" padding: 0px;" > 
+                <div class="scrollcntr mt-2" >
+                  <div class="contents table-responsive" >
+                      <nitc-grid [gridcolumns]="LedgerColumns" [dataSource]="detailLedger" [actions]="actionDetails"
+                      [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                      (changeEvent)="PageChangeLedger($event, 'LEDGER')">
+                      </nitc-grid>
+                  </div>
+                </div> 
+            </div>
+        </div>
+        </mat-card>
+      </div>
+      <div class="col-6">
+        <mat-card class="mt-2" >
+          <!-- Headers -->  
+          <div class="row" style="padding-bottom: 05px;height: 15px;padding-left: 0px;" >
+            <!-- Cash Register Header  -->
+            <div>
+              <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+                    <div class="row">
+                      <div class="col-6">
+                        <span style="font-size: 16px !important;color:black;font-weight: 600;">Cash Register {{ InvoiceStatus== 'CANCELLED' ? ' History' : '' }}</span>
+                      </div>
+                      <div class="col-6">
+                        <span style="font-size: 16px !important;color:black;font-weight: 600;">Total Balance : {{ TotalCashRegisterBalanceAmount }}</span>
+                      </div>
+                    </div>
+              </div>
+            </div>
+          </div>
+    
+          <div class="row" style="padding-top:20px">
+            <div class="col-10">
+              <input class="form-control" style="width: 100%;" placeholder="Search by Transaction Code"  [(ngModel)]="TransactionCode"  />
+            </div>
+            <div class="col-2">
+              <button class="btn btn-secondary" (click)="GetCashRegisterObject( '' )">Search</button>
+            </div>
+          </div>
+           <!-- GRIDS  -->
+        <div class="row" style="padding:10px">
+            <!-- Cash Register  List  -->
+            <div  style=" padding: 0px;" > 
+                <div class="scrollcntr mt-2" style="height: 100px !important;">
+                  <div class="contents table-responsive" >
+                      <nitc-grid [gridcolumns]="registryColumns" [dataSource]="cashRegisterLedger" [actions]="actionDetails"
+                      [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                      (changeEvent)="PageChangeLedger($event, 'REGISTER')">
+                      </nitc-grid>
+                  </div>
+                </div> 
+            </div>
+        </div>
+        </mat-card>
+      </div>
+    </div>
+
+    
+    <div style="position:sticky;bottom:0;background-color: gainsboro; padding: 5px;" *ngIf="finalSelectedElements?.length>0">
+      <div class="row" style="padding-top: 5px;padding-bottom: 5px;">
+        <div class="col-10">
+          <div class="row">
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          Part Quantity: <b>({{finalSelectedElements?.length}})</b>
+        </div>
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          Total Amount: <b>{{totalTaxableAmount | number: '1.2-2'}}</b>
+        </div>
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          Tax Amount: <b>{{totalTaxAmount | number: '1.2-2'}}</b>
+        </div>
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          Net Amount: <b>{{totalNetAmount | number: '1.2-2'}}</b>
+        </div>
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          Paid Amount: <b>{{totalPaidAmount | number: '1.2-2'}}</b>
+        </div>
+  
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          Payable Amount: <b>{{totalNetAmount - totalPaidAmount | number: '1.2-2'}}</b>
+        </div>
+        </div>
+        </div>
+  
+     <div class="col-2">
+      <div class="row">
+        <div class="col-sm-12 col-lg-12 col-md-12">
+          <button appDebounceClick [disabled]="submitClicked" class="btnClass" style="letter-spacing: 2px;text-align: center;float: right;" (debounceClick)="onSubmit()"
+            *ngIf="InvoiceStatus == 'RELEASED'" [debounceTime]="700"> Cancel Invoice
+          </button>
+        </div>
+      </div>
+      </div>
+      </div>
+      <div>
+      </div>
+      <div>
+      </div>
+      <!-- <div *ngIf="isPartSelector" class="Ux_popup">
+        <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isPartSelector = false"></i>
+        <app-invoice-sales-stock-selector (returnOrderPartSelector)="returnOrderPartSelector($event)"
+          [shipTo]="Ship_to_GSX" [returnType]="returnTypeData"
+          (closeReturnOrderPartSelector)="closeReturnOrderPartSelector($event)">
+        </app-invoice-sales-stock-selector>
+      </div> -->
+    </div>
+  </section>
+  
+
+  

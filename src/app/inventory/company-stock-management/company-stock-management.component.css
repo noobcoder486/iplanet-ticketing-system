@@ -1,0 +1,223 @@
+.token-box {
+    border-radius: 7px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    padding: 6px;
+  }
+  
+  .next-btn {
+    font-size: 15px;
+  }
+  
+  .btn-tojen-swe {
+    padding: 8px 20px 8px 20px;
+  }
+  
+  .btn-text-w3 {
+    width: 100%;
+  }
+
+  .btn-warning
+  {
+    border: none;
+  }
+
+  .btn-download{
+    background-color: rgb(107, 107, 107) !important;
+  }
+  
+  .current-status {
+    border: 2px solid gray;
+    border-radius: 20px;
+    height: 120px;
+    width: 50%;
+  }
+  
+  .tokenNumberr {
+    font-size: 20px;
+  }
+  
+  
+  ::ng-deep Showbtn {
+    cursor: not-allowed ! important;
+  }
+  
+  .token-number-dis {
+    border: 2px solid yellow;
+    display: flex;
+  }
+  
+  .token-dsc {
+    border: 2px solid gray;
+    width: 100%;
+    padding: 15px;
+  }
+  
+  .TokenDisplay {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    /* row-gap: 6px; */
+    column-gap: 222px;
+    padding: 22px;
+  
+  }
+  
+  
+  .searchBtn {
+    background-color: #061a50;
+    margin: 10px;
+    padding: 6px 5px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 3px;
+    display: block;
+    width: 40px;
+  }
+
+  .mat-expansion-panel-header
+  {
+    height: 23px !important;
+  }
+  
+  /* .searchBtn:hover { 
+      color: #fff;
+      text-decoration: none;
+      background-color: #2997ff;
+    }
+    */
+  
+  
+  .addBtn {
+    /* background-image: linear-gradient(to right, #00ff95 0%, #3ad549  51%, #00ff59  100%); */
+    background-color: #2997ff;
+    margin: 10px;
+    padding: 6px 5px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 20px #eee;
+    border-radius: 3px;
+    display: block;
+    cursor: cell;
+    width: 40px;
+  }
+  
+  /* .addBtn:hover { 
+      background-color: #061a50; 
+      color: #fff;
+      text-decoration: none;
+    } */
+  label {
+    font-weight: 600;
+    font-size: 17px;
+  }
+  
+  .textBox {
+  
+    border: 1px solid rgb(74, 74, 74);
+    border: 2px solid rgb(149, 149, 149);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  
+  }
+  
+  
+  :host ::ng-deep .ng-select.ng-select-single .ng-select-container {
+    margin: 0px !important;
+    height: 32.5px !important;
+    border-radius: 0px;
+  }
+  
+  /* .popUp
+  {
+    background-color: rgb(190, 190, 190);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; 
+    z-index: 999; 
+    opacity: 0.7;
+  } */
+  .popUp {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: rgba(177, 177, 177, 0.7);
+  }
+  
+  .popUp-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #3c3c3c;
+    /* Adjust the background color of the content as needed */
+    padding: 20px;
+  }
+  
+ 
+  
+  
+  
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .example-element-description {
+    padding: 16px;
+  }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+  .btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(231, 236, 241), rgb(103, 163, 253)) !important;
+    height: 34px;
+}

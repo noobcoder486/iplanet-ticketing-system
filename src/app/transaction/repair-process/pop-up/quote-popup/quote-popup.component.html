@@ -1,0 +1,75 @@
+<style>
+    input[type=checkbox] {
+      transform: scale(1.5);
+  }
+  </style>
+  <div class="content-header" >
+    <ngx-spinner size="medium" [type]="typeSelected">
+      <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+    <div class="card px-3 pb-3" >
+        <div class="row">
+          <div class="col-12">
+            <div class="tabheader">
+              <h3>Quote</h3>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-11">
+            <mat-form-field appearance="fill">
+              <mat-label>Search</mat-label>
+              <input [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)"  matInput>
+            </mat-form-field>
+          </div>
+          <div  class="col-sm-1">
+            <!-- <button mat-mini-fab color="primary" (click)=" myfunction()" aria-label="Example icon button with a menu icon">
+              <mat-icon>delete</mat-icon>
+            </button> -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="scrollcntr" style="    max-height: 60vh;">
+  
+              <div  class="items_details_grid" >
+                <table class="table table-success table-striped table-wrap">
+                  <thead>
+                    <tr style="height: auto !important;">
+                      <th style="width: 1%;" scope="col"></th>
+                      <th style="width: 10%;" scope="col">Preview</th>
+                      <th style="width: 20%;" scope="col">Part Code</th>
+                      <th style="width: 50%;" scope="col">Part</th>
+                      <th style="width: 20%;"scope="col">Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of partList" [ngClass]="{ 'selectedTr': item.selected == true, 'hide': isToShowTr(item) != true}">
+                      <td style="width: 1%; "><input type="checkbox" [(ngModel)]="item.selected" (change)="UpdateSelectedCount()"/></td>
+                      <td style="width: 10%; "> <img width="45px" src={{item.imageUrl}}/></td>
+                      <td style="width: 20%; "> <span> {{ item.number}} </span></td>
+                      <td style="width: 50%; "> <span> {{ item.description}} </span></td>
+                      <td style="width: 20%; "> <span>{{ item.typeDescription}}</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+  
+           
+          </div>
+        </div>
+       
+        <br />
+        <div class="row">
+          <div class="col-12 text-right">
+  
+            <div class="col-12 d-flex justify-content-end">
+              <span> ({{ SelectedPartCount }}) Parts Selected &nbsp; &nbsp; &nbsp; </span>
+              <span><input type="checkbox" [(ngModel)]="showonlyselected" /> Show Selected  &nbsp; &nbsp; &nbsp; </span>
+              <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onSubmit()" >Submit</button>
+              <!-- <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="GetResourceList()" >Set Data</button> -->
+
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>

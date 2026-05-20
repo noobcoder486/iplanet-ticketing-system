@@ -1,0 +1,443 @@
+<div class="card-body" style="overflow: auto;">
+<div class=""    *ngIf="selectedpartlist?.length > 0"  >
+  <!--<ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>-->
+
+<div *ngIf="repa?.RepairFlag == 1">
+  <!-- Repair Header -->
+  <form [formGroup]="repairStatusForm">
+    <mat-card style="margin:10px; border-radius:8px;" *ngIf="repa?.DIAG?.RepairTypeDesc == 'Whole Unit Mail-In Return to Service Location' && isLocalPermission == false">
+      <div class="row">
+        <div class="col-lg-12 col-sm-12 col-md-12 d-flex justify-content-end" ><button (click)="onClickToggleLoaner()" class="btnClass">Add Loaner</button></div>
+      </div>
+  </mat-card>
+  <mat-card  style="margin:10px; border-radius:8px;">
+    <div class="row">
+      <div class="col-sm-6">
+        <mat-card-content>
+          <p>RepairCode: {{repa?.REPAIR?.RepairDocCode}}</p>
+        </mat-card-content>
+      </div>
+      <div class="col-sm-6">
+        <mat-card-content>
+          <p align="end">{{repa?.REPAIR?.RepairDate}}</p>
+        </mat-card-content>
+      </div>
+    </div>
+      <div >
+        
+        <mat-card-content >
+          <div class="row" >
+            <div class="col-4"> GSX Code: </div>
+            <div class="col-8" style="font-weight: bolder;" >{{GSXCode}}</div>
+          </div>
+          <div class="row" *ngIf="RepairStatusList.length==0">
+            <div class="col-4"> Repair Status: </div>
+            <div class="col-7" >{{GSXRepairStatus}} = {{GSXRepairStatusDescription}}</div>
+          </div>
+          <div class="row" *ngIf="RepairStatusList.length>0">
+            <div class="col-4" style="display: flex; align-items: center;"> Repair Status: </div>
+            <div class="col-7" >
+              <ng-select
+              [items]="RepairStatusList"
+              bindLabel="RepairStatusDescription"
+              bingValue="RepairStatusCode"
+              [(ngModel)]="SelectedRepairStatus" [ngModelOptions]="{standalone: true}" >
+          </ng-select>
+  
+
+            </div>
+          </div>
+             
+          <div class="row" *ngIf="isLocalPermission  && GSXRepairStatus == 'GX01' && JobStatus != 'S14'   && isApprover" >
+            <div class="text-right " style="padding: 15px;"  >
+              <button class="x_final_button x_active_btn x_save_button" style="display: initial;background-color: rgb(68, 134, 248);border: none;" (click)="ApproveLocalAuthorization()" type="button" >Approve</button> <!--onSave(GSXCode)-->
+              <button class="x_final_button x_active_btn x_save_button" style="display: initial;background-color: red;border: none;" (click)="RepairReject()" type="button" >Reject</button> <!--onSave(GSXCode)-->
+              <button class="x_final_button x_active_btn x_save_button" style="display: initial;background-color: rgb(255, 166, 0);border: none;" (click)="RepairHold()" type="button" >Hold</button> <!--onSave(GSXCode)-->
+            </div>
+          </div>
+          <div class="mt-4" style="display: flex;align-items: center;justify-content: space-between;" *ngIf="isLocalPermission  && JobStatus == 'S14'" >
+              <div>
+                <label  style="font-weight: bolder; white-space: nowrap; " >Hold Remark:- </label>
+              </div>
+              <div>
+                <textarea [readOnly]="true" style="font-weight: bolder; white-space: nowrap; color: red !important" >{{repa?.HOLDLIST?.Hold[0]?.HoldTypeDesc == null || repa?.HOLDLIST?.Hold[0]?.HoldTypeDesc == undefined ? repa?.HOLDLIST?.Hold?.HoldTypeDesc :  repa?.HOLDLIST?.Hold[0]?.HoldTypeDesc}}</textarea>
+              </div>
+              <div> 
+              <button class="x_final_button x_active_btn x_save_button" style="display: initial;background-color: rgb(255, 189, 6);border: none;" (click)="RepairUnHold()" type="button" >Un-Hold</button> 
+              </div>
+
+            
+            <!-- <div class="text-right " style="padding: 15px;"  >
+            </div> -->
+          </div>
+
+        </mat-card-content>
+      
+       </div>
+  <mat-card-content>
+    <P align="end">{{repa?.REPAIR?.TechnicianCode}}</P> 
+  </mat-card-content>
+  </mat-card>
+<!-- Repair Header  -->
+
+  </form>
+  
+  <div *ngFor="let shipment of shipments">
+    <mat-card class="example-card" style="margin-bottom:10px; border-radius:8px;" >
+      <mat-card-content>
+        <div class="row" *ngIf="shipment.ShipmentType=='FROM_REPAIR_VENDOR' || shipment.ShipmentType=='TO_REPAIR_VENDOR' ">
+          <div class="col-lg-12" *ngIf="shipment.ShipmentType=='TO_REPAIR_VENDOR'" style="font-weight: bolder ;">Shipment To Repair Vendor </div>
+          <div class="col-lg-12" *ngIf="shipment.ShipmentType=='FROM_REPAIR_VENDOR'" style="font-weight: bolder ;">Shipment From Repair Vendor</div>
+          
+        </div>
+        <div class="row" *ngIf="!(shipment.TrackingNumber==undefined || shipment.TrackingNumber=='' || shipment.TrackingNumber==null) ">
+          <div class="col-lg-5"  >Tracking Number : </div>
+          <div class="col-lg-7"  >{{shipment.TrackingNumber}} </div>
+        </div>
+        <div class="row" *ngIf="!(shipment.CarrierName==undefined || shipment.CarrierName=='' || shipment.CarrierName==null )">
+          <div class="col-lg-5"  >Transportation Carrier : </div>
+          <div class="col-lg-7"  >{{shipment.CarrierName}} </div>
+        </div>
+        
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+
+  <form [formGroup]="compIssueForm" style="padding-bottom:20px;">
+  <div *ngFor="let item of selectedpartlist">
+<mat-card class="example-card" style="margin-bottom:10px; border-radius:8px;" [ngClass]="{'bg-primary':item.IsDeleted == 1}">
+
+  <mat-card-content>
+    <div class="row" *ngIf="item.Type=='CNTC' || item.Type=='DEP' ">
+      <div class="col-lg-12" *ngIf="item.Type=='CNTC'" style="font-weight: bolder ;">Initial Quote </div>
+      <div class="col-lg-12" *ngIf="item.Type=='DEP'" style="font-weight: bolder ;">Vendor Quote</div>
+    </div>
+    <div class="row" (mouseenter)="isDeletshover = item.PartCode" (mouseleave)="isDeletshover=''">
+      <div class="col-lg-3" >
+        <img src={{item.ImageUrl}} onerror="this.src='./assets/images/crm-logo-icon.png';" style="width: 48px;height:48px;"
+        mat-card-avatar /> 
+      </div>
+        <div class="col-lg-8" style="font-size:18px ;"> {{ item.PartCode}}</div>
+        <div   class="col-lg-1"   style="font-size:18px ;"><i *ngIf="item.PartCode == isDeletshover"  (click)="deletePartsList(item)" style="color: red;"  class="fa-duotone fa-trash-can"></i></div>
+    </div>
+    <div class="row">
+      <mat-card-subtitle>{{ item.PartDescription}}</mat-card-subtitle>
+   </div>
+</mat-card-content>
+<mat-card-content >
+    <div class="row" *ngIf="!(item.PartUsed == '' || item.PartUsed == undefined || item.PartUsed== null)">
+      <div class="col-4" > Part Used :</div>
+      <div class="col-8" > {{item.PartUsed}}</div>
+   </div>
+    <div class="row" *ngIf="!(item.CoverageCode == '' || item.CoverageCode == undefined || item.CoverageCode== null)">
+       <div class="col-4" > Warranty :</div>
+       <div class="col-8" > {{item.CoverageCode}}-{{item.CoverageCodeDescription}}</div>
+    </div>
+    <mat-card-content (mouseenter)="coveragehover=item.number" (mouseleave)="coveragehover=''" style="margin-bottom: 0px;" >
+    <div class="row" *ngIf="!(item.CoverageOption == '' || item.CoverageOption == undefined || item.CoverageOption== null)">
+      <div class="col-4"> Coverage :</div>
+      <div class="col-7" > {{item.CoverageOption}}</div>
+      <div class="col-1" >
+        <i *ngIf="item.number==coveragehover" (click)="coveragehoverFunc(item)" style="align-content:right;color:red"  class="fa-duotone fa-pen-to-square"></i>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="item.isCoverage"  >
+      <div class="col-lg-4" style="display: flex; align-items: center;">
+        Coverage :
+      </div>
+      <div class="col-7">  
+        <ng-select
+            [items]="coverages.Data"
+            formControlName="coverageOption{{item.rowno}}"
+            (search)="getCovarage($event)"
+            bindLabel="TEXT">
+        </ng-select>
+      </div>
+      <div class="col-1" style="margin-top: 24px;"><i  (click)="onCoverageSubmit(item)" style="align-content:right;font-size:23px;color:green"  class="fa-regular fa-floppy-disk"></i></div>
+    </div>
+    <div class="row" *ngIf="!( item.PricingOptionList == undefined || item.PricingOptionList== null || item.PricingOptionList.length==0 ) ">
+      <div class="col-4" style="display: flex; align-items: center;"> Pricing Option :</div>
+      <div class="col-7">  
+        <ng-select
+            [items]="item.PricingOptionList"
+            bindLabel="description"
+            bingValue="code"
+            [(ngModel)]="item.PricingOption" [ngModelOptions]="{standalone: true}" >
+        </ng-select>
+      </div>
+    </div>
+  </mat-card-content>   
+    <div class="row" (mouseenter)="issueshover=item.PartCode" (mouseleave)="issueshover=''" 
+        *ngIf="!(item.ComponentCode == '' || item.ComponentCode == undefined || item.ComponentCode== null)">
+      <div class="col-4" > Comp/Issue :</div>
+      <div class="col-7" >{{item.ComponentDescription}} / {{item.IssueDescription}}</div>
+      <div class="col-1"><i *ngIf="item.PartCode==issueshover" (click)="issueshoverFunc(item)" style="align-content:right;color:red"  class="fa-duotone fa-pen-to-square"></i></div>
+    </div>
+      <div class="row" *ngIf="item.isCompIssue"> 
+        <div class="col-lg-4" style="display: flex;    align-items: center;;">
+          Component :
+        </div>
+        <div class="col-7">  
+          <ng-select [items]="ComponentList" formControlName="component{{item.rowno}}" bindLabel="componentDescription" 
+          (change)="onSelectComponent($event)">
+        </ng-select>
+        </div>
+        <div class="col-lg-4" style="display: flex; align-items: center;margin-top: -15px;">
+          Issues :
+        </div>
+        <div class="col-7" style="margin-top: -15px;">  
+          <ng-select [items]="IssuesList" formControlName="issues{{item.rowno}}" bindLabel="description"
+            (search)="onSelectIssue($event)">
+          </ng-select>
+        </div> 
+      <div class="col-1"><i  (click)="onComponentIssuesSubmit(item)" style="align-content:right;font-size:20px;color:green;margin-top: 10px;"  class="fa-regular fa-floppy-disk"></i></div> 
+      </div>
+      <mat-card-content (mouseenter)="reproducibilityhover=item.PartCode" (mouseleave)="reproducibilityhover=''" style="margin-bottom: 0px;" >
+        <div class="row" *ngIf="!(item.ReproducibilityCode == '' || item.ReproducibilityCode == undefined || item.ReproducibilityCode== null)">
+          <div class="col-4"> Reproducibility :</div>
+          <div class="col-7" > {{item.ReproducibilityCode}} - {{item.ReproducibilityDescription}}</div>
+          <div class="col-1" >
+            <i *ngIf="item.PartCode==reproducibilityhover" (click)="reproducibilityhoverFunc(item)" style="align-content:right;color:red;margin-left:36px;"  class="fa-duotone fa-pen-to-square"></i>
+          </div>
+        </div>
+        
+        <div class="row" *ngIf="item.isReproducibility"  >
+          <div class="col-lg-4" style="display: flex; align-items: center;">
+          Reproducibility :
+          </div>
+          <div class="col-7" >  
+            <ng-select
+              [items]="reproducibility.Data"
+              (search)="getReproducibility($event)"
+              bindLabel="TEXT"
+              formControlName="reproducibility{{item.rowno}}">
+            </ng-select>
+          </div>
+          <div class="col-1" style="margin-top: 24px;"><i  (click)="onReproducibilitySubmit(item)" style="align-content:right;font-size:20px;color:green"  class="fa-regular fa-floppy-disk"></i></div>
+        </div>
+      </mat-card-content>
+
+      <div class="row" style="margin-top: -7px;" *ngIf="!(item.Type=='CNTC' || item.Type=='SIN' || item.Type=='DEP')">
+        <div class="col-lg-4" style="display: flex;    align-items: center;;">
+        Consign Stock : 
+        </div>
+        <div class="col-2" *ngIf="(!(item.SequenceNumber == undefined || item.SequenceNumber == null || item.SequenceNumber =='0') ) && item.ConsignmentStockUsed==1"  style="display: flex; margin-top: 5px;align-items: left;">
+          Yes
+      </div>
+      <div class="col-2" *ngIf="(!(item.SequenceNumber == undefined || item.SequenceNumber == null || item.SequenceNumber =='0') )&& item.ConsignmentStockUsed==0"  style="display: flex; margin-top: 5px;align-items: left;">
+        No
+      </div>
+    
+      <div class="col-2" *ngIf="((item.SequenceNumber == undefined || item.SequenceNumber == null || item.SequenceNumber =='0') )"  style="display: flex; margin-top: 5px;align-items: left;">
+        <mat-checkbox  (change)="IsConsignmentStockUsed(item)" [checked]= "item.ConsignmentStockUsed==1" [(ngModel)]="item.ConsignmentStockUsed" [ngModelOptions]="{standalone: true}"
+        formControlName="IsConsignmentStockUsed{{item.rowno}}" ></mat-checkbox>
+      </div>
+
+      </div>
+  <div class="row" *ngIf="item.PartSerialized == true " >
+    <div class="row" >
+      <div class="col-sm-6"  >
+        <mat-form-field appearance="fill">
+          <mat-label>KBB</mat-label>
+          <input  matInput  [(ngModel)]="item.KBB" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+      </div>
+      <div class="col-sm-6" >
+        <mat-form-field appearance="fill">
+          <mat-label>KGB</mat-label>
+          <input  matInput [(ngModel)]="item.KGB" [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+      </div>
+
+    </div>  
+  </div>
+  <div class="row" *ngIf="item.NetPrice>0">
+    <div class="col-4" > Price :</div>
+    <div class="col-8" > {{item.NetPrice}}</div>
+ </div>
+
+ <div class="row" *ngIf="!(item.OrderId == undefined || item.OrderId == null || item.OrderId == '' )">
+  <div class="col-4" > OrderId :</div>
+  <div class="col-8" > {{item.OrderId}}</div>
+</div>
+
+<div class="row" *ngIf="!( item.OrderStatusCode == undefined || item.OrderStatusCode == null || item.OrderStatusCode == '')">
+  <div class="col-4" > Order Status :</div>
+  <div class="col-8" > {{item.OrderStatusCode}} - {{item.OrderStatusDescription}}</div>
+</div>
+
+<div class="row" *ngIf="!(item.ReturnOrderNumber  == undefined || item.ReturnOrderNumber == null  || item.ReturnOrderNumber == '')">
+  <div class="col-4" > Return Order :</div>
+  <div class="col-8" > {{item.ReturnOrderNumber}}</div>
+</div>
+
+
+<div class="row" *ngIf="!(item.ReturnStatusCode  == undefined || item.ReturnStatusCode == null  || item.ReturnStatusCode == '' )">
+  <div class="col-4" > Return Order Status:</div>
+  <div class="col-8" > {{item.ReturnStatusCode}} - {{item.ReturnStatusDescription}}</div>
+</div>
+
+
+<div class="row" *ngIf="!(item.DeliveryNumber  == undefined || item.DeliveryNumber == null  || item.DeliveryNumber == '')">
+  <div class="col-4" > Delivery Number:</div>
+  <div class="col-8" > {{item.DeliveryNumber}} </div>
+</div>
+ 
+
+<div class="row" *ngIf="!(item.DeliveryNumber  == undefined || item.DeliveryNumber == null  || item.DeliveryNumber == '')">
+  <div class="col-4" > Delivery Date:</div>
+  <div class="col-8" > {{item.DeliveryDate}} </div>
+</div>
+
+
+<div class="row" *ngIf="!(item.DeliveryTrackingNumber  == undefined || item.DeliveryTrackingNumber == null || item.DeliveryTrackingNumber == '')">
+  <div class="col-4" > Delivery Tracking:</div>
+  <div class="col-8" > {{item.DeliveryTrackingNumber}} </div>
+</div>
+<div class="row" *ngIf="!(item.NetPrice  == undefined || item.NetPrice == null || item.NetPrice == 0)">
+  <div class="col-4" > Price:</div>
+  <div class="col-8" > {{item.NetPrice}} </div>
+</div>
+<div class="row"  *ngIf="!(GSXCode == undefined || GSXCode == null || GSXCode =='')" >
+  <div class="col-lg-4" style="display: flex; align-items: center;">
+    Return Option :
+  </div>
+  <div class="col-7" >  
+    <ng-select
+    placeholder=""
+    [items]="returnOption"
+    [(ngModel)]="item.returnOptions"
+    [ngModelOptions]="{standalone: true}"
+    (change)="openReturnOption(item)">
+  </ng-select>
+  </div>
+</div>
+</mat-card-content>
+</mat-card>
+</div>
+<div *ngIf="(GSXCode == undefined || GSXCode == null || GSXCode =='')">
+  <mat-card  style="margin:10px; border-radius:8px;">
+  <mat-card-content>
+  
+  <div class="row">
+    <div class="col-sm-5">
+      <mat-card-content>
+        <p> Request Review By Apple :</p>
+      </mat-card-content>
+    </div>
+    <div class="col-sm-5">
+      <mat-card-content align="start">
+        <mat-checkbox   
+          (change)="RequestReviewByAppleChange()" 
+          formControlName="requestReviewByApple">
+        </mat-checkbox>
+      </mat-card-content>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-5">
+      <mat-card-content>
+        <p> Mark Repair Complete :</p>
+      </mat-card-content>
+    </div>
+    <div class="col-sm-5">
+      <mat-card-content align="start">
+        <mat-checkbox   
+          (change)="MarkCompleteChange()" 
+          formControlName="markComplete">
+        </mat-checkbox>
+      </mat-card-content>
+    </div>
+  </div>
+  </mat-card-content>
+</mat-card>
+</div>
+
+<div   *ngIf="JobStatus != 'S14'" align="end" style="padding: 15px;"  >
+  <button class="x_final_button x_active_btn x_save_button" style="display: initial;" (click)="RepairQuestions()" type="button" >Question</button> <!--onSave(GSXCode)-->
+  <button class="x_final_button x_active_btn x_save_button" style="display: initial;" (click)="getRepairEligibility()" type="button" >Calculate</button> <!--onSave(GSXCode)-->
+  <button class="x_final_button x_active_btn x_save_button" style="display: initial;" (click)="PostTOGSX()" type="button" >Submit To GSX</button> <!--onSave(GSXCode)-->
+
+</div>
+
+<div class="text-right " align="end" style="padding: 15px;"  *ngIf="repa?.RepairFlag == 0" >
+  <button class="x_final_button x_active_btn x_save_button" style="display: initial;"  (click)="SaveForLater()" type="button" >Save for Later</button>
+</div>
+
+<mat-accordion *ngIf="isPartConstraint">
+  <mat-expansion-panel   [expanded]="true"   >
+    <mat-expansion-panel-header>
+      <mat-panel-title>Device Part Constraint For:-   </mat-panel-title>
+        <mat-panel-description><span style="font-weight: 600"> {{noOfDaysFromCreation }} Days</span> </mat-panel-description>
+        </mat-expansion-panel-header>
+        <!-- <div style="height:240px;">
+            <div *ngIf="noOfDaysFromCreation > 15" class="accordion">
+                <div class="row">
+                  <div class="col-sm-12" *ngIf="JobStatus == 'S17'" > 
+                    <input type="text" style="border-radius: 0px; height: 34px; width: 100%; border: 1px solid rgb(211, 211, 211);"
+                    placeholder="Add Notes" [(ngModel)]="PartConstraintNotes" [ngModelOptions]="{standalone: true}" />
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-sm-12 d-flex justify-content-end">
+                    <button *ngIf="JobStatus != 'S17'"  class="x_final_button x_active_btn x_save_button" style="border-radius: 10px;" 
+                    (click)="SaveToPartConstraint()" type="button" >Sent To Part Constraint</button> 
+
+                    <button *ngIf="JobStatus == 'S17'"  class="x_final_button x_active_btn x_save_button" style="border-radius: 10px;" 
+                    (click)="RemovePartConstraint()" type="button" >Remove Part Constraint</button> 
+
+                  </div>
+                </div>
+            </div>
+        </div> -->
+      <div style="height:240px;">
+            <div *ngIf="noOfDaysFromCreation > 10" class="accordion">
+                <div class="row">
+                  <div class="col-sm-12" > 
+                    <input (paste)="onPaste($event, 'alpha', 'PartConstraintNotes')"
+                     (keypress)="onKeyPress($event, 'alpha','PartConstraintNotes' )"  type="text" style="border-radius: 0px; height: 34px; width: 100%; border: 1px solid rgb(211, 211, 211);"
+                    placeholder="Add Notes" [(ngModel)]="PartConstraintNotes" [ngModelOptions]="{standalone: true}" />
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-sm-12 d-flex justify-content-end">
+                    <button *ngIf="JobStatus != 'S17'"  class="x_final_button x_active_btn x_save_button" style="border-radius: 10px;" 
+                    (click)="SaveToPartConstraint()" type="button" >Send To Part Constraint</button> 
+
+                    <button *ngIf="JobStatus == 'S17'"  class="x_final_button x_active_btn x_save_button" style="border-radius: 10px;" 
+                    (click)="RemovePartConstraint()" type="button" >Remove Part Constraint</button> 
+
+                  </div>
+                </div>
+            </div>
+        </div>
+      </mat-expansion-panel>
+</mat-accordion>
+
+
+</form>
+</div>
+<div style="margin-left:-15px">
+<div class="card-footer"   >
+  <div class="row" style="width: 98%;">
+     
+      <div style="line-height: 0.8;">
+        <p align="end" style="margin-right: 46px;" >Total Amount :{{TotalAmount}} </p>
+
+      </div>
+    
+  </div>
+  </div>
+  </div>
+</div>
+
+
+<!-- Repair Flag == 1 -->
+
+
+

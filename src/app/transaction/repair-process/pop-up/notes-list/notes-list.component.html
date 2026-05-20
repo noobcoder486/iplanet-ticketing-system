@@ -1,0 +1,64 @@
+
+<style>
+    input[type=checkbox] {
+      transform: scale(1.5);
+  }
+  </style>
+  <div class="content-header" style="width: 70%;margin: auto 9%;" >
+    <div class="card px-3 pb-3" >
+        <div class="row">
+          <div class="col-12">
+            <div class="tabheader">
+              <h3>Notes List</h3>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="row px-3">
+                <div class="col-sm-11">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Search</mat-label>
+                    <input [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)"  matInput>
+                  </mat-form-field>
+                </div>
+                <div  class="col-sm-1">
+                  <!-- <button mat-mini-fab color="primary" (click)=" myfunction()" aria-label="Example icon button with a menu icon">
+                    <mat-icon>delete</mat-icon>
+                  </button> -->
+                </div>
+              </div>
+            <div class="row px-3">
+                <div class="scrollcntr" style="    max-height: 60vh;">
+                    <div  class="items_details_grid" >
+                      <table class="table table-success table-striped table-wrap">
+                        <thead>
+                          <tr style="height: auto !important;">
+                            <th style="width: 1%;" scope="col" style="z-index:1 !important;"></th>
+                            <th style="width: 5%;" scope="col" >Sr.No</th>
+                            <th style="width: 90%;" scope="col" >Notes</th>
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of noteslist">
+                            <td style="width: 1%; "><input type="checkbox" [(ngModel)]="item.selected" [ngClass]="{ 'selectedTr': item.selected == true, 'hide': isToShowTr(item) != true}" /></td>
+                            <th style="width: 5%;" scope="col" >{{item.number}}</th>
+                            <td style="width: 90%; "> <span> {{item.notes}} </span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 text-right">
+
+      <div class="col-12 d-flex justify-content-end">
+        <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onSubmit()">Submit</button>
+      </div>
+    </div>
+  </div>  
+  
+  

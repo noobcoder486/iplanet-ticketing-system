@@ -1,0 +1,99 @@
+<section class="content">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="ml-2 p-10 text-dark">
+                    <b>{{ formTitle }} Discount Kitty</b>
+                </h3>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <form [formGroup]="discountKittyForm" name="discountKittyForm" autocomplete="off">
+            <div class="row">
+                <!-- Location Code Field -->
+                <!-- <div class="col-sm-6" *ngIf="!isEdit">
+                    <ng-select [items]="Location.Data" bindLabel="TEXT" bindValue="ID" placeholder="Location Code"
+                        formControlName="LocationCode">
+                    </ng-select>
+                </div>
+                <div class="col-sm-6" *ngIf="isEdit">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Location Code</mat-label>
+                        <input matInput formControlName="LocationCode" [readonly]="true">
+                    </mat-form-field>
+                </div> -->
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Approver Name<i style="color:red">*</i></mat-label>
+                        <input [readonly]="isEdit" matInput formControlName="ApproverName">
+                    </mat-form-field>
+                </div>
+                <!-- Expiry Date Field -->
+                <div class="col-sm-6">
+                        <label>Expiry Date <i style="color:red">*</i></label><br>
+                        <input class="form-control" type="date" [value]="ExpiryDate" 
+                          [(ngModel)]="ExpiryDate"  [ngModelOptions]="{standalone: true}" />
+                          
+                </div>
+                <!-- Total Discount Field -->
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Total Discount <i style="color:red">*</i></mat-label>
+                        <input type="number" matInput formControlName="TotalDiscount">
+                    </mat-form-field>
+                </div>
+                <!-- >Discount Per Invoice Field -->
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Discount Per Invoice <i style="color:red">*</i></mat-label>
+                        <input matInput formControlName="DiscountPerInvoice">
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </form>
+    </mat-card>
+
+
+    <mat-card *ngIf="results?.length > 0">
+        <div class="row" style="padding-top:20px; padding-left: 20px">
+            <div class="col-10">
+                <input class="form-control" style="width: 100%;" placeholder="Search by Coupon Code"
+                    [(ngModel)]="CouponCode" />
+            </div>
+            <div class="col-2">
+                <button class="btn btn-secondary" (click)="search($event)">Search</button>
+            </div>
+        </div>
+        <div class="row" style="padding:20px">
+            <div>
+                <div class="scrollcntr mt-2" style="height: 230px !important;">
+                    <div class="contents table-responsive">
+                        <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [hideSpinnerEvents]="hideSpinnerEvent"
+                            (changeEvent)="PageChange($event)" [isAllowSelect]="isChoose">
+                        </nitc-grid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+
+    
+        <mat-card>
+            <div class="row">
+                <div class="col-sm-6" >
+                    <div class="text-danger" style="display: inline-block" role="alert">
+                        {{errorMessage}}
+                    </div>
+                </div>
+                <div class="col-sm-5" style="text-align: right;">
+                <button style="position: relative;"  (click)="onSubmit()" class="btn btn-success">Save</button>
+                </div>
+                <div class="col-sm-1">
+                    <button type="button" style="border:1px solid black ;position: relative;" (click)="cancelfunction()" class="btn btn-light">Cancel</button>
+                </div>
+            </div>
+        </mat-card>
+
+</section>

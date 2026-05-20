@@ -1,0 +1,377 @@
+/* ::ng-deep mat-step-header{
+    height: 32px !important;
+    border-radius:40px !important;
+    background-color:gray;
+    color:white
+
+
+} */
+
+/* ::ng-deep .mat-button-toggle-button
+{
+    background-color: #393636;
+} */
+
+/* ::ng-deep .mat-button-toggle-button 
+{
+    background-color: red;
+}
+::ng-deep .mat-button-toggle-button:checked 
+{
+    background-color: white;
+} */
+
+::ng-deep .mat-horizontal-stepper-header
+{
+   height: 30px !important;
+   border-radius: 8px;
+}
+
+ .HeaderBox
+ {
+   
+   background-color: #ffffff;
+   border-radius: 10px 10px 0 0; 
+   min-height: 40px;
+   height: 25px;
+   padding: 10px;
+   line-height: 25px;
+   box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+   font-weight: 600;
+   font-size: 1.2rem;
+   margin-bottom: 15px;
+   color: #515189 !important;
+ }
+ 
+::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content
+{
+   line-height: 30px;
+} 
+
+
+.canvas_whiteboard_button-undo:hover {
+   content: "Undo";
+ }
+.canvas-container {
+   background-color: #d61b1b;
+ }
+
+::ng-deep body
+{
+   overflow-x: hidden !important;
+}
+
+.resetbtn
+{
+   background-color: transparent;
+   border: 2px solid #233f76;
+   color: #233f76;
+}
+
+/* ::ng-deep .mat-icon {
+ font-size: 16px !important;
+ top: 59% !important;
+ left: 68%;
+ position:absolute;
+} */
+/* ::ng-deep  .card_layout 
+{
+margin-bottom: 10px !important;
+} */
+/* ::ng-deep .Cards{
+   background-size: 80px !important;
+   padding: 4px 129px 10px 3px !important;
+   min-height: 87px !important;
+   width: 157px !important;
+}  */
+/* 
+::ng-deep .card_number {
+   font-weight: 700;
+   font-size: 10px;
+   line-height: 0px;
+   color: #ffffff;
+} */
+/* ::ng-deep .card_icon {
+   max-width: 19px;
+   width: 100%;
+   min-height: 18px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 5px;
+} */
+
+/* ::ng-deep .card_body_conent
+{
+   width: 70px;
+} */
+
+/* ::ng-deep .card_heading {
+   font-weight: 700;
+   font-size: 10px;
+   line-height: 26px;
+   text-align: center;
+   text-transform: uppercase;
+   color: #ffffff;
+   margin-top: 10px;
+   line-height: 1 !important;
+} */
+
+
+
+
+@media screen and (max-width: 900px)
+{
+   ::ng-deep .card_icon
+   {
+   margin-top: -1px !important;
+   margin-left: 2px;
+   border-top-left-radius: 0px !important;
+   }
+   ::ng-deep .Cards
+   {
+       background-size: 99px !important;
+   padding: 2px 69px 10px 3px !important;
+   min-height: 79px !important;
+   width: 157px !important; 
+   box-shadow: none !important;
+
+   }
+}
+
+
+
+::ng-deep .navbar>.container-fluid
+{
+   display:block !important;
+}
+
+#SerialNo
+{
+   width: 285px !important;
+}
+ 
+
+
+::ng-deep html
+{   
+     height: auto;  
+}
+::ng-deep  .pane
+{
+   margin-top: 26px !important; 
+}
+
+.FirstRow
+{
+  display: flex;
+  align-items: center; 
+}
+::ng-deep  .mat-card-header .mat-card-title
+{
+   margin-bottom: -4px !important;
+}
+
+::ng-deep .widthSize 
+{
+   flex: 0 0 auto;
+   width: 40%;
+}
+
+.BillingOptions 
+{
+   flex: 0 0 auto;
+   width: 29%; 
+}
+.Location
+{
+   flex: 0 0 auto;
+   width: 29%;  
+}
+.Serial
+{
+   flex: 0 0 auto;
+   width: 40%;  
+}
+
+
+
+
+
+
+.ProductDesc
+{
+   width: 290px;
+}
+.Date
+{
+   width: 288px;
+}
+.CustomerVoice
+{
+   width:586px;
+}
+.ImageBorder
+{
+   border:3px solid gray;
+   height:130px;
+   border-radius:20px;
+}
+::ng-deep  #Card
+{
+   
+   margin-bottom: 0px !important;
+}
+
+::ng-deep  .card
+{
+   
+   margin-bottom: 0px !important;
+}
+
+
+
+.swiperBox
+{
+   box-shadow: 0px 3px 4px rgb(0 0 0 / 25%);
+   border-radius: 10px;
+   border: 1px solid #e1e8f2;
+   overflow: auto;
+}
+
+
+
+
+/* Ipad View */
+@media only screen 
+ and (min-device-width: 767px) 
+ and (max-device-width: 1024px) 
+ and (-webkit-min-device-pixel-ratio: 1)
+
+{
+
+   #SerialNo
+   {
+       width: 180px !important;
+   }
+   .SerialBox
+   {
+       padding-right: 70px;
+   }
+
+   .DisplayBox
+   { 
+       
+       width: 611px;
+   }
+   .col-lg-3
+   {
+       width: 21%;
+   }
+
+   .ProductDesc
+   {
+       width: 30%;
+   }
+   .Date
+   {
+       width: 30%;
+   }
+  
+   .CustomerVoice
+   {
+       width:510px;
+   }
+   /* .ImageBorder
+   {
+       height: 184px !important;
+   } */
+   ::ng-deep .widthSize 
+   {
+       flex: 0 0 auto;
+       width: 20%;
+   }
+    
+   .SearchBtn
+   {
+       width: 55px;
+       height: 40px;
+       border-radius: 10px;
+       background-color: greenyellow;
+       margin-left: 9px;
+       margin-top: 13px;
+       font-size: 10px;
+       font-size: 10px !important;
+   }
+   .CustomerVoice
+   {
+       width:145px;
+   }
+
+}
+
+
+/* Mobile View */
+@media screen and (max-width: 700px) 
+{
+   /* .FirstRow
+   {
+       display: flex;
+       align-items: center; 
+       background-color: yellow;
+   }   
+   .DisplayBox
+   {
+       background-color: red;
+       display: flex;
+       align-items: center;
+       justify-content: center;
+   }
+   ::ng-deep .widthSize 
+   {
+       flex: 0 0 auto;
+       width: 22%;
+   }
+   .card
+   {
+       display: flex;
+       flex-direction: inherit;
+   } */
+   .btn-flex-f{
+       border:2px solid red;
+       display:flex;
+       justify-content:right;
+   }
+
+   
+   
+}
+.mat-button-toggle-appearance-standard {
+   background-color: white;
+   color:gray;
+   line-height: 28px;
+   border: 2px solid lightgray;
+}
+
+.mat-button-toggle-checked {
+   background-color: #233f76;
+   color:white;
+   line-height: 28px;
+}
+.fa-trash
+{
+   color: red;
+   cursor: pointer;
+}
+
+.fa-eye
+{
+   color: #233f76;
+   cursor: pointer;
+}
+
+.labelStyle
+{
+text-align: center;
+font-weight: 600;
+}

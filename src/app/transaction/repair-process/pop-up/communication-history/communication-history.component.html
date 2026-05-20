@@ -1,0 +1,105 @@
+
+
+
+<style>
+  input[type=checkbox] {
+    transform: scale(1.5);
+}
+</style>
+
+
+
+<div style="margin: 3% 28%;">
+<div>
+  <div class="card" >
+      <div class="row">
+        <div class="col-12">
+          <div class="tabheader" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <h3>Communication History</h3>
+            </div>
+
+            <div>
+              <img (click)="CancelBtn1()" src="assets/images/close.png" alt="logo-full">
+            </div>
+         
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: center; " *ngIf="isLoading; else communicationListSection">
+        <!-- Your spinner component or HTML here -->
+        <mat-progress-spinner  *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+      </div>
+      
+      <ng-template #communicationListSection>
+        <div class="row">
+          <div class="col-12">
+            <div  style="height: 500px; overflow: auto;">
+              <div *ngIf="CommunicationList">
+                  <div *ngFor="let item of CommunicationList" style="padding: 10px;">
+                    <mat-card style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                      <!-- Your item-specific content here -->
+                      <div class="row">
+                        <div class="col-4">
+                          <label class="Header">Call Type</label><br>
+                          <div>{{item.CallType}}</div>
+                        </div>
+                        <div class="col-4">
+                          <label class="Header">Agent Name</label><br>
+                          <div>{{item.AgentName}}</div>
+                        </div>
+                        <div class="col-4">
+                          <label class="Header">Connect</label><br>
+                          <div>{{item.Connect == 1 ? 'Yes' : 'No'}}</div>
+                        </div>
+                      </div>
+              
+                      <div class="row">
+                        <div class="col-12">
+                          <label class="Header">Connect Disposition</label><br>
+                          <div>{{item.ConnectDispositionText}}</div>
+                        </div>
+                      </div>
+              
+                      <div class="row">
+                        <div class="col-12">
+                          <label class="Header">Remark</label><br>
+                          <div>{{item.Remark}}</div>
+                        </div>
+                      </div>
+                    <hr>
+                      <div class="row">
+                          <div class="col-6" >
+                             {{item.CreatedDate | date: 'dd-MM-YYYY : hh:mm a' }}
+                          </div>
+                          <div class="col-6" >
+                              {{item.CreatedBy}}
+                          </div>
+                      </div>
+
+
+                    </mat-card>
+                  </div>        
+              </div>
+
+              <!-- <div *ngIf="!CommunicationList">
+                  <mat-card>
+                    <div class="row">
+                      <div class="col-12">
+                        <label class="Header">No Communication History Found</label><br>
+                      </div>
+                    </div>
+                  </mat-card>
+              </div> -->
+              
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    
+  </div>
+</div>
+</div>
+
+

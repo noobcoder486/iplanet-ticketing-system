@@ -1,0 +1,62 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+
+<section class="sales_dasboard content x_container">
+  <div class="sales_order_action">
+    <div class="tabs_content">
+
+
+            <!-- this is the popup button  -->
+      <div class="tab_content_header" style="height: 30px;">
+        <h3 class="header_text">{{ pageTitle }}</h3>
+        <div class="create_btn" style="max-width: 108px !important;  width: 100%; height: 35px !important; ">
+        </div>
+        <div>
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Dropoff Type</mat-panel-title>
+              </mat-expansion-panel-header>
+              <div style="display: flex; align-items: center; gap: 30px;">
+                <div>
+                  <button matTooltip="Add Parts" class="btn btnClass"
+                    style="width: 80px; padding: 3px; border-radius: 4px; background-color: #eaedf3;" (click)="add()">
+                    Parts
+                  </button>
+                </div>
+                <div>
+                  <button matTooltip="Add Products" class="btn btnClass"
+                    style="width: 100px; padding: 3px; border-radius: 4px; background-color: #eaedf3;"
+                    (click)="addProducts()">
+                    Products
+                  </button>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+
+        <ul class="layout_icons_wrapper wauto">
+          <li *ngFor="let tab of tabs; let index= index" (click)="selectTab(index)" [class.active]="tab.active">
+            <span *ngIf="tab.gridicon" class="grid_svg_layout layout_icons_content" [innerHtml]="tab.gridicon"></span>
+            <a *ngIf="tab.title">{{ tab.title }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <my-tab-create [(active)]="tabs[0].active" [gridicon]="content">
+        <app-tiles (onCardSelected)="onCardSelected($event)" [data]="DropoffData"></app-tiles>
+      </my-tab-create>
+      <!-- Grid -->
+      <div>
+        <my-tab-create [(active)]="tabs[1].active" [gridicon]="contentOne">
+          <app-dropoff-management-grid [filters]="filtersEventRequest"></app-dropoff-management-grid>
+        </my-tab-create>
+      </div>
+    
+
+    </div>
+  </div>
+</section>

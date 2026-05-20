@@ -1,0 +1,100 @@
+<style>
+    input[type=checkbox] {
+      transform: scale(1.5);
+  }
+  </style>
+  <div class="content-header" style="margin:auto 17% !important;width: 60% !important; top:6%;" >
+    <div class="card pb-3" >
+        <div class="row">
+          <div class="col-12">
+            <div class="tabheader"  style="display: flex;justify-content: space-between;">
+              <div>
+              <h3>Dead On Arrival</h3>
+              </div>
+
+            <div>
+              <i class="Ux_close fa-duotone fa-circle-xmark" ></i>
+
+            </div>
+          </div>
+
+          
+          </div>
+        </div>
+        <div class="row" style="padding: 10px;">
+          <div class="scrollcntr" style="max-height: 60vh;">
+            <div class="col-lg-12">
+              <label style="font-size: 18px;font-weight:bold;padding-bottom: 20px;">A replacement part will be sent from Apple</label>
+            </div>
+
+            <div class="row" style="padding-bottom: 10px;">
+                <div class="col-lg-3 col-sm-4 col-12"  >
+                    <div class="col-lg-12"  ><b>Part Code</b></div>
+                </div>
+                <div class="col-lg-8  col-sm-8 col-12"  >
+                    <div class="col-lg-12"  >{{data?.PartCode}}</div>
+                </div>
+            </div>
+
+
+            <div class="row" style="padding-bottom: 10px;">
+                <div class="col-lg-3 col-sm-3 col-12">
+                    <div class="col-lg-12 col-sm-12 col-12"><b>Part Description</b></div>
+                </div>
+                <div class="col-lg-8  col-sm-8 col-12"  >
+                    <div class="col-lg-12"  >{{data?.PartDescription}}</div>
+                </div>
+            </div>
+
+            <div class="row" style="padding-bottom: 10px;">
+                <div class="col-lg-3 col-sm-3 col-12"  >
+                    <div class="col-lg-12  col-sm-12 col-12"><b>Stock Price</b></div>
+                </div>
+                <div class="col-lg-8  col-sm-8 col-12"  >
+                    <div class="col-lg-12"  >{{data?.NetPrice}}</div>
+                </div>
+            </div>
+            <div class="row"  style="padding-bottom: 10px;">
+              <div class="col-lg-3 col-sm-3 col-12"  >
+                  <div class="col-lg-12"><b>Comp/Issues</b></div>
+              </div>
+              <div class="col-lg-8 col-sm-8 col-12"  >
+                  <div class="col-lg-12"  >{{componentSet}}/{{issuesSet}}</div>
+              </div>
+          </div>
+            <div class="row"  style="padding-bottom: 10px;padding: 10px;">
+                <div class="col-lg-3" style="display: flex;align-items: center;">
+                   <b> Component :</b>
+                  </div>
+                  <div class="col-lg-7 col-sm-7 col-12">  
+                    <ng-select [items]="ComponentList"  bindLabel="componentDescription" 
+                    (change)="onSelectComponent($event)" [(ngModel)]="component">
+                  </ng-select>
+                  </div>
+                  <div class="col-lg-3 col-sm-3 col-12" style="display: flex; align-items: center;margin-top: -15px;">
+                  <b>  Issues : </b>
+                  </div>
+                  <div class="col-lg-7 col-sm-7 col-12" style="margin-top: -15px;">  
+                    <ng-select [items]="IssuesList"  bindLabel="description"
+                      (search)="onSelectIssue($event)" [(ngModel)]="issues">
+                    </ng-select>
+                  </div> 
+                <div class="col-1"><i  (click)="setComponentIssues()" style="align-content:right;font-size:20px;color:green;margin-top: 10px;"  class="fa-regular fa-floppy-disk"></i></div> 
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-right">
+              <div class="col-12 d-flex justify-content-end">
+                <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onSubmit()" >Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+    </div>
+  
+  
+  
+  

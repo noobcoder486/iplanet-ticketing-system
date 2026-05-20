@@ -1,0 +1,402 @@
+
+<section class="content ">
+    <ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#fff" type = "ball-clip-rotate" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>
+    <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+      <div class="row">
+        <div class="col-lg-4 col-sm-12">
+          <div class="row">
+            <div class="col-lg-12 col-sm-12 col-12 " style=" border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+                <div class="mt-1" style=" padding-right: 15px;">
+                  <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+                </div>
+                <div class="mt-1">
+                  <h4><span style="color: black;font-size: 14px; " title="">NRET Delivery Challan Id </span></h4>
+                  <div class="mt-1">
+                    <h4><span style="color: blue ;font-size: 14px; font-weight: 600; " title=""> {{deliveryChallanNo == null || deliveryChallanNo == undefined ? 'NA' : deliveryChallanNo}}</span> </h4>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8 col-sm-12">
+          <div class="row" style="align-items: center;">
+            <div class="col-lg-3 col-sm-4 col-4" >
+              <!-- inside Box -->
+              <div *ngIf="deliveryChallanNo!=undefined" >
+                <!--<h4><span style="color: black;font-size: 14px; font-weight: 500; ">New</span></h4>-->
+                <ng-select style="margin-top: -15px;"  [items]="printTypeArray" bindLabel="TEXT"  bindValue="Id"
+                [(ngModel)]="printTypeData" ></ng-select>
+                
+              </div>
+            </div>
+            <!-- Print Button -->
+            <div class="col-lg-2 col-sm-2 col-2 ">
+              <!-- inside Box -->
+              <div *ngIf="deliveryChallanNo!=undefined" style="text-align: center; border-right: 1px solid rgb(112, 111, 111);margin-top: -15px;">
+                <button class="btnClass" (click)="printDocument()" >Print</button>
+                <!--<h4><span style="color: black;font-size: 14px; font-weight: 500; ">{{deliveryChallanNo}}</span></h4>-->
+              </div>
+            </div>
+  
+            <!-- Print Button -->
+            <div class="col-lg-3 col-sm-2 col-2 " >
+              <div *ngIf="deliveryChallanNo!=undefined" style="text-align: center; border-right: 1px solid rgb(112, 111, 111);margin-top: -15px;"> 
+                <h4><span style="color: black;font-size: 14px; font-weight: 600; " title="NRET Status">NRET Status:-</span> {{DeliveryChallanStatusDesc == null || DeliveryChallanStatusDesc == undefined ? 'NEW' : DeliveryChallanStatusDesc}}       </h4>
+                
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-2 col-2 " >
+            <div *ngIf="deliveryChallanNo!=undefined"
+            style="text-align: center;margin-top: -15px; ">
+            <h4><span style="color: black;font-size: 14px; "><b>Created Date:-</b> {{ CreatedDate | date: 'dd/MM/yyyy' }}</span></h4>
+          </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row" style="padding:10px;padding-bottom: 15px;">
+      <div class="col-lg-12"
+        style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+        <div class="row">
+          <div class="col-lg-4 col-sm-12"
+            style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-right: 1px solid hsl(0, 0%, 92%);    border-top-left-radius: 5px;    border-bottom-left-radius: 5px;">
+            <div 
+              style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;    border-top-left-radius: 5px;">
+              <span style="font-size: 16px !important;color:black;font-weight: 600;">Shipment Details</span>
+            </div>
+            <div  >
+              <div class="MainDiv" style="padding: 10px;">
+                <div class="row" >
+                  <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-md-12">
+                      <ng-select [readonly]="IsShipmentDisabled"    placeholder="Transportation Carrier" [items]="TransportationCarrier.Data"
+                        bindLabel="TEXT" bindValue="Id" [(ngModel)]="transportationCarrierData "></ng-select>
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-lg-9 col-sm-9 col-md-9" >
+                      <label>Seal No</label>
+                      <input    placeholder="Seal No" type="text"
+                        style="width: 100% !important;border-radius: 3px;border:1px solid #ccc;height: -webkit-fill-available;"
+                        [(ngModel)]="SealNo">
+                    </div>
+                  </div>
+                  
+                  <div class="row mt-4">
+                    <div class="col-lg-9 col-sm-9 col-md-9" >
+                      <label>No of Boxes</label>
+                      <input  [readonly]="IsShipmentDisabled"  placeholder="No of Boxes" type="number"
+                        style="width: 100% !important;border-radius: 3px;border:1px solid #ccc;height: -webkit-fill-available;"
+                        [(ngModel)]="noOfBoxes">
+                    </div>
+                  </div>
+
+                  <div class="row mt-4">
+                    <div class="col-lg-6 col-sm-6 col-md-6" *ngIf="ApprovalStatus == 'NEW' && deliveryChallanNo!= '' ">
+                      <!-- <button class="btn btn-success" style="border:none" (click)="UpdateTrackingNumbet()">Update</button> -->
+                        <button appDebounceClick [debounceTime]="2000" 
+                        [disabled]="submitClicked" class="btn btn-primary" style="border-radius: 10px;" (debounceClick)="ConfirmShipment()"> Confirm Shipment </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- From Location -->
+          <div class="col-lg-4 col-sm-12"
+            style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+            <!-- Ship To  -->
+            <div
+              style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+              <div class="row">
+                <div class="col-6">
+                  <span style="font-size: 16px !important;color:black;font-weight: 600;">Location From</span>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="MainDiv"  >
+                <div class="row"  *ngIf="isLocationDDshow">
+                  <div class="col-lg-12 col-sm-6">
+                    <ng-select [items]="LocationForJob.Data" [disabled]="disableDeliveryChallanType" 
+                      (change)="showToLocation()"
+                      bindLabel="TEXT" bindValue="Id" 
+                      placeholder="" [(ngModel)]="LocationCode">
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="row">
+                     <!-- Location Content -->
+                  <div *ngFor="let item of LocationObject">
+                    <div class="MainDiv" style="padding: 10px;">
+                        <mat-card-title >Location Name:- {{item?.LocationName}}</mat-card-title>
+                        <p>Address:- {{item?.Address1}}, {{item?.Address2}}, {{item?.City}} - {{item?.ZipCode}}, {{item?.StateCode}}.</p>
+                        <mat-card-content>
+                          <p>Email:- {{item?.EmailId}}</p>
+                          <p>Mobile No:- {{item?.MobileNo}}</p>
+                        </mat-card-content>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-12"
+            style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+            <div
+              style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+              <div class="row">
+                <div class="col-6">
+                  <span style="font-size: 16px !important;color:black;font-weight: 600;">Location To</span>
+                </div>
+                <div *ngIf="isReturnAddress == false ">
+                  <div class="col-lg-12 col-sm-6" *ngIf="isLocationDDshow">
+                    <ng-select   [items]="LocationToJob.Data" [disabled]="true" 
+                      bindLabel="TEXT" bindValue="Id" 
+                      placeholder="" [(ngModel)]="ToLocationCode">
+                    </ng-select>
+                    </div>
+                </div>
+              </div>
+              <div class="row" class="ex1" style="height:180px;">
+                <div *ngFor="let item of ToLocationObject ">
+                  <div class="MainDiv" style="padding:4px;">
+                      <mat-card-title >Location Name:- {{item?.LocationName}}</mat-card-title>
+                      <p>Address:- {{item?.Address1}}, {{item?.Address2}}, <br>
+                        {{item?.City}} - {{item?.ZipCode}}, {{item?.StateCode}}.</p>
+                      <mat-card-content>
+                        <p>Email:- {{item?.EmailId}}</p>
+                        <!-- <p>GST Number:- {{item?.GSTRegistrationNo}}</p> -->
+                        <p>Mobile No:- {{item?.MobileNo}}</p>
+                      </mat-card-content>
+                    </div>
+                </div>
+                  </div>
+            </div>
+              <div class="MainDiv" style="padding: 10px;">
+              </div> 
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  <!-- =========================NRET DETAILS PARTS -->
+    <div class="row">
+      <div class=" col-12">
+        <div class="col-lg-12 col-sm-12"
+          style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+          <!-- Order Heading -->
+          <div
+            style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;border-top-left-radius: 5px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span style="font-size: 16px !important;color:black;font-weight: 600;">Parts</span>
+              </div>
+              <div >
+                <button  *ngIf="ApprovalStatus == 'NEW'" (click)="showAddParts()" class="btnClass">Add Devices</button>
+  
+              </div>
+            </div>
+          </div>
+          <!-- Order Content -->
+          <div>
+            <div class="MainDiv" style="padding: 10px;">
+              <div class="row">
+                <div class="scrollcntr" style="height: 270px;">
+                  <div class="contents" style="overflow: auto;height: 268px;">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th style="width: 1%;" scope="col">Sr. No.</th>
+                          <th style="padding-right: 50px;background-color: rgb(96, 96,96);">CaseId</th>
+                          <th style="padding-right: 50px;text-align: center;background-color: rgb(96, 96,96);">Serial No</th>
+                          <th style="padding-right: 50px;text-align: center;background-color: rgb(96, 96,96);">Part Code</th> 
+                          <th style="padding-right: 50px;z-index: 1;background-color: rgb(96, 96,96);">Part Description</th> 
+                          <th style="padding-right: 50px;z-index: 1;background-color: rgb(96, 96,96);">Amount</th>
+                          <th *ngIf="ApprovalStatus == 'NEW' " style="padding-right: 50px;z-index: 1;background-color: rgb(96, 96,96);">Delete</th>
+                           </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of finalSelectedParts; let index = index" >
+                          <td [ngClass]="{'tableRow':item.IsDeleted == 1 }"  style="text-align: center !important;"> <span>{{ index + 1 }} </span></td>
+                          <td  [ngClass]="{'tableRow':item.IsDeleted == 1 }"style="padding-right: 50px;text-align: center !important;"> <span style="padding: 20px;">{{item.CaseId}}</span></td>
+                          <td [ngClass]="{'tableRow':item.IsDeleted == 1 }" style="text-align: center !important;"> <span style="padding: 20px;">{{ item.SerialNo}}</span></td>                        
+                          <td [ngClass]="{'tableRow':item.IsDeleted == 1 }" style="text-align: center !important;"> <span style="padding: 20px;">{{ item.PartCode}}</span></td>                        
+                          <td [ngClass]="{'tableRow':item.IsDeleted == 1 }" style="text-align: center !important;"> <span style="padding: 20px;">{{ item.PartDescription}}</span></td>                        
+                                                
+                          <td [ngClass]="{'tableRow':item.IsDeleted == 1 }"style="padding-right: 50px;text-align: center !important;"> 
+                            <input type="number" [disabled]="true" 
+                            (keypress)=" onKeyPress($event, 'int', 10)"
+                            (input)="CalculateTotalUnitPrice()"
+                              [(ngModel)]="item.UnitPrice" />
+                          </td>
+                            <!-- <td [ngClass]="{'tableRow':item.IsDeleted == 1 }" >
+                              <ng-select [readonly]="ApprovalStatus != 'INTR' "
+                              bindLabel="TEXT" bindValue="Id"
+                              [items]="ReceivedStatusDD.Data"  [(ngModel)]="item.ReceivedStatus" 
+                              style="width:200px !important;"></ng-select>
+                            </td> -->
+                          <td *ngIf="ApprovalStatus == 'NEW' " style="padding-right: 50px;text-align: center !important;">
+                            <button matTooltip="Delete" *ngIf="item.DeliveryChallanDetailGUID != null && item?.DeliveryChallanDetailGUID != undefined" style="color: red; cursor: pointer;"
+                            (click)="deletesaveitem(item)"  [disabled]="submitClicked" class="fa-regular fa-trash">
+                            </button>
+                            <button *ngIf="item.DeliveryChallanDetailGUID == null  && item?.DeliveryChallanDetailGUID == undefined" (click)="removeItem(item)" class="trash">
+                              <i class="fa-regular fa-trash" ></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+    <div  class="card-footer">
+      <div class="row" > 
+        <div class="col-2 col-lg-7" style="display: felx;justify-content:space-around;">
+         <b>Part Quantity: ({{finalSelectedParts.length}})</b> 
+         <b style="padding-left:40px;"> TotalPrice: ({{totalUnitPrice}})</b>
+        </div>
+        
+        <div class="col-6 col-lg-5" *ngIf="ApprovalStatus == 'NEW' ">
+          <div style="float: right;">
+            <button appDebounceClick [debounceTime]="2000" 
+            [disabled]="submitClicked" class="btn btn-success" style="border-radius: 10px;" (debounceClick)="onSubmit()"
+             *ngIf="finalSelectedParts.length > 0"> Save </button>
+          </div>
+        </div>
+
+        <div class="col-6 col-lg-5" *ngIf="isReceivedButton">
+          <div style="float: right;">
+            <button appDebounceClick [debounceTime]="2000" 
+            [disabled]="submitClicked" class="btn btn-success" style="border-radius: 10px;" (debounceClick)="shipmentReceived()"
+             *ngIf="finalSelectedParts.length > 0"> Shipment Received </button>
+          </div>
+        </div>
+        
+      </div>
+      <div>
+      </div>
+      <div>
+      </div>
+    </div>
+  </section>
+  
+
+
+  <!-- Popupp Starts Here -->
+  <div class="container" style="  width: 50% !important;  margin: 2% auto !important;max-width: 61% !important;">
+    <div class="background" [hidden]="hidePopup">
+      <div class="Ux_popup popup" style="position: relative; width: 50% !important;">
+    
+      <!-- ************************************** POPUP  ************************************************ -->
+    
+        <mat-card >
+    
+            <ngx-spinner size="medium" [type]="typeSelected">
+                <p style="font-size: 20px; color: white">Loading...</p>
+              </ngx-spinner>
+    
+    
+              <div>
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div>
+                    <b style="font-size: 17px !important;">NRET Devices List</b>
+                  </div>
+    
+                  <div>
+                    <i class="Ux_close fa-duotone fa-circle-xmark" (click)="hideAddParts()" ></i>
+                  </div>
+                </div>
+              </div>
+              <hr>
+        
+            <div class="row">
+              <div class="col-sm-11">
+                <mat-form-field appearance="fill">
+                  <mat-label>Search</mat-label>
+                  <input [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)"  matInput>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="MainDiv" style="padding: 10px;">
+                <div class="row">
+                  <div class="scrollcntr" style="height: 270px;">
+                    <div class="contents" style="overflow: auto;height: 268px;">
+                      <table  >
+                      <thead >
+                        <tr style="height: auto !important;">
+                          <th style="width: 1%;" scope="col"></th>
+                          <th style="width: 15%;"scope="col">Case Id</th>
+                          <th style="width: 15%;"scope="col">Serial</th>
+                          <th style="width: 37%;"scope="col">Description</th>
+                        </tr>
+                      </thead>
+                      <tbody >
+                        <tr *ngFor="let item of popUpArray" [ngClass]="{ 'selectedTr': item.selected == true, 'hide': isToShowTr(item) != true}">
+                          <td style="width: 1%; "><input type="checkbox" [(ngModel)]="item.selected" (change)="UpdateSelectedCount()"/></td>
+                          <td style="width: 10%; "> <span>{{ item.CaseId}} </span></td>
+                          <td style="width: 15%; "> <span>{{ item.SerialNo1}} </span></td>
+                          <td style="width: 37%; "> <span>{{ item.productDescription}} </span></td>
+                        </tr>
+                      </tbody>
+                      </table>            
+                    </div>
+                  </div>
+              </div>
+            </div>
+    
+      </mat-card>
+    
+    
+      
+      <div  style="position:inherit;bottom:0;">
+        <div style="background-color: gainsboro; padding-bottom: 10px;">
+          <div class="row" style="padding-top: 5px; padding-left: 20px;">
+              <div class="col-sm-2 col-lg-2 col-md-2">
+                <label style="color: black;"> No. of Devices Selected:- <b>({{SelectedList.length}})</b></label>
+              </div>
+              <div class="col-sm-2 col-lg-2 col-md-2">
+                <label style="color: black;">Total Devices Available:- <b>({{popUpArray.length}})</b></label>
+              </div>
+              <div class="col-sm-2 col-lg-2 col-md-2" style="display: flex; ">
+                <div style="padding-right: 5px;">
+                  <input type="checkbox" [(ngModel)]="showOnlySelected" >
+                </div>
+    
+                <div>
+                  <label style="color: black;">Show Only Selected</label>
+                </div>
+                 
+              </div>
+
+
+              <div class="col-sm-4 col-lg-4 col-md-4" style="display: flex; ">             
+              </div>
+              <div class="col-sm-2 col-lg-2 col-md-2" style="padding-right: 20px;display: flex; align-items: center; justify-content: end;">
+                  <button class="btnClass" style="float: right; height: 35px;" (click)="onPopUpSubmit()" > Submit </button>
+              </div>
+          </div>
+      
+          <div>
+          </div>
+          <div>
+          </div>
+      </div>
+      </div>
+      
+    
+    </div>
+    </div>
+    </div>

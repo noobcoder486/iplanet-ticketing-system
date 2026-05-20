@@ -1,0 +1,253 @@
+<section class="content">
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+    <div class="row">
+      <div class="col-12">
+        <h3 class="ml-2 p-10 text-dark">
+          {{formTitle}} Material
+        </h3>
+      </div>
+    </div>
+  </mat-card>
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+    <form [formGroup]="materialForm" name="materialForm" autocomplete="off">
+      <div class="card-body" style="padding: 10px;">
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Material Code<i style="color:red">*</i></mat-label>
+              <input matInput [(ngModel)]="material.MaterialCode" [readonly]="isEdit" formControlName="MaterialCode">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Material Name<i style="color:red">*</i></mat-label>
+              <input matInput [(ngModel)]="material.MaterialName" formControlName="MaterialName">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Material Description<i style="color:red">*</i></mat-label>
+              <input matInput [(ngModel)]="material.MaterialDescription" formControlName="MaterialDescription">
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>EEE Code</mat-label>
+              <input matInput [(ngModel)]="material.EEECode" formControlName="EEECode">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Substitute Part</mat-label>
+              <input matInput [(ngModel)]="material.SubstitutePart" formControlName="SubstitutePart">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Component Group</mat-label>
+              <input matInput [(ngModel)]="material.ComponentGroup" formControlName="ComponentGroup">
+            </mat-form-field>
+            <!-- <ng-select placeholder="Component Group" formControlName="ComponentGroups" [items]="ComponentGroup.Data" bindLabel="TEXT" bindValue="Id"></ng-select> -->
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Part Type <i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="material.PartType" formControlName="PartType">
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Labor Tier</mat-label>
+              <input matInput [(ngModel)]="material.LaborTier" formControlName="LaborTier">
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-6">
+
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>ERP Material Code<i style="color:red">*</i></mat-label>
+              <input matInput [(ngModel)]="material.ERPMaterialCode" formControlName="ERPMaterialCode">
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-6">
+            <mat-slide-toggle [(ngModel)]="material.ERPSerialized" formControlName="ERPSerialized"
+              (change)='newslide($event)'>ERP Serialized</mat-slide-toggle>
+
+          </div>
+
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Price Group<i style="color:red">*</i></mat-label>
+              <input matInput [(ngModel)]="material.PriceGroup" formControlName="PriceGroup">
+            </mat-form-field>
+          </div>
+
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Division Code<i style="color:red">*</i></mat-label>
+              <input matInput [(ngModel)]="material.DivisionCode" formControlName="DivisionCode">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Base UOM<i style="color:red">*</i></mat-label>
+              <input matInput [(ngModel)]="material.BaseUOM" formControlName="BaseUOM">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>SalesUOM<i style="color:red">*</i></mat-label>
+              <input matInput [(ngModel)]="material.SalesUOM" formControlName="SalesUOM">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <ng-select formControlName="ItemType" [(ngModel)]="material.ItemType" [items]="ItemTypeDD.Data"
+              placeholder="Item Type" bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Revenue Type<i style="color:red">*</i></mat-label>
+              <input matInput [(ngModel)]="material.RevenueType" formControlName="RevenueType">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Cost Price <i style="color:red">*</i></mat-label>
+              <input type="number" matInput [(ngModel)]="material.CostPrice" formControlName="CostPrice">
+            </mat-form-field>
+          </div>
+
+
+
+
+
+          <div class="col-sm-6">
+            <mat-slide-toggle [(ngModel)]="material.SerializedModule" formControlName="SerializedModule"
+              (change)='newslide($event)'>Serialized Module</mat-slide-toggle>
+          </div>
+          <div class="col-sm-6">
+            <mat-slide-toggle [(ngModel)]="material.isDeleted" formControlName="isDeleted"
+              (change)='isDeletedSlide($event)'>Is Disabled</mat-slide-toggle>
+          </div>
+          <div class="col-sm-6">
+
+          </div>
+          <!-- matgroup -->
+          <div class="col-sm-6">
+            <ng-select formControlName="MatGroup1" [(ngModel)]="material.MatGroup1" [items]="MatGroup1DD.Data"
+              placeholder="Material Group 1" bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+          <div class="col-sm-6">
+            <ng-select formControlName="MatGroup2" [(ngModel)]="material.MatGroup2" [items]="MatGroup2DD.Data"
+              placeholder="Material Group 2" bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+
+          <div class="col-sm-6">
+            <ng-select formControlName="MatGroup3" [(ngModel)]="material.MatGroup3" [items]="MatGroup3DD.Data"
+              placeholder="Material Group 3" bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+
+          <div class="col-sm-6">
+            <ng-select formControlName="MatGroup4" [(ngModel)]="material.MatGroup4" [items]="MatGroup4DD.Data"
+              placeholder="Material Group 4" bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+
+          <div class="col-sm-6">
+            <ng-select formControlName="Brand" [(ngModel)]="material.Brand" [items]="BrandDD.Data" placeholder="BrandCode"
+              bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+          <div class="col-sm-6">
+            <ng-select formControlName="MatCategory" [(ngModel)]="material.MatCategory"
+              [items]="MaterialCategoryDD.Data" placeholder="Material Category" bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+
+         <!-- Price Source  -->
+
+         <div class="col-sm-6">
+            <ng-select formControlName="PriceSource" [(ngModel)]="material.PriceSource" (change)="onPriceSourceChange($event)"
+              [items]="MaterialPriceSourceDD.Data" placeholder="Price Source" bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+
+         <div class="col-sm-6">
+             <label style="font-weight: 600 !important;" >Margin Price Applicable</label> <br>
+            <mat-slide-toggle style="margin-left: 20px; margin-top: 8px;" [(ngModel)]="material.IsMarginPriceApplicable" formControlName="IsMarginPriceApplicable"
+              (change)='slideIsMarginPriceApplicable($event)'></mat-slide-toggle>
+          </div>
+
+           
+
+
+        </div>
+        <!-- <div class="row">
+          <div class="col-sm-9" style="text-align: right;">
+            <div class="text-danger" style="display: inline-block" role="alert">
+              {{errorMessage}}
+            </div>
+          </div>
+          <div class="col-sm-3" style="text-align: right;">
+            <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+            <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+          </div>
+        </div> -->
+      </div>
+    </form>
+
+    <div class="mt-2" style="padding: 5px;" *ngIf="this.params.nc">
+      <div *ngIf="PriceListDetailsList.length>0">
+        <div class="row mt-2">
+          <div class="col-12">
+            <div class="scrollcntr" style="height: 347px !important;">
+              <div class="contents table-responsive">
+                <table>
+                  <thead>
+                    <tr style="height: auto !important;text-align: center;">
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Material Code</th>
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Pricing Option</th>
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Unit Price</th>
+                      <th style="white-space: nowrap;text-align: center; " scope="col">Margin</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of PriceListDetailsList">
+                      <td style="white-space: nowrap;text-align: center; ">{{item?.MaterialPriceGroup}}</td>
+                      <td style="white-space: nowrap;text-align: center; "> <span> {{ item?.PricingOption}} </span>
+                      </td>
+                      <td style="text-align: center;">
+                        <input type="number" [(ngModel)]="item.UnitPrice">
+                      </td>
+                      <td style="text-align: center;">
+                        <input type="number" [(ngModel)]="item.Margin">
+                      </td>
+
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <mat-card class="mb-4" style="z-index: 9;">
+      <div class="row">
+        <div class="col-sm-8" style="text-align: right;">
+          <div class="text-danger" style="display: inline-block" role="alert">
+            <!-- {{errorMessage}} -->
+          </div>
+        </div>
+        <div class="col-sm-4" style="text-align: right;">
+          <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+
+          <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+        </div>
+      </div>
+    </mat-card>
+  </mat-card>
+
+</section>

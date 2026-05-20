@@ -1,0 +1,70 @@
+
+<ngx-spinner size="medium" [type]="typeSelected">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<section class="">
+
+  <div class="container-fluid">
+    <mat-card class="p-2 mb-4">
+
+      <div class="row">
+        <mat-card>
+          <!-- Current -->
+          <div class="row">
+            <div class="col-lg-3 col-sm-4 mt-4">
+              <input type="text" class="form-control" placeholder="Case ID" [(ngModel)]="caseid">
+            </div>
+
+            
+
+            <div class="col-lg-3 col-sm-4 mt-4">
+              <input type="text" class="form-control" placeholder="First Name" [(ngModel)]="firstname">
+            </div>
+
+            <div class="col-lg-3 col-sm-4 mt-4">
+              <input type="text" class="form-control" placeholder="Phone Number" [(ngModel)]="phonenumber">
+            </div>
+
+            <div class="col-lg-3 col-sm-4 mt-4">
+              <input type="text" class="form-control" placeholder="Email Id" [(ngModel)]="Emailid">
+            </div>
+            <div class="col-lg-3 col-sm-4 mt-4">
+              <input type="text" class="form-control" placeholder="Serial No" [(ngModel)]="Serialno">
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-lg-3 col-sm-4  mt-4">
+              <ng-select placeholder="Call Type*" [items]="callForm.Data" bindLabel="TEXT" bindValue="Id"
+                [(ngModel)]="callType">
+              </ng-select>
+            </div>
+
+            <div class="col-lg-3 col-sm-4  mt-4">
+              <ng-select placeholder="select Job Status" (search)="onJobStatus($event)" [items]="JobStatus.Data" bindLabel="TEXT" bindValue="Id"
+                [(ngModel)]="JobStatustype"></ng-select>
+            </div>
+
+            <div class="col-lg-3 col-sm-4 mt-4" style="display: flex; align-items: center; padding-top: 6px;">
+              <input type="text" class="form-control" placeholder="GID" [(ngModel)]="gsxCode">
+            </div>
+
+            <div class="col-lg-1 col-sm-2 mt-4" style="display:inline-grid;align-items: center;">
+              <button class="btn btn-success" (click)="SearchCallLogin()">search</button>
+            </div>
+
+          </div>
+        </mat-card>
+
+        <div class="col-sm-12">
+          <br>
+          <nitc-grid [gridcolumns]="JobColumns" [dataSource]="JobDetail" [actions]="actionDetails"
+            (actionEvent)="actionEmit($event)" [hideSpinnerEvents]="jobListHideSpinnerEvent"
+            (changeEvent)="loadPageData($event)"></nitc-grid>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+
+</section>

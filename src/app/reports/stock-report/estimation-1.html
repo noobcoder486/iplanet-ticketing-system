@@ -1,0 +1,60 @@
+<html>
+<head>
+    <title>Estimation</title>
+</head>
+<body>
+    <p>Dear $job.CUSTOMER.FirstName,</p>
+    <p>Greetings from iPlanet Care,</p>
+    <p>&nbsp;</p>
+    <p><b>This is a gentle reminder. We are awaiting payment from your end in order to continue with your service request below.</b></p>
+    <p>&nbsp;</p>
+    <p>Work Order No.: $job.CaseId</p>
+    <p>Request No.: $job.QUOTE.QuoteCode</p>
+    <p>Product.: $job.productDescription</p>
+    <p>Serial / IMEI No.: $job.SerialNo1</p>
+    <p>&nbsp;</p>
+    <p>Our Apple expert has diagnosed your device and found the following problem(s):</p>
+    <p>$job.ASGTECH.Remark</p>
+    <p>An estimation for your repair is attached.</p>
+    <p>Repair Estimate</p>
+    <table border="1">
+        <tr>
+            <td>Sr No</td>
+            <td>Description</td>
+            <td>Price</td>
+            <td>Tax Amount</td>
+            <td>Net Amount</td>
+        </tr>
+        #foreach ($item in $job.QUOTE.QUOTEDETAILS.QuoteItem)
+        <tr>
+            <td>$item.ItemNo</td>
+            <td>$item.ItemDescription</td>
+            <td>$item.UnitPrice</td>
+            <td>$item.TaxAmount</td>
+            <td>$item.NetAmount</td>
+        </tr>
+        #end
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total Amount</td>
+            <td>$job.QUOTE.TotalNetAmount</td>
+        </tr>
+    </table>
+    <p>Please make your payment using the details below in order for us to proceed with service. Your service request will take approximately $job.DIAG.NoOfDaysToComplete days to be completed once payment is made.</p>
+    <p>Amount Paid: Rs. $job.QUOTE.TotalNetAmount</p>
+    <p>Balance Payment Due to continuing with service: Rs. $job.QUOTE.TotalNetAmount.</p>
+    <p>&nbsp;</p>
+    <p>To proceed click the link below to Accept or Decline the above cost and make your payment.</p>
+    <p>$job.QUOTE.TotalNetAmount</p>
+    <p><i>*Please ignore this email if the payment has already been made</i></p>
+    <p>&nbsp;</p>
+    <p>In the meantime, if you require support, you can reach us at:</p>
+    <p>WhatsApp –+917397479555</p>
+    <p></p>
+    <p>Email address: care@iplanet.one</p>
+    <p>Regards,</p>
+    <p>iPlanet Care Team.</p>
+</body>
+</html>

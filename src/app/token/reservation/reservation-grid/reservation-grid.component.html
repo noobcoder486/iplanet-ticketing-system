@@ -1,0 +1,102 @@
+
+<section class="">
+    <div class="container-fluid">
+        <mat-card class="p-2 mb-4">
+            <div class="row"  style="display: flex; align-items: center; justify-content: center;">
+    
+                <!-- First Field -->
+                <!-- <div class="col-lg-3 col-sm-4 mt-2">
+                    <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">{{ ReservationDocType == 'DROP' ? 'Sales Return ' : 'Reservation '}} Status</label>
+                    <ng-select [items]="ReservationAgainstDD.Data" 
+                        [(ngModel)]="ReservationDocType" bindLabel="TEXT" bindValue="Id"
+                        placeholder="" (change)="onDocTypeChange()">
+                    </ng-select>
+                </div> -->
+
+                <!-- Second Field -->
+                <div class="col-lg-3 col-sm-4 mt-2">
+                    <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">{{ ReservationTypeCode == 'DROP' ? 'Drop ' : 'Pickup '}} Status</label>
+                    <ng-select  [items]="ReservationStatusDD.Data" 
+                        [(ngModel)]="ReservationStatusCode" bindLabel="TEXT" bindValue="Id"
+                        placeholder="" >
+                    </ng-select>
+                </div>
+                
+                <!-- Third Field -->
+                <div class="col-lg-2 col-sm-2 mt-2"  style="padding-top: 2%;">
+                    <label style="font-weight:600; padding-bottom: 2%;">Mobile No</label>
+                    <div class="form-group">
+                    <input type="text" class="form-control"
+                        [(ngModel)]="MobileNo" placeholder="Search Customer Mobile No" >
+                    </div>
+                </div>
+                
+                 <!-- Third Field -->
+                 <div class="col-lg-2 col-sm-2 mt-2"  style="padding-top: 2%;">
+                    <label style="font-weight:600; padding-bottom: 2%;">Customer Name</label>
+                    <div class="form-group">
+                    <input type="text" class="form-control"
+                        [(ngModel)]="searchCustomerName" placeholder="Search Customer Name" >
+                    </div>
+                </div>
+
+                <!-- Forth Field  -->
+                <div class="col-lg-2 col-sm-2 mt-2"  style="padding-top: 2%;">
+                    <label style="font-weight:600; padding-bottom: 2%;">Reservation Code</label>
+                    <div class="form-group">
+                    <input type="text" class="form-control"
+                        [(ngModel)]="ReservationCode" placeholder="Search Reservation Code" >
+                    </div>
+                </div>
+
+                <!-- Fifth Field  -->
+                <div class="col-lg-2 col-sm-2 mt-2"  style="padding-top: 2%;">
+                    <label style="font-weight:600; padding-bottom: 2%;">Service Reference No</label>
+                    <div class="form-group">
+                    <input type="text" class="form-control"
+                        [(ngModel)]="ServiceRefNo" placeholder="Search Service Reference No" >
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-sm-2 mt-2"  style="padding-top: 2%;">
+                    <label style="font-weight:600; padding-bottom: 2%;">Case ID</label>
+                    <div class="form-group">
+                    <input type="text" class="form-control"
+                        [(ngModel)]="CaseID" placeholder="Search Case ID" >
+                    </div>
+                </div>
+
+
+                <!-- Search Field -->
+                <div class="col-lg-2 col-sm-2 mt-2" style="padding-top: 2%;">
+                    <button class="btn btnClass" style="height: 30px;"    (click)="GetReservationList('', MobileNo, searchCustomerName, ReservationCode,ServiceRefNo, ReservationTypeCode, ReservationStatusCode, CaseID) ">Search <i
+                        style="padding-left: 10px;" class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </mat-card>
+
+        <div class="col-sm-12">
+            <br>
+            <mat-card class="m-0 p-0">
+                <div class="row clearfix" >
+                    <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+                    [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                    (changeEvent)="PageChange($event)">
+                    </nitc-grid>
+                </div>
+            </mat-card>
+            <!-- <ng-container [ngSwitch]="ReservationTypeCode">
+                <ng-container *ngSwitchCase="'PICKUP'">
+                   
+                </ng-container>
+                <ng-container *ngSwitchCase="'DROP'">
+                    <nitc-grid [gridcolumns]="salesReturnRequestColumns" [dataSource]="detail" [actions]="actionDetails"
+                        [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                        (changeEvent)="PageChange($event)">
+                    </nitc-grid>
+                </ng-container>
+            </ng-container> -->
+        </div>
+    </div>
+
+</section>

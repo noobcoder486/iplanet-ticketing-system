@@ -1,0 +1,236 @@
+<section class="content">
+
+    <!-- <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="ml-2 p-10 text-dark">
+                    <b>{{ formTitle }} Discount Kitty</b>
+
+                    <b *ngIf="this.ApprovalStatus !=null || this.ApprovalStatus!= undefined"> ApprovalStatus : {{ this.ApprovalStatus }}  </b>
+                    <b *ngIf="this.RequestAmount !=null || this.RequestAmount!= undefined"> Requested amount  : {{ this.RequestAmount }}  </b>
+                      
+                </h3>
+              
+                
+            </div>
+        </div>
+    </mat-card> -->
+    <mat-card style="padding: 0px !important;">
+        <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+            <div class="row">
+                <div class="col-lg-6 col-sm-12">
+                    <div class="row" style="align-items: center;">
+                        <div class="col-lg-5 col-sm-6 col-6 "
+                            style=" border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+                            <div class="mt-1" style=" padding-right: 15px;">
+                                <!-- <i class="fa-sharp fa-solid fa-boxes-stacked"></i> -->
+                            </div>
+                            <div class="mt-1">
+                                <h3 class="ml-2 p-10 text-dark">
+                                    <b>{{ formTitle }} Discount Kitty</b>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-sm-12 mt-3">
+                    <div class="row" style="align-items: center;">
+                        <div class="col-lg-1 col-sm-3 col-6 "
+                            style="text-align: center;display: flex; align-items: center; justify-content: center;">
+                        </div>
+                        <div class="col-lg-4 col-sm-3 col-6 ">
+                            <div class="col-12"
+                                style="text-align: center;display: flex; align-items: center; justify-content: center;"
+                                [ngStyle]="{'color': (ApprovalStatus == 'REJECTED') ? 'RED' : 'GREEN' }"
+                                >
+                                <b style="color: black;padding-right: 10px;">Approval Status: </b>
+                                {{this.ApprovalStatus}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <form [formGroup]="discountKittyForm" name="discountKittyForm" autocomplete="off">
+            <div class="row">
+            
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        
+                        <mat-label>Approver Name<i style="color:red">*</i></mat-label>
+                        <input [readonly]="isEdit" matInput formControlName="ApproverName">
+                        
+                    </mat-form-field>
+                </div>
+                <!-- Expiry Date Field -->
+                <div class="col-sm-6">
+                        <label>Expiry Date <i style="color:red">*</i></label><br>
+                        <input class="form-control" type="date" [value]="ExpiryDate" 
+                          [(ngModel)]="ExpiryDate"  [ngModelOptions]="{standalone: true}" />
+                          
+                </div>
+                <!-- Total Discount Field -->
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Total Discount <i style="color:red">*</i></mat-label>
+                        <input type="number" matInput formControlName="TotalDiscount">
+                    </mat-form-field>
+                </div>
+                <!-- >Discount Per Invoice Field -->
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Discount Per Invoice <i style="color:red">*</i></mat-label>
+                        <input matInput formControlName="DiscountPerInvoice">
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+        </form>
+    </mat-card>
+     
+    <!-- Requested Amount from customer -->
+    <mat-card *ngIf="params.guid">
+        <div class="row">
+            <div class="col-sm-6"
+            [ngStyle]="{'color': (ApprovalStatus == 'REJECTED') ? 'RED' : 'GREEN' }"
+            >
+                <b style="color: black;padding-right: 10px;"> Requested Amount: </b> {{this.RequestAmount}}
+            </div>
+        </div>
+    </mat-card>
+    <br>
+
+
+    <mat-card *ngIf="results?.length > 0">
+        <div class="row" style="padding-top:20px; padding-left: 20px">
+            <div class="col-10">
+                <input class="form-control" style="width: 100%;" placeholder="Search by Coupon Code"
+                    [(ngModel)]="CouponCode" />
+            </div>
+            <div class="col-2">
+                <button class="btn btn-secondary" (click)="search($event)">Search</button>
+            </div>
+        </div>
+        <div class="row" style="padding:20px">
+            <div>
+                <div class="scrollcntr mt-2" style="height: 230px !important;">
+                    <div class="contents table-responsive">
+                        <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [hideSpinnerEvents]="hideSpinnerEvent"
+                            (changeEvent)="PageChange($event)" [isAllowSelect]="isChoose">
+                        </nitc-grid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+
+    <div  *ngIf="!params.guid" class="row" style="padding:10px;padding-bottom: 5px;">
+        <!-- Background -->
+        <div class="col-lg-12"
+            style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+            <div class="row">
+                <!-- Request  -->
+                <div class="col-lg-4 col-sm-12"
+                    style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-right: 1px solid hsl(0, 0%, 92%);    border-top-left-radius: 5px;    border-bottom-left-radius: 5px;">
+                    <div
+                        style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;    border-top-left-radius: 5px;">
+                        <span style="font-size: 16px !important;color:black;font-weight: 600;">Select Location </span>
+                    </div>
+                    <!-- Details Content -->
+                    <div>
+                        <ng-select [(ngModel)]="this.LocationCode" [items]="Location.Data" bindLabel="TEXT" bindValue="Id"></ng-select>
+                    </div>
+                </div>
+                <!-- Payment  -->
+                <div class="col-lg-4 col-sm-12"
+                    style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-right: 1px solid hsl(0, 0%, 92%);    border-top-left-radius: 5px;    border-bottom-left-radius: 5px;">
+                    <div
+                        style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;    border-top-left-radius: 5px;">
+                        <span style="font-size: 16px !important;color:black;font-weight: 600;">Request Remark </span>
+                    </div>
+                    <div>
+                        <div>
+                            <div class="MainDiv" style="padding: 10px;">
+                                <span> <textarea style="width: 100%;" class="form-control" rows="3" [(ngModel)]="this.RequestRemark"></textarea> </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-12"
+                    style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+                    <div>
+                        <div
+                            style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+                            <div class="row">
+                                <div class="col-12">
+                                    <span style="font-size: 16px !important;color:black;font-weight: 600;">Request
+                                        Amount<i style="color:red">*</i></span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div>
+                            <div class="MainDiv" style="padding: 10px">
+                                <div class="mt-2"
+                                    style="display: flex;align-items: center;justify-content: space-between;">
+                                    <div style="width: 60%;">
+                                        <input type="number" placeholder="Enter Amount" style="width: 100%;color: blue;padding-top: 10px;padding-top: 10px;  
+                                          border: 1px solid rgb(184, 183, 183);"[(ngModel)]="this.RequestAmount"/>
+                                    </div>
+                                    <div style="width: 30%; height: 50%;">
+                                        <button class="btn btnClass" style="width: 100%;" (click)="onSendRequest()">Send Request </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+        <mat-card>
+            <div class="row" *ngIf="params.guid"  >
+            
+                <div class="col-sm-6" style="text-align: right;">
+                    <button style="position: relative;"  (click)="cancelfunction()" class="btn btn-success">Back </button>
+                </div>
+            </div>
+            <!-- <div class="row" *ngIf="params.guid"  >
+                <div class="col-sm-6" >
+                    <div class="text-danger" style="display: inline-block" role="alert">
+                        {{errorMessage}}
+                    </div>
+                </div>
+                <div class="col-sm-5" style="text-align: right;">
+                <button style="position: relative;"  (click)="onSubmit()" class="btn btn-success">Save</button>
+                </div>
+                <div class="col-sm-1">
+                    <button type="button" style="border:1px solid black ;position: relative;" (click)="cancelfunction()" class="btn btn-light">Cancel</button>
+                </div>
+            </div> -->
+
+            <div class="row" *ngIf="params.guid && this.ApprovalStatus != 'APPROVED'   && this.ApprovalStatus != 'REJECTED'">
+                <div class="col-sm-6" style="text-align: right;">
+                    <button class="btn " style="height: 30px; display: flex; align-items: center; background-color: rgb(48, 202, 99) !important; color: white;" mat-raised-button 
+                      (click)="changeStatus()">Approve Refund 
+                      </button>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn " style="height: 30px; display: flex; align-items: center; float: right; background-color: rgb(233, 38, 38) !important; color: white;" mat-raised-button 
+                    (click)="rejectRefundRequest()">Reject Refund   
+                    </button>
+                    </div>
+            </div>
+           
+        </mat-card>
+
+
+
+
+</section>

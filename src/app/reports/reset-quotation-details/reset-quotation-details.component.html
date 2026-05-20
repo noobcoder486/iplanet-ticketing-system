@@ -1,0 +1,83 @@
+<section class="content">
+    <mat-card>
+        <div class="row">
+            <div class="col-lg-8" style="display: flex; align-items: center;">
+                <strong>
+                    Reset Quotation Report 
+                </strong>
+            </div>
+            <div class="col-4" style="display: flex;flex-direction: column;align-items: end;">
+                <button class="btn btn-success" (click)="ExportQuotationResetListReport()">Export</button>
+            </div>
+        </div>
+    </mat-card>
+
+    <mat-card class="mt-2">
+        <div class="row">
+
+            <div class="col-3">
+                <ng-select [items]="LocationForJob.Data" [(ngModel)]="LocationCode" bindLabel="TEXT" bindValue="Id"
+                    placeholder="Location Code"></ng-select>
+            </div>
+
+
+            <div class="col-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>QuoteCode</mat-label>
+                    <input matInput type="text" [(ngModel)]="QuoteCode" placeholder="Enter QuoteCode">
+                </mat-form-field>
+            </div>
+
+                <div class="col-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>CaseID</mat-label>
+                    <input matInput type="text" [(ngModel)]="CaseID" placeholder="Enter CaseID">
+                </mat-form-field>
+            </div>
+
+            <div class="col-3">
+                <mat-form-field appearance="fill">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="startPicker" [(ngModel)]="StartDate" placeholder="Start date">
+                    <mat-datepicker-toggle matTooltip="Select Start Date" matSuffix
+                        [for]="startPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-3">
+                <mat-form-field appearance="fill">
+                    <mat-label>End Date</mat-label>
+                    <input matInput [matDatepicker]="endPicker" [(ngModel)]="EndDate" placeholder="End date">
+                    <mat-datepicker-toggle matTooltip="Select End Date" matSuffix
+                        [for]="endPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endPicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col-3">
+                <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+                    <button class="x_final_button x_active_btn x_save_button"  (click)="GetQuotationResetListReport()">Search</button>
+                </div>
+            </div>
+
+        </div>
+    </mat-card>
+
+     <mat-card class="mt-2">
+
+        <mat-card class="m-0 p-0">
+            <div class="row clearfix" *ngIf="columns.length > 0">
+                <div class="table-responsive">
+                    <nitc-grid [gridcolumns]="columns" [dataSource]="detail" (actionEvent)="actionEmit($event)"
+                        [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent"
+                        (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+                    </nitc-grid>
+
+                    
+                </div>
+            </div>
+        </mat-card>
+
+    </mat-card>
+</section>

@@ -1,0 +1,161 @@
+<section class="content">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="row">
+        <div class="col-12">
+          <h3 class="ml-2 p-10 text-dark">
+            {{formTitle}} Price list detail
+          </h3>
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <!-- <form   autocomplete="off"> -->
+      <div class="card-body" style="padding: 10px;">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <ng-select
+                  placeholder="Location Price Group *"
+                  [items]="LocationPriceGroupDropDown.Data"
+                  bindLabel="TEXT"
+                  bindValue="Id"
+                  [(ngModel)]="LocationPriceGroup"
+                  required
+                >
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Material  Code</mat-label>
+                  <input [readonly]="isEdit" type="text" matInput [(ngModel)]="MaterialPriceGroup" />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <ng-select
+                  placeholder="Customer Price Group *"
+                  [items]="CustomerPriceGroupDropDown.Data"
+                  bindLabel="TEXT"
+                  bindValue="Id"
+                  [(ngModel)]="CustomerPriceGroup"
+                  required
+                >
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Pricing Option</mat-label>
+              <input matInput [(ngModel)]="PricingOption" />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Product Category</mat-label>
+              <input matInput [(ngModel)]="ProductCategory" />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Effective Date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                [(ngModel)]="EffectiveDate"
+                required
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        
+          <div class="col-sm-6" id="slideval">
+            <mat-slide-toggle
+              [(ngModel)]="PriceRangeApplicable"
+              id="slide-val"
+              (change)="newslide($event)" [ngModelOptions]="{standalone: true}"
+              >Price Range Applicable</mat-slide-toggle
+            >
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Price Range Start </mat-label>
+              <input matInput [(ngModel)]="PriceRangeStart" required />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Price Range End </mat-label>
+              <input matInput [(ngModel)]="PriceRangeEnd" required />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-12">
+                <ng-select
+                  placeholder="Margin Type"
+                  [items]="MarginTypeDropDown"
+                  bindLabel="TEXT"
+                  bindValue="Id"
+                  [(ngModel)]="MarginType"
+                  required
+                >
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Margin</mat-label>
+              <input matInput [(ngModel)]="Margin" required />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Unit Price</mat-label>
+              <input
+                matInput
+                [(ngModel)]="UnitPrice"
+                pattern="^[0-9]*$" required
+                title="Only numbers are allowed"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Currency Code </mat-label>
+              <input matInput [(ngModel)]="CurrencyCode" required />
+            </mat-form-field>
+          </div>
+          <br />
+        </div>
+        
+      </div>
+      <mat-card class="mb-4" style="z-index: 9;">
+        <div class="row">
+          <div class="col-sm-8" style="text-align: right;">
+            <div class="text-danger" style="display: inline-block" role="alert">
+            </div>
+          </div>
+          <div class="col-sm-4" style="text-align: right;">
+            <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+            <button type="button" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+          </div>
+        </div>
+      </mat-card>
+      <!-- </form> -->
+    </mat-card>
+  
+  </section>

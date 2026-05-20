@@ -1,0 +1,148 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+<section class="content">
+  <div class="container-fluid">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="row">
+        <div class="col-sm-4 ">
+          <h3 class="ml-2 p-10 text-dark">
+            <b>Credit Request Master</b>
+          </h3>
+          <p class="mt-11 ml-8">
+            <span *ngFor="let cumb of breadCumbList;let i = index">
+              <span *ngIf="breadCumbList.length-1 == i">
+                <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>{{cumb.text}}
+              </span>
+              <a *ngIf="breadCumbList.length-1 != i" (click)="breadCumbClick(cumb.url)" class="breadcumb">
+                <span *ngIf="i!=0">
+                  <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>
+                </span> {{cumb.text}}
+              </a>
+            </span>
+          </p>
+
+        </div>
+
+        <div class="col-lg-6 col-sm-6 d-flex justify-content-end" style="flex: 3;">
+          <div class="d-flex flex-wrap" style="gap: 15px;">
+    
+            <!-- Download Material List Section -->
+            <div>
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>Download Credit Request List</mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div style="display: flex; align-items: center; gap: 20px;">
+                    <button class="btn btn-download" matTooltip="Download Credit Request Report" (click)="exportReportData()">
+                      <i style="color: rgb(251, 255, 0);" class="fa fa-download" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-sm-2 btn-head-group">
+          <div style="display: flex;align-items: center; justify-content: end;column-gap: 20px;">
+
+            <div>
+              <!-- <label style="white-space: nowrap;"><b>Add Material  </b></label> -->
+              <div class="d-flex justify-content-end">
+
+                <ng-container *ngIf="toolBarAction.length > 0">
+                  <ng-container *ngFor="let toolbar of toolBarAction">
+                    <button mat-raised-button color="primary" class="{{toolbar.title}}" (click)="actionEvent(toolbar)">
+                      <mat-icon>{{toolbar.icon}}</mat-icon>
+                      <span class="{{toolbar.title}}">{{toolbar.title}}</span>
+                    </button>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+
+
+            <div>
+              <div style="margin-top: 5px;padding-right: 5px;">
+                <input type="file" id="fileInput" accept=".xls, .xlsx" style="display: none;"
+                  (change)="FileUploadMaterial($event)">
+                <button (click)="selectFile()" matTooltip="Bulk Upload Credit Request/s" class="btn "
+                  style="width:30px; padding: 3px; border-radius: 4px;background-color: #233f76;">
+                  <img src="assets/images/uploadNew.png">
+                </button>
+              </div>
+            </div>
+
+
+            <div>
+              <div style="margin-top: 5px;">
+                <button class="btn btn-warning btn-download" matTooltip="Download Sample Excel"
+                  (click)="downloadSampleFile()">
+                  <i style="color: white;" class="fa fa-download" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+    </mat-card>
+
+    <mat-card class="p-2 mb-4">
+      <form>
+        <div class="mat-card-s3">
+          <div class="d-flex">
+            <div class="col-sm-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <input type="text" class="x_input" matInput placeholder="Customer Code" [(ngModel)]="CustomerCode"
+                  name="customercode">
+              </mat-form-field>
+            </div>
+            <!-- first field -->
+            <!-- <div class="col-sm-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <input type="text" class="x_input" matInput placeholder="Customer Name" [(ngModel)]="CustomerName"
+                  name="customerfirstname">
+              </mat-form-field>
+            </div> -->
+            <!-- 2end Field -->
+            <!-- <div class="col-sm-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <input type="text" class="x_input" matInput placeholder="Email Id" [(ngModel)]="EmailId" name="email">
+              </mat-form-field>
+            </div> -->
+            <!-- 3rd field -->
+            <div class="col-sm-2">
+              <mat-form-field class="example-full-width" appearance="outline">
+                <input type="text" class="x_input" matInput placeholder="Mobile No" [(ngModel)]="MobileNo"
+                  name="mobilenumber">
+              </mat-form-field>
+            </div>
+            <!-- 4rth field -->
+            <div class="col-sm-2">
+              <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+                <button class="x_final_button x_active_btn x_save_button" (click)="search()">Search</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-card>
+
+    <mat-card class="m-0 p-0">
+      <div class="row clearfix">
+        <div class="table-responsive">
+          <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+            (actionEvent)="actionEmit($event)" [isAllowSelect]="isChoose" (changeEvent)="loadPageData($event)">
+          </nitc-grid>
+        </div>
+      </div>
+    </mat-card>
+
+  </div>
+</section>

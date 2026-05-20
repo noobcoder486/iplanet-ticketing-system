@@ -1,0 +1,58 @@
+<section class="">
+
+    <div class="container-fluid">
+      <mat-card class="p-2 mb-4">
+  
+        <div class="row" style="display: flex; align-items: center; justify-content: center;">
+
+          <mat-card class="p-2 mb-2">
+            <div class="row">
+              <!-- First Field -->
+              <div class="col-lg-4 col-sm-4 mt-4">
+                <label style="font-weight:600; padding-bottom: 4%;">Delivery Challan No</label>
+                <div class="form-group">
+                  <input type="text" class="form-control" [(ngModel)]="DeliveryChallanNo" placeholder="Search Delivery Challan No">
+                </div>
+              </div>
+            
+              <!-- Second Field -->
+              <div class="col-lg-4 col-sm-4 mt-2">
+                <label style="font-weight:600; padding-bottom: 2%;">Delivery Challan Status*</label>
+                <ng-select [items]="DeliveryChallanStatusDD.Data" bindLabel="TEXT" bindValue="Id" [(ngModel)]="DeliveryChallanStatusCode" placeholder=""></ng-select>
+              </div>
+            
+              <!-- Third Field -->
+              <div class="col-lg-4 col-sm-4 mt-2">
+                <label style="font-weight:600; padding-bottom: 2%;">Location </label>
+                <ng-select [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id" [(ngModel)]="LocationCode" placeholder=""></ng-select>
+              </div>
+            </div>
+            
+
+              <div class="row">
+                
+                  
+                  <!-- Search Field -->
+                  <div class="col-12 text-right">
+                    <button class="btn btn-success" (click)="Search('')">Search</button>
+                  </div>
+              </div>
+    
+        </mat-card>
+
+        <mat-card class="m-0 p-0">
+            <div class="row clearfix" *ngIf="columns.length > 0">
+                <!-- <div class="table-responsive"> -->
+                    <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+                        [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                        (changeEvent)="PageChange($event)" [isAllowSelect]="isChoose">
+                    </nitc-grid>
+                <!-- </div> -->
+            </div>
+        </mat-card>
+
+        </div>
+      </mat-card>
+    </div>
+  
+  </section>

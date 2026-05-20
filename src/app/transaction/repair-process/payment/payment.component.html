@@ -1,0 +1,266 @@
+<style>
+  p{
+    margin-bottom: 2px;
+  }
+</style>
+<div *ngIf="isPayment == true" style="font-size: 16px !important;font-weight: 500;">
+  <div class="row">
+    <div  class="col-sm-12 d-flex justify-content-end">
+    <button  (click)="addNewPayment()" class="btn btnClass" style="float:right;width: auto;">Add Payment </button>
+    </div>
+
+  
+  </div>
+  <div class="card-body">
+  <div *ngIf="isAddPayment == true">
+    <form [formGroup]="paymentForm" name="paymentForm" autocomplete="off">
+      <div class="row">
+          <div class="col-sm-12" style="padding-bottom:10px;">
+            <b>Payment Code:</b> New
+          </div>
+        <div class="col-sm-12">
+          <ng-select
+                placeholder="Payment Type" 
+                [items]="PaymentTypeVal"
+                formControlName="PaymentType"
+                [ngClass]="{'ng-invalid-select':!paymentForm.get('PaymentType').valid && paymentForm.get('PaymentType').touched}"
+                >   
+          </ng-select>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field appearance="fill">
+            <mat-label id="text">Payment Date</mat-label>
+            <input  matInput [matDatepicker]="picker"
+              formControlName="PaymentDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div> 
+        <div class="col-sm-12">
+          <mat-form-field appearance="standard" [style.width.%]="100">
+            <mat-label>Amount</mat-label>
+            <input matInput type="text"  formControlName="QuoteAmount">
+          </mat-form-field>
+        </div> 
+        <div class="col-sm-12">
+          <ng-select (click) =setfunction() placeholder="Mode Of Payment"  [items]="ModeofPayment.Data" bindValue="Id"  bindLabel="TEXT" formControlName="MOPayment"  [ngClass]="{'ng-invalid-select':!paymentForm.get('MOPayment').valid && paymentForm.get('MOPayment').touched}">
+          </ng-select>
+        </div> 
+        <div class="row">
+          <div class="col-sm-6">
+          <label>GL Code</label>
+        </div>
+        <div class="col-sm-6">
+          <label><b>{{GLCode}}</b></label>
+        </div>
+      </div>
+        <br />
+        <div class="row">
+          <div class="col-sm-6">
+          <label>House Of Bank</label>
+        </div>
+        <div class="col-sm-6">
+          <label><b>{{houseofBank}}</b></label>
+        </div>
+      </div>
+     
+        <br />
+        <hr>
+        <!-- MOP RazorPay -->
+        <div *ngIf="MOPValue == 'PINELABS'" style="padding: 0px;" >
+          <div class="col-12 mt-2"  style="padding: 0px;">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Transaction Reference Number</mat-label>
+              <input matInput type="text" formControlName="UPITransactionId">
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="MOPValue == 'OLDSYSTEM'">
+          <div class="col-12 mt-2"  style="padding: 0px;">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Transaction Reference Number</mat-label>
+              <input matInput type="text" formControlName="UPITransactionId">
+            </mat-form-field>
+          </div>
+        </div>
+       <!-- MOP Card Payment -->
+       <div *ngIf="MOPValue == 'CREDITCARD'"  style="padding: 0px;" >
+        <div class="col-sm-12 mt-2">
+          <ng-select placeholder="Card Type" [items]="CardTypeVal"   formControlName="CardType"></ng-select>
+        </div>
+          <div class="col-sm-12">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Card No</mat-label>
+              <input matInput type="text"   formControlName="CardNo">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Adjudication</mat-label>
+              <input matInput type="text"   formControlName="Adjudication">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-12">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Terminal Id</mat-label>
+              <input matInput type="text" formControlName="TerminalId">
+            </mat-form-field>
+          </div> 
+       </div>
+        <!-- MOP RTGS -->
+     <div *ngIf="MOPValue == 'CHEQUE'"  style="padding: 0px;" >
+      <div class="col-sm-12"  style="padding: 0px;">
+        <mat-form-field appearance="standard" [style.width.%]="100">
+          <mat-label>Transaction Reference Number</mat-label>
+          <input matInput type="text" formControlName="UPITransactionId">
+        </mat-form-field>
+      </div>
+     </div>
+     <div *ngIf="MOPValue == 'UPI'">
+      <div class="col-sm-12"  style="padding: 0px;">
+        <mat-form-field appearance="standard" [style.width.%]="100">
+          <mat-label>UPI Transaction Number</mat-label>
+          <input matInput type="text" formControlName="UPITransactionId">
+        </mat-form-field>
+      </div>
+    </div>
+    <div *ngIf="MOPValue == 'CREDITREQ'">
+      <div class="col-sm-12"  style="padding: 0px;">
+        <mat-form-field appearance="standard" [style.width.%]="100">
+          <mat-label>UPI Transaction Number</mat-label>
+          <input matInput type="text" formControlName="UPITransactionId">
+        </mat-form-field>
+      </div>
+    </div>
+      </div>
+      <div class="row">
+        <div class="card-footer col-sm-12 ">
+          <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onSubmit()">SAVE</button>
+          <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onReset()">RESET</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</div>
+ 
+<div class="card-body">
+  <div >
+    <mat-card *ngFor="let item of paymentviewlist" style="margin:10px; border-radius:8px;">
+      <div class="row">
+        <div class="col-sm-6">
+          <mat-card-content>
+            <p><i class="fa-duotone fa-indian-rupee-sign"></i> {{ item?.PaymentDocType == "PADV" ? 'Advance Payment' : 'Payment'  }}</p>
+          </mat-card-content>
+        </div>
+        <div class="col-sm-6">
+          <mat-card-content>
+            <p align="end">{{item.TranDate | date : 'dd/MM/yyyy : hh:mm a' }}</p>
+          </mat-card-content>
+        </div>
+      </div>
+        <div *ngIf="item.ModeOfPayment == 'PINELABS'">
+          <mat-card-content>
+            <p>Mode Of Payment: RazorPay</p>
+            <p>Auth No: {{item.AuthenticationNumber }}</p>
+            <p>Account No: {{item.AccountNumber }}</p>
+          </mat-card-content>
+         </div>
+        <div *ngIf="item.ModeOfPayment == 'CHEQUE'">
+          <mat-card-content>
+            <p>Mode Of Payment: NEFT/RTGS</p>
+            <p> Account Holder Name: {{item.AccountHolderName }}</p>
+            <p>Bank Account No: {{item.BankAccountNo }}</p>
+            <p>Bank No: {{item.BankCode }}</p>
+          </mat-card-content>
+         </div>   
+        <div *ngIf="item.ModeOfPayment == 'CREDITCARD'">
+          <mat-card-content>
+            <p>Mode Of Payment: Debit/Credit-Card</p>
+            <p>Card Type : {{item.CardType }}</p>
+            <p>Card No: {{item.CardNumber }}</p>
+            <p>Terminal ID: {{item.TerminalId}}</p>
+            <p>Adjudication: {{item.Adjudication }}</p>
+          </mat-card-content>
+         </div>
+    <mat-card-content>
+      <p>Amount : {{item.Amount}}</p>
+      <P align="end">{{repa.ASGTECH.CreatedBy}}</P> 
+    </mat-card-content>
+  </mat-card>
+  </div>
+</div>
+<!-- Create Payment List -->
+<div *ngIf="isShowPaymentLink">
+     <div class="row">
+      <div  class="col-sm-12 d-flex justify-content-end">
+      <button  (click)="newGeneratePaymentLink()" class="btn btnClass" style="float:right;"> Payment Link</button>
+      </div>
+      </div>
+  <div *ngIf="repa?.PaymentLinkList?.PaymentLink != null || repa?.PaymentLinkList?.PaymentLink != undefined">
+    <mat-card *ngFor="let item of paymentLinkList" style="margin:10px; border-radius:8px;">
+      <div class="row">
+        <div class="col-sm-6">
+          <mat-card-content>
+            <p>  {{item.PaymentLink }}</p>
+            <p>Amount : {{item.Amount}}</p>
+            <p>Status : {{item.PaymentLinkStatus}}</p>
+          </mat-card-content>
+        </div>
+      </div>
+  </mat-card>
+  </div>
+</div>
+<div *ngIf="isCreatePaymentLink" style="font-size: 16px !important;font-weight: 500;">
+  <div class="row">
+  </div>
+  <form [formGroup]="PaymentLink">
+  <div class="row">
+    <div class="col-sm-4">
+      Customer Name:
+    </div>
+    <div class="col-sm-8">
+      {{repa?.CUSTOMER?.FirstName}}{{repa?.CUSTOMER?.LastName}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      Mobile No:
+    </div>
+    <div class="col-sm-8">
+      {{newPaymentLink}}
+      {{repa?.CUSTOMER?.MobileNo}} 
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      Quotation Amount:
+    </div>
+    <div class="col-sm-8">
+      {{repa?.QUOTE?.TotalNetAmount ==undefined||repa?.QUOTE?.TotalNetAmount==null ?0 :repa?.QUOTE?.TotalNetAmount}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+      Pending Amount:
+    </div>
+    <div class="col-sm-8">
+      {{PendingAmount}} 
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <mat-form-field appearance="standard" >
+      <mat-label>Payable Amount</mat-label>
+      <input matInput type="text" formControlName="Payable" >
+    </mat-form-field>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-12 d-flex justify-content-end">
+      <button class="x_final_button x_active_btn x_save_button" (click)="generatePaymentLink()" type="submit" >Create Payment Link</button>
+    </div>
+  </div>
+</form>
+</div>

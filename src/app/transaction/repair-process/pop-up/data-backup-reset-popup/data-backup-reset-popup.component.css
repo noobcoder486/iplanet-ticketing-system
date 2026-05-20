@@ -1,0 +1,6 @@
+
+:host ::ng-deep .content-header {
+    width: 60% !important;
+    position: relative !important;
+    top: 20% !important;
+}

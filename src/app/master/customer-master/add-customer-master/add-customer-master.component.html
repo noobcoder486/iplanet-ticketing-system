@@ -1,0 +1,162 @@
+<section class="content">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="ml-2 p-10 text-dark">
+                  <b>{{formTitle}} Customer</b>  
+                </h3>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <form [formGroup]="customerForm" name="customerForm" autocomplete="off">
+            <div class="row">
+                <div class="col-sm-4">
+                    <ng-select [items]="CustAccountGroup.Data" bindLabel="TEXT" bindValue="ID"
+                        placeholder="Select Customer Account Group *" formControlName="CustAccGroup"
+                        (search)="onCustAccountGroupSearch($event)"
+                        [ngClass]="{'ng-invalid-select':!customerForm.get('CustAccGroup').valid && customerForm.get('CustAccGroup').touched}">
+                    </ng-select>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>First Name <i style="color:red">*</i></mat-label>
+                        <input matInput (keypress)="onKeyPress($event, '', 96)" formControlName="FirstName">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Last Name <i style="color:red">*</i></mat-label>
+                        <input matInput (keypress)="onKeyPress($event, '', 96)"  formControlName="LastName">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field class="standard" appearance="standard" [style.width.%]="100">
+                        <mat-label>Address Line 1 <i style="color:red">*</i></mat-label>
+                        <input matInput (keypress)="onKeyPress($event, '', 60)"  formControlName="Address1">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field class="standard" appearance="standard" [style.width.%]="100">
+                        <mat-label>Address Line 2 <i style="color:red">*</i></mat-label>
+                        <input matInput (keypress)="onKeyPress($event, '', 40)"  formControlName="Address2">
+                        
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field class="standard" appearance="standard" [style.width.%]="100">
+                        <mat-label>Address Line 3</mat-label>
+                        <input matInput (keypress)="onKeyPress($event, '', 40)"  formControlName="Address3">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-3">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Email Address <i style="color:red">*</i></mat-label>
+                        <input matInput formControlName="EmailId">
+                    </mat-form-field>
+                    <br />
+                </div>
+                <div class="col-sm-1">
+                    <br />
+                    <button type="button" (click)="validateemail()" class="btn btn-success">...</button>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Phone No <i style="color:red">*</i></mat-label>
+                        <input (keypress)="onKeyPress($event, 'int', 10)"  [readonly]="isLocked"  type="tel" minlength="10" maxlength="10" matInput formControlName="PhoneNo">
+
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Alternate No</mat-label>
+                        <input (keypress)="onKeyPress($event, 'int', 10)" type="tel" minlength="10" maxlength="10" matInput formControlName="AlternateNo">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Pincode <i style="color:red">*</i></mat-label>
+                        <input (keypress)="onKeyPress($event, 'int', 6)" type="tel" matInput minlength="6" maxlength="6" formControlName="PinCode"
+                            (input)="onPinCodeChange()">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <ng-select [items]="Countries.Data" bindLabel="TEXT" bindValue="Id" placeholder="Select Country*"
+                        formControlName="Country" (search)="onCountrySearch($event)"
+                        [ngClass]="{'ng-invalid-select':!customerForm.get('Country').valid && customerForm.get('Country').touched}">
+
+                    </ng-select>
+                </div>
+                <div class="col-sm-4">
+                    <ng-select [items]="States.Data" bindLabel="TEXT" bindValue="Id" placeholder="Select State*"
+                        formControlName="State" [readonly]="isLocked" (search)="onStatesSearch($event)"
+                        [ngClass]="{'ng-invalid-select':!customerForm.get('State').valid && customerForm.get('State').touched}">
+                    </ng-select>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>City <i style="color:red">*</i></mat-label>
+                        <input matInput formControlName="City">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Land Mark</mat-label>
+                        <input matInput formControlName="LandMark">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <ng-select [items]="ReferredByDD.Data" bindLabel="TEXT" bindValue="Id" placeholder="Referred By"
+                        formControlName="ReferredBy" (search)="onReferredBy($event)">
+                       
+                    </ng-select>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 1%;">
+                <div class="col-sm-4"  style="padding-top: 1%;">
+                    <mat-checkbox (change)="onGSTSelect()" formControlName="DoGST">Do You Have GST No? <i style="color:red">*</i> :</mat-checkbox>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>GST No</mat-label>
+                        <input matInput formControlName="gstNo" (keypress)="onKeyPress($event, '', 15)">
+
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <ng-select [items]="GSTRegistration.Data" bindLabel="TEXT" bindValue="Id"
+                        placeholder="Select GST Registration*" formControlName="GSTRegistrationType"
+                        (search)="onGSTRegistrationSearch($event)">
+                    </ng-select>
+                </div>
+            </div>
+
+            <div class="row" style="padding-top: 1%;">
+                <div class="col-sm-4">
+                     <ng-select [items]="InsuranceApplicableList" bindLabel="TEXT" bindValue="Id"
+                        placeholder="Is Insurance Applicable" formControlName="IsInsuranceApplicable" (change)="onInsuranceFlagChange($event)">
+                    </ng-select>
+                </div>
+                <div class="col-sm-4">
+                    <ng-select [items]="InsuranceTypeDD.Data" bindLabel="TEXT" bindValue="Id"
+                        placeholder="Select Insurance Type" formControlName="InsuranceType"
+                        (search)="onInsuranceType($event)" >
+                    </ng-select>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-9" style="text-align: right;">
+                    <div class="text-danger" style="display: inline-block" role="alert">
+                        {{errorMessage}}
+                    </div>
+                </div>
+                <div class="col-sm-3" style="text-align: right;">
+                    <button type="submit" appDebounceClick [debounceTime]="1000"  [disabled]="submitClicked" (debounceClick)="onSubmit()" class="btn btn-success">Save</button>
+                    <button type="button" (click)="cancelfunction()" class="btn btn-light">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </mat-card>
+</section>

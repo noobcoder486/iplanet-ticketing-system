@@ -1,0 +1,148 @@
+<ngx-spinner style="width: 100%; height: 100%; position: absolute;" size="medium" *ngIf="Spinner" [type]="typeSelected"  [fullScreen]="true">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+  
+  <section class="content">
+    
+    <div class="container-fluid">
+  
+  
+  
+  
+  
+  
+      <div class="row">
+      <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row">
+          <div class="col-sm-2">
+            <p style="font-size: 16px !important;color:black;font-weight: 600;">Lead Management List</p>
+          </div>
+          <div class="col-sm-10"  >
+            <div class="row" *ngIf="isApproverPermission == true">
+              <!-- <div class="col-sm-2 ">
+                <button *ngIf="false"
+                class="btm btn-primary" (click)="GetLeadManagementDetails('')">Get Lead Management Details</button>
+              </div> -->
+            
+              <div class="col-4">
+              </div>
+
+              <div class="col-2">
+                <div class="form-group">
+                  <label>Start Date</label><br>
+                  <input class="form-control" type="date" [value]="StartDate" 
+                    [(ngModel)]="StartDate"  [max]="maxDate" [ngModelOptions]="{standalone: true}" />
+                </div>
+              </div>
+              <!-- <div class="col-2">
+                <div class="form-group">
+                  <label>Start time</label><br>
+                  <input class="form-control" id="startTimeInput"  [(ngModel)]="StartTime"
+                    [ngModelOptions]="{standalone: true}" type="time" #startTimeInput />
+                </div>
+              </div> -->
+  
+              <div class="col-2">
+                <div class="form-group">
+                  <label>End Date</label><br>
+                  <input class="form-control" type="date" [value]="EndDate" 
+                    [(ngModel)]="EndDate" [max]="maxDate" [ngModelOptions]="{standalone: true}" />
+                </div>
+              </div>
+              <!-- <div class="col-2">
+                <div class="form-group">
+                  <label>End time</label><br>
+                  <input class="form-control" id="endTimeInput"  [(ngModel)]="EndTime"
+                    [ngModelOptions]="{standalone: true}" type="time" #endTimeInput />
+                </div>
+              </div> -->
+  
+      
+              <div class="col-sm-2 " style="display: flex;align-items: center;">
+                <button class="btnClass"   [disabled]="submitClicked"
+                appDebounceClick   [debounceTime]="2000"  (debounceClick)="GetLeads()">Get Leads</button>
+              </div>
+      
+              <div class="col-sm-1">
+                <div style="margin-top: 15px; display: flex;align-items: center;">
+                  <input type="file" id="fileInput" accept=".xls, .xlsx" style="display: none;" (change)="FileUploadSAPGrn($event)">
+                  <button (click)="selectFile()" 
+                  matTooltip="Bulk Upload Lead Data" class="btn " style="width:40px; padding: 3px; border-radius: 4px;background-color: #233f76;">
+                  <img src="assets/images/uploadNew.png">
+                </button>
+                </div>
+              </div>
+      
+              <div class="col-sm-1">
+                <div style="margin-top: 15px; display: flex;align-items: left;">
+                  <button class="btn btn-warning btn-download"  style="width:40px;height: 35px; padding: 3px; border-radius: 4px;background-color: #5cb945;" 
+                    matTooltip="Download Sample Excel" (click)="downloadSampleFile()" >
+                    <i style="color: white;" class="fa fa-download" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+      </mat-card>
+      </div>
+  
+      <mat-card>
+  
+        <div class="row">
+  
+          <div class="col-12" style="width: 100%;">
+            <div class="row"> 
+              <div class="col-lg-3 col-sm-5 col-md-5">
+                <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Lead Status </label>
+                <ng-select  [items]="StatusDD" 
+                [(ngModel)]="LeadStatus" placeholder="" ></ng-select>
+              </div>
+              <div class="col-lg-3 col-sm-5 col-md-5">
+                <b>Mobile No:</b>&nbsp;<br>
+                <input type="text" placeholder="Mobile No" style="width: 100%; border:1px solid rgb(194, 193, 193);border-radius:2px;height:35px" 
+                [(ngModel)]="MobileNo" />
+              </div>
+              <div class="col-lg-3 col-sm-5 col-md-5 justify-content-end">
+                <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Location </label>
+                <ng-select  [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                [(ngModel)]="LocationCode" placeholder="" ></ng-select>
+              </div>
+              <div class="col-lg-3 col-sm-5 col-md-5">
+                <b>Unique Lead Id:</b>&nbsp;<br>
+                <input type="text" placeholder="UniqueId" style="width: 100%; border:1px solid rgb(194, 193, 193);border-radius:2px;height:35px" 
+                [(ngModel)]="UniqueId" />
+              </div>
+  
+              <div class="col-lg-1 col-sm-5 col-md-5 justify-content-end mt-3">
+  
+                <div class="mt-2" style="display: flex;align-content: center;">
+                    <div><button class="btn btn-primary"  (click)="GetLeadManagementList('')">Search</button></div>
+                </div>
+                
+              </div>
+            </div>
+  
+          </div>
+   
+        </div>
+      </mat-card><br />
+  
+       
+   
+       
+  
+      <mat-card class="m-0 p-0">
+        <div class="row clearfix" >
+          <div class="table-responsive">
+            <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+            [hideSpinnerEvents]="jobListHideSpinnerEvent" (actionEvent)="actionEmit($event)"
+            [isAllowSelect]="false" (changeEvent)="PageChange($event)">
+            </nitc-grid>
+          </div>
+        </div>
+      </mat-card>
+       
+    </div>
+  </section>

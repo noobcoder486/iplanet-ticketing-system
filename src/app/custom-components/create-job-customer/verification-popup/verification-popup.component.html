@@ -1,0 +1,328 @@
+
+<div class="" >
+    <ngx-spinner size="medium" >
+      <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+    <div class="card" style="width: 70%;margin: 2% auto;" >
+        <div class="row">
+          <div class="col-12">
+            <div class="tabheader" style="display: flex;justify-content: space-between;">
+                 <div>
+                    <h3 style="font-size: 17px !important;">Verification</h3> 
+                </div>
+                 <div>
+                    <i  (click)='isverificationPopClose()'  class="Ux_close fa-duotone fa-circle-xmark" ></i>
+                </div>
+            </div>
+          </div>
+        </div>
+
+<!-- ***********Customer Details ************ -->
+<div class="card" style="border: none !important;   height: 540px;  padding: 10px;">
+  <div class="card-body" style="height: 500px; overflow: auto; border: 2px  solid rgb(215 215 215) !important">
+        <div class="row" style="padding-left: 20px; padding-right: 20px;">
+            <div>
+                <label class="cardHeader">Customer Details</label>
+            </div>
+            <hr>
+        </div>
+
+       
+                 
+                  <div class="row"  style="padding-left: 20px; padding-right: 20px;">
+                    <div class="col-lg-3 col-sm-3 col-6">
+                      <b>CustomerCode:</b><br>
+                      {{CustomerCode1}}
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-6">
+                      <b>CustomerName:</b><br>
+                      {{FirstName}} {{LastName}}
+                    </div>
+                   
+
+                      <div class="col-lg-3 col-sm-3 col-6">
+                       <b>MobileNo:</b><br>{{MobileNo}}
+                      </div>
+
+                      <div class="col-lg-3 col-sm-3 col-6">
+                        <b>CountryCode:</b><br>{{CountryCode}}
+                      </div>
+                  </div>
+                  <br>
+
+                  <div class="row"  style="padding-left: 20px; padding-right: 20px;">
+                    <div class="col-lg-3 col-sm-3 col-6">
+                        <b>Address:</b><br>{{Address1}}
+                      </div>
+
+                      <div class=" col-lg-3 col-sm-3 col-6">
+                        <b>EmailID:</b><br>
+                        {{EmailID}}
+                      </div>
+                  </div>
+             
+         
+<!-- *********** END Customer Details ************ -->
+
+
+<!-- ***********Add Products ************ -->
+<div class="Products">
+        <div class="row" style="padding-left: 20px; padding-right: 20px;">
+            <div>
+                <label class="cardHeader">Products</label>
+            </div>
+            <hr>
+        </div> 
+
+             
+                <div class="row" style="padding: 10px;">
+                  <div class="col-lg-2 col-sm-4">
+                    Call Type: <br>
+                    <b>{{verificationArray.callType}}</b>
+                  </div>
+
+                  <div class="col-lg-2 col-sm-4">
+                    Product Type: <br>
+                    <b>{{verificationArray.productType}}</b>
+                  </div>
+
+                  <div class="col-lg-2 col-sm-4">
+                    Billing Option:<br>
+                    <b>{{verificationArray.BillingOptions}}</b>
+                  </div>
+
+                  <div class="col-lg-2 col-sm-4">
+                    Location:<br>
+                    <b>{{verificationArray.LocationCode}}  </b>
+                  </div>
+
+                 
+
+                  <div class="col-lg-2 col-sm-4">
+                    Labor Covered:<br>
+                    <b>{{verificationArray.laborCover}}</b>
+                 </div>
+                 
+                </div>
+                
+
+                <div class="row" style="padding:10px;">
+
+                  <div class="col-lg-2 col-sm-4">
+                    Onsite Coverage:<br>
+                    <b>{{verificationArray.onsitecoverage}}</b>
+                  </div>
+                  
+                    <div class="col-lg-2 col-sm-4">
+                       Serial Number: <br>
+                       <b>{{verificationArray.serialNo}}</b>
+                    </div>
+
+                    <div class="col-lg-2 col-sm-4">
+                        Product Name:<br>
+                        <b>{{verificationArray.productName}}</b>
+                     </div>
+
+                     <div class="col-lg-2 col-sm-4">
+                      Purchase Country:<br>
+                      <b>{{verificationArray.purchaseCountry}}</b>
+                  </div>
+
+                     <div class="col-lg-2 col-sm-4">
+                        GSX Warranty:<br>
+                        <b>{{verificationArray.GsxWarrantyStatusDescription}}</b>
+                     </div>
+                     
+                     <div class="col-lg-2 col-sm-4">
+                      Eligible Apple Care:<br>
+                      <b>{{verificationArray.appleCare}}</b>
+                  </div>
+                   
+
+                 </div>
+
+                <div class="row" style="padding:10px; padding-bottom: 20px;">
+                    <div class="col-lg-2 col-sm-4">
+                        Part Covered:<br>
+                        <b>{{verificationArray.partCover}}</b>
+                     </div>
+                    
+                </div>
+
+
+                <div *ngIf="isNONSERIALIZED" class="row" style="padding:10px; padding-bottom: 10px;">
+                  <div class="col-lg-2 col-sm-4">
+                    Date:<br>
+                    <b>{{verificationArray.Date | date}}</b>
+                  </div>
+                </div>
+                
+                <div *ngIf="isWOHDMI" class="row" > 
+                  <div class="col-lg-2 col-sm-4">
+                    Product Description :<br>
+                    <b>{{verificationArray.ProductDescription}}</b>
+                  </div>
+
+                  <div class="col-lg-2 col-sm-4">
+                    Date:<br>
+                    <b>{{verificationArray.Date | date}}</b>
+                  </div>
+
+                </div>
+
+                <div class="row" style="padding:10px; padding-bottom: 10px;">
+                <div class="col-lg-12 col-sm-12 col-12">
+                  CCE Voice:<br>
+                  <b>{{verificationArray.CREVoice}}</b>
+              </div>
+              </div>
+                <div class="row" style="padding:10px; padding-bottom: 10px;">
+                  <div class="col-lg-12 col-sm-12 col-12">
+                    Customer Voice:<br>
+                    <b>{{verificationArray.CustomerVoice}}</b>
+                  </div>
+                </div>
+
+                <div class="row" style="padding:10px; padding-bottom: 10px;">
+                <div class="col-lg-12 col-sm-12 col-12">
+                  Config Desc:<br>
+                  <b>{{verificationArray.configDesc}}</b>
+               </div>
+               </div>
+
+               <div class="row" style="padding:10px; padding-bottom: 10px;">
+               <div class="col-lg-12 col-sm-12 col-12">
+                ELS Status: <br>
+                <b>{{verificationArray.ElsStatus}}</b> 
+                
+              </div>
+              </div>
+ </div>       
+<!-- ***********END Add Products ************ -->
+
+
+<!-- ***********Overview ************ -->
+<div class="OverView">
+<div class="row" style="padding-left: 20px; padding-right: 20px;">
+    <div>
+        <label class="cardHeader">OverView</label>
+    </div>
+    <hr>
+</div>
+ 
+
+<div class="row">
+    <div class="checkList">
+        <div class="row">
+          <div class="col-lg-6 col-sm-6">
+            <div class="row">
+
+              <div class="col-12">
+                <div class="row" *ngFor="let item of questionItem">
+                    <div class="col-lg-6 col-sm-6 col-6" style="display: flex; align-items: center;">
+                        <p>{{item.ChecklistDescription}} :</p>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-6" style="display: flex; align-items: center;">
+                        <p style="font-weight: 600;"> {{item.answer}}</p>
+                    </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6">
+                <div class="table">
+                  <tr *ngFor="let items of answerItem">
+                    <td class="td">{{items}}</td>
+                  </tr>
+                </div>
+              </div>
+            </div> 
+          </div> 
+ 
+          <div class="col-lg-6 col-sm-6" > 
+                  <div class="row">
+                    <div class="col-lg-3" style=" padding-top: 10px;"  *ngFor="let item of imageStr">
+                     
+                        <img  style="width: 100%; height:100px; border-radius: 3px; border: 1px solid rgb(114, 114, 114);" [src]="item || 'http://placehold.it/180'" alt="your image" />
+                    
+                    </div>
+                   
+                  </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>  
+</div>
+  </div>
+
+  <!-- Customet Signature -->
+
+  <div class="row" style="bottom: 0; position: sticky; height: 200px;">
+    <div class="col-lg-6 col-sm-6 col-12">
+  
+        <div class="row" style="padding-left: 13px; padding-right: 13px;">
+          <div>
+              <label class="cardHeader">Customer Signature</label>
+          </div>
+          <hr>
+        </div>
+  
+        <div style="border: 2px dotted black; height: 104px;">
+          <div class="col-lg-12" style="height: 80%;"> 
+              <canvas #customerSign  width="390" height="90"  style="background-color:rgb(255, 255, 255); "></canvas>
+          </div>
+         
+    
+        </div>
+        <div class="col-12" style="padding-top: 10px;">
+          <button style="float: right;" (click)="ClearSignature()" class="btn btn-danger">Reset</button>
+        </div>
+  
+   
+    </div>
+
+    <div class="col-lg-6 col-sm-6 col-12">
+  
+      <div class="row" style="padding-left: 13px; padding-right: 13px;">
+        <div>
+            <label class="cardHeader"> Authorization Signature</label>
+        </div>
+        <hr>
+      </div>
+
+      <div style="border: 2px dotted black; height: 104px;">
+        <div class="col-lg-12" style="height: 80%;"> 
+            <canvas #authorizationSign width="390" height="90"  style="background-color:rgb(255, 255, 255);  "></canvas>
+        </div>
+       
+  
+      </div>
+      <div class="col-12" style="padding-top: 10px;">
+        <button style="float: right;" (click)="authorizationClearSignature()" class="btn btn-danger">Reset</button>
+      </div>
+
+ 
+  </div>
+  </div>
+  
+<!-- ***********END Overview ************ -->
+  <div class="footer" style="border-top: 1px solid black; width: 100%; height: 20px; bottom: 0; position: sticky; padding-left: 20px; padding-right: 20px; height: 31px; ">
+  
+
+    <div class="row" >
+      <div class="col-12" style="padding-top: 5px;">
+        <button class=" x_final_button x_active_btn x_save_button mat-button " style="float: right;" (click)="SaveSignature()">Submit</button>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
+         
+</div>
+</div>
+  
+  
+  

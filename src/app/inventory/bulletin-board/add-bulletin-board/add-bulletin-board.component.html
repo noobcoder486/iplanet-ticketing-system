@@ -1,0 +1,59 @@
+<section class="content">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="ml-2 p-10 text-dark">
+                    <b>Add Bulletin Board</b>
+                </h3>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <form [formGroup]="bulletinBoardForm" name="bulletinBoardForm" autocomplete="off">
+            <div class="row">
+                <!-- Title Field -->
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Title <i style="color:red">*</i></mat-label>
+                        <input matInput formControlName="Title">
+                    </mat-form-field>
+                </div>
+                <!-- Description Field -->
+                <div class="col-sm-6">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Description <i style="color:red">*</i></mat-label>
+                        <input matInput formControlName="Description">
+                    </mat-form-field>
+                </div>
+                <!-- Bulletin Data Field -->
+                <!-- <div class="bulletin-data-field col-sm-12">
+                    <mat-form-field appearance="fill" [style.width.%]="100" class="bulletin-data-field">
+                    <mat-label>Bulletin Data <i style="color:red">*</i></mat-label>
+                    <textarea matInput formControlName="BulletinData" rows="10"></textarea>
+                    </mat-form-field>
+                </div> -->
+                <div class="form-group">
+                    <label for="message">Bulletin Data <i style="color:red">*</i></label>
+                    <textarea class="form-control" id="message" rows="5" placeholder="" formControlName="BulletinData"></textarea>
+                </div>
+            </div>
+        </form>
+    </mat-card>
+
+    <mat-card>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="text-danger" style="display: inline-block" role="alert">
+                    {{errorMessage}}
+                </div>
+            </div>
+            <div class="col-sm-5" style="text-align: right;">
+                <button style="position: relative;" (click)="onSubmit()" class="btn btn-success">Save</button>
+            </div>
+            <div class="col-sm-1">
+                <button type="button" style="position: relative;" (click)="cancelfunction()"
+                    class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </mat-card>
+</section>

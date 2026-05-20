@@ -1,0 +1,113 @@
+<section class="content">
+    <ngx-spinner size="medium" [type]="typeSelected">
+      <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+      <mat-card class="p-2 mb-4" style="z-index: 9;">
+          <div class="row">
+            <div class="col-sm-9 ">
+                <h3 class="header_text">Advance Payment List</h3>
+            </div>
+            <!-- <div class="col-sm-3 " align="end">
+              <button  class="btnClass" (click)="newAdvancePayment()" > Create Advance Payment </button>
+            </div> -->
+          </div>
+    
+        </mat-card>
+      
+         
+      <mat-card>
+        <div class="mat-card-s3">
+            <div class="d-flex">
+                <!-- first field -->
+                <div class="col-sm-3">
+                    <label>Location Code</label>
+                    <ng-select [items]="LocationForJob.Data"  [(ngModel)]="LocationCode" bindLabel="TEXT" bindValue="Id"
+                      >
+                    </ng-select>
+                </div>
+                <!-- 2nd field -->
+                <div class="col-sm-3">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Mobile Number</mat-label>
+                        <input type="number" class="x_input" matInput placeholder="Search Mobile No" [(ngModel)]="MobileNo">
+                    </mat-form-field>
+                </div>
+                <!-- 3rd field -->
+                <div class="col-sm-3">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Case Id</mat-label>
+                        <input type="text" class="x_input" matInput placeholder="Search CaseId" [(ngModel)]="CaseId">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-3">
+                    <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+                    <button class="x_final_button x_active_btn x_save_button" (click)="GetAdvancePaymentList('', MobileNo, LocationCode, CaseId)">Search</button>
+                    </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row" style="align-items: center; padding-left:10px;">
+              <div class="col-sm-3">
+                <label>Location Code</label>
+                <ng-select [items]="LocationForJob.Data"  [(ngModel)]="LocationCode" bindLabel="TEXT" bindValue="Id"
+                  >
+                </ng-select>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group">
+                    <label>Customer Code</label>
+                <input class="form-control"  type="text" 
+                [(ngModel)]="MobileNo" placeholder="Search Customer Code" >
+                </div>
+                </div>
+                <div class="col-sm-3">
+                    <input  type="text" 
+                    [(ngModel)]="CaseId" placeholder="Search Case Id" >
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btnClass" style="height: 30px;"    (click)="GetAdvancePaymentList('', MobileNo, LocationCode, CaseId) ">Search <i
+                        style="padding-left: 10px;" class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+            </div> -->
+            <div class="row">
+              <div class="scrollcntr" >
+                <div class="contents" style="height: 450px;overflow: auto;">
+                    <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+                        [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                        (changeEvent)="PageChange($event)">
+                    </nitc-grid>
+                      <!-- <table>
+                          <thead >
+                          <tr>
+                          <th style="padding-right: 50px;background-color: rgb(187, 187, 187);" scope="col"><b>Order</b></th>
+                          <th style="padding-right: 50px;background-color: rgb(187, 187, 187);" scope="col"><b>Confirmation</b></th>
+                          <th style="padding-right: 50px;background-color: rgb(187, 187, 187);" scope="col"><b>CreatedDate</b></th>
+                          <th style="padding-right: 30px; text-align: center; background-color: rgb(187, 187, 187);" scope="col"><b>Invoice</b></th>
+                          <th style="padding-right: 100px;background-color: rgb(187, 187, 187);white-space: nowrap;" scope="col"><b>Part Number</b></th>
+                          <th style="padding-right: 100px;background-color: rgb(187, 187, 187);" scope="col"><b>PO Number</b></th>
+                          <th style="padding-right: 50px;background-color: rgb(187, 187, 187);" scope="col"><b>ShipTo</b></th>
+                          <th style="padding-right: 30px; text-align: center; background-color: rgb(187, 187, 187);" scope="col"><b>Shipping</b></th>
+                          <th style="padding-right: 50px;background-color: rgb(187, 187, 187);" scope="col"><b>Status</b></th>
+                          <th style="padding-right: 50px;background-color: rgb(187, 187, 187);" scope="col"><b>CreatedBy</b></th>                                                                                               
+                          </tr>
+                          </thead>
+                          <tbody style="white-space: nowrap;">
+                          <tr *ngFor="let item of finalPartList">
+                          <td > <span ><a href="javascript: void(0);" (click)="openAdvance(item)">{{ item.serviceOrderNumber}}</a> </span></td>
+                          <td> <span> {{ item.orderId}} </span></td>
+                          <td> <span> {{ item.orderCreateDate}} </span></td>
+                          <td style="text-align: center;"> <span> {{ item.invoice}} </span></td>
+                          <td> <span> {{ item.partNumber}} </span></td>
+                          <td> <span> {{ item.purchaseOrderNumber}} </span></td>
+                          <td> <span> {{ item.shipTo}} </span></td>
+                          <td  style="text-align: center;"> <span> {{ item.shipped}} </span></td>
+                          <td> <span> {{ item.statusCode}} </span></td>
+                          <td> <span> {{ item.createdFirstName}} {{ item.createdLastName}} </span></td>
+                          </tr>
+                          </tbody>
+                      </table> -->
+                </div>
+              </div>
+          </div>
+      </mat-card>  
+  </section>

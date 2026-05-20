@@ -1,0 +1,47 @@
+[
+    {
+        "ScreenCode": "VendorMaster",
+        "OnLoad" : [
+            { "ControlName" : "LastModifiedDate", "Action": "ACTIVATION"},
+            { "ControlName" : "Balance", "Action": "ACTIVATION"},
+            { "ControlName" : "GSTRegistrationNo", "Action": "ACTIVATION"},
+            { "ControlName" : "GSTVendorType", "Action": "ACTIVATION"},
+            { "ControlName" : "AssociatedEnterpriseFlag", "Action": "ACTIVATION"},
+            { "ControlName" : "VATRegistrationNo", "Action": "ACTIVATION"}           
+        ],
+        "Event": [
+            { "ControlName" : "TaxType", "Action": "ACTIVATION" , "ControlType": "COMBO","PropertyName":""},
+            { "ControlName": "TANNo", "Action": "ASSIGNTO" , "ControlType": "TEXT", "PropertyName":""}           
+        ],
+        "ActionPerform": [
+            { "ControlName": "TaxType", "ConditionVal": "GST", "ActionType": "ACTIVATION",
+                "API": null, "ControlValue": [],
+                "AssignControl": [],
+                "Action": [
+                    { "ActionControl": "GSTRegistrationNo", "Value": true},
+                    { "ActionControl": "GSTVendorType", "Value": true},
+                    { "ActionControl": "AssociatedEnterpriseFlag", "Value": true},
+                    {  "ActionControl": "VATRegistrationNo" ,"Value": false}                
+                ]
+            },
+            { 
+                "ControlName": "TaxType", "ConditionVal": "VAT", "ActionType": "ACTIVATION",
+                "API": null, "ControlValue": [],
+                "AssignControl": [],
+                "Action": [
+                    { "ActionControl": "GSTRegistrationNo", "Value": false},
+                    { "ActionControl": "GSTVendorType", "Value": false},
+                    { "ActionControl": "AssociatedEnterpriseFlag", "Value": false},
+                    { "ActionControl": "VATRegistrationNo", "Value": true}                
+                ]
+            },
+            { 
+                "ControlName": "TANNo", "ConditionVal": "VAT", "ActionType": "ASSIGNTO",
+                "API": null, "ControlValue": ["TANNo","PANNo"],
+                "AssignControl": [{"Control": "Address", "FieldName": "Data"}]
+            }
+          
+        ]
+        
+    }
+]

@@ -1,0 +1,426 @@
+<ngx-spinner style="width: 100%; height: 100%; position: absolute;" size="medium" *ngIf="Spinner"
+  [type]="typeSelected" [fullScreen]="true">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<section class="content" [ngClass]="{'blurred': !hidePopup}">
+  <mat-card style="padding: 0px !important;">
+    <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+      <div class="row">
+        <div class="col-lg-4 col-sm-12">
+          <div class="row" style="align-items: center; border-right: 1px solid rgb(112, 111, 111);">
+            <div class="col-lg-5 col-sm-6 col-6 " style=" border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+              <div class="mt-1" style=" padding-right: 15px;">
+                <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+              </div>
+              <div class="mt-1">
+                <h4><span style="color: black;font-size: 14px; font-weight: 600; " title="">{{ ifCreated == false ? 'Request Code ': 'Sales Return Code ' }}</span></h4>
+                <div class="mt-1">
+                  <h4><span style="color: blue;font-size: 14px; font-weight: 600; " title=""> {{ SalesReturnCode == null
+                      || SalesReturnCode == undefined ? RequestCode : SalesReturnCode }}</span> </h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-7 col-sm-6 col-6">
+              <!-- inside Box -->
+              <div class="JobTypeDesc mt-1"
+                style="color: {{ ApprovalStatus === 'APPROVED' ? 'green' : 'red'}};text-align: center;display: flex; align-items: center; justify-content: center;">
+                <b style="color: black;padding-right: 10px;">Approval Status: </b>{{ApprovalStatus ==
+                undefined || ApprovalStatus == null?'NA' : ApprovalStatus}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8 col-sm-12 mt-2">
+          <div class="row" style="align-items: center;">
+            <!-- Print Button -->
+            <div class="col-lg-4 col-sm-3 col-6 " style="text-align: center;display: flex; align-items: center; justify-content: center;border-right: 1px solid rgb(112, 111, 111);">
+              <div 
+                style="text-align: center;">
+              <button 
+              (click)="printDocuments()"    [disabled]="SalesReturnStatus != 'CLOSED'" class="btn btnClass" style="height: 30px !important; display: flex; align-items: center;">Print Sales Return</button>
+                <!--<h4><span style="color: black;font-size: 14px; font-weight: 500; ">{{bulkReturnId}}</span></h4>-->
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-3 col-md-3 col-6"
+              style=" color: {{SalesReturnObject?.SalesReturnStatus === 'CLOSED' ? 'green' : 'red'}};border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+              <b style="color: black;padding-right: 10px;">Sales Return Status: </b>{{SalesReturnObject?.SalesReturnStatus
+              === undefined || SalesReturnObject?.SalesReturnStatus ===
+              null?'NA':SalesReturnObject?.SalesReturnStatus}}
+            </div>
+            <div class="col-lg-3 col-sm-3 col-6 ">
+              <!-- inside Box -->
+              <div class="col-12"
+                style="text-align: center;display: flex; align-items: center; justify-content: center;">
+                <label>{{ ifCreated == false ? 'Request ': 'Sales Return ' }} Date:-<br>   {{ CreatedDate != null || CreatedDate != undefined ? ( CreatedDate | date: 'dd/MM/yyyy : hh:mm a' ): 'No Date Found' }}</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+
+    <!-- Customer and Location Details -->
+    <div class="row" style="padding:10px;padding-bottom: 15px;" *ngIf="params.customercode">
+      <!-- Background -->
+      <div class="col-lg-12"
+        style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+        <div class="row">
+          
+
+          <!-- Location  -->
+          <div class="col-lg-4 col-sm-12"
+            style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+            <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+              <div class="row">
+                <div class="col-6">
+                  <span style="font-size: 16px !important;color:black;font-weight: 600;">Location Details</span>
+                </div>
+              </div>
+            </div>
+            <!-- Location Content -->
+            <div *ngFor="let item of LocationObject">
+              <div class="MainDiv" style="padding: 10px;">
+                  <mat-card-title >Location Name:- {{item?.LocationName}}</mat-card-title>
+                  <p>Address:- {{item?.Address1}}, {{item?.Address2}}, {{item?.City}} - {{item?.ZipCode}}, {{item?.StateCode}}.</p>
+                  <mat-card-content>
+                    <p>Email:- {{item?.EmailId}}</p>
+                    <p>Mobile No:- {{item?.MobileNo}}</p>
+                    <!-- <p><b>GST Registration No: </b>&nbsp;{{item?.GSTRegistrationNo[0]}}, &nbsp; <b>Ship To:</b>&nbsp; {{item?.SHIP_TO_GSX[0]}}</p> -->
+                  </mat-card-content>
+                </div>
+            </div>
+          </div>
+
+          <!-- Customer  -->
+          <div class="col-lg-4 col-sm-12"
+            style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-right: 1px solid hsl(0, 0%, 92%);    border-top-left-radius: 5px;    border-bottom-left-radius: 5px;">
+            <!-- Customer Heading -->
+            <div
+              style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;    border-top-left-radius: 5px;">
+              <span style="font-size: 16px !important;color:black;font-weight: 600;">Customer Details</span>
+            </div>
+            <!-- Details Content -->
+            <div  *ngFor="let item of CustomerObject" >
+              <div class="MainDiv" style="padding: 10px;">
+                  <mat-card-title >Customer Code:- {{item?.CustomerCode}}</mat-card-title>
+                  <mat-card-title>Name:- {{item?.FirstName}}&nbsp;{{item?.LastName}}</mat-card-title>
+                  <mat-card-content>
+                    <p> Address:- {{item?.Address1}}, {{item?.Address2}}, {{item?.City}} -  {{item?.ZipCode}}, {{item?.StateCode}}, {{item?.CountryCode}}</p>
+                    <p>Email:- {{item?.EmailID}}</p>
+                    <p *ngIf="item?.GSTRegistrationNo != null || item?.GSTRegistrationNo != undefined"><b>GST Registration No: </b>{{  item?.GSTRegistrationNo }}</p>
+                  </mat-card-content>
+              </div>
+            </div>
+            
+          </div>
+
+          <div class="col-lg-4 col-sm-12"
+            style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+            <!-- Refund Type DropDown Heading -->
+            <div
+              style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+              <div class="row">
+                <div class="col-12">
+                  <span style="font-size: 16px !important;color:black;font-weight: 600;">Refund Control <i style="color:red">*</i></span>
+                </div>
+
+              </div>
+            </div>
+            <!-- DD Content -->
+            <div>
+              <div class="MainDiv" style="padding: 10px;">
+                <ng-select  [readonly]="true" [items]="RefundControlDD" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                [(ngModel)]="RefundControl"  placeholder="" ></ng-select>  
+              </div>
+            </div>
+            <!-- Refund Reason -->
+            <div>
+              <div
+              style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+              <div class="row">
+                <div class="col-6">
+                  <span style="font-size: 16px !important;color:black;font-weight: 600;">Refund Reason <i style="color:red">*</i></span>
+                </div>
+
+              </div>
+            </div>
+            <div>
+              <div class="MainDiv" style="padding: 10px;">
+                <ng-select  [readonly]="true" [items]="RefundReasonDD.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                [(ngModel)]="RefundReason"  placeholder="" ></ng-select> 
+              
+              </div>
+            </div>
+
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- 
+    <div class="row" style="padding:10px">
+        <div  style=" padding: 0px;" > 
+        </div>
+      </div> -->
+
+
+  <div class="mt-2" style="background-color: white; border-radius: 8px;" *ngIf="params.customercode">
+
+    <div  style="padding: 5px; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+    
+        <mat-card-title  >
+
+          <div style="display:flex;justify-content: space-between; width:100%">
+
+            <div>
+          <div style="display: flex; align-items: center;justify-content: center; width: 100px;">
+            <div style="padding-right: 10px;">
+              <label style="font-weight: 600; font-size:18px !important;">Parts</label>
+            </div>
+
+            <div style="padding-right: 25px;">
+              <div (click)="isImageUpload = true" style="text-align: center;padding-top: 5px; position: relative;">
+
+                <i style="font-size:18px !important;" class="iconbtn fa-light fa-paperclip"
+                  matTooltip="File Attachments">
+                  <div style="padding-bottom: 5px;padding-left: 18px;">
+                    <span class="badge" style="position: absolute; top:0;" *ngIf="FileUploadList.length >= 0"> {{
+                      FileUploadList.length == 1 && FileUploadList[0] == undefined ?  0 : FileUploadList.length  }}</span>
+                  </div>
+                </i>
+              </div>
+            </div>
+
+            <div>
+              <div (click)="isRemarkUpload = true" style="text-align: center;padding-top: 5px; position: relative;">
+
+                <i style="font-size:18px !important;" class="iconbtn fa-light fa-comment"
+                  matTooltip="Sales Return Remarks">
+                  <div style="padding-bottom: 5px;padding-left: 18px;">
+                    <span class="badge" style="position: absolute; top:0;" *ngIf="getNonEmptyRemarksCount() >= 0">{{
+                      getNonEmptyRemarksCount() }}</span>
+                  </div>
+                </i>
+              </div>
+            </div>           
+           
+          </div>
+          </div>
+
+         
+          <div  *ngIf="!isFinancier">
+              <div class="row">
+
+                  
+                <div class="col-6">
+                  <div>
+                    <button class="btnClass" 
+                    (click)="generateEInvoiceForCRN()"
+                    *ngIf="ifGenerateEInvoice">Generate_E-Invoice</button>
+                  </div>
+              </div>
+              <div class="col-6">
+                <div>
+                  <button class="btnClass" 
+                  (click)="saveSalesReturnToSAP()"
+                  *ngIf="SalesReturnStatus == 'CLOSED' && isPostToSAP">Post_To_SAP</button>
+                </div>
+              </div>
+            </div>  
+          </div>
+          </div>
+
+
+        </mat-card-title> 
+    </div>
+
+    <div  style="padding: 5px; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+    
+      <mat-card-title  >
+        <div  *ngIf="SalesReturnStatus == 'CLOSED'">
+          <div class="row">
+            <div class="col-6">
+              <h4><span style="color: black;font-size: 14px; font-weight: 600; " title="">SAP Sales Return Code: </span>
+                <span style="color: blue;font-size: 14px; font-weight: 600; " title=""> {{ SAPSalesReturnCode == null
+                  || SAPSalesReturnCode == undefined ? 'N/A' : SAPSalesReturnCode }}</span>
+                </h4>
+                <h4><span style="color: black;font-size: 14px; font-weight: 600; " title="">SAP Error Message: </span>
+                  <span style="color: blue;font-size: 14px; font-weight: 600; " title=""> {{ SalesReturnObject.einverrormessage == null
+                    ||  SalesReturnObject.einverrormessage == undefined ? '' :  SalesReturnObject.einverrormessage }}</span>
+                  </h4>
+                </div>
+                <div class="col-6">
+                </div>
+              </div>
+        </div> 
+    </mat-card-title>
+    </div>
+    
+
+
+    <div style="display: flex;">
+
+      <div class="col-12 mt-2"
+      *ngIf="params.customercode" style="padding: 5px;">
+      <div *ngIf="finalSelectedElements.length>0">
+          <!-- [ngClass]="{'col-12': !isFinancier , 'col-8': isFinancier && SalesReturnStatus == 'PENDING' && ApprovalStatus == 'APPROVED'}" -->
+          <div class="row mt-2">
+            <div class="col-12">
+              <div class="scrollcntr" style="height: 347px !important;">
+
+                <div class="contents table-responsive" *ngIf="params.salesreturnguid">
+                  <table>
+                    <thead>
+                      <tr style="height: auto !important;">
+                        <th scope="col">Material Code</th>
+                        <th scope="col">Material Name</th>
+                        <th scope="col">Batch</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Base Amount</th>
+                        <th scope="col">Discount Amount</th>
+                        <th scope="col">Taxable Amount</th>
+                        <th scope="col">Tax Amount</th>
+                        <th scope="col">Net Amount</th>
+                        <th scope="col">Storage Condition <i style="color:red">*</i></th>
+                        <th scope="col">Serial No</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of finalSelectedElements">
+                        <td>{{item?.ItemCode}}</td>
+                        <td style="white-space: nowrap; "> <span> {{ item?.ItemDescription}} </span></td>
+                        <td style="white-space: nowrap;">{{ item?.Batch }}</td>
+                        <td style="text-align: right;">{{ item?.Quantity}}</td>
+                        <td style="text-align: right;">{{ item?.UnitPrice | number: '1.2-2'}}</td>
+                        <td style="text-align: right;">{{ item.BaseAmount | number: '1.2-2'}}</td>
+                        <td style="text-align: right;">{{ item?.DiscountAmount | number: '1.2-2'}}</td>
+                        <td style="text-align: right;">{{ item?.TaxableAmount | number: '1.2-2'}}</td>
+                        <td style="text-align: right;">{{ item?.TaxAmount | number: '1.2-2'}}</td>
+                        <td style="text-align: right;">{{ item.NetAmount | number: '1.2-2'}}</td>
+                        <td style="text-align: right;"> 
+                          <ng-select  [readonly]="true" [items]="StorageConditionDD" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                          [(ngModel)]="item.StorageCondition"  placeholder="" ></ng-select> 
+                        </td>
+                        <td style="white-space: nowrap;">{{ item?.SerialNo }}</td>
+                   
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="contents table-responsive"
+                  *ngIf="params.salesreturnguid == null || params.salesreturnguid == undefined">
+                  <table>
+                    <thead>
+                      <tr style="height: auto !important;">
+                        <th scope="col">Sr. No</th>
+                        <th scope="col">Mode Of Payment</th>
+                        <th scope="col">Payment Type</th>
+                        <th scope="col">Payment Date</th>
+                        <!-- <th scope="col">Case ID</th> -->
+                        <th scope="col">GLCode</th>
+                        <th scope="col"> Amount</th>
+                        <th scope="col" [hidden]="!isEdit"> Delete </th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of SelectItemsList; let index= index">
+                        <td>
+                          <span>{{index + 1}}</span>
+                        </td>
+
+                        <td>{{ item?.ModeOfPayment}}</td>
+                        <td *ngIf="true" style="white-space: nowrap; "> <span> {{ item?.TranType}} </span></td>
+                        <!-- <td >{{ item?.InvoiceHeaderGUID}}</td> -->
+                        <!-- <td *ngIf="true" style="white-space: nowrap; "> <span> {{ item?.CaseId}} </span></td> -->
+                        <td>{{ item?.TranDate | date: 'dd/MM/yyyy : hh:mm a' }}</td>
+                        <td>{{ item?.GLCode}}</td>
+                        <td>{{ item?.Amount | number: '1.2-2'}}</td>
+                        <td [hidden]="!isEdit" style="padding-right: 50px;text-align: center !important;"><button
+                            class="trash" (click)="removeItem(item)"><i class="fa-regular fa-trash"></i></button>
+                        </td>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div style="position:sticky;bottom:0;background-color: gainsboro; padding: 5px;"
+    *ngIf="finalSelectedElements.length>0">
+    <div class="row">
+
+      <div class="col-10">
+        <div class="row">
+          <div class="col-12" style=" padding: 5px; padding-top: 1%;">
+            <div class="row">
+              <div class="col-sm-2 col-lg-2 col-md-2 col-12">
+                Part Quantity: <b>({{finalSelectedElements.length}})</b>
+              </div>
+              <div class="col-sm-2 col-lg-3 col-md-2 col-12">
+                Taxable Amount: <b>{{totalTaxableAmount | number: '1.2-2'}}</b>
+              </div>
+              <div class="col-sm-2 col-lg-2 col-md-2 col-12">
+                Tax Amount: <b>{{totalTaxAmount | number: '1.2-2'}}</b>
+              </div>
+              <div class="col-sm-2 col-lg-3 col-md-2 col-12">
+                Paid Amount: <b>{{totalNetAmount | number: '1.2-2'}}</b>
+              </div>
+              <div class='col-sm-2 col-lg-2 col-md-2'>
+                <!-- Refund Amount: <b>{{totalRefundAmount | number: '1.2-2'}}</b> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-2"  style=" padding-top: 1%;">
+        <div style="display: flex;justify-content: center;">
+          <div style="padding-right: 10px;padding-bottom: 2%;">
+            <button appDebounceClick  *ngIf="isFinancier" [disabled]="submitClicked"  (debounceClick)="SaveSalesReturn()" class="btn btn-success" 
+            style="border-radius: 10px;"  
+            [debounceTime]="2000">Create Sales Return
+            </button>           
+          </div> 
+        </div>
+      </div>
+      
+      <!-- <div style="padding-right: 10px;">
+        <button *ngIf="isFinancier && paymentDetailArray.length > 0" class="btn btnClass" style="float: right;"
+          (click)="SaveSalesReturn()">Pay Refund</button>
+      </div> -->
+
+
+    </div>
+
+    <div>
+    </div>
+    <div>
+    </div>
+  </div>
+</section>
+
+<div *ngIf="isImageUpload" class="Ux_popup">
+  <app-image-list [FileList]="FileUploadList" [isEdit]="false" (CancelBtn)="Cancel($event)"> </app-image-list>
+</div>
+<div *ngIf="isRemarkUpload" class="Ux_popup">
+  <app-remark-list [RemarkList]="RemarkUploadList" [isEdit]="isFinancier" [Level]="RemarkLevel"
+    (RemarkListChanged)="onRemarkListChanged($event)" (CancelBtn)="this.isRemarkUpload = false;"> </app-remark-list>
+</div>

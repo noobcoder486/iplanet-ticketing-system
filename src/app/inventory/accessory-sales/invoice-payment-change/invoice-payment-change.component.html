@@ -1,0 +1,859 @@
+<section class="content">
+  <ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+  <mat-card>
+    <div class="row">
+      <div class="col-2 justify-content-left">
+      <h1 class="header">{{InvoiceStatus }}</h1>
+      </div>
+      <div class="col-3 d-flex justify-content-center">
+          <span ><b> SAP Delivery Code: {{ SAPDeliveryCode  }}</b></span>&nbsp;
+      </div>
+      <div class="col-3 d-flex justify-content-center">
+          <span ><b> SAP Payment Code: {{ SAPPaymentCode  }}</b></span>&nbsp;
+      </div> 
+      <div class="col-2 d-flex justify-content-end">
+        <span ><button class="btnClass" (click)="downloadServiceReport('INVOICE')">Print Invoice</button></span>
+      </div>
+      <div class="col-2 d-flex justify-content-end">
+        {{ currentDate | date:'medium' }}
+      </div>
+    </div>
+  </mat-card>
+
+  <div class="container-fluid mt-2">
+    <div class="row" >
+      <div class="col-lg-6 col-sm-12 col-md-6" *ngFor="let item of CustomerObject" style="padding: 0px;">
+        <mat-card>
+          <p>Customer Details</p>
+          <hr />
+          <mat-card-title class="header">{{item?.FirstName}}&nbsp;{{item?.LastName}}</mat-card-title>
+          <mat-card-content>
+            <p>{{item?.Address1}}, {{item?.Address2}}, {{item?.City}}, {{item?.StateCode}}, {{item?.CountryCode}}</p>
+            <p>
+              <b>GST Registration No: </b>{{ item?.GSTRegistrationNo == null || item.GSTRegistrationNo == undefined ?'N.A':item?.GSTRegistrationNo }}
+              <span style="padding-left: 5px; padding-right: 5px;" ><b>Total Advance: </b> <span style="font-weight: 600; color: {{ TotalCustomerAdvance < 0 ? 'red' : 'blue' }};">{{ TotalCustomerAdvance == null || TotalCustomerAdvance == undefined ? 0 : TotalCustomerAdvance }} </span>   </span>
+              <span style="padding-left: 5px; padding-right: 5px;"><b>Advance against Job: </b>  <span style="font-weight: 600; color: {{ item?.ARAgainstJob < 0 ? 'red' : 'blue' }};"> {{ item?.ARAgainstJob == null || item.ARAgainstJob == undefined ? 0 :item?.ARAgainstJob }} </span> </span>
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="col-lg-6 col-sm-12 col-md-6 " *ngFor="let item of LocationObject" style="padding-right: 0px;">
+        <mat-card style="display: block !important">
+          <p>Location Details</p>
+          <hr />
+          <mat-card-title class="header">{{item?.LocationCode}} - {{item?.LocationName}}</mat-card-title>
+          <mat-card-content>
+            <p>{{item?.Address1}}, {{item?.Address2}}, {{item?.StateCode}}, {{item?.CountryCode}}, </p>
+            <p><b>GST Registration No: </b>&nbsp;{{item?.GSTRegistrationNo}}, &nbsp; <b>Ship To:</b>&nbsp;
+              {{item?.SHIP_TO_GSX}}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+
+  <mat-card class="mt-2">
+    <div class="row">
+      <div class="col-lg-6 col-sm-12 col-md-12">
+        <div style="display: flex;flex-direction: column;">
+          <div>
+            <span><label style="float:left"><b>Sales Person Name: </b></label>&nbsp;</span>
+          </div>
+
+          <div>
+            <ng-select  style="float:left;width:80% !important"
+            [(ngModel)]="salesPersonName" [items]="SalesPersonDD.Data" bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+        </div>
+        
+        
+      </div>
+      <div class="col-lg-6 col-sm-12 col-md-12">
+
+        <div style="display: flex;flex-direction: column;">
+          <div>
+            <span><label style="float:left"><b>Remarks: </b></label>&nbsp;</span>
+          </div>
+
+          <div class="mt-4">
+            <input type="text" style="float:left;width:80% !important; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px;width: 100% !important; height: 30px; " 
+            placeholder="Remarks" maxlength="4000" [(ngModel)]="Remarks">
+          </div>
+          </div>        
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="mt-2">
+   
+    <!-- *ngIf="finalSelectedElements?.length > 0" -->
+    <div class="row mt-2" >
+
+      <div class="col-lg-8 col-sm-8 col-md-8" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+        <div class="row" style="background-color: gainsboro;color:black;">
+          <div
+          style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;border-top-left-radius: 5px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 16px !important;color:black;font-weight: 600;height:30px">Original Payments</span>
+            </div>
+            <div>
+              <button (click)="resetChanges()" *ngIf="true" class="btn btn-danger reject">Reset Changes</button>
+
+            </div>
+          </div>
+        </div>
+        </div> 
+
+        <div class="row" *ngIf="true">
+          <div class="col-lg-12 col-sm-12 col-md-12">
+            <div class="scrollcntr" style="height:auto !important;">
+              <div class="contents table-responsive">
+                <table>
+                  <thead>
+                    <tr style="height:auto !important">
+                      <th scope="col">Payment Date</th>
+                      <th  style="width: 250px !important; white-space: nowrap; background-color: rgb(96, 96,96);" scope="col">Mode of Payment</th>
+                      <th scope="col">Transaction Reference No</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">AuthenticationNumber</th>
+                      <th scope="col">AccountNumber</th>
+                      <th scope="col">AccountHolderName</th>
+                      <th scope="col">BankCode</th>
+                      <th scope="col">BankAccountNumber</th>
+                      <th scope="col">CardType</th>
+                      <th scope="col">CardNumber</th>
+                      <th scope="col">Adjudication</th>
+                      <th scope="col">TerminalId</th>
+                      <th scope="col">EDCMachineType</th>
+                      <th scope="col">EDC Reference Id (If any)</th>
+                      <th scope="col">CreatedBy</th>
+                      <th scope="col">LastUpdatedBy</th>
+                      <th scope="col">CreatedDate</th>
+                      <th scope="col">LastUpdatedDate</th>
+                      
+                      <th scope="col">GLCode</th>
+                      <th scope="col">House Of Bank</th>
+                      <th scope="col">Delete</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let paymentDetail of paymentDetailArray" [ngStyle]="{'tableDelete': false}" >
+                      <!-- <td>{{ paymentDetail?.TranType}}</td> -->
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;">{{ paymentDetail?.TranDate | date: 'dd/MM/yyyy : hh:mm a' }}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.ModeOfPayment}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.UPITransactionId}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;">{{ paymentDetail?.Amount}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.AuthenticationNumber}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.AccountNumber}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.AccountHolderName}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.BankCode}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.BankAccountNumber}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.CardType}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.CardNumber}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.Adjudication}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.TerminalId}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.EDCMachineType}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;">{{ paymentDetail?.EDCMachineReferenceID}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.CreatedBy}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.LastUpdatedBy}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.CreatedDate | date: 'dd/MM/yyyy : hh:mm a' }}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" >{{ paymentDetail?.LastUpdatedDate| date: 'dd/MM/yyyy : hh:mm a' }}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;">{{ paymentDetail?.GLCode}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;">{{ paymentDetail?.HouseOfBank}}</td>
+                      <td  [ngClass]="{'tableDelete':paymentDetail.IsDeleted==1}" style="text-align: center !important;" style="text-align: center; ">
+                        <span><i style="color:red" (click)="deleteOriginalPayment(paymentDetail)"
+                            class="fa-regular fa-trash"></i></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-lg-4 col-sm-12 col-md-12" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+        <div class="row" style="background-color: gainsboro;color:black;">
+          <span style="font-size: 16px !important;color:black;font-weight: 600;height:30px">New Payment/s</span>
+        </div> 
+        <div class="row"  *ngIf="true">
+ 
+          <div style="padding: 5px;">
+              <div style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;"> 
+                <!-- For Payment -->
+                <div class="row mt-2"  style="padding:5px;">
+                  <div class="col-6 mt-2"  style="display: flex;align-items: center;justify-content: center;"> 
+                      <button [disabled]="!isAdvanceAllowed" class="btn advance"  (click)="openPayment('ADVANCE')">Customer Advance</button>
+                  </div>
+
+                  <div class="col-6 mt-2">
+                    <div style="display: flex;align-items: center;justify-content: center;">
+                      <button [disabled]="!isCreditCardAllowed" class="btn UPIBtn"  (click)="openPayment('CREDIT CARD/UPI')">Credit Card/UPI</button>
+                    </div>
+                  </div> 
+           
+                </div> 
+
+                <div  class="row mt-2" style="padding:5px;">
+                  <div class="col-6 mt-2">
+                    <div>
+                      <button [disabled]="!isPaytmAllowed" class="btn paytmBtn" (click)="openPayment('PAYTM')">PayTM </button>
+                    </div>
+                  </div>
+      
+                  <div class="col-6 mt-2">
+                    <div>
+                      <button [disabled]="!isPineLabsAllowed" class="btn pineLabsBtn" (click)="openPayment('PINELABS')">Pine Labs</button>
+                    </div>
+                  </div>
+                
+                             
+                </div>
+                
+                <div  class="row mt-2"  style="padding:5px;"> 
+                
+                 
+                  <div class="col-6 mt-2">
+                    <div>
+                      <button [disabled]="!isCashAllowed" class="btn cashBtn" (click)="openPayment('CASH')">Cash</button>
+                    </div>
+                  </div>
+
+                  <div class="col-6 mt-2">
+                    <div>
+                      <button [disabled]="!isChequeAllowed" class="btn chequeBtn"  (click)="openPayment('CHEQUE')">Cheque/NEFT/RTGS</button>
+                    </div>
+                  </div> 
+                </div>
+
+                <div class="row mt-2"  style="padding:5px;">
+                  <div class="col-6 mt-2"> 
+                    <button [disabled]="!isInstCashbackAllowed" class="btn instCashback"  (click)="openPayment('INSTCASHBACK')">Instant Cashback</button>  
+                  </div>
+
+                  <div class="col-6 mt-2"  style="display: flex;align-items: center;justify-content: center;"> 
+                    <button [disabled]="!isStafDebitAllowed" class="btn allStaffDebitBtn"  (click)="openPayment('STAFDEBIT')">Staff Debit</button>
+                </div>
+                </div> 
+                <div class="row mt-2"  style="padding:5px;">
+                 
+                  <div class="col-6 mt-2"> 
+                    <button  [disabled]="!isCreditReqAllowed" class="btn creditReqBtn"  (click)="openPayment('CREDITREQ')">Credit Request</button>  
+                  </div>
+                  <div class="col-6 mt-2">
+                    <button [disabled]="!isManualPaytm" class="btn creditReqBtn" (click)="openManualPayment('MANUALPAYTM')"
+                      style="background-color: #233f76  !important">Manual Paytm</button>
+                  </div>
+                 
+                </div> 
+                <div class="row mt-2"  style="padding:5px;">
+                 
+                  <div class="col-6 mt-2">
+                    <button [disabled]="!isManualPinelabs" class="btn creditReqBtn"
+                      (click)="openManualPayment('MANUALPINELABS')" style="background-color: #198754 !important">Manual
+                      Pinelabs</button>
+                  </div>
+                </div> 
+              </div> 
+          </div>
+        </div>
+
+
+
+
+        <div class="row" *ngIf="newPaymentList?.length > 0">
+          <div class="col-lg-12 col-sm-12 col-md-12">
+            <div class="scrollcntr" style="height:auto !important;">
+              <div class="contents table-responsive">
+                <table>
+                  <thead>
+                    <tr style="height:auto !important">
+                      <!-- <th scope="col">Payment Type</th> -->
+                      <th scope="col">Payment Date</th>
+                      <th scope="col">Mode of Payment</th>
+                      <th scope="col">Transaction Reference No</th>
+                      <th scope="col">GLCode</th>
+                      <th scope="col">House Of Bank</th>
+                      <th scope="col">EDC Reference Id (If any)</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Delete</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let paymentDetail of newPaymentList">
+                      <!-- <td>{{ paymentDetail?.TranType}}</td> -->
+                      <td>{{ paymentDetail?.TranDate | date: 'dd/MM/yyyy : hh:mm a' }}</td>
+                      <td>{{ paymentDetail?.ModeOfPayment}}</td>
+                      <td>{{ paymentDetail?.UPITransactionId}}</td>
+                      <td>{{ paymentDetail?.GLCode}}</td>
+                      <td>{{ paymentDetail?.HouseOfBank}}</td>
+                      <td>{{ paymentDetail?.EDCMachineReferenceID}}</td>
+                      <td>{{ paymentDetail?.Amount}}</td>
+                      <td [hidden]="paymentDetail?.NEWPAYMENT == 0" style="text-align: center; ">
+                        <span><i style="color:red" (click)="deleteNewPayment(paymentDetail)"
+                            class="fa-regular fa-trash"></i></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="row" style=" color:black;border-bottom: 1px solid rgb(124, 124, 124);padding: 5px;">
+      <div class="col-lg-6 col-sm-6 col-md-6">
+        <span style="font-size: 16px !important;color:black;font-weight: 600;height:30px">Parts</span>
+      </div>
+      <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-end ml-auto">
+      </div>
+    </div>
+    <div class="row mt-2" >
+      <div class="col-lg-12 col-sm-12 col-md-12">
+        <div class="scrollcntr" style="height: 347px !important;">
+          <div class="contents table-responsive" >
+            <table >
+              <thead>
+                <tr style="height: auto !important;">
+                  <th scope="col">Material Code</th>
+                  <th scope="col">Material Name</th>
+                  <th scope="col">Batch</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col" style="white-space: nowrap;padding-right: 40px;">Unit Price</th>
+                  <th scope="col">Discount Amount</th>
+                  <th scope="col">Tax Amount</th>
+                  <th scope="col">Total Net Amount</th>
+                  <th scope="col" style="padding-right: 150px; white-space: nowrap;">Serial No</th>
+                  <th scope="col" style="padding-right: 150px; white-space: nowrap;">Cost Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of finalSelectedElements">
+                  <td >{{item?.ItemCode}}</td>
+                  <td style="white-space: nowrap; "> <span> {{ item?.ItemDescription}} </span></td>
+                  <td style="white-space: nowrap; ">{{ item?.Batch }}</td>
+                  <td style="text-align: center;">{{ item?.Quantity}}</td>
+                  <td style="text-align: right; ">{{ item?.UnitPrice | number: '1.2-2'}}</td>
+                  <td style="text-align: right; ">{{ item?.DiscountAmount | number: '1.2-2'}}</td>
+                   <td style="text-align: right;">{{ item?.TaxAmount | number: '1.2-2'}}</td>
+                  <td style="text-align: right;">{{ item?.NetAmount | number: '1.2-2'}}</td>
+                  <td *ngIf="item?.SerialNoRequired"><input matTooltip="{{item?.SerialNo}}" type="text" style="width: 100% !important;"
+                      [(ngModel)]="item.SerialNo">
+                  </td>
+                  <td *ngIf="item.ItemType=='Resource' || !(item.Batch==undefined || item.Batch=='')">{{item.SerialNo}}</td>
+                  <td style="text-align: right;">{{ item?.CostPrice | number: '1.2-2'}}</td>
+                 
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </mat-card>
+
+
+  <div style="position:sticky;bottom:0;background-color: gainsboro; padding: 5px;" *ngIf="finalSelectedElements?.length>0">
+    <div class="row" style="padding-top: 5px;padding-bottom: 5px;">
+      <div class="col-10">
+        <div class="row">
+     
+      <div class="col-sm-3 col-lg-3 col-md-3">
+        Originally Paid Amount: <b>{{OriginalPaidAmount | number: '1.2-2'}}</b>
+      </div>
+      <div class="col-sm-3 col-lg-3 col-md-3">
+        Net Amount: <b>{{totalNetAmount | number: '1.2-2'}}</b>
+      </div>
+      <div class="col-sm-3 col-lg-3 col-md-3">
+        Total Paid Amount:  <b>{{totalPaidAmount | number: '1.2-2'}}</b>
+      </div>
+
+      <div class="col-sm-3 col-lg-3 col-md-3">
+        Payable Amount: <b>{{totalNetAmount - totalPaidAmount | number: '1.2-2'}}</b>
+      </div>
+      </div>
+      </div>
+
+   <div class="col-2">
+    <div class="row">
+      <div class="col-sm-12 col-lg-12 col-md-12">
+
+      </div>
+
+      <div class="col-sm-12 col-lg-12 col-md-12" *ngIf="changeMOP == true">
+        <button appDebounceClick [disabled]="submitClicked"  class="btn btn-secondary"
+         style="letter-spacing: 2px;text-align: center;float: right;" 
+        (debounceClick)="updateInvoice()" [debounceTime]="1000"> Update Payment/Invoice
+        </button>
+      </div>
+
+    </div>
+    </div>
+    </div>
+    <div>
+    </div>
+    <div>
+    </div>
+    <div *ngIf="isPartSelector" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isPartSelector = false"></i>
+      <app-invoice-sales-stock-selector (returnOrderPartSelector)="returnOrderPartSelector($event)"
+        [shipTo]="Ship_to_GSX" [returnType]="returnTypeData"
+        (closeReturnOrderPartSelector)="closeReturnOrderPartSelector($event)">
+      </app-invoice-sales-stock-selector>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- Popupp Starts Here -->
+<div  *ngIf="isPaymentpopUp" class="container" style="margin: 2% auto !important;max-width: 40% !important;">
+
+  <div class="background" >
+    <div class="Ux_popup popup" style="position: relative;">
+      <div *ngIf="isPaymentProcessing" style="position: absolute;width: 100%; height: 100%;z-index: 9999;background: gray;opacity: 0.8;">
+        <span class="loader"></span>
+      </div>
+      <!-- <ngx-spinner *ngIf="isPaymentProcessing" [type]="typeSelected" style="z-index: 99999;position: absolute; border: 2px solid red;width: 100%; height: 100%;"  >
+        <p style="font-size: 20px; color: white">Loading...</p>
+      
+      </ngx-spinner> -->
+      
+      <!-- ************************************** POPUP  ************************************************ -->
+      <div class="card px-6 pb-6" style="width: 100%;margin: 3% auto;">
+        <div class="formcntr" style="padding: 20px;">
+          <div class="row">
+
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <b style="font-size: 17px !important;">PAYMENT</b>
+                </div>
+  
+                <div>
+                  <i class="Ux_close fa-duotone fa-circle-xmark" (click)="closePaymentPopUp()" ></i>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+          <div class="row">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <h4 >Mode of Payment :- {{ modeofPaymentData }}</h4>
+                </div>
+              </div>
+            </div>
+            <hr>
+          </div>
+  
+          <!-- MOP Extra Fields -->
+          <div class="row" >
+          
+          <div class="row" *ngIf="modeofPaymentData == 'CHEQUE'">
+ 
+            <div class="row">
+              <div class="col-lg-12 col-sm-3 col-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Transaction Reference Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row" *ngIf="modeofPaymentData == 'CREDITREQ'">
+            <div class="row">
+              <div class="col-lg-12 col-sm-3 col-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Transaction Reference Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" *ngIf="modeofPaymentData == 'PAYMENTLINK'">
+            <div class="row">
+              <div class="col-lg-12 col-sm-3 col-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Transaction Reference Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+              </div>
+
+                   
+                <div class="col-lg-12 col-sm-3 col-12">
+                  <label>Payment Mode</label>
+                  <ng-select class="paymentMode"
+                  (change)="changePineLabsMOP()"
+                  [items]="pinelabsPaymentArray.Data" bindValue="Id" bindLabel="TEXT"
+                    [(ngModel)]="allowedPaymentMode"></ng-select>
+                </div>  
+            </div>
+          </div>
+
+
+          <div  class="row" *ngIf="modeofPaymentData == 'PINELABS'">
+            
+            <!-- New Payment -->
+            <div class="col-12  mt-1">
+              <div class="d-flex p-2 justify-content-around" *ngIf="true">
+                <div>
+                  <button  (click)="newPayment()" class="btn" style="background-color: rgb(113, 113, 251);border: none;color: white;">New Transaction</button>
+                </div>
+                <div>
+                  <button class="btn" style="background-color: rgb(255, 68, 68); border: none;color: white;" (click)="getPreviousEDCPaymentObj4Customer()">Previous made Transaction</button>
+                </div>
+              </div>
+            </div>
+ 
+              <div class="col-12  mt-1">
+                  <label>Select EDC Machine</label>
+                  <ng-select class="EDC-Machine" [items]="edcMachineObject" bindValue="PODDeviceName"
+                    bindLabel="PODDeviceName" [(ngModel)]="edcMachineName"></ng-select>
+              </div> 
+
+
+            <div class="col-12  mt-1">
+            <div *ngIf="isPreviousButton">
+           
+              <div class="row">
+                <label>Select Transaction</label><br>
+                <ng-select [items]="previousEDCPaymentRecords" bindValue="TransactionReferenceID" [(ngModel)]="transactionNumber" 
+                bindLabel="TEXT"></ng-select>
+              </div>
+              <div class="row">
+                <div class="col-3">
+                <button class="btnClass" (click)="callEDCStatus()">Get Status</button>
+              </div>
+              </div>
+            </div>
+            </div>
+ 
+              <!-- <div class="col-12 mt-3">
+                <label>Select EDC Machine</label>
+                <ng-select class="EDC-Machine" [items]="edcMachineObject" bindValue="PODDeviceName"
+                  bindLabel="PODDeviceName" [(ngModel)]="edcMachineName"></ng-select>
+              </div> -->
+            
+            <div class="col-12 mt-1" *ngIf="isEdcPayment && !isPreviousButton">
+              <label>Payment Mode</label>
+              <ng-select class="paymentMode"
+              (change)="changePineLabsMOP()"
+              [items]="pinelabsPaymentArray.Data" bindValue="Id" bindLabel="TEXT"
+                [(ngModel)]="allowedPaymentMode"></ng-select>
+            </div> 
+
+          </div>  
+
+          <div  class="row" *ngIf="modeofPaymentData == 'PAYTM'">
+            
+            <!-- New Payment -->
+            <div class="col-12  mt-1">
+              <div class="d-flex p-2 justify-content-around" *ngIf="true">
+                <div>
+                  <button  (click)="newPayment()" class="btn" style="background-color: rgb(113, 113, 251);border: none;color: white;">New Transaction</button>
+                </div>
+                <div>
+                  <button class="btn" style="background-color: rgb(255, 68, 68); border: none;color: white;" (click)="getPreviousPaytmEDCObj4Customer()">Previous made Transaction</button>
+                </div>
+              </div>
+            </div>
+ 
+              <div class="col-12  mt-1">
+                  <label>Select EDC Machine</label>
+                  <ng-select class="EDC-Machine" [items]="edcMachineObject" bindValue="PODDeviceName"
+                    bindLabel="PODDeviceName" [(ngModel)]="edcMachineName"></ng-select>
+              </div> 
+
+
+            <div class="col-12  mt-1">
+            <div *ngIf="isPreviousButton">
+           
+              <div class="row">
+                <label>Select Transaction</label><br>
+                <ng-select [items]="previousEDCPaymentRecords"    bindLabel="TEXT" bindValue="TransactionReferenceID"
+                 [(ngModel)]="transactionNumber" ></ng-select>
+              </div>
+              <div class="row">
+                <div class="col-3">
+                <button class="btnClass" (click)="callEDCStatus()">Get Status</button>
+              </div>
+              </div>
+            </div>
+            </div>
+            
+            <div class="col-12 mt-1" *ngIf="isEdcPayment && !isPreviousButton">
+              <label>Payment Mode</label>
+              <ng-select class="paymentMode"
+              (change)="changePineLabsMOP()"
+              [items]="pinelabsPaymentArray.Data" bindValue="Id" bindLabel="TEXT"
+                [(ngModel)]="allowedPaymentMode"></ng-select>
+            </div> 
+
+          </div>  
+
+
+          <div  class="row" *ngIf="modeofPaymentData == 'CREDIT CARD/UPI'">
+            
+            <div class="col-12 mt-1" >
+              <label>Payment Mode</label>
+              <ng-select class="paymentMode"
+              (change)="changePineLabsMOP()"
+              [items]="pinelabsPaymentArray.Data" bindValue="Id" bindLabel="TEXT"
+                [(ngModel)]="allowedPaymentMode"></ng-select>
+            </div>
+
+            <div class="row" *ngIf="allowedPaymentMode == '1'">
+              <div class="col-12 " >
+                  <ng-select placeholder="Card Type" [items]="CardType" [(ngModel)]="CardTypeData">
+                  </ng-select>
+                </div>
+                <div class="col-12 " >
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Card No</mat-label>
+                    <input matInput type="text" autocomplete="off" [(ngModel)]="CardNo">
+                  </mat-form-field>
+                </div>
+                <div class="col-12 " >
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Adjudication</mat-label>
+                    <input matInput type="text" autocomplete="off" [(ngModel)]="Adjudication">
+                  </mat-form-field>
+                </div>
+                <div class="col-12" >
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Terminal Id</mat-label>
+                    <input matInput type="text" autocomplete="off" [(ngModel)]="TerminalId">
+                  </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="allowedPaymentMode == '10'">
+              <div class="col-12 mt-1" >
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>UPI Transaction Number</mat-label>
+                  <input matInput type="text" [(ngModel)]="UPITransactionId">
+                </mat-form-field>
+                </div>
+            </div> 
+        
+         
+          </div>  
+
+          <!-- MOP Card Payment -->
+          <!-- <div class="row" *ngIf="modeofPaymentData == 'CREDITCARD'">
+            <div class="col-lg-3 col-sm-3 col-12" >
+              <ng-select placeholder="Card Type" [items]="CardType" [(ngModel)]="CardTypeData">
+              </ng-select>
+            </div>
+            <div class="col-lg-3 col-sm-3 col-12" style="display: flex; align-items: center;">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Card No</mat-label>
+                <input matInput type="text" autocomplete="off" [(ngModel)]="CardNo">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-sm-3 col-12" style="display: flex; align-items: center;">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Adjudication</mat-label>
+                <input matInput type="text" autocomplete="off" [(ngModel)]="Adjudication">
+              </mat-form-field>
+            </div>
+            <div class="col-lg-3 col-sm-3 col-12" style="display: flex; align-items: center;">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Terminal Id</mat-label>
+                <input matInput type="text" autocomplete="off" [(ngModel)]="TerminalId">
+              </mat-form-field>
+            </div>
+          </div> -->
+          <!-- MOP RTGS -->
+          <!-- <div class="row" *ngIf="modeofPaymentData == 'NEFT/RTGS'" >
+
+            <div class="row">
+              <div class="col-lg-12 col-sm-3 col-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Account Holder Name</mat-label>
+                  <input matInput type="text" autocomplete="off" [(ngModel)]="AccountHolderName">
+                </mat-form-field>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-lg-12 col-sm-3 col-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Bank Code</mat-label>
+                  <input matInput type="text" autocomplete="off" [(ngModel)]="BankCode">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 col-sm-3 col-12">
+                <mat-form-field appearance="standard" [style.width.%]="100">
+                  <mat-label>Bank Account No</mat-label>
+                  <input matInput type="number" autocomplete="off" [(ngModel)]="BankAccountNumber">
+                </mat-form-field>
+              </div>
+            </div>
+          </div> -->
+          
+          <!-- <div class="row" *ngIf="modeofPaymentData == 'UPI'">
+            <div class="col-lg-3 col-sm-3 col-12" style="display: flex; align-items: center;">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>UPI Transaction Number</mat-label>
+                <input matInput type="text" [(ngModel)]="UPITransactionId">
+              </mat-form-field>
+            </div>
+          </div> --> 
+        </div>
+  
+          <br/>
+          <div class="row"  *ngIf="!isPreviousButton" >
+            <div class="col-lg-12 col-sm-3 col-12">
+              <mat-form-field appearance="standard" [style.width.%]="100">
+                <mat-label>Amount</mat-label>
+                <input matInput autocomplete="off" type="number" [(ngModel)]="Amount">
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="row" style="display: flex; align-items: center;justify-content: center;"   *ngIf="!isPreviousButton" >
+            <div class="col-lg-6 col-sm-2 col-12" style="display: flex; align-items: center;justify-content: center;">
+                <label  style="padding-left: 5px;"><b>GL Code: </b>   <span style="padding-left: 5px;">{{GLCodeData}}</span></label>
+            </div>
+              
+            <div class="col-lg-6 col-sm-2 col-12" style="display: flex; align-items: center;">
+                <label  style="padding-left: 5px;"><b>House Of Bank: </b>  <span style="padding-left: 5px;">{{houseofBank}}</span></label>            
+            </div>
+          </div>
+          <hr />
+
+          <div class="row"  *ngIf="!isPreviousButton" >
+            <div class="col-lg-8">
+            </div>
+            <div class="col-lg-4 col-sm-2 col-12" style="display: flex; align-items: right;" >
+              
+              <button class="btn btn-success" style="width: 100% !important;" (click)="validatePayment()">Add Payment</button>
+            </div>
+          </div>
+  
+  
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- Manual Mode of payment  -->
+
+<div *ngIf="isManualPayment" class="container" style="margin: 2% auto !important;max-width: 40% !important;">
+
+
+
+  <div class="background">
+    <div class="Ux_popup popup" style="position: relative;">
+      <div *ngIf="isPaymentProcessing"
+        style="position: absolute;width: 100%; height: 100%;z-index: 9999;background: gray;opacity: 0.8;">
+        <span class="loader"></span>
+      </div>
+
+      <!-- ************************************** Manual POPUP  ************************************************ -->
+      <div class="card px-6 pb-6" style="width: 100%;margin: 3% auto;">
+
+        <div class="formcntr" style="padding: 20px;"
+          *ngIf="ModeOfManualPayment =='MANUALPAYTM' || ModeOfManualPayment =='MANUALPINELABS'">
+          <div class="row">
+
+
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div *ngIf="ModeOfManualPayment =='MANUALPAYTM'">
+                <b style="font-size: 17px !important;"> Manual Paytm Payment</b>
+              </div>
+              <div *ngIf="ModeOfManualPayment =='MANUALPINELABS'">
+                <b style="font-size: 17px !important;">Manual Pinelabs Payment</b>
+              </div>
+
+              <div>
+                <i class="Ux_close fa-duotone fa-circle-xmark" (click)="closeManualPayment()"></i>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div style="margin-bottom: 30px;">
+            <label for=""> Payment Type</label>
+            <!-- <ng-select placeholder="Payment Type" [items]="ManualPaymentTypes" bindValue="ID" bindLabel="TEXT"
+              [(ngModel)]='ManualPaymentType'  (change)="ResetFiedlsOnChange()"> </ng-select> -->
+              <ng-select class="paymentMode"
+              (change)="changePineLabsMOP()"
+              [items]="pinelabsPaymentArray.Data" bindValue="Id" bindLabel="TEXT"
+                [(ngModel)]="ManualPaymentType"></ng-select>
+          </div>
+
+          <div *ngIf="ManualPaymentType == '1'">
+            <div class="mt-1">
+              <!-- <label>Card Type </label>  <br> -->
+              <ng-select style="width: 100%;" placeholder="Card Type" [items]="CardType"
+                [(ngModel)]="CardTypeData"></ng-select>
+            </div>
+
+            <div class="mt-1">
+              <label>Card Number </label>
+              <br>
+              <input style="width: 100%;" type="text" placeholder="Enter Card Number"  [(ngModel)] = "CardNo">
+            </div>
+            <div class="mt-2">
+              <label>Adjudication</label> <br>
+              <input style="width: 100%;" type="text" placeholder="Enter Adjudication"  [(ngModel)] = "Adjudication">
+            </div>
+            <div class="mt-2">
+              <label>Terminal Id </label> <br>
+              <input style="width: 100%;" type="text" placeholder="Enter Terminal Id" [(ngModel)] = "TerminalId">
+            </div>
+            <div class="mt-2">
+              <label>Amount</label> <br>
+              <input style="width: 100%;" type="number" placeholder="Enter Amount"  [(ngModel)]="Amount">
+            </div>
+          </div>
+          <div *ngIf="ManualPaymentType == '10'">
+            <div class="mt-2">
+              <label for="">UPI Transaction Number </label> <br>
+              <input type="text" style="width: 100%;" placeholder="Enter UPI Transaction Number"
+                [(ngModel)]="UPITransactionId">
+            </div>
+            <div class="mt-2">
+              <label>Amount</label> <br>
+              <input style="width: 100%;" type="number" placeholder="Enter Amount"  [(ngModel)]="Amount">
+            </div>
+
+          </div>
+
+          <div class="row mt-4" style="float: right;">
+            <div class="col-12">
+              <button class="btn btn-success" (click)="ValidateManualPayment(ManualPaymentType)">Add Payment</button>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,212 @@
+ 
+/* .Cards
+{
+  background-size: auto;
+	background-repeat: no-repeat;
+  min-height: 185px;
+  cursor: pointer;
+	display: flex;
+	flex-direction: column;
+	padding: 10px 134px 18px 9px;
+  
+  
+} */
+
+#TilesRow
+{
+  row-gap: 20px;
+  letter-spacing: 0.1em;
+}
+.inventory_card
+{
+  max-width: 136px;
+  min-height: 63px ;
+  padding: 1px 2px 3px 1px;
+}
+
+/* Ipad View */
+@media only screen 
+  and (min-device-width: 768px) 
+  and (max-device-width: 1024px) 
+  and (-webkit-min-device-pixel-ratio: 1)
+  
+{
+  .card_layout_content
+  {
+    display: flex;
+    align-items: center;
+    margin: 0 -15px;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: space-around;
+  
+  }
+  .inventory_card
+  {
+    width: 157px !important;
+    padding: -7px 10px 18px 9px;
+     
+  }
+}
+/* Mobile View */
+@media screen and (max-width: 800px) 
+{
+    .inventory_card
+    {
+      width: 157px !important;
+      padding: -7px 10px 18px 9px !important;
+       
+    }
+  .Cards{
+  background-size: auto;
+	background-repeat: no-repeat;
+  min-height: 185px;
+  width: 200px;
+  cursor: pointer;
+	display: flex;
+  justify-content: space-around;
+	flex-direction: column;
+	padding: 10px 10px 18px 9px;
+  border-radius: 15px;
+  box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.32);
+   
+  
+  }
+  .card_layout_content
+  {
+    display: flex;
+    align-items: center;
+    margin: 0 -15px;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: space-around;
+  
+  }
+
+  .card_icon
+  {
+    margin-top: 2px;
+    margin-left: 2px;
+    border-top-left-radius: 14px;
+
+  }
+}
+
+/* Ipad View */
+@media screen and (max-width: 900px) 
+{
+   
+    
+  .Cards{
+    width: 200px;
+    padding: 0px;
+  }
+  .card_layout_content
+  {
+    display: flex;
+    align-items: center;
+    margin: 0 -15px;
+    justify-content: space-around;
+  
+  }
+  .card_icon
+  {
+    margin-top: 2px;
+    margin-left: 2px;
+    border-top-left-radius: 14px;
+
+  }
+  .inventory_card
+  {
+    width: 157px !important;
+    padding: -7px 10px 18px 9px !important;
+  }
+
+}
+
+
+::ng-deep  .card_layout 
+{
+margin-bottom: 10px !important;
+}
+::ng-deep .Cards{
+   background-size: 80px !important;
+   padding: 4px 129px 10px 3px !important;
+   min-height: 87px !important;
+   width: 157px !important;
+} 
+
+::ng-deep .card_number {
+   font-weight: 700;
+   font-size: 20px;
+   line-height: 0px;
+   color: #ffffff;
+}
+::ng-deep .card_icon {
+   max-width: 26px;
+   width: 100%;
+   min-height: 26px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 5px;
+   border-top-left-radius: 11px;
+}
+
+::ng-deep .card_body_conent
+{
+   width: 130px;
+}
+
+::ng-deep .card_heading {
+   font-weight: 700;
+   font-size: 12px;
+   line-height: 26px;
+   text-align: center;
+   text-transform: uppercase;
+   color: #ffffff;
+   margin-top: 10px;
+   line-height: 1.6 !important;
+}
+
+.HeaderBox
+{
+  
+  background-color: #ffffff;
+  border-radius: 10px 10px 0 0; 
+  min-height: 40px;
+  height: 25px;
+  padding: 10px;
+  line-height: 25px;
+  box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #515189 !important;
+}
+
+::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content
+{
+  line-height: 30px;
+} 
+.canvas_whiteboard_button-undo:hover {
+  content: "Undo";
+}
+.canvas-container {
+  background-color: #d61b1b;
+}
+
+::ng-deep body
+{
+  overflow-x: hidden !important;
+}
+::ng-deep .mat-horizontal-stepper-header-container
+{
+  height: 25px !important;
+}
+
+
+::ng-deep  .card_layout 
+{
+margin-bottom: 10px !important;
+}

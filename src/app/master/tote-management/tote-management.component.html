@@ -1,0 +1,78 @@
+<section class="content">
+    <div class="container-fluid"><br />
+        <mat-card class="p-2 mb-4" style="z-index: 9;">
+            <div class="row">
+                <div class="col-lg-10">
+                    <label style="font-size: 20px !important;font-weight: 600;"> Tote-Management</label>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-success" (click)="AddTote()" style="margin-left: auto;">
+                        <i class="fa fa-plus"></i> Add Tote
+                    </button>
+                </div>
+            </div>
+
+        </mat-card>
+
+        <mat-card class="p-2 mb-4">
+            <form>
+                <div class="mat-card-s3 mt-3 mb-2">
+                    <div class="row">
+                        <!-- <div class="col-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Store Code</mat-label>
+                                <ng-select [items]="LocationForJob.Data" placeholder="Store Code"
+                                    [(ngModel)]="storeCode" bindLabel="TEXT" bindValue="Id"></ng-select>
+                            </mat-form-field>
+                        </div> -->
+                        <div class="col-sm-3 col-lg-2 col-md-3">
+                            <!-- <mat-label>Store Code</mat-label> -->
+                            <ng-select [ngModelOptions]="{standalone: true}" [items]="LocationForJob.Data"
+                                [(ngModel)]="storeCode" bindLabel="TEXT" bindValue="Id"
+                                placeholder="Store Code"></ng-select>
+                        </div>
+
+                        <!-- <div class="col-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Received From</mat-label>
+                                <ng-select [items]="LocationForJob.Data" placeholder="Received From"
+                                    [(ngModel)]="receivedFrom" bindLabel="TEXT" bindValue="Id"></ng-select>
+                            </mat-form-field>
+                        </div> -->
+                        <!-- <div class="col-sm-3 col-lg-2 col-md-3">
+                          
+                            <ng-select [items]="LocationForJob.Data" [(ngModel)]="receivedFrom" bindLabel="TEXT"
+                                bindValue="Id" [ngModelOptions]="{standalone: true}"
+                                placeholder="Received From"></ng-select>
+                        </div> -->
+
+                        <div class="col-2">
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Tote No.</mat-label>
+                                <input class="x_input" matInput placeholder="Enter Tote No." type="text"
+                                    [ngModelOptions]="{standalone: true}" [(ngModel)]="toteNo">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-2">
+                            <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+                                <button class="x_final_button x_active_btn x_save_button"
+                                    (click)="search()">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-card>
+
+
+        <mat-card class="m-0 p-0">
+            <div class="row clearfix" *ngIf="columns.length > 0">
+                <div class="table-responsive">
+                    <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+                        [hideSpinnerEvents]="jobListHideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                        (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+                    </nitc-grid>
+                </div>
+            </div>
+        </mat-card>

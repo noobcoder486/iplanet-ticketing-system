@@ -1,0 +1,26 @@
+<mat-card>
+  <div class="container" style="border:1px solid rgb(190, 190, 190);border-radius: 4px;">
+    <br />
+  <div class="row">
+    <div class="col-lg-6 col-sm-6 col-md-6 col-12"> 
+      <ng-select placeholder="Select Company" [(ngModel)]="companyCodeData" bindLabel="TEXT" bindValue="Id" [items]="companyCode.Data"></ng-select>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-12" [hidden]="disableAuthPart">
+      <mat-label class="labelStyle">GSX Auth Key</mat-label>
+      <input matInput [hidden]="authKeyDisable" class="inputBox" name="gsxAuthKey" style="width: 100% !important;" [(ngModel)]="gsxAuthKey" placeholder="Please Enter GSX Auth Key" />
+      <mat-label [hidden]="authKeyDisable"><a href="https://login-partner-connect.apple.com/">Get Key</a></mat-label>
+      <input type="checkbox" [hidden]="!authKeyDisable" [checked]="authKeyDisable">
+    </div>
+  </div>
+ 
+ <br />
+
+  <div class="row" style="padding-bottom: 10px;">
+    <div class="col-lg-12 col-sm-12 col-md-12 d-flex justify-content-center">
+      <button type="button" class="btnClass" [hidden]="hidesubmit" (click)="submit()">Submit</button>
+      <button type="button" class="btnClass" [hidden]="authKeyDisable" (click)="updateGsxToken()">Update GSX Token</button>
+
+    </div>
+  </div>
+</div>
+</mat-card>

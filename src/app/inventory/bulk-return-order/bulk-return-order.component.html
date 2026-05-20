@@ -1,0 +1,868 @@
+<ngx-spinner style="width: 100%; height: 100%; position: absolute;" size="medium" *ngIf="Spinner" [type]="typeSelected"  [fullScreen]="true">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+
+<section class="content ">
+  <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+    <div class="row">
+
+      <div class="col-lg-5 col-sm-12">
+        <div class="row">
+          <div class="col-lg-6 col-sm-6 col-6 ">
+
+            <!-- inside Box -->
+            <!-- <div style="display: flex;justify-content: space-between;"> -->
+            <div style="float: left;padding-left: 60px;padding-top: 8px;padding-right: 24px;">
+              <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+            </div>
+
+            <div *ngIf="bulkReturnId!=undefined" style="margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+              <h4><span style="color: black;font-size: 14px !important;  font-weight: 600;"
+                  title="Bulk Return ID">{{bulkReturnId}} </span></h4>
+            </div>
+            <!-- </div> -->
+          </div>
+          <div class="col-lg-6 col-sm-6 col-6 ">
+            <!-- inside Box -->
+            <div class="JobTypeDesc"
+              style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+              <h4><span style="color: black;font-size: 14px; font-weight: 500; ">Bulk Return Order</span></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7 col-sm-12">
+        <div class="row" style="align-items: center;">
+          <div class="col-lg-3 col-sm-4 col-4">
+            <!-- inside Box -->
+            <div *ngIf="bulkReturnId!=undefined">
+              <!--<h4><span style="color: black;font-size: 14px; font-weight: 500; ">New</span></h4>-->
+              <ng-select style="margin-top: -15px;" [items]="printTypeArray" bindLabel="TEXT" bindValue="Id"
+                [(ngModel)]="printTypeData"></ng-select>
+
+            </div>
+          </div>
+          <!-- Print Button -->
+          <div class="col-lg-2 col-sm-2 col-2 ">
+            <!-- inside Box -->
+            <div *ngIf="bulkReturnId!=undefined"
+              style="text-align: center; border-right: 1px solid rgb(112, 111, 111);margin-top: -15px;">
+              <button class="btnClass" (click)="printDocument()">Print</button>
+              <!--<h4><span style="color: black;font-size: 14px; font-weight: 500; ">{{bulkReturnId}}</span></h4>-->
+            </div>
+          </div>
+
+          <!-- Print Button -->
+          <div class="col-lg-3 col-sm-2 col-2 ">
+            <!-- inside Box -->
+            <div *ngIf="bulkReturnId!=undefined"
+              style="text-align: center; border-right: 1px solid rgb(112, 111, 111);margin-top: -15px;">
+              <h4><span style="color: black;font-size: 14px; font-weight: 600; "
+                  title="Bulk Return Order Status">Status:-</span> {{ ApprovalStatus }}</h4>
+            </div>
+          </div>
+
+
+          <div class="col-lg-4 col-sm-2 col-2 ">
+            <div *ngIf="bulkReturnId!=undefined" style="text-align: center;margin-top: -15px; ">
+              <h4><span style="color: black;font-size: 14px; "><b>Created Date:-</b> {{ CreatedDate | date: 'dd/MM/yyyy : hh:mm a'
+                  }}</span></h4>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <mat-card>
+    <div class="row">
+      <div class="col-lg-2 col-md-2 col-sm-2">
+        <div class="row">
+          <div class="col-12">
+            <ng-select [items]="BulkReturnTypeDD.Data" (change)="ChangeVendor()" bindLabel="TEXT"
+              [disabled]="disableReturnType" bindValue="Id" [(ngModel)]="BulkReturnType"
+              placeholder="Return Type *"></ng-select>
+          </div>
+
+          <div class="col-12" *ngIf="showRemarkButton">
+            <label style="font-weight: 600;">Approver Remark:- </label>
+            <textarea rows="4" style="width: 100%;" cols="50" maxlength="4000" [disabled]="disableRemarkButton"
+              [(ngModel)]="returnRemark" placeholder="Write Your Remarks here:- "> </textarea>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button class="btnClass" (click)="confirmShipment()" [hidden]="hideShipmentButton">Confirm Shipment</button>
+            <!-- <button class="btnClass" 
+            (click)="hidePopup = false" 
+            [hidden]="hideEwayButton">Save E-Way Bill</button> -->
+            <button class="btnClass" (click)="validateEwayBill()" [hidden]="hideEwayButton">Generate E-Way Bill</button>
+
+            <label style="font-weight: 600;" [hidden]="EWayBillFlag == false">E-Way Bill Generated </label>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-10 col-sm-10 col-md-10 col-12" *ngIf="showFileUploadOptions">
+
+        <!-- documentList Image -->
+        <div class="row">
+          <div class="col-10" style="padding-right: 10px;">
+            <div class="row">
+              <div class="col-lg-2 col-sm-4 col-4 mt-2" *ngFor="let file of FileUploadList; let index = index">
+                <div style="border: 1px dotted rgb(170, 170, 170);padding: 10px;border-radius: 4px;">
+                  <div class="row">
+
+                    <div class="col-12" *ngIf="!file?.src && AddFiles">
+                      <input #fileInput type="file" (click)="fileInput.value = null"
+                        (change)="UploadFile($event, index)" style="display:none" accept="image/*, application/pdf/*">
+                      <i style="display: flex;justify-content: center; cursor: pointer; padding: 15px;"
+                        (click)="fileInput.click()" class="fa fa-plus" aria-hidden="true" type="file"></i>
+                    </div>
+                    <!-- For Approver Access and if no File Present  -->
+                    <div class="col-12" *ngIf="!file?.src && !AddFiles">
+                      <div class="swaper-card" style="min-height: 10 !important;padding: 0px !important;">
+                        <span class="hd_header_content">
+                          <i class="far fa-file" style="color:red;min-height: 10 !important;padding: 0px !important;    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 70px !important;"></i>
+                        </span>
+                      </div>
+                      <hr>
+                      <!-- label of the File-->
+                      <div style="text-align: center;">
+                        <label style="font-weight: 600; color: red">No File Found</label>
+                      </div>
+                    </div>
+
+                    <!-- Show only when FileUploadList for that index has a File -->
+                    <div *ngIf="file?.src">
+                      <!-- Viewing the File -->
+                      <div *ngIf="file?.type.includes('image')">
+                        <div class="swaper-card" style="min-height: 0 !important;padding: 0px !important;">
+                          <span class="hd_header_content">
+                            <img [src]="file?.src || 'http://placehold.it/180'" alt="{{file?.filename}}" />
+                          </span>
+                        </div>
+                      </div>
+                      <div *ngIf="file?.type.includes('pdf')">
+                        <div class="swaper-card" style="min-height: 0 !important;padding: 0px !important;">
+                          <span class="hd_header_content">
+                            <i class="far fa-file-pdf" style="color:rgb(0, 132, 255); min-height: 0 !important;padding: 0px !important;  display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 69px !important;"></i>
+                          </span>
+                        </div>
+                      </div>
+
+                      <!-- Footer of File -->
+                      <div class="col-12" style="padding-top:7px;border-top:1px dotted rgb(170, 170, 170)">
+                        <div style="display: flex;align-items: center;justify-content: space-between;">
+                          <div>
+                            <i (click)="viewImage(file, index)" class="fa fa-eye"
+                              style="color:rgb(111, 178, 255);cursor: pointer;" aria-hidden="true"></i>
+                          </div>
+                          <div
+                            *ngIf="(ApprovalStatus== 'NEW' || ApprovalStatus == 'NEED MORE INFORMATION') && isApproverPermission == false ">
+                            <i (click)="removeFile(file, index)" class="fa fa-trash"
+                              style="color:red ; cursor: pointer;" aria-hidden="true"></i>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- label of the File-->
+                      <div style="text-align: center;">
+                        <label style="font-weight: 600;">{{ file.filename.slice(0,13) }}</label>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <!-- Sent for Approval Button if normal access otherwise these 3 buttons if in Approver Access -->
+          <!-- 3 Button Shown to Approver Access:- -->
+          <div class="col-2">
+            <div class="row">
+              <div *ngIf="showFileButtons" class="col-12 mt-2">
+                <div *ngIf="!fileOptions">
+                  <div class="row ">
+                    <div class="col-12">
+                      <button (click)="ChangeStatus('APPROVED')" class="btn x_final_button x_active_btn x_save_button"
+                        style="width: 100%;" FView>Approve</button>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-12">
+                      <button (click)="ChangeStatus('REJECTED')" class="btn btn-danger reject"
+                        style="width: 100%;">Reject</button>
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-12">
+                      <button (click)="ChangeStatus('NEED MORE INFORMATION')" class="btn needmoreinfo">Need more
+                        Info</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Non Approval Access:-  -->
+                <div *ngIf="fileOptions" class="col-lg-2 col-sm-2 col-4">
+                  <div class="row">
+                    <div class="col-12">
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-12">
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-12">
+                    </div>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-12">
+                      <button class="btn x_final_button x_active_btn x_save_button" style="width: 100%;height: 100%;"
+                        (click)="ChangeStatus('SENT FOR APPROVAL')">Send For Approval</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+      </div>
+    </div>
+  </mat-card>
+
+
+
+  <div class="row" style="padding:10px;padding-bottom: 15px;">
+    <!-- Background -->
+    <div class="col-lg-12"
+      style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+      <div class="row">
+        <!-- Details -->
+        <div class="col-lg-6 col-sm-6">
+            <div class="row">
+              <div class="col-12"
+              style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-right: 1px solid hsl(0, 0%, 92%);    border-top-left-radius: 5px;    border-bottom-left-radius: 5px;">
+              <!-- Details Heading -->
+              <div
+                style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;    border-top-left-radius: 5px;">
+                <span style="font-size: 16px !important;color:black;font-weight: 600;">Shipment Details<i
+                    style="color: red">*</i></span>
+              </div>
+              <!-- Details Content -->
+              <div #forShipmentDetails>
+                <div class="MainDiv" style="padding: 10px;">
+                  <div class="row">
+                    <div class="row" style="height: 62px;">
+                      <div class="col-6">
+                        <div class="form-group">
+                          <label>Transportation Carrier <i style="color: red">*</i></label>
+                          <ng-select class="Transportation" [items]="TransportationCarrier.Data" bindLabel="TEXT"
+                            bindValue="Id" [(ngModel)]="transportationCarrierData"></ng-select>
+                        </div>
+                      </div>
+    
+                      <div class="col-6">
+                        <div class="form-group">
+                          <label>Tracking Number <i style="color: red">*</i></label>
+                          <input placeholder="Enter Tracking Number" class="form-control" [(ngModel)]="trackingNumber">
+                        </div>
+                      </div>
+    
+                    </div>
+                    <div class="row" style="height:57px;">
+                      <div class="col-lg-3 col-sm-3 col-md-3">
+                        <div class="form-group">
+                          <label>Length<i style="color: red">*</i></label>
+                          <input class="form-control" (keypress)=" onKeyPress($event, 'int', 10)" maxlength="10"
+                            placeholder="length" [(ngModel)]="length">
+                        </div>
+                      </div>
+                      <div class="col-lg-3 col-sm-3 col-md-3">
+                        <div class="form-group">
+                          <label>Breadth<i style="color: red">*</i></label>
+                          <input class="form-control" (keypress)=" onKeyPress($event, 'int', 10)" placeholder="breadth"
+                            [(ngModel)]="breadth">
+                        </div>
+                      </div>
+                      <div class="col-lg-3 col-sm-3 col-md-3">
+                        <div class="form-group">
+                          <label>Height<i style="color: red">*</i></label>
+                          <input class="form-control" (keypress)=" onKeyPress($event, 'int', 10)" placeholder="height"
+                            [(ngModel)]="height">
+                        </div>
+                      </div>
+                      <div class="col-lg-3 col-sm-3 col-md-3">
+                        <div class="form-group">
+                          <label>Weight<i style="color: red">*</i></label>
+                          <input maxlength="10" (keypress)=" onKeyPress($event, 'int', 10)" class="form-control"
+                            placeholder="Weight" [(ngModel)]="weight">
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="row mt-2">
+                       <div class="col-12"  style="display: flex; flex-direction: row;">
+                        <div >
+                          <label>Seal Number<i style="color: red">*</i></label>
+                          <input class="form-control" placeholder="Seal Number" [(ngModel)]="sealNumber">
+                        </div>
+                        <div style="display: flex; flex-direction: column;    margin-left: 25px;">
+                          <label>No Of Boxes<i style="color: red">*</i></label>
+                          <input style="width: 112%"  [ngModelOptions]="{standalone: true}" placeholder="Number of Boxes" [(ngModel)]="NoOfBoxes">
+                        </div>
+                      </div>
+                      <!-- <div class="col-12" style="height: 50px;">
+                        <div class="form-group">
+                          <label>Seal Number<i style="color: red">*</i></label>
+                          <input class="form-control" placeholder="Seal Number" [(ngModel)]="sealNumber">
+                        </div>
+                      </div> -->
+                    </div> 
+                  </div>
+                  </div>
+              </div> 
+    
+    
+            </div>
+    
+            <div class="col-12" style="padding-left: 0px; padding-right: 0px;">  
+            <div  style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;    border-top-left-radius: 5px;">
+            <span style="font-size: 16px !important;color:black;font-weight: 600;">E-Way Bill Details<span  *ngIf="isShipmentDone == '1'"><i  style="color: red">*</i></span></span>
+          </div>
+          <div #forEWayDetails> 
+                <div class="row" style="padding: 10px;">
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>Distance In KMs<span  *ngIf="isShipmentDone == '1'"><i  style="color: red">*</i></span> </label>
+                      <input type="number" class="form-control" autocomplete="off" placeholder="Enter distance in Kms"
+                        (keypress)=" onKeyPress($event, '', 15)" [(ngModel)]="DistanceInKm" />
+                    </div>
+                  </div>
+    
+                  <div class="col-3">
+                    <div class="form-group">
+                      <label>Mode of Transport<span  *ngIf="isShipmentDone == '1'"><i  style="color: red">*</i></span></label>
+                      <ng-select class="drpdown" (change)="GetVehicleData()" [items]="ModeofTransport.Data" [(ngModel)]="modeofTransportData"
+                        bindValue="Id" bindLabel="TEXT"></ng-select>
+                    </div>
+                  </div>
+    
+                  <div class="col-3" *ngIf="modeofTransportData === 'ROAD'">
+                    <div class="form-group">
+                      <label>Vehicle Number <span  *ngIf="isShipmentDone == '1'"><i  style="color: red">*</i></span></label>
+                      <input class="form-control" (keypress)=" onKeyPress($event, '', 11)" autocomplete="off"
+                        placeholder="Vehicle Number" type="text" [(ngModel)]="vehicleNumber" />
+                    </div>
+                  </div>
+    
+    
+                  <div class="col-3" *ngIf="modeofTransportData === 'ROAD'">
+                    <div class="form-group">
+                      <label>Vehicle Type<span  *ngIf="isShipmentDone == '1'"><i  style="color: red">*</i></span></label>
+                      <ng-select class="drpdown" [items]="VehicleType.Data" [(ngModel)]="vehicleTypeData" bindValue="Id"
+                        bindLabel="TEXT"></ng-select>
+                    </div>
+                  </div>
+    
+                </div>  
+          </div>
+          </div>
+            </div>
+        </div>
+      
+      
+        <!-- Ship To -->
+        <div class="col-lg-3 col-sm-3"
+          style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+          <!-- Ship To  -->
+          <div
+            style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+            <div class="row">
+              <div class="col-6">
+                <span style="font-size: 16px !important;color:black;font-weight: 600;">Ship To<i
+                    style="color: red">*</i></span>
+              </div>
+
+            </div>
+          </div>
+          <!-- Customer Content -->
+          <div>
+            <div class="MainDiv" style="padding: 10px;">
+              <div class="row">
+                <div class="col-lg-12 col-sm-6">
+                  <!-- Disable when Edit mode:-  -->
+                  <ng-select [items]="LocationForJob.Data" [disabled]="disableReturnType" (change)="ChangeVendor()"
+                    bindLabel="TEXT" bindValue="Id" placeholder="Location" [(ngModel)]="locationData">
+                  </ng-select>
+                </div>
+              </div><br />
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                  <mat-label>Ship To:</mat-label>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                  <mat-label [hidden]="readData">
+                    <h4>{{Ship_to_GSX}}</h4>
+                  </mat-label>
+                </div>
+              </div>
+              <br>
+              <br>
+              <div class="col-12" *ngIf="isApproverPermission">
+                <label style="font-weight: 600;">Tracking URL </label>
+                <textarea rows="4" style="width: 100%;" cols="50" maxlength="4000" [disabled]="!changeTrackingURL"
+                  [(ngModel)]="trackingUrl"> </textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-3"
+          style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+          <!-- Vendor Heading -->
+          <div
+            style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+            <div class="row">
+              <div class="col-6">
+                <span style="font-size: 16px !important;color:black;font-weight: 600;">Return Address</span>
+              </div>
+
+            </div>
+          </div>
+          <!-- Vendor Content -->
+          <div>
+            <div class="MainDiv" style="padding: 10px;">
+
+              <div class="row">
+                <!-- {{returnAddress}} -->
+              </div>
+              <!-- Vendor Content -->
+              <div *ngFor="let item of VendorObject">
+                <div class="MainDiv" style="padding: 10px;">
+                  <mat-card-title>Vendor Name:- {{item?.extraData?.VendorName}}</mat-card-title>
+                  <p>Address:- {{item?.extraData?.Address1}}, {{item?.extraData?.Address2}}, {{item?.extraData?.City}} -
+                    {{item?.extraData?.ZipCode}}, {{item?.extraData?.StateCode}}.</p>
+                  <mat-card-content>
+                    <p>Email:- {{item?.extraData?.EmailID}}</p>
+                    <p>Mobile No:- {{item?.extraData?.MobileNo}}</p>
+                    <!-- <p><b>GST Registration No: </b>&nbsp;{{item?.extraData?.GSTRegistrationNo[0]}}, &nbsp; <b>Ship To:</b>&nbsp; {{item?.extraData?.SHIP_TO_GSX[0]}}</p> -->
+                  </mat-card-content>
+                </div>
+              </div>
+              <!-- <ngx-spinner style="width: 100%; height: 100%; position: absolute;" size="medium" *ngIf="Spinner" [type]="typeSelected"  [fullScreen]="true">
+                <p style="font-size: 20px; color: white">Loading...</p>
+              </ngx-spinner> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <!-- Tote  -->
+    <mat-card class="mt-2">
+        <div class="row">
+            <div class="col-lg-11 col-md-11 col-sm-11">
+                <p style="font-size: 16px !important; font-weight: 600 !important;">Tote Details</p>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1" *ngIf="isEdit">
+                <button (click)="ShowTotePopUp()" class="btn blue-button"> Add Tote </button>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                <div class="MainDiv" style="padding: 10px;">
+                    <div class="row">
+                        <div class="scrollcntr" style="height: 170px;">
+                            <div class="contents" style="overflow: auto;height: 168px;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Sr.No</th>
+                                            <th>Tote No</th>
+                                            <th>Seal No</th>
+                                            <!-- <th>LocationCode</th> -->
+                                            <th>DCNo</th>
+                                            <th>AWBNo</th>
+                                            <th *ngIf="isEdit">Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of SelectedToteList;  let i= index">
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ i + 1 }}</td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.ToteNo }}</td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.SealNo }}</td>
+                                            <!-- <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.LocationCode }}
+                                            </td> -->
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.DCNo }}</td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.AWBNo }}</td>
+                                            <td *ngIf="isEdit"
+                                                [ngClass]="{'tableRow':item.IsDeleted == 1 }"><span
+                                                    style="padding: 20px;"><i style="color:red"
+                                                        (click)="RemoveToteItem(item)"
+                                                        class="fa-regular fa-trash"></i></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </mat-card>
+
+  <!--Parts-->
+  <div class="row">
+    <div class=" col-12">
+      <div class="col-lg-12 col-sm-12"
+        style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+        <!-- Order Heading -->
+        <div
+          style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;border-top-left-radius: 5px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 16px !important;color:black;font-weight: 600;">Parts</span>
+            </div>
+            <div>
+              <button (click)="openPartSelector()" *ngIf="isEdit" class="btnClass">Add Parts</button>
+
+            </div>
+          </div>
+        </div>
+        <!-- Order Content -->
+        <div>
+          <div class="MainDiv" style="padding: 10px;">
+            <div class="row">
+              <div class="scrollcntr" style="height: 270px;">
+
+                <div class="contents" style="overflow: auto;height: 268px;">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th style="white-space: nowrap; padding-right: 140px;background-color: rgb(96, 96,96);"
+                          scope="col">
+                          <span>Part Code</span>
+                        </th>
+                        <th style="padding-right: 50px;text-align: center;background-color: rgb(96, 96,96);">Serial</th>
+                        <th
+                          style="white-space: nowrap; padding-right: 50px;text-align: center;background-color: rgb(96, 96,96);">
+                          Sequence No</th>
+
+                        <th style="text-align: center;background-color: rgb(96, 96,96);">
+                          Description</th>
+                        <th
+                          style="white-space: nowrap; padding-right: 200px;text-align: center;background-color: rgb(96, 96,96);">
+                          Product Description</th>
+                        <th
+                          style="white-space: nowrap; padding-right: 50px;text-align: center;background-color: rgb(96, 96,96);">
+                          Repair ID
+                        </th>
+                        <th
+                          style="white-space: nowrap; padding-right: 50px;text-align: center;background-color: rgb(96, 96,96);">
+                          Stock Price<i style="color: red">*</i>
+                        </th>
+                        <th style="white-space: nowrap;padding-right: 50px;background-color: rgb(96, 96,96);">HSN Code
+                        </th>
+                        <th style="white-space: nowrap;padding-right: 50px;background-color: rgb(96, 96,96);">GST Group
+                          Code</th>
+                        <th style="white-space: nowrap; padding-right: 50px;background-color: rgb(96, 96,96);">Return
+                          Order</th>
+                        <th style="white-space: nowrap; padding-right: 50px;background-color: rgb(96, 96,96);">Purchase
+                          Order</th>
+                        <th style="white-space: nowrap; padding-right: 50px;background-color: rgb(96, 96,96);">Battery
+                          Net Weight</th>
+                        <th style="padding-right: 50px;background-color: rgb(96, 96,96);">Recieved</th>
+                        <th style="padding-right: 50px;background-color: rgb(96, 96,96);">Printed</th>
+                        <th style="padding-right: 50px;z-index: 1;background-color: rgb(96, 96,96);">OverpackBox</th>
+                        <th style="white-space: nowrap; background-color: rgb(96, 96,96);">Tote Number<i
+                            style="color: red">*</i></th>
+                        <th style="white-space: nowrap; background-color: rgb(96, 96,96);">Posted to GSX?</th>
+                          <th style="white-space: nowrap; background-color: rgb(96, 96,96);">Dangerous Good Code</th>
+                        <th style="white-space: nowrap; background-color: rgb(96, 96,96);">Issue Code</th>
+                        <th *ngIf="isEdit" style="padding-right: 50px;z-index: 1;background-color: rgb(96, 96,96);">
+                          Delete</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of finalSelectedElements" [ngStyle]="{'tableDelete': false}">
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}" style=" white-space: nowrap;"> <span
+                            style="padding: 10px;">{{ item.partNumber}} </span>
+                        </td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}" style="text-align: center !important;"> <span
+                            style="padding: 20px;">{{ item.serialNumber }}
+                          </span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}" style="text-align: center !important;"> <span
+                            style="padding: 20px;">{{ item.sequenceNumber }}
+                          </span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1  ? true : false}"
+                          style="white-space: nowrap; text-align: center !important;"> <span>{{ item.partDescription}}
+                          </span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="white-space: nowrap; text-align: center !important;"> <span>{{
+                            item.productDescription}} </span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="padding-right: 50px;text-align: center !important;"> <span style="padding: 20px;">{{
+                            item.repairId}}</span></td>
+                        <td style="text-align: center !important;">
+                          <input type="number" [readonly]="!isEdit"
+                          (keypress)=" onKeyPress($event, 'int', 20)"
+                          (input)="CalculateTotalStockPrice()"
+                            [(ngModel)]="item.StockPrice" />
+                        </td>
+                        <td style="text-align: center !important;">
+                          <input type="number" [readonly]="!isEdit && !isHSNChangeAllowed" [(ngModel)]="item.HSNSACCode" />
+                        </td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="padding-right: 50px;text-align: center !important;"> <span>{{
+                            item.GSTGroupCode}}</span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="padding-right: 50px;text-align: center !important;"> <span>{{
+                            item.returnOrderNumber}}</span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="padding-right: 50px;text-align: center !important;"> <span style="padding: 20px;">{{
+                            item.purchaseOrderNumber}}</span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="padding-right: 50px;text-align: center !important;"> <span style="padding: 20px;">{{
+                            item.batteryNetWeight}}</span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="padding-right: 50px;text-align: center !important;"> <span>{{ item.received}}</span>
+                        </td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="padding-right: 50px;text-align: center !important;"> <span>{{
+                            item.returnLabelPrinted}}</span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="padding-right: 50px;text-align: center !important;"> <span>
+                            <ng-select [readonly]="!isEdit" [items]="CountOverPack" (change)="UpdateCountOverPack()"
+                              [(ngModel)]="item.CountPack" style="width:100% !important;"></ng-select>
+                          </span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}" style="text-align: center !important;"> <span>
+                            <!-- <input placeholder="Tote No" [readonly]="!isEdit"
+                              style="width: 150px;display: block; border-radius: 3px;border:1px solid #ccc"
+                              [(ngModel)]="item.ToteNumber"> -->
+                                           <ng-select  [readonly]="!isEdit" [items]="SelectedToteList"  bindLabel="ToteNo" bindValue="ToteNo"
+                              [(ngModel)]="item.ToteNumber" style="width:145% !important;"></ng-select>
+
+                         
+                          </span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="width: 200px;text-align: center !important;"> <span>{{
+                            item.IsGSXPosted == 0 ? 'No': 'Yes'}}</span></td>
+                            <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="width: 200px;text-align: center !important;"> <span>{{item?.dangerousGoods}}</span></td>
+                           <td [ngClass]="{'tableDelete':item.IsDeleted==1}"
+                          style="width: 200px;text-align: center !important;"> <span>{{item?.issueCode}}</span></td>
+                        <td [ngClass]="{'tableDelete':item.IsDeleted==1}" *ngIf="isEdit"
+                          style="padding-right: 50px;text-align: center !important;"><button (click)="removeItem(item)"
+                            class="trash"><i class="fa-regular fa-trash"></i></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- </div>  -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isReturnOrderPartSelector" class="Ux_popup">
+    <!-- <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isReturnOrderPartSelector = false"></i> -->
+    <app-bulk-part-selector (returnOrderPartSelector)="returnOrderPartSelector($event)"  [shipTo]="Ship_to_GSX"
+      [finalSelectedElements]="finalSelectedElements"
+      [returnType]="BulkReturnType" (closeReturnOrderPartSelector)="closeReturnOrderPartSelector($event)">
+    </app-bulk-part-selector>
+  </div>
+
+
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-2 col-lg-3">
+        Part Quantity: ({{finalSelectedElements.length}})
+      </div>
+      <div class="col-2 col-lg-3">
+        Total Stock Price: <b style="color: blue"> {{totalStockPrice | number: '1.2-2' }}</b>
+      </div>
+      <div class="col-5 col-lg-5">
+        <div style="float: right;"  *ngIf="isHSNChangeAllowed" >
+          <button class="btn btn-secondary"(click)="onSubmit()"> Change HSN Codes </button>
+        </div>
+        <div style="float: right;" *ngIf="changeTrackingURL">
+          <button class="btn btn-info" (click)="saveConfirmedShipment()"> Change Tracking URL </button>
+        </div>
+      </div>
+      <div class="col-1 col-lg-1">
+        <div style="float: right;">
+          <!-- <button class="btnClass" *ngIf="isEdit" (click)="gsxSubmit()"> Save </button> -->
+          <button class="btnClass" *ngIf="isEdit" (click)="ValidateBulkReturnOrder()"> Save </button>
+        </div>
+      </div>
+    </div>
+    <div>
+    </div>
+    <div>
+    </div>
+  </div>
+
+
+
+</section>
+<div class="popup-overlay" *ngIf="isTotePopUpShow">
+    <div class="popup-card">
+
+        <div class="popup-header">
+            <!-- <input width="80%" type="text" style="margin-left: 12%;width: 70%;" placeholder="Tote Number to search "
+                (input)="onToteSearchInput($event)" /> -->
+        </div>
+
+        <div class="popup-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr.No</th>
+                        <th>Select</th>
+                        <th>CompanyCode</th>
+                        <th>LocationCode</th>
+                        <th>Tote No</th>
+                        <th>SealNo</th>
+                        <th>DCNo</th>
+                        <th>AWBNo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of ToteList; let i = index">
+                        <td>{{ i+1 }}</td>
+                        <td><input type="checkbox" [(ngModel)]="item.Selected" (change)="UpdateSelectedCount()" /></td>
+                        <td>{{ item?.CompanyCode}}</td>
+                        <td>{{ item?.LocationCode }}</td>
+                        <td>{{ item?.ToteNo }}</td>
+                        <td>{{ item?.SealNo }}</td>
+                        <td>{{ item?.DCNo }}</td>
+                        <td>{{ item?.AWBNo }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="popup-footer">
+            <button class="btn btn-success" (click)="onTotePopUpSubmit()">Save</button>
+            <button class="btn btn-warning" (click)="CloseTotePopUp()">Cancel</button>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<!-- 
+<div class="overlay" [hidden]="hidePopup" #isEWayBillDone >
+
+  <div style="margin: 7% auto;">
+   <mat-card class="container" style="height: 70%;">
+ 
+     <div style="display: flex;justify-content: space-between;align-items: center;">
+       <div>
+         <label style="font-size: 16px !important; font-weight: 600;">EWay Bill</label>
+       </div>
+       
+       <div>
+         <i  (click)="hidePopup = !hidePopup" class="Ux_close fa-duotone fa-circle-xmark" style="color: red;font-size: 24px !important;" ></i>
+       </div>
+     </div>
+ 
+    <hr>
+ 
+     <div class="row">
+ 
+ 
+       <div class="col-lg-4 col-sm-12 col-md-4">
+         <div class="form-group">
+         <label><b>Transporter Id</b></label><br>
+         <ng-select class="drpdown"  [items]="TransporterDropdown.Data" [(ngModel)]="transporterDropdownData"
+           bindValue="Id" bindLabel="TEXT"></ng-select>
+           </div>
+       </div>
+ 
+ 
+       <div class="col-lg-4 col-sm-12 col-md-4">
+         <div class="form-group">
+         <label><b>Distance In KMs</b></label>
+         <input class="form-control" autocomplete="off" placeholder="Enter distance in Kms" type="number"  [(ngModel)]="DistanceInKm" />
+         </div>
+       </div>
+ 
+ 
+       <div class="col-lg-4 col-sm-12 col-md-4">
+         <div class="form-group">
+         <label><b>Mode of Transport</b></label>
+         <ng-select class="drpdown" [items]="ModeofTransport.Data" [(ngModel)]="modeofTransportData" bindValue="Id"
+           bindLabel="TEXT"></ng-select>
+         </div>
+ 
+       </div>
+     </div>
+ 
+     <div class="row">
+       <div class="col-lg-4 col-sm-12 col-md-4">
+         <div class="form-group">
+         <label><b>Vehicle Number</b></label>
+         <input  class="form-control" autocomplete="off" placeholder="Vehicle Number" type="text"  [(ngModel)]="vehicleNumber" />
+       </div>
+       </div>
+ 
+ 
+       <div class="col-lg-4 col-sm-12 col-md-4">
+         <div class="form-group">
+         <label><b>Vehicle Type</b></label>
+         <ng-select class="drpdown"  [items]="VehicleType.Data" [(ngModel)]="vehicleTypeData" bindValue="Id"  bindLabel="TEXT"></ng-select>
+       </div>
+       </div>
+ 
+ 
+       <div class="col-lg-4 col-sm-12 col-md-4">
+         <div class="form-group">
+         <label><b>Transporter Document Number</b></label>
+         <input  class="form-control"  [readOnly]="true"
+         autocomplete="off" placeholder="Transporter Document No" type="text"  [(ngModel)]="DeliveryChallanNo" />
+       </div>
+       </div>
+     </div>
+     <div class="row mt-4">
+      <div class="col-12 d-flex justify-content-end" *ngIf="true">
+        <button class="btnClass" style="height: 32px;" (click)="SaveEwaybill('')">Save EWay Bill</button>
+      </div>
+       <div class="col-12 d-flex justify-content-end" *ngIf="false">
+         <button class="btnClass" style="height: 32px;" (click)="generateEwayBill()">Get EWay Bill</button>
+       </div>
+     </div>
+   </mat-card>
+ </div>
+  
+ </div> -->

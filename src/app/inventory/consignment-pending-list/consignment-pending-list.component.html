@@ -1,0 +1,129 @@
+<section class="content">
+    <div class="container-fluid">
+      
+<mat-card class="mt-2">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <p style="font-weight: 700; font-size: 18px !important; margin: 0;">Pending Consignment List</p>
+    <button matTooltip="Add Consignement Pending List" class="btn btn-success" (click)="Add()">Add</button>
+  </div>
+</mat-card>
+
+
+        <mat-card class="mt-4">
+            <div class="row" style="display: flex; align-items: center;">
+                <div class="col-lg-6">
+
+
+                    <div class="col-12 locationDiv">
+                        <ng-select (change)="getConsignmentPendingList()" [items]="LocationForJob.Data"
+                            bindLabel="Id" bindValue="Id"  [(ngModel)]="SelectedLocation"
+                            placeholder="Select Location">
+                        </ng-select>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+
+                    <button matTooltip="Download Excel" class="btn" style="background-color: #0d6efd; color: #ffffff; float: right;"
+                        (click)="ExportConsignmentPendingList()">Export List </button>
+
+                </div>
+            </div>
+
+        </mat-card>
+
+
+      
+        <mat-card class="mt-2">
+  <div class="row">
+    <mat-card>
+      <div class="items_details_grid scrollable-table-container">
+        <div class="scroll-wrapper">
+          <table class="table table-success table-striped table-wrap">
+            <thead>
+              <tr style="height: 30px !important;">
+                <th class="fontFamily" style="width: 10%;">Delivery Code</th>
+                <th class="fontFamily" style="width: 10%;">Delivery Date</th>
+                <th class="fontFamily" style="width: 20%;">Delivery Status</th>
+                <th class="fontFamily" style="width: 20%;">Status Description</th>
+                <th class="fontFamily" style="width: 15%;">Ship_to_GSX Code</th>
+                <th class="fontFamily" style="width: 10%;">Location Code</th>
+                <th class="fontFamily" style="width: 15%;">Locked Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of pendingAcknowlegdeList">
+                
+                 <td><span>{{item.DeliveryCode}}</span></td>
+                <td><span>{{item.DeliveryDate}}</span></td>
+                <td><span>{{item.StatusCode}}</span></td>
+                <td><span>{{item.StatusDescription}}</span></td>
+                <td><span>{{item.Ship_to_GSX}}</span></td>
+                <td><span>{{item.LocationCode}}</span></td>
+                <td><a class="tableBody" (click)="UpdateLockDate(item)">
+                  {{ item.LockDate | date:'yyyy-MM-dd' }}
+                </a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</mat-card>
+
+
+    </div>
+</section>
+
+<div class="popup-overlay" *ngIf="isUpdateDate">
+  <mat-card class="popup-card">
+    <div>
+        <p>Update  Locked Date</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      
+      <div style="display: flex; flex-direction: column; ">
+        <label>Delivery Code</label>
+        <input disabled="true" type="text" [(ngModel)]="CurrentDeliveryCode">
+      </div>
+      <div style="display: flex; flex-direction: column; ">
+        <label>Location Code</label>
+        <input disabled="true" type="text" [(ngModel)]="CurrentLocationCode">
+      </div>
+
+      <div style="display: flex; flex-direction: column; ">
+        <label>Delivery Date</label>
+        <input disabled="true" type="text" [(ngModel)]="CurrentDeliveryDate">
+      </div>
+
+      <div style="display: flex; flex-direction: column; ">
+        <label>Current Locked Date</label>
+        <input  disabled="true" type="text" [(ngModel)]="CurrentLockedDate">
+      </div>
+
+      <mat-form-field appearance="fill" style="display: flex; flex-direction: column;"> 
+                <mat-label>UpDated Lock Date</mat-label>
+                <input matInput [matDatepicker]="Picker" [(ngModel)]="UpdatedLockDate" placeholder="Updated Date" >
+                <mat-datepicker-toggle matSuffix [for]="Picker"></mat-datepicker-toggle>
+                <mat-datepicker #Picker></mat-datepicker>
+             
+      </mat-form-field>
+      <div style="display: flex; flex-direction: column; ">
+        <label>Remark</label>
+        <textarea type="text" (paste)="onPaste($event, 'alpha', 'Remark')"
+          (keypress)="onKeyPress($event, 'alpha','Remark' )" type="text"
+          style="border-radius: 0px; height: 64px; width: 100%; border: 1px solid rgb(211, 211, 211);"
+          placeholder="Add Remark" [(ngModel)]="Remark" [ngModelOptions]="{standalone: true}">
+        </textarea>
+
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px;">
+        <button class="btn btn-warning" (click)="closepop()">Close</button>
+        <button class="btn btn-success" (click)="UpdateConsignmentPendingHeaderLockDate()">Submit</button>
+      </div>
+
+    </div>
+  </mat-card>
+</div>

@@ -1,0 +1,82 @@
+<section class="">
+
+    <div class="container-fluid">
+      <mat-card class="p-2 mb-4">
+  
+        <div class="row" style="display: flex; align-items: center; justify-content: center;">
+
+          <mat-card class="p-2 mb-2">
+            <div class="row">
+    
+                <!-- First Field -->
+                
+                <div class="col-lg-4 col-sm-4">
+                  <label style="font-size:16px !important;">Bulk Return Type* </label>
+                    <ng-select [items]="BulkReturnTypeDD.Data" 
+                    bindLabel="TEXT" bindValue="Id" 
+                    [(ngModel)]="BulkReturnType" placeholder=""></ng-select>
+                    <!-- (change)="GetBulkOrder('')" -->
+                </div>
+                
+                <!-- Second Field -->
+                <div class="col-lg-4 col-sm-4">
+                  <label style="font-size:16px !important;">Bulk Return Status* </label>
+                    <ng-select [items]="BulkReturnStatusDD.Data" 
+                    bindLabel="TEXT" bindValue="Id" 
+                    [(ngModel)]="BulkReturnStatusCode" placeholder=""></ng-select>
+                    <!-- (change)="GetBulkOrder('')" -->
+                </div>
+                
+                <!-- Third Field -->
+                <div class="col-lg-4 col-sm-4">
+                    <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Location </label>
+                    <ng-select  [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                    [(ngModel)]="LocationCode" placeholder="" ></ng-select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-lg-4 col-sm-2" >
+                  <label style="font-weight:600; padding-bottom: 2%;">Bulk Return</label>
+                      <div class="form-group">
+                          <input type="text" class="form-control"
+                          [(ngModel)]="BulkReturnId" placeholder="Search Bulk Return Id" >
+                      </div>
+                  </div>
+                  
+                  <div class="col-lg-4 col-sm-2" >
+                    <label style="font-weight:600; padding-bottom: 2%;">Tracking Number</label>
+                        <div class="form-group">
+                            <input type="text" class="form-control"
+                            [(ngModel)]="TrackingNumber" placeholder="Search Tracking Number" >
+                        </div>
+                    </div>
+                
+                  
+                  <!-- Search Field -->
+                  <div class="col-lg-2 col-sm-2 mt-2" style="display: flex;align-items: center;">
+                      <!-- <label style="font-weight:600; padding-bottom: 2%;"></label> -->
+                      <button class="x_final_button x_active_btn x_save_button" (click)="Search('')">Search</button>
+                  </div>
+                  <!-- <div class="col-lg-4 col-sm-4 mt-2">
+                  </div> -->
+              </div>
+    
+        </mat-card>
+
+        <mat-card class="m-0 p-0">
+            <div class="row clearfix" *ngIf="columns.length > 0">
+                <!-- <div class="table-responsive"> -->
+                    <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+                        [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                        (changeEvent)="PageChange($event)" [isAllowSelect]="isChoose">
+                    </nitc-grid>
+                <!-- </div> -->
+            </div>
+        </mat-card>
+
+        </div>
+      </mat-card>
+    </div>
+  
+  </section>

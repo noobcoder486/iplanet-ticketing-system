@@ -1,0 +1,337 @@
+
+<ngx-spinner size="medium" *ngIf="spinner" [type]="typeSelected">
+    <p style="font-size: 20px; color: rgb(255, 255, 255)">Loading...</p>
+</ngx-spinner>
+
+<section class="content">
+    <mat-card style="padding: 0px !important;">
+        <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+          <div class="row">
+            <div class="col-lg-6 col-sm-12">
+              <div class="row" style="align-items: center;">
+                <div class="col-lg-6 col-sm-6 col-6 " style=" border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+                  <div class="mt-1" style=" padding-right: 15px;">
+                    <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+                  </div>
+                  <div class="mt-1">
+                    <h4><span style="color: black;font-size: 14px; font-weight: 600; " title="">Deposit Code </span></h4>
+                    <div class="mt-1">
+                      <h4><span style="color: black;font-size: 14px; font-weight: 600; " title=""> {{ CashDepositCode== null || CashDepositCode== undefined ?  'NA' : CashDepositCode}} </span> </h4>
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="col-lg-6 col-sm-6 col-6" style=" border-right: 1px solid rgb(112, 111, 111);">
+                  <!-- inside Box -->
+                  <div class="JobTypeDesc "
+                    style="color:blue ;text-align: center;display: flex; align-items: center; justify-content: center;">
+                    <!-- <b style="color: black;padding-right: 10px;">Approval Status: </b>NEW -->
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+            <div class="col-lg-6 col-sm-12 mt-3">
+              <div class="row" style="align-items: center;">
+                <div class="col-lg-1 col-sm-3 col-6 " style="text-align: center;display: flex; align-items: center; justify-content: center;">
+                </div>
+    
+                <div class="col-lg-3 col-sm-3 col-md-3 col-6"
+                  style=" color: black;border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+                    <button (click)="printCashDeposit()" [disabled]="isEdit" class="btn btnClass" style="height: 30px !important; display: flex; align-items: center;">Print Cash Deposit</button>
+                </div>
+                <div class="col-lg-4 col-sm-3 col-6 ">
+                  <!-- inside Box -->
+                  <div class="col-12"
+                    style="text-align: center;display: flex; align-items: center; justify-content: center;">
+                    <label style="white-space: nowrap; padding-left: 90% !important;"><b>Deposit Date:-</b> <span style="color: blue; font-weight: 600;"> {{  this.params.cashdepositguid == null || this.params.cashdepositguid == undefined ?   ( currentDate | date : 'dd/MM/yyyy' ) : ( selectedDate | date : 'dd/MM/yyyy : hh:mm a' )  }}</span></label>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-sm-3 col-6 " style="text-align: center;display: flex; align-items: center; justify-content: center;">
+                </div>
+    
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+  
+      <div  *ngIf="!hideLocation" >
+
+        <mat-card >
+          <div class="row"  style="display: flex; align-items: center;">
+            <div class="col-lg-4 justify-content-center col-md-4 col-sm-4" >
+              <label style="padding-bottom: 0%;"><b>Location Code  <i style="color:red">*</i></b></label>
+              <ng-select  [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                [(ngModel)]="LocationCode" placeholder="" ></ng-select>
+            </div>
+
+            <div class="col-lg-3 justify-content-center col-md-4 col-sm-4" style="display: flex; align-items: center;">
+              <button class="btn " style="height: 36px; display: flex; align-items: center; background-color: rgb(93, 148, 250) !important; color: white;" mat-raised-button 
+              (click)="addDeposit()"
+              >
+              <i style="font-size:18px !important;color: rgb(216, 247, 41); font-weight: 600; position: relative;padding-right: 5px;"  
+              class="iconbtn fa-light fa-plus">      
+              </i> Cash Deposit    
+              </button>
+            </div>
+          </div>
+        </mat-card>
+    </div>
+    
+    
+  
+    <div class="row" style="padding:10px;padding-bottom: 15px;" >
+      <!-- Background -->
+      <div class="col-lg-12"
+        style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+        <div class="row">
+          
+  
+          <!-- Location  -->
+          <div class="col-lg-6 col-sm-12"
+            style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+            <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+              <div class="row">
+                <div class="col-6">
+                  <span style="font-size: 16px !important;color:black;font-weight: 600;">Location Details</span>
+                </div>
+              </div>
+            </div>
+            <!-- Location Content -->
+            <div *ngFor="let item of LocationObject">
+              <div class="MainDiv" style="padding: 10px;">
+                  <mat-card-title >Location Name:- {{item?.LocationName}}</mat-card-title>
+                  <p>Address:- {{item?.Address1}}, {{item?.Address2}}, {{item?.City}} - {{item?.ZipCode}}, {{item?.StateCode}}.</p>
+                  <mat-card-content>
+                    <p>Email:- {{item?.EmailId}}</p>
+                    <p>Mobile No:- {{item?.MobileNo}}</p>
+                    <!-- <p><b>GST Registration No: </b>&nbsp;{{item?.GSTRegistrationNo[0]}}, &nbsp; <b>Ship To:</b>&nbsp; {{item?.SHIP_TO_GSX[0]}}</p> -->
+                  </mat-card-content>
+                </div>
+            </div>
+          </div>
+
+
+          <!-- Date and Deposit Info  -->
+          <div class="col-lg-6 col-sm-12"
+              style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+              <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+                <div class="row">
+                  <div class="col-6">
+                    <span style="font-size: 16px !important;color:black;font-weight: 600;"> {{ CashDepositCode== null || CashDepositCode== undefined ?  'Current Date' : 'Deposit Date'}}</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Date Content -->
+              <div  class="row">
+                <div class="col-lg-6 col-sm-12" style="padding: 10px; padding-left: 20px;">
+                      <label > <b>{{ currentDate | date: 'dd-MM-YYYY'}}</b></label>
+                        <!-- <mat-label><b>Select Date</b></mat-label> -->
+                        <!-- <mat-form-field appearance="fill">
+                          <input [disabled]="!isEdit"  matInput [matDatepicker]="picker" 
+                          (dateChange)="GetCashDepositObject()"
+                          [(ngModel)]="selectedDate">
+                          <mat-datepicker-toggle matSuffix
+                              [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field> -->
+                  </div>
+              </div>
+
+              
+              <!-- Deposit Header -->
+              <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+                <div class="row">
+                  <div class="col-6">
+                    <span style="font-size: 16px !important;color:black;font-weight: 600;">Deposit Information</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Deposit Info -->
+              <div  class="row" >
+                  <div class="col-lg-6 col-sm-12" *ngIf="!isEdit" style="padding: 10px; padding-left: 20px;">
+                    <div style="display: flex; align-items: center;">
+                      <div>
+                        <label>Current Cash In Hand Amount : </label>
+                      </div>
+                      <div>
+                        <span style="color: blue;padding-right: 5px;">{{TotalCollection | number: '1.2-2'}}</span>
+                      </div>
+                      <div>
+                        <i class="fa fa-rupee" style="font-size: 12px !important;" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                    <!-- <label><b>Total Pending Cash Collection: <span style="color: blue">{{TotalCollection}}</span></b></label> -->
+                    <!-- <label><b>This Day's Cash Collection: <span style="color: blue">{{ThisDayCollection}}</span></b></label> -->
+                  </div>
+                  <div class="col-lg-6 col-sm-12" *ngIf="isEdit" style="padding: 10px; padding-left: 20px;">
+                    <div style="display: flex; align-items: center;">
+                      <div>
+                        <label>Current Cash In Hand Amount : </label>
+                      </div>
+                      <div>
+                        <span style="color: blue;padding-right: 5px;">{{TotalCollection | number: '1.2-2'}}</span>
+                      </div>
+                      <div>
+                        <i class="fa fa-rupee" style="font-size: 12px !important;" aria-hidden="true"></i>
+                      </div>
+                    </div>
+
+
+                    
+                    <!-- <label><b>Total Pending Cash Collection: <span style="color: blue">{{TotalCollection}}</span></b></label> -->
+                    <!-- <label><b>This Day's Cash Collection: <span style="color: blue">{{ThisDayCollection}}</span></b></label> -->
+                  </div>
+              </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  
+    <mat-card class="mt-2"  *ngIf="params.locationcode ">
+      <div class="row">
+        <div class="col-lg-6 col-sm-12 col-md-12">
+            <div style="display: flex;flex-direction: column;">
+                <div>
+                    <span><label style="float:left"><b>Select Bank:  <i style="color:red">*</i></b></label>&nbsp;</span>
+                </div>
+        
+                <div class="mt-4">
+                  <ng-select  [items]="BankDD.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                      [disabled]="!isEdit" style="float:left;width:80% !important; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px;width: 100% !important; height: 30px; " 
+                      placeholder=""  [(ngModel)]="BankCode">
+                  </ng-select>
+                </div>
+            </div>    
+        </div>
+        <div class="col-lg-6 col-sm-12 col-md-12">
+  
+          <div style="display: flex;flex-direction: column;">
+            <div>
+              <span><label style="float:left"><b>Remarks: </b></label>&nbsp;</span>
+            </div>
+  
+            <div class="mt-4">
+              <input [disabled]="!isEdit" type="text" style="float:left;width:80% !important; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px;width: 100% !important; height: 30px; " 
+              placeholder="Enter Remark" maxlength="4000" [(ngModel)]="Remark">
+            </div>
+            </div>        
+        </div>
+      </div>
+    </mat-card>
+  
+    <mat-card class="mt-3"  *ngIf="params.locationcode ">
+      <div style="background-color: gainsboro; padding: 5px;color:black; display: flex;align-items: center;">
+        <div style="padding-right: 10px;">
+          <span style="font-size: 16px !important;color:black;font-weight: 600;height:30px">Cash Details </span>
+        </div>
+        <!-- File Uploads -->
+        <div class="mt-2">
+          <div style="padding-right: 25px;">
+            <div (click)="isImageUpload = true" style="text-align: left; position: relative;">
+          
+              <i style="font-size:18px !important;" class="iconbtn fa-light fa-paperclip" matTooltip="File Attachments">
+                  <div style="padding-bottom: 5px;padding-left: 18px;">  
+                     <span class="badge" style="position: absolute; top:0;margin-top: -5px;" *ngIf="FileUploadList.length >= 0"> {{ FileUploadList.length }}</span>
+                 </div>
+              </i> 
+           </div>
+          </div>
+        </div>
+       
+      </div>
+  
+      <div class="row mt-2" >
+        <div class="col-lg-12 col-sm-12 col-md-12">
+          <div class="scrollcntr" style="height: 347px !important;">
+            <div class="contents table-responsive" >
+              <table >
+                <thead>
+                  <tr style="height: auto !important;">
+                    <th scope="col">Sr. No.</th>
+                    <th scope="col">Denomination</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of CurrencyList; let index = index">
+                    <td  style=" white-space: nowrap;">{{index + 1}}</td>
+                    <td  >{{item?.Denomination | number: '1.2-2'}}</td>
+                    <td > <span> 
+                        <input [readOnly]="!isEdit" type="number" style="width: 30% !important;"
+                        [(ngModel)]="item.DenominationQty"
+                        (input)="CalculateAmount($event, item)"
+                        ></span></td>
+                        <!-- (keypress)="CalculateAmount($event, item)" -->
+                        <td  style="white-space: nowrap; "> <span style="color:{{item.DenominationAmount > 0 ? 'blue': 'black' }}; align-items: center;">  
+                        {{item.DenominationAmount | number: '1.2-2'}}
+                    </span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+    </mat-card>
+  
+  
+    <div style="position:sticky;bottom:0;background-color: gainsboro; padding: 5px;" *ngIf="NotesUsed > 0">
+      <div class="row" style="padding-top: 5px;padding-bottom: 5px;">
+        <div class="col-10">
+          <div class="row">
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          Denominations  Used: <b>({{NotesUsed}})</b>
+        </div>
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          <!-- Total Amount: <b>{{totalTaxableAmount | number: '1.2-2'}}</b> -->
+        </div>
+        <div class="col-sm-4 col-lg-4 col-md-2">
+            Total Deposit Amount: <b>{{TotalDepositAmount | number: '1.2-2'}} <i class="fa fa-rupee"  style="font-size: 12px !important;" aria-hidden="true"></i></b>
+        </div>
+        <div class="col-sm-2 col-lg-2 col-md-2">
+          <!-- Tax Amount: <b>{{totalTaxAmount | number: '1.2-2'}}</b> -->
+        </div>
+    </div>
+    </div>
+  
+     <div class="col-2">
+      <div class="row">
+        <div class="col-sm-12 col-lg-12 col-md-12">
+          <button appDebounceClick [disabled]="submitClicked" class="btnClass" style="letter-spacing: 2px;text-align: center;float: right;" 
+            (debounceClick)="onSubmit()"
+            *ngIf="isEdit" [debounceTime]="700"> Save
+          </button>
+        </div>
+
+        <div class="col-sm-12 col-lg-12 col-md-12">
+          <button  class="btn x_final_button x_active_btn x_save_button" style="letter-spacing: 2px;text-align: center;float: right;" 
+            (click)="SaveFiles()"
+            *ngIf="UploadImage && params.cashdepositguid" > Upload Files
+          </button>
+        </div>
+
+      </div>
+      </div>
+      </div>
+      <div>
+      </div>
+      <div>
+      </div>
+
+    </div>
+  </section>
+
+<div *ngIf="isImageUpload" class="Ux_popup">
+    <app-image-list [FileList]="FileUploadList"  [isEdit]="UploadImage" (FileListChanged)="onFileListChanged($event)" (CancelBtn)="this.isImageUpload = false;"> </app-image-list>
+</div>
+
+<div *ngIf="isRemarkUpload" class="Ux_popup">
+    <app-remark-list [RemarkList]="RemarkUploadList" [isEdit]="true" [Level]="RemarkLevel" (RemarkListChanged)="onRemarkListChanged($event)" (CancelBtn)="this.isRemarkUpload = false;"> </app-remark-list>
+</div>

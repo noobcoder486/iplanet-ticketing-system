@@ -1,0 +1,63 @@
+@media (min-width: 992px) {
+    .col-lg-3 {
+      flex: 0 0 auto;
+      width: 20%;
+    }
+  }
+  
+  .form-control {
+    width: 100%;
+  }
+  
+  
+  .Tableheader {
+    background-color: rgb(121, 121, 121);
+    color: white;
+    height: 20px !important;
+  }
+  
+  .needmoreinfo
+  {
+    border-radius: 20px; 
+    border: none; 
+    background-color: rgb(172, 169, 3); 
+    color: white;
+    width: 150px;
+    font-weight: 600;
+  }
+  
+  
+  .header {
+    font-weight: bolder;
+    font-size: larger !important;
+  }
+  
+  .btnClass {
+    border: 1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(202, 212, 223), rgb(103, 163, 253)) !important;
+    height: 25px;
+  }
+  
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  :host ::ng-deep .ng-select.ng-select-single .ng-select-container {
+    margin: 0px !important;
+    height: 32.5px !important;
+    border-radius: 0px;
+  }
+  
+  .next
+  {
+    border-radius: 20px; 
+    border: none; 
+    background-color: rgb(172, 169, 3); 
+    color: white;
+    width: 100%;
+    font-weight: 600;
+  }

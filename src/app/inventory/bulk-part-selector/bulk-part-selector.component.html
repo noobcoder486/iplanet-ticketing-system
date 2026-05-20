@@ -1,0 +1,84 @@
+<style>
+  input[type=checkbox] {
+    transform: scale(1.5);
+}
+</style>
+<div class="content-header" >
+  <ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+  <div class="card px-3 pb-3" >
+      <div class="row">
+        <div class="col-12">
+          <div class="tabheader" style="display: flex;justify-content: space-between;">
+            <div>
+            <h3>Part Selector</h3>
+          </div>
+
+          <div>
+            <i (click)="closepartSelector()" class="Ux_close fa-duotone fa-circle-xmark" ></i>
+          </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-11">
+          <mat-form-field appearance="fill">
+            <mat-label>Search</mat-label>
+            <input [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)"  matInput>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="scrollcntr" style="height: 410px;">
+
+            <div  class="items_details_grid" >
+              <table class="table table-success table-striped table-wrap">
+                <thead style="position: sticky; top: 0; z-index: 1;">
+                  <tr style="height: auto !important;">
+                    <th style="width: 1%;" scope="col"></th>
+                    <th style="width: 10%;"scope="col">Part Code</th>
+                    <th style="width: 10%;"scope="col">Sequence No</th>
+                    <th style="width: 15%;"scope="col">Serial</th>
+                    <th style="width: 37%;"scope="col">Description</th>
+                    <th style="width: 10%;"scope="col">Repair ID</th>
+                    <th style="width: 13%;"scope="col">Return Order No</th>
+                    <th style="width: 15%;"scope="col">Purchase Order No</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of returnOrderPartList" [ngClass]="{ 'selectedTr': item.selected == true, 'hide': isToShowTr(item) != true}">
+                    <td style="width: 1%; "><input type="checkbox" [(ngModel)]="item.selected" (change)="UpdateSelectedCount()"/></td>
+                    <td style="width: 10%; "> <span>{{ item.partNumber}} </span></td>
+                    <td style="width: 10%; "> <span>{{ item.sequenceNumber}} </span></td>
+                    <td style="width: 15%; "> <span>{{ item.repairDevice?.identifiers?.serial}} </span></td>
+                    <td style="width: 37%; "> <span>{{ item.partDescription}} </span></td>
+                    <td style="width: 10%; "> <span>{{ item.repairId}}</span></td>
+                    <td style="width: 13%; "> <span>{{ item.returnOrderNumber}}</span></td>
+                    <td style="width: 15%; "> <span>{{ item.purchaseOrderNumber}}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+         
+        </div>
+      </div>
+     
+      <br />
+      <div class="row">
+        <div class="col-12 text-right">
+
+          <div class="col-12 d-flex justify-content-end">
+            <span> ({{ SelectedPartCount }}) Parts Selected &nbsp; &nbsp; &nbsp; </span>
+            <span><input type="checkbox" [(ngModel)]="showonlyselected" /> Show Selected  &nbsp; &nbsp; &nbsp; </span>
+            <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onSubmit()" >Submit</button>
+
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+

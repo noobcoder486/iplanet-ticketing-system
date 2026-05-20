@@ -1,0 +1,306 @@
+.header {
+  font-weight: bolder;
+  font-size: larger !important;
+}
+
+.btnClass {
+  border: 1.5px solid rgb(95 165 243);
+  color: white;
+  border-radius: 0px;
+  background-image: linear-gradient(rgb(202, 212, 223), rgb(103, 163, 253)) !important;
+  height: 25px;
+  cursor: pointer;
+  position: relative;
+}
+
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.overlay {
+  margin: 25% 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 80%;
+  z-index: 9999;
+  /* Ensure it appears above other elements */
+  color: white;
+  /* Optional: Change text color for better visibility */
+  background-color: transparent !important;
+}
+
+section.content {
+  filter: blur(0);
+  /* Initial state without blur */
+  transition: filter 0.3s ease;
+  /* Add transition for smooth effect */
+}
+
+section.blurred {
+  filter: blur(3px);
+  /* Apply blur effect */
+}
+
+/* ::ng-deep.Ux_popup .Ux_close 
+
+{
+top: 38px !important;
+right: 171px !important;
+} */
+
+.card-body {
+  overflow: auto;
+  height: 300px;
+}
+
+.Ux_close {
+  position: initial !important;
+
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  z-index: 9999;
+}
+
+.popup {
+  background-color: #fff;
+  width: 90%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+}
+
+
+.iconbtn:hover .badge {
+  display: block;
+}
+
+.badge {
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  border-radius: 50%;
+  padding: 2px 5px;
+  position: absolute;
+  /* top: -5px;
+right: -5px; */
+}
+
+
+.statusBar
+ {
+  width: 100%;
+  background-color: #baff67;
+  border-radius: 50px;
+  padding: 5px;
+}
+
+.statusCircle {
+  background-color: rgb(0, 0, 255);
+  height: 13px;
+  width: 13px;
+  border-radius: 100px;
+}
+
+
+.statusChangeCircle {
+  background-color: rgb(255, 0, 0);
+  height: 13px;
+  width: 13px;
+  border-radius: 100px;
+}
+
+
+.statusText {
+  font-weight: 600;
+  font-size: 12px !important;
+  letter-spacing: 1px;
+}
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+
+/* *****************************************************************************8*/
+
+
+/* .table tbody tr td, .table tbody tr th
+{
+    padding:0px; 
+} */
+
+.scrollcntr
+{
+    overflow: hidden !important;
+}
+
+.overlay
+{
+  position: fixed;
+    top: 10;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 999;
+}
+
+.Ux_close {
+  position:initial !important;
+  
+}
+ 
+:host ::ng-deep .drpdown.ng-select.ng-select-single .ng-select-container
+{ 
+  margin: 0px !important;
+  height: 32.5px !important;
+  border-radius: 0px;
+}
+/* td, th 
+{
+    padding: 2px;
+}
+    */
+
+
+/* 
+  table {
+    font-family: Verdana;
+    font-size: 14px;
+    border-collapse: collapse;
+    
+  } */
+  
+  /* td, th {
+    padding: 5px;
+    text-align: left;
+    margin: 0;
+  }
+   */
+
+ 
+/*   
+  th {
+    position: sticky;
+    top: 0;
+    background-color: #333;
+    color: white;
+  } */
+
+  /* .contents {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-area: content;
+  height: 300px;
+  overflow-y: scroll;
+} */
+
+.btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(231, 236, 241), rgb(103, 163, 253)) !important;
+    height: 25px;
+}
+
+.trash
+{
+  border: none;
+}
+
+.trash:hover
+{
+  color: red;
+}
+
+.bg-primary table tbody tr {
+  background-color: red !important;
+}
+
+.IsDeleted table tbody tr td
+{
+  color: red;
+  background-color: yellow !important;
+}
+
+.background-color
+{
+  background-color:red !important;
+  color: red;
+}
+
+
+ /* .bg-primary
+{
+    background-color: rgb(248, 13, 13) !important;
+    table tbody tr{
+      background-color: red !important;
+    }
+  
+} */
+
+.tableDelete
+{
+  background-color: rgb(255, 108, 108) !important;
+}
+
+::ng-deep td span .ng-select.ng-select-single .ng-select-container
+{ 
+  margin: -1px 0 15px !important;
+}
+
+.reject
+{
+  border-radius: 20px; 
+  border: none; 
+  background-color: rgb(210, 48, 39); 
+  color: white;
+  width: 100%;
+  font-weight: 600;
+}
+.needmoreinfo
+{
+  border-radius: 20px; 
+  border: none; 
+  background-color: rgb(172, 169, 3); 
+  color: white;
+  width: 100%;
+  font-weight: 600;
+}
+.reject:hover
+{
+  background-color:#198754 !important;
+}
+
+.needmoreinfo:hover
+{
+  background-color:#198754 !important;
+}
+
+.disabled-select {
+  pointer-events: none;
+  opacity: 1;
+}
+ 
+:host ::ng-deep .Transportation.ng-select.ng-select-single .ng-select-container
+{ 
+  margin: 0px !important;
+  height: 32.5px !important;
+  border-radius: 0px;
+}

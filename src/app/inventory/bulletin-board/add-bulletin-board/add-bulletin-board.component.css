@@ -1,0 +1,44 @@
+.bulletin-data-field {
+    .mat-form-field-infix {
+        padding: 0;
+        /* Remove padding for full height */
+    }
+
+    textarea {
+        resize: none;
+        /* Disable resizing */
+        overflow: auto;
+        /* Show scrollbars if content overflows */
+        font-size: 14px;
+        /* Font size */
+        line-height: 1.5;
+        /* Line height */
+        box-sizing: border-box;
+        /* Include padding and border in dimensions */
+        padding: 30px;
+        /* Padding inside the textarea */
+        border-radius: 8px;
+        /* Rounded corners */
+        border: 1px solid #ccc;
+        /* Border color */
+        background-color: #f9f9f9;
+        /* Background color */
+        color: #333;
+        /* Text color */
+        margin-top: 10px;
+    }
+
+    /* Add focus styles */
+    textarea:focus {
+        border-color: #1e88e5;
+        /* Focus border color */
+        box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+        /* Focus shadow */
+        outline: none;
+        /* Remove default focus outline */
+    }
+}
+
+.btn {
+    margin-top: 50px;
+}

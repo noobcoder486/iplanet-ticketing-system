@@ -1,0 +1,123 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+  
+  
+  
+  <section class="content">
+    <div class="container-fluid"><br />
+        <mat-card class="p-2 mb-4" style="z-index: 9;">
+            <div class="row">
+                <div class="col-lg-4 col-sm-10 col-6" style="display: flex;align-items: center;">
+                    <label style="font-size: 20px !important;font-weight: 600;"> Discount Coupon List</label>
+                </div>
+  
+  
+                <div class="col-lg-2 col-sm-4 col-md-4" style="display: flex;align-items: center;">
+                </div>
+  
+            </div>
+  
+            <div class="row">
+          
+            </div>
+        </mat-card> 
+  
+  
+        <mat-card class="m-0 p-0" >
+            <div class="row clearfix"  style="display: flex; align-items: center; justify-content: center;">
+                <div  class="col-lg-1 col-sm-2">
+                </div>
+                <!-- First Field -->
+                <div  class="col-lg-2 col-sm-2">
+                    <label style="font-weight:600; padding-bottom: 0%;">Discount Coupon Status</label>
+  
+                    <ng-select  [items]="DiscountCouponDD" 
+                    [(ngModel)]="DiscountCouponStatus" bindLabel="TEXT" bindValue="Id"
+                    placeholder=""  >
+                        </ng-select>
+                </div>
+                
+                <!-- Second Field -->
+                <div class="col-lg-2 col-sm-2"  style="padding-top: 1%;">
+                  <label style="font-weight:600; padding-bottom: 0%;">Select Location</label>
+                  <ng-select [items]="Location.Data" bindLabel="TEXT" bindValue="Id"
+                      [(ngModel)]="LocationCode" ></ng-select>
+                </div>
+                
+                <!-- Third Field -->
+                <div class="col-lg-2 col-sm-2"  style="padding-top: 1%;">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <input matInput type="text" 
+                        [(ngModel)]="materialCode" placeholder="Search Material Code" >
+                    </mat-form-field>
+                </div>
+                
+                  <!-- Third Field -->
+                  <div class="col-lg-2 col-sm-2"  style="padding-top: 1%;">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <input matInput type="text" 
+                        [(ngModel)]="CouponCode" placeholder="Search Coupon Code" >
+                    </mat-form-field>
+                </div>
+
+                <!-- Search Field -->
+                <div class="col-lg-1 col-sm-2" style="padding-top: 2%;">
+                  <button class="btn btnClass" style="height: 30px;" (click)="search($event)">Search <i
+                    style="padding-left: 10px;" class="fa fa-search" aria-hidden="true"></i></button>
+                     <!-- (changeEvent)="loadTransportData($event)" -->
+                </div>
+                <div  class="col-lg-1 col-sm-2">
+                </div>
+                
+            </div>
+        </mat-card>
+          
+        <mat-card  *ngIf="results.length>0">
+          <div class="MainDiv" style="padding: 10px;" >
+            <div class="row">
+              <div class="scrollcntr" style="height: 347px !important;">
+                <div class="contents table-responsive">
+                  <table>
+                    <thead>
+                      <tr style="height: auto !important;">
+                        <th scope="col">Coupon Code</th>
+                        <th scope="col">Discount Status </th>
+                        <th scope="col">Expiry Date</th>
+                        <th scope="col">Material Code</th>
+                        <th scope="col">Customer Code</th>
+                        <th scope="col">Location Code</th>
+                        <th scope="col">Is Consumed</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Discount Amount</th>
+                        <th *ngIf="hasApproverL1()" scope="col">Approve/Reject</th>
+                        <th *ngIf="hasApproverL2()" scope="col">Approve/Reject</th>
+                
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of results">
+                          <td style="text-align: right;">{{ item?.CouponCode}}</td>
+                        <td style="white-space: nowrap; "> <span> {{ item.DiscountCouponStatus}} </span></td>
+                        <td style="white-space: nowrap; "> <span> {{ item.ExpiredDate |  date: 'dd/MM/yyyy'}} </span></td>
+                        <td >{{ item?.MaterialCode}}</td>
+                        <td >{{ item?.RetailCustomerCode}}</td>
+                        <td>{{ item?.LocationCode}}</td>
+                        <td>{{ item?.IsConsumed}}</td>
+                        <td style="text-align: right;">{{ item?.UnitPrice | number: '1.2-2'}}</td>
+                        <td style="text-align: right;">{{ item?.DiscountAmount | number: '1.2-2'}}</td>
+                        <td *ngIf="hasApproverL1()" ><button *ngIf="item.DiscountCouponStatus == 'SENT FOR APPROVAL' && item.isApproverL1" class="btn approveBtn"(click)="updateDiscount(item)"> Approval</button> </td>
+                        <td  *ngIf="hasApproverL2()" ><button *ngIf="item.DiscountCouponStatus == 'PARTIALLY APPROVED' && item.isApproverL2 " class="btn approveBtn" (click)="updateDiscount(item)"> Approval</button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+  
+    </div>
+  </section>
+    
+  

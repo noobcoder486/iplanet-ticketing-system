@@ -1,0 +1,65 @@
+<style>
+    input[type=checkbox] {
+        transform: scale(1.5);
+    }
+</style>
+<div class="content-header">
+    <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+    <div class="card px-3 pb-3">
+        <div class="row mt-2">
+            <div class="col-12">
+                <div class="tabheader">
+                    <h3>Table Replacement Flag Reset </h3>
+                </div>
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-lg-2 col-sm-2 col-md-2">
+            </div>
+            <div class="col-lg-4 col-sm-4 col-md-4 mt-1">
+                <label>Case Id </label> <br>
+                <input style="width: 80%;" [(ngModel)]="CaseId" [disabled]="true">
+            </div>
+            <div class="col-lg-4 col-sm-4 col-md-4">
+                <ng-select style="width: 80%;" [items]="TableReplacementFlagList" bindLabel="TEXT" bindValue="Id"
+                    [(ngModel)]="SelectedTBRFlag" placeholder="Select Table Replacement">
+                </ng-select>
+            </div>
+            <div class="col-lg-2 col-sm-2 col-md-2">
+            </div>
+
+            <div class="col-lg-2 col-sm-2 col-md-2">
+            </div>
+            <div class="col-lg-10 col-sm-12 col-md-12">
+            <label>Remark</label><br>
+            <textarea
+                style="width: 72%;"
+                rows="2"
+                [(ngModel)]="Remark">
+            </textarea>
+        </div>
+        </div>
+
+
+        <div class="row mt-2">
+            <div class="col-lg-4 col-sm-4 col-md-4">
+
+            </div>
+            <div class="col-lg-4 col-sm-4 col-md-4">
+                <button style="width: 30%;" class="btn btn-success mx-2" (click)="ResetTableReplacement()"> Save </button>
+
+                <button  style="width: 30%; "  class="btn btn-warning" (click)="CloseResetTableReplacementPopup()"> Cancel </button>
+            </div>
+            <div class="col-lg-4 col-sm-4 col-md-4">
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+</div>

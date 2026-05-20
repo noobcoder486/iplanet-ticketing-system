@@ -1,0 +1,165 @@
+<div class="content-header">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <form [formGroup]="customerForm" name="customerForm" autocomplete="off">
+                    <div class="card-body" style="padding: 0px !important;"  >
+                        <div style="padding-top: 5px;padding-left:20px;">
+                        <div class="row"> 
+                                <label style="font-size: 20px !important;">  Add Customer </label>                          
+                        </div>
+                        </div>
+                        <hr />
+                        <div class="row" style="padding: 10px;">
+                            <div class="col-sm-4">
+                                <ng-select 
+                                    [items]="CustAccountGroup.Data"
+                                    bindLabel="TEXT" 
+                                    bindValue="ID"
+                                    placeholder="Select Customer Account Group"
+                                    formControlName="CustAccGroup"
+                                    (search)="onCustAccountGroupSearch($event)"
+                                    [ngClass]="{'ng-invalid-select':!customerForm.get('CustAccGroup').valid && customerForm.get('CustAccGroup').touched}">
+                                </ng-select>
+                            </div>
+                            <div class="col-sm-4">
+                                <mat-form-field appearance="standard" [style.width.%]="100">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput formControlName="FirstName">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-4">
+                                <mat-form-field  appearance="standard" [style.width.%]="100">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput  formControlName="LastName">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-4">
+                                <mat-form-field class="textareafild" 
+                                appearance="standard" 
+                                [style.width.%]="100">
+                                    <mat-label>Address 1</mat-label>
+                                    <input matInput  maxLength="59"
+                                        formControlName="Address1">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-4">
+                                <mat-form-field class="textareafild" appearance="standard" [style.width.%]="100">
+                                    <mat-label>Address 2</mat-label>
+                                    <input matInput  maxLength="39"
+                                        formControlName="Address2">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-3">
+                                <mat-form-field appearance="standard" [style.width.%]="100">
+                                    <mat-label>Email Address</mat-label>
+                                    <input matInput formControlName="EmailId" >
+                                </mat-form-field>
+                                <br />
+                            </div>
+                            <div class="col-sm-1">
+                                <br />
+                                <button type = "button" (click)="validateemail()" class="btn btn-success">...</button>
+                            </div>
+                            <div class="col-sm-4">
+                                <mat-form-field appearance="standard" [style.width.%]="100">
+                                    <mat-label>Phone No</mat-label>
+                                    <input  minlength="10" maxlength="10"  matInput formControlName="PhoneNo">
+                                    
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-4">
+                                <mat-form-field appearance="standard" [style.width.%]="100">
+                                    <mat-label>Alternate No</mat-label>
+                                    <input minlength="10" maxlength="10" matInput  formControlName="AlternateNo">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-4">
+                                <mat-form-field appearance="standard" [style.width.%]="100">
+                                    <mat-label>Pincode</mat-label>
+                                        <input (keypress)="onKeyPress($event, 'int', 6)" type="number" matInput minlength="6" maxlength="6" formControlName="Pincode">
+                                </mat-form-field>
+                                <div class="col-sm-4">
+                                </div>
+                             
+                            </div>
+                            <div class="col-sm-4">
+                                <ng-select [items]="Countries.Data" bindLabel="TEXT" bindValue="Id"
+                                placeholder="Select Country" formControlName="Country"
+                                 (search)="onCountrySearch($event)"
+                                [ngClass]="{'ng-invalid-select':!customerForm.get('Country').valid && customerForm.get('Country').touched}">
+                            </ng-select>  
+                              
+                            </div>
+                            <div class="col-sm-4">
+                         
+                              
+                                <ng-select [items]="States.Data" bindLabel="TEXT" bindValue="Id"
+                                    placeholder="Select State" formControlName="State"
+                                    (search)="onStatesSearch($event)"
+                                    [ngClass]="{'ng-invalid-select':!customerForm.get('State').valid && customerForm.get('State').touched}">
+                                </ng-select>
+                            </div>
+                            <div class="col-sm-4">
+                                <mat-form-field appearance="standard" [style.width.%]="100">
+                                    <mat-label>City</mat-label>
+                                    <input matInput formControlName="City">
+                                </mat-form-field>
+                            </div>
+                          
+                            <div class="col-sm-4">
+
+                                <mat-checkbox (change)="onGSTSelect()"
+                                    formControlName="DoGST">Do You Have GST No? :</mat-checkbox>
+                            </div>
+                            <div class="col-sm-4">
+                                <mat-form-field appearance="standard" [style.width.%]="100">
+                                    <mat-label>GST No</mat-label>
+                                    <input matInput  formControlName="gstNo" maxlength="15">
+                                  
+                                </mat-form-field>
+                            </div>
+                            <div class="col-sm-4">
+                                <ng-select [items]="GSTRegistration.Data" bindLabel="TEXT" bindValue="Id"
+                                    placeholder="Select GST Registration" formControlName="GSTRegistrationType"
+                                    (search)="onGSTRegistrationSearch($event)"
+                                    >
+                                </ng-select>
+                            </div>
+                            <div class="col-sm-4">
+                                <ng-select [items]="ReferredByDD.Data" bindLabel="TEXT" bindValue="Id" placeholder="Referred By"
+                                    formControlName="ReferredBy" (search)="onReferredBy($event)">
+                                
+                                </ng-select>
+                            </div>
+                            
+                            <div class="col-lg-2 col-sm-4">
+                                <label for="filetype" class="x_final_button" id="FileTypeBtn"><span style="padding-right: 10px;">Upload ID Proof</span>    
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-card-image" viewBox="0 0 16 16">
+                                      <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                      <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5h13z"/>
+                                    </svg>
+                                  </label>
+                                  <input class="x_final_button " (click)="fileInput.click()"  accept="image/png, image/gif, image/jpeg" #attachments type="file"
+                                  (change)="OnFileUploadClick($event)"  #fileInput multiple="true"  bindValue="Id" id="filetype" type="file"   style="border-radius:-10%;display: none;width: 35px !important;height: 35px !important;">  
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-9" style="text-align: right;">
+                                <div class="text-danger" style="display: inline-block" role="alert">
+                                    {{errorMessage}}
+                                </div>
+                            </div>
+                            <div class="col-sm-3" style="text-align: right;">
+                                <button type="submit" appDebounceClick [debounceTime]="1000"  [disabled]="submitClicked" (debounceClick)="onSubmit()"
+                                 class="btn btn-success">Save</button>
+                                <button type="button"  (click)="canclefunction()" class="btn btn-light">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

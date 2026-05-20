@@ -1,0 +1,96 @@
+
+<section class="">
+    <div class="container-fluid">
+        <mat-card class="p-2 mb-4">
+            <div class="row"  style="display: flex; align-items: center; justify-content: center;">
+    
+                <!-- First Field -->
+                <div class="col-lg-3 col-sm-4 mt-2">
+                    <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;">Refund Type</label>
+                    <ng-select  [items]="RefundDocTypeDD.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                    [(ngModel)]="RefundDocType" placeholder="" ></ng-select>
+                </div>
+
+                <!-- Second Field -->
+                <div class="col-lg-3 col-sm-4 mt-2">
+                    <label style="font-weight:600; padding-bottom: 0%;padding-bottom: 2%;"> Refund Status</label>
+                    <ng-select  [items]="RefundStatusDD.Data" 
+                        [(ngModel)]="ApprovalStatus" bindLabel="TEXT" bindValue="Id"
+                        placeholder="" >
+                    </ng-select>
+                </div>
+                
+                <!-- Third Field -->
+                <div class="col-lg-2 col-sm-2 mt-2"  style="padding-top: 2%;">
+                    <label style="font-weight:600; padding-bottom: 2%;">Customer Code</label>
+                    <div class="form-group">
+                    <input type="text" class="form-control"
+                        [(ngModel)]="RetailCustomerCode" placeholder="Search Customer Code" >
+                    </div>
+                </div>
+                
+                <!-- Forth Field  -->
+                <div class="col-lg-2 col-sm-2 mt-2"  style="padding-top: 2%;">
+                    <label style="font-weight:600; padding-bottom: 2%;">Location Code</label>
+                    <div class="form-group">
+                    <input type="text" class="form-control"
+                        [(ngModel)]="LocationCode" placeholder="Search Location Code" >
+                    </div>
+                </div>
+                
+                <!-- Fifth Field  -->
+                <div class="col-lg-2 col-sm-2 mt-2"  style="padding-top: 2%;">
+                    <label style="font-weight:600; padding-bottom: 2%;">Sales Return Code</label>
+                    <div class="form-group">
+                    <input type="text" class="form-control"
+                        [(ngModel)]="SalesReturnCode" placeholder="Search Sales Return Code" >
+                    </div>
+                </div>
+
+                     
+                <!-- Sixth Field  -->
+                <div class="col-lg-2 col-sm-2 mt-2"  style="padding-top: 2%;">
+                    <label style="font-weight:600; padding-bottom: 2%;">Invoice Code</label>
+                    <div class="form-group">
+                    <input type="text" class="form-control"
+                        [(ngModel)]="InvoiceCode" placeholder="Search Invoice Code" >
+                    </div>
+                </div>
+
+
+                <!-- Search Field -->
+                <div class="col-lg-2 col-sm-2 mt-2" style="padding-top: 2%;">
+                    <button class="btn btnClass" style="height: 30px;"    (click)="GetRefundRequestList('') ">Search <i
+                        style="padding-left: 10px;" class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </mat-card>
+
+        <div class="col-sm-12">
+            <br>
+            <mat-card class="m-0 p-0">
+                <div class="row clearfix" >
+                    <nitc-grid [gridcolumns]="refundRequestColumns" [dataSource]="detail" [actions]="actionDetails"
+                        [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                        (changeEvent)="PageChange($event)">
+                    </nitc-grid>
+                </div>
+            </mat-card>
+            <!-- <ng-container [ngSwitch]="RefundDocType">
+                <ng-container *ngSwitchCase="'RREFUND'">
+                    <nitc-grid [gridcolumns]="refundRequestColumns" [dataSource]="detail" [actions]="actionDetails"
+                        [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                        (changeEvent)="PageChange($event)">
+                    </nitc-grid>
+                </ng-container>
+                <ng-container *ngSwitchCase="'SREFUND'">
+                    <nitc-grid [gridcolumns]="salesReturnRequestColumns" [dataSource]="detail" [actions]="actionDetails"
+                        [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                        (changeEvent)="PageChange($event)">
+                    </nitc-grid>
+                </ng-container>
+            </ng-container> -->
+        </div>
+    </div>
+
+</section>

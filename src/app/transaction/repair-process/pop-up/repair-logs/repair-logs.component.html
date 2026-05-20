@@ -1,0 +1,66 @@
+<style>
+    input[type=checkbox] {
+        transform: scale(1.5);
+    }
+</style>
+
+
+
+<div style="margin: 3% 28%;">
+    <div class="card">
+        <div class="row">
+            <div class="col-12">
+                <div class="tabheader" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3>Repair Logs</h3>
+                    </div>
+
+                    <div>
+                        <img (click)="CancelBtn1()" src="assets/images/close.png" alt="logo-full">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: center; "
+            *ngIf="isLoading; else RepairListSection">
+            <!-- Your spinner component or HTML here -->
+            <mat-progress-spinner *ngIf="isLoading" mode="indeterminate"></mat-progress-spinner>
+        </div>
+
+        <ng-template #RepairListSection>
+            <div class="row">
+                <div class="col-12">
+                    <div style="height: 500px; overflow: auto;">
+                        <div *ngIf="RepairList">
+                            <div *ngFor="let item of RepairList" style="padding: 10px;">
+                                <mat-card style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                                    <!-- Your item-specific content here -->
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="Header">Action</label><br>
+                                            <div>{{item.Remark}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="Header">User</label><br>
+                                            <div>{{item.CreatedBy}}</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="Header">Date & Time</label><br>
+                                            <div>{{item.CreatedDate | date: 'dd-MM-YYYY : hh:mm a' }}</div>
+                                        </div>
+                                    </div>
+
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+    </div>
+</div>

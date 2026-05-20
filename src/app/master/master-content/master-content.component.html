@@ -1,0 +1,189 @@
+<section class="content">
+    <div class="container-fluid">
+        <mat-card class="p-2 mb-4">
+            <div class="row">
+                <div class="col-sm-10">
+                    <p class="mt-11 ml-8">
+                        <span *ngFor="let cumb of breadCumbList;let i = index">
+                            <span *ngIf="breadCumbList.length-1 == i">
+                                <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon> {{cumb.text}}
+                            </span>
+                            <a *ngIf="breadCumbList.length-1 != i" (click)="breadCumbClick(cumb.url)" class="breadcumb">
+                                <span *ngIf="i!=0">
+                                    <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>
+                                </span> {{cumb.text}}
+                            </a>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-sm-2 btn-head-group">
+                    <div class="d-flex justify-content-end">
+                        <button mat-button color="primary" class="Backbtn" (click)="backToList()">
+                            <mat-icon>arrow_back_ios</mat-icon>
+                            <span class="Back">Back</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+
+        <form [formGroup]="formDetail" name="form" autocomplete="disabled" *ngIf="rowAdd">
+            <mat-card>
+                <div class="container" style="position: unset">
+                    <div class="margtop10">
+                        <div class="row">
+                            <ng-container *ngFor="let sec of sections; let i = index">
+                                <div class="col-md-12 pt-8">
+                                    <div class="bor-box">
+                                        <ng-container *ngIf="sec.SectionType != 'GRID'">
+                                            <strong>{{sec.SectionName}}</strong>
+                                            <hr />
+                                            <div class="row" style="justify-content: space-between;margin: 0;">
+                                                <div class="row margtop10 grid6"
+                                                    *ngFor="let ctrl of formControl.Section[i].FormDetail"
+                                                    class="{{ctrl.ClassName}}">
+                                                    <div class="col-md-12" *ngIf="ctrl.ControlType=='HIDDEN'"
+                                                        class="invisible">
+                                                        <mat-form-field [hidden]="true">
+                                                            <input matInput [formControlName]="ctrl.ControlName">
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                    <div class="col-md-12"
+                                                        *ngIf="ctrl.ControlType=='TEXT' || ctrl.ControlType=='MAIL' || ctrl.ControlType=='PHONE'">
+                                                        <nitc-text [form]="formDetail" [ctrl]="ctrl"
+                                                            [External]="external"
+                                                            (dependancyControlEvent)="loadDependentCtrl($event)"
+                                                            [formSection]="sec" [IsGrid]="0">
+                                                        </nitc-text>
+                                                    </div>
+                                                    <div class="col-md-12" *ngIf="ctrl.ControlType=='NUMBER'">
+                                                        <nitc-number [form]="formDetail" [ctrl]="ctrl"
+                                                            [External]="external"
+                                                            (dependancyControlEvent)="loadDependentCtrl($event)"
+                                                            [formSection]="sec" [IsGrid]="0">
+                                                        </nitc-number>
+                                                    </div>
+                                                    <div *ngIf="ctrl.ControlType == 'DATETIME'">
+                                                        <nitc-date-picker [form]="formDetail" [ctrl]="ctrl"
+                                                            [formSection]="sec" [IsGrid]="0">
+                                                        </nitc-date-picker>
+                                                    </div>
+                                                    <div *ngIf="ctrl.ControlType=='MULTISELECT'">
+                                                        <nitc-combo-multi-select [form]="formDetail" [ctrl]="ctrl"
+                                                            (dependancyControlEvent)="loadDependentCtrl($event)"
+                                                            [External]="external" [IsGrid]="0"
+                                                            (searchDetail)="loadDropdownData($event)"
+                                                            [formSection]="sec"></nitc-combo-multi-select>
+                                                    </div>
+
+                                                    <div class="col-md-12" *ngIf="ctrl.ControlType=='PASSWORD'">
+                                                        <mat-form-field class="col-md-12" appearance="outline">
+                                                            <mat-label>{{ctrl.DisplayLabel}} <span
+                                                                    *ngIf="ctrl.IsRequired" class="colred">*</span>
+                                                            </mat-label>
+                                                            <input matInput type="password"
+                                                                [formControlName]="ctrl.ControlName">
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                    <div class="col-md-12" *ngIf="ctrl.ControlType=='CHECKBOX'">
+                                                        <div class="pt-8">
+                                                            <nitc-checkbox [form]="formDetail" [ctrl]="ctrl"
+                                                                [External]="external" [formSection]="sec" [IsGrid]="0">
+                                                            </nitc-checkbox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12" *ngIf="ctrl.ControlType=='TEXTAREA'">
+                                                        <mat-form-field style="width: 100%;" [id]="ctrl.ControlName"
+                                                            appearance="outline">
+                                                            <mat-label>{{ctrl.DisplayLabel}} <span
+                                                                    *ngIf="ctrl.IsRequired" class="colred">*</span>
+                                                            </mat-label>
+                                                            <textarea matInput [formControlName]="ctrl.ControlName"
+                                                                [placeholder]="ctrl.DisplayLabel" rows="6" cols="35"
+                                                                maxlength="{{ctrl.FieldMaxLength}}"></textarea>
+                                                            <mat-error *ngIf="getRequired(ctrl)">{{ctrl.DisplayLabel}}
+                                                                is required.</mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-md-12" *ngIf="ctrl.Type=='FILE'">
+                                                        <input [id]="ctrl.ControlName" type="file"
+                                                            [formControlName]="ctrl.ControlName" />
+                                                    </div>
+                                                    <div class="col-md-12" *ngIf="ctrl.ControlType=='COMBO'">
+                                                        <nitc-dropdown [form]="formDetail" [ctrl]="ctrl"
+                                                            (dependancyControlEvent)="loadDependentCtrl($event)"
+                                                            [External]="external" [formSection]="sec" [IsGrid]="0">
+                                                        </nitc-dropdown>
+                                                    </div>
+
+                                                    <div class="col-md-12" *ngIf="ctrl.ControlType=='COMBOSEARCH'">
+                                                        <nitc-dropdown [form]="formDetail" [ctrl]="ctrl"
+                                                            (dependancyControlEvent)="loadDependentCtrl($event)"
+                                                            [External]="external"
+                                                            (childGridEvent)="validateChildGrid($event)" [IsGrid]="0"
+                                                            (searchDetail)="loadDropdownData($event)"
+                                                            [formSection]="sec">
+                                                        </nitc-dropdown>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container *ngIf="sec.SectionType == 'GRID'">
+                                            <nitc-grid-form #gridViewDetail [editData]="fromEditData"
+                                                [ExternalAct]="external" [gridSectionDetail]="sec"
+                                                [screenCode]="respData?.ScreenCode" [InvalidGridData]="setInvalid">
+                                            </nitc-grid-form>
+                                        </ng-container>
+                                        <hr />
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <div class="row bor-box margtop10 pt-8" style="margin-top: 10px;">
+                            <div class="col-md-11"></div>
+                            <div class="col-md-1 btn-head-group bottombtnhead"
+                                style="text-align: right;display: flex;padding: 0 !important;">
+                                <ng-container *ngIf="actions.length > 0">
+                                    <ng-container *ngFor="let act of actions">
+                                        <ng-container *ngIf="act.code == 'CANCEL'">
+                                            <button mat-button class="btn btn-secondary"
+                                                style="margin: 0 !important;margin-top: 0 !important;"
+                                                class="{{act.title}}" (click)="actionEvent(act)">
+                                                <mat-icon>{{act.icon}}</mat-icon>
+                                                <span class="{{act.title}}">{{act.title}}</span>
+                                            </button>
+                                        </ng-container>
+                                        <ng-container *ngIf="act.code !== 'CANCEL'">
+                                            <button mat-raised-button color="primary" style="margin-top: 0 !important;"
+                                                class="{{act.title}}" (click)="actionEvent(act)">
+                                                <mat-icon *ngIf="!submitted">{{act.icon}}</mat-icon>
+                                                <span *ngIf="!submitted" class="{{act.title}}">{{act.title}}</span>
+                                                <i *ngIf="submitted" class="fa fa-spinner fa-spin btn-loading"></i>
+                                            </button>
+                                        </ng-container>
+
+                                    </ng-container>
+                                </ng-container>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </mat-card>
+
+        </form>
+
+        <mat-card class="pt-8">
+            <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+                (actionEvent)="actionEmit($event)" (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+            </nitc-grid>
+        </mat-card>
+
+
+
+
+    </div>
+</section>

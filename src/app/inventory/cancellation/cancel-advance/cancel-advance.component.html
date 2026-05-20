@@ -1,0 +1,271 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+  <section class="content">
+  
+    <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+      <div class="row">
+  
+        <div class="col-lg-6 col-sm-12">
+          <div class="row">
+  
+            <div class="col-lg-6 col-sm-6 col-6 ">
+              <div style="float: left;padding-left: 60px;padding-top: 8px;padding-right: 24px;">
+                <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+              </div>
+              <div style="margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+                <h4><span style="color: black;font-size: 14px !important;  font-weight: 600;" title="Payment Code">{{PaymentCode== null || PaymentCode== undefined ? 'NA': PaymentCode }} </span></h4>
+              </div>
+            </div>
+  
+            <div class="col-lg-6 col-sm-6 col-6 ">
+              <div class="JobTypeDesc"
+                style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+                <h4><span style="color: black;font-size: 14px; font-weight: 500; ">Advance Payment</span></h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 col-sm-12">
+          <div class="row" style="align-items: center;">
+           
+            <!-- Print Button -->
+            <div class="col-lg-4 col-sm-6 col-2 ">
+              <div class="JobTypeDesc" style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+                  <button class="btnClass"  (click)="downloadPaymentReport()" >Print Advance Payment</button>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-4 col-4" >
+              <div *ngIf="postToSAPButton == true" >
+                <button class="btnClass"  (click)="saveSapAdvancePayment()" >Post Payment to SAP</button>
+              </div>
+            </div>
+            <div class="col-lg-4 col-sm-6 col-6 " >
+              <div class="JobTypeDesc" style="text-align: center; margin-top: 6px; ">
+                <h4><span style="color: black;font-size: 14px; "><b>{{ PaymentCode!= null || PaymentCode!= undefined ? 'Payment ' : ''}} Date:-  </b> {{ PaymentCode!= null || PaymentCode != undefined ?  (PaymentDate | date: 'dd/MM/yyyy') : (currentDate | date: 'dd/MM/yyyy') }}</span></h4>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  
+      <!-- <mat-card>
+        <div class="row">
+          <div class="col-6 justify-content-left">
+            <h1 class="header">Advance Payment</h1>
+          </div>
+          <div class="col-6 justify-content-left">
+            <h1 class="header">Advance Payment</h1>
+          </div>
+          <div class="col-6 d-flex justify-content-end">
+            {{ currentDate | date:'medium' }}
+          </div>
+        </div>
+      </mat-card> -->
+  
+  
+      
+      <div class="container-fluid mt-2" >
+        <div class="row" >
+  
+            <!-- Customer  -->
+          
+            <div class="col-lg-6 col-sm-6 col-12"
+                style="background-color:rgb(252, 255, 255); border-radius: 5%;">
+                <!-- Customer Heading -->
+                <div
+                  style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;   
+                  border-top-left-radius: 5px; border-top-right-radius: 5px;" >
+                  <span style="font-size: 16px !important;color:black;font-weight: 600;">Customer Details</span>
+                </div>
+                <!-- Details Content -->
+                <div  *ngFor="let item of CustomerObject" >
+                  <div class="MainDiv" style="padding: 10px;">
+                      <mat-card-title >Customer Code:- {{item?.CustomerCode}}</mat-card-title>
+                      <mat-card-title>Name:- {{item?.FirstName}}&nbsp;{{item?.LastName}}</mat-card-title>
+                      <mat-card-content>
+                        <p> Address:- {{item?.Address1}}, {{item?.Address2}}, {{item?.City}} -  {{item?.ZipCode}}, {{item?.StateCode}}, {{item?.CountryCode}}</p>
+                        <p>Email:- {{item?.EmailID}}</p>
+                        <!-- <p><b>GST Registration No: </b>{{ item?.GSTRegistration ? item?.GSTRegistration : 'N.A' }}</p> -->
+                      </mat-card-content>
+                  </div>
+                </div>
+              </div>
+  
+              <!-- Location  -->
+              <div class="col-lg-6 col-sm-6 col-12"  style="background-color:rgb(255, 255, 255);border-radius: 5%">
+                  <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;
+                  font-size: 10px !important;padding-top:3px;border-top-left-radius: 5px; border-top-right-radius: 5px;">
+                    <div class="row">
+                      <div class="col-6">
+                        <span style="font-size: 16px !important;color:black;font-weight: 600;">Location Details</span>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Location Content -->
+                  <div *ngFor="let item of LocationObject">
+                    <div class="MainDiv" style="padding: 10px;">
+                        <mat-card-title >Location Name:- {{item?.LocationName}}</mat-card-title>
+                        <p>Address:- {{item?.Address1}}, {{item?.Address2}}, {{item?.City}} - {{item?.ZipCode}}, {{item?.StateCode}}.</p>
+                        <mat-card-content>
+                          <p>Email:- {{item?.EmailId}}</p>
+                          <p>Mobile No:- {{item?.MobileNo}}</p>
+                          <!-- <p><b>GST Registration No: </b>&nbsp;{{item?.GSTRegistrationNo[0]}}, &nbsp; <b>Ship To:</b>&nbsp; {{item?.SHIP_TO_GSX[0]}}</p> -->
+                        </mat-card-content>
+                      </div>
+                  </div>
+                </div>
+  
+        </div>
+      </div>
+ 
+
+      <mat-card class="mt-2" *ngIf="!isEdit" style=" height: 250px; ">
+        <div class="row">
+  
+              <div class="col-lg-12 col-sm-12 col-md-12" style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" >
+                <div style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+                  <div style="background-color: gainsboro;color:black; height: 35px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                    <div style="background-color: gainsboro;color:black; height: 35px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                      <div style="display: flex; align-items: center;column-gap: 10px;margin-top: 5px;">
+                        <div style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;   
+                          border-top-left-radius: 5px; border-top-right-radius: 5px;" >
+                          <span style="font-size: 16px !important;color:black;font-weight: 600;">Payment List:- </span>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;" class="row" *ngIf="true">
+                      <div class="col-lg-12 col-sm-12 col-md-12">
+                        <div class="scrollcntr" style="height: 347px !important;">
+                          <div class="contents table-responsive" style="padding: 5px;">
+                            <table>
+                              <thead>
+                                <tr style="height:auto !important">
+                                  <th scope="col">Payment Type</th>
+                                  <th scope="col">Mode of Payment</th>
+                                  <th scope="col">Reference No (If any)</th>
+                                  <th scope="col">EDC Reference Id (If any)</th>
+                                  <th scope="col">Amount</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let paymentDetail of paymentDetailArray">
+                                  <td>{{ paymentDetail?.TranType}}</td>
+                                  <td>{{ paymentDetail?.ModeOfPayment}}</td>
+                                  <td>{{ paymentDetail?.UPITransactionId}}</td>
+                                  <td>{{ paymentDetail?.EDCMachineReferenceID}}</td>
+                                  <td>{{ paymentDetail?.Amount}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                         
+                        </div>
+                      </div>
+                    </div>  
+  
+                </div>
+              </div>
+              </div>
+        </div>
+      </mat-card>  
+     
+       
+      <mat-card class="mt-2">
+        <!-- Headers -->  
+        <div class="row" style="padding-bottom: 15px;height: 30px;padding-left: 0px;" >
+          <!-- Customer Ledger Header  -->
+          <div class="col-6">
+            <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+              <div style="display: flex; width:200px">
+              <div style="padding-right: 5%;">
+                <span style="font-size: 16px !important;color:black;font-weight: 600;">Customer Ledger</span>
+              </div>
+  
+              </div>
+            </div>
+          </div>
+
+            <!-- Cash Register   -->
+            <div class="col-6">
+              <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+                <div style="display: flex; width:200px">
+                <div style="padding-right: 5%;">
+                  <span style="font-size: 16px !important;color:black;font-weight: 600;">Cash Register </span>
+                </div>
+    
+                </div>
+              </div>
+            </div>
+        </div>
+  
+         <!-- GRIDS  -->
+      <div class="row" style="padding:10px">
+          <!-- Customer Ledger List  -->
+          <div class="col-6" style=" padding: 0px;height: 100px !important;" > 
+              <div class="scrollcntr mt-2">
+                <div class="contents table-responsive"  >
+                    <nitc-grid [gridcolumns]="LedgerColumns" [dataSource]="detailLedger" [actions]="actionDetails"
+                    [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                    (changeEvent)="PageChangeLedger($event)">
+                    </nitc-grid>
+                </div>
+              </div> 
+          </div>
+
+              <!-- Cash Register List  -->
+              <div class="col-6" style=" padding: 0px;" > 
+                <div class="scrollcntr mt-2" style="height: 200px !important;">
+                  <div class="contents table-responsive" >
+                      <nitc-grid [gridcolumns]="registerColumns" [dataSource]="detailRegister" [actions]="actionDetails"
+                      [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                      (changeEvent)="PageChangeRegister($event)">
+                      </nitc-grid>
+                  </div>
+                </div> 
+            </div>
+      </div>
+      </mat-card>
+      
+              
+    <div style="position:sticky;bottom:0;background-color: gainsboro; padding: 5px;" *ngIf="paymentDetailArray.length>0">
+      <div class="row" style="padding-top: 5px;padding-bottom: 5px;">
+          <div class="col-sm-2 col-lg-2 col-md-2">
+            Payment Quantity: <b>({{paymentDetailArray.length}})</b>
+          </div>
+          <div class="col-sm-2 col-lg-2 col-md-2">
+            <!-- Net Amount: <b>{{totalNetAmount | number: '1.2-2'}}</b> -->
+          </div>
+          <div class="col-sm-2 col-lg-2 col-md-2">
+            Advance Amount: <b>{{advancePaymentAmount | number: '1.2-2'}}</b>
+          </div>
+          <div class="col-sm-2 col-lg-2 col-md-2">
+            <!-- Paid Amount : <b>{{totalPaidAmount | number: '1.2-2'}}</b> -->
+          </div>
+          <div class="col-sm-3 col-lg-3 col-md-3">
+            <button appDebounceClick [debounceTime]="1000"  
+            [disabled]="submitClicked" class="btnClass" *ngIf="!isEdit" style="float: right;" (debounceClick)="onSubmit()" > Cancel Advance Payment  </button>
+  
+            <!-- <button  class="btnClass" *ngIf="isEdit == false && PaymentSuccess == false" style="float: right;" (click)="saveSapAdvancePayment()" > Save to SAP  </button> -->
+          </div>
+        </div>
+    
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-lg-12 col-md-12">
+            
+        </div>
+        <div>
+        </div>
+        <div>
+        </div>
+      </div>
+    
+    </section>
+
+  
+  
+  

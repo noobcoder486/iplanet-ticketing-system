@@ -1,0 +1,78 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+      <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row">
+          <div class="col-sm-10 ">
+            <p class="h4"> Consignment Order</p>
+  
+          </div>
+        </div>
+      </mat-card>
+      </div>
+  
+      <div class="row" style="padding-bottom: 20px;">
+        <mat-card>
+            <div class="row">
+          <div class="col-lg-4 col-sm-4 col-md-4 ">
+            <ng-select [items]="orderStatusGroupCode" (change)="validationCheck()" [(ngModel)]="orderStatusGroupCodeData" bindLabel="TEXT"
+              bindValue="Id" placeholder="Order Status">
+            </ng-select>
+          </div>
+          <div class="col-lg-4 col-sm-4 col-md-4 ">
+            <ng-select [items]="typeCode" [(ngModel)]="typeCodeData" bindLabel="TEXT" (change)="validationCheck()"
+              bindValue="Id" placeholder="Type Code">
+            </ng-select>
+            
+          </div>
+          <div class="col-lg-4 col-sm-4 col-md-4 ">
+            <ng-select [items]="LocationForJob.Data" bindLabel="TEXT" (change)="validationCheck()" [(ngModel)]="LocationData" bindValue="Id" placeholder="Location">
+          </ng-select>
+          </div>
+        </div>
+        </mat-card>
+      </div>
+  
+       
+         
+          
+          <div class="row">
+            <mat-card>
+            <!-- <div class="scrollcntr" style="height: 410px;"> -->
+  
+              <div class="items_details_grid">
+                <table class="table table-success table-striped table-wrap">
+                  <thead>
+                    <tr style="height: 30px !important;">
+                      <th class="fontFamily" style="width: 10%;height: 30px !important;" scope="col">Order Id</th>
+                      <th class="fontFamily" style="width: 20%;height: 30px !important;" scope="col">Status</th>
+                      <th class="fontFamily" style="width: 20%;height: 30px !important;" scope="col">Delivered Date</th>
+                      <th class="fontFamily" style="width: 20%;height: 30px !important;" scope="col">Delivery/Shipment</th>
+                      <th class="fontFamily" style="width: 20%;height: 30px !important;" scope="col">Ship To</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of consignmentOrderList">
+                      <td style="width: 10%; "><a class="tableBody" (click)="onClick(item)">{{item.orderId}}</a></td>
+                      <td style="width: 20%; "> <span>{{item.statusDescription}} </span></td>
+                      <td style="width: 20%; "><span *ngFor="let delivery of item.deliveries">{{delivery.deliveredDate + ", "}}</span></td>
+                      <td style="width: 20%; " *ngIf="typeCodeData ==='DECREASE'"><span  *ngFor="let delivery of item.deliveries">{{ delivery.number + ", "}}</span></td>
+                      <td style="width: 20%; " *ngIf="typeCodeData ==='INCREASE'"><span *ngFor="let delivery of item.deliveries">{{delivery.number + ", "}}</span></td>
+                      <td style="width: 20%; "> <span> {{Ship_to_GSX}} </span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            <!-- </div> -->
+          </mat-card>
+          </div>
+        
+         
+      
+       
+    </div>
+  </section>

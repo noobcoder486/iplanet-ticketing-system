@@ -1,0 +1,97 @@
+<section>
+  <div class="container-fluid col-md-11 ">
+    <div class="row">
+      <!-- Main Content -->
+      <div class="col-md-9">
+        <!-- Sorting Controls -->
+        <div class="row mb-4">
+          <div class="col-sm-6">
+            <div class="sorting-controls">
+              <label for="sortOrder" class="sort-label">Sort by:</label>
+              <select id="sortOrder" [(ngModel)]="sortOrder" (change)="setSortOrder($event.target.value)" class="styled-select">
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="un-read">unRead</option>
+                <option value="read">Read</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="col-sm-6">
+            <div class="add-controls d-flex justify-content-end" >
+              <ng-container *ngIf="toolBarAction.length > 0 && isApproverPermission" >
+                <ng-container *ngFor="let toolbar of toolBarAction">
+                  <button mat-raised-button color="primary" class="{{toolbar.title}}" (click)="actionEvent(toolbar)">
+                    <mat-icon>{{toolbar.icon}}</mat-icon>
+                    <span class="{{toolbar.title}}">{{toolbar.title}}</span>
+                  </button>
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <!-- All Bulletins List Section -->
+        <mat-card class="all-bulletins">
+          <h2 class="section-title">All Bulletins</h2>
+          <div class="row">
+            <div *ngFor="let item of filteredBulletinBoardList" class="col-md-12 list-item">
+              <mat-card (click)="openBulletin(item)" class="bulletin"
+                [ngClass]="{'read': item.IsRead, 'unread': !item.IsRead}">
+                <mat-card-title [ngClass]="{'bold': !item.IsRead}">{{ item.Title }}</mat-card-title>
+                <mat-card-content [ngClass]="{'bold': !item.IsRead}">
+                  <p>{{ item.Description }}</p>
+                </mat-card-content>
+                <mat-card-footer [ngClass]="{'bold': !item.IsRead}">
+                  {{ item.CreatedDate | date: 'dd/MM/yyyy : hh:mm a' }} |
+                  <span *ngIf="item.CreatedBy.toLowerCase().startsWith('admin'); else userCreatedBy">System</span>
+                  <ng-template #userCreatedBy>{{ item.CreatedBy }}</ng-template>
+                </mat-card-footer>
+              </mat-card>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+      
+      <!-- Sidebar -->
+      <div class="col-md-3">
+        <div class="sideBar">
+          <h2 class="section-title" >Bulletins</h2>
+          <ul class="bulletin-list">
+            <li *ngFor="let item of filteredBulletinBoardList" (click)="openBulletin(item)">
+              <span [ngClass]="{'bold': !item.IsRead}">{{ item.Title }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Popup Starts Here -->
+<div *ngIf="isBulletinPopup" class="popup-background">
+  <div class="popup">
+    <div *ngIf="isPaymentProcessing" class="loading-overlay">
+      <span class="loader"></span>
+    </div>
+
+    <div class="popup-content">
+      <div class="popup-header">
+        <b>{{ BulletinObject.Title }}</b>
+        <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isBulletinPopup = false"></i>
+      </div>
+      <hr>
+      <div class="popup-body" [innerHTML]="BulletinObject.BulletinData"></div>
+      <div class="popup-body" *ngIf="!BulletinObject.IsRead" style="padding-top: 1%;">
+        <mat-form-field appearance="standard" [style.width.%]="100">
+          <input matInput type="text" [(ngModel)]="remark" placeholder="Remark">
+        </mat-form-field>
+      </div>
+      <div class="popup-footer">
+        <button *ngIf="!BulletinObject.IsRead" class="btn btn-primary mark-as-read" (click)="markAsRead()">Mark as
+          Read</button>
+      </div>
+    </div>
+  </div>
+</div>
+

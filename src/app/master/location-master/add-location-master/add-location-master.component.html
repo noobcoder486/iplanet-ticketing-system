@@ -1,0 +1,245 @@
+<section class="content">
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+    <div class="row">
+      <div class="col-12">
+        <h3 class="ml-2 p-10 text-dark">
+          <b>{{formTitle}} Location</b>
+        </h3>
+      </div>
+    </div>
+  </mat-card>
+  <mat-card class="p-2 mb-4" style="z-index: 9;">
+    <form [formGroup]="locationForm" name="locationForm" autocomplete="off">
+      <div class="card-body" style="padding: 10px;">
+        <div class="row">
+          <div class="col-sm-6">
+            <ng-select placeholder="Location Account Group Code*" 
+            [(ngModel)]="location.LocationAccGroupCode"
+            [items]="LocationAccGroupDD.Data" bindLabel="TEXT" bindValue="ID"
+              formControlName="LocationAccGroupCode">
+            </ng-select>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Location Name<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.LocationName" formControlName="LocationName">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Search Name<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.SearchName" formControlName="SearchName">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Location Code<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.LocationCode" maxlength="10" [readonly]="isEdit" formControlName="LocationCode">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Address 1<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.Address1" formControlName="Address1">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Address 2</mat-label>
+              <input matInput [(ngModel)]="location.Address2" formControlName="Address2">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>City<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.City" formControlName="City">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>ZipCode<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.ZipCode" formControlName="ZipCode">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <ng-select placeholder="Select Country" [items]="Countries.Data" bindLabel="TEXT" bindValue="Id"
+              [(ngModel)]="location.CountryCode" formControlName="Country" (search)="onCountrySearch($event)">
+            </ng-select>
+          </div>
+          <div class="col-sm-6">
+            <ng-select placeholder="Select State" [items]="States.Data" bindLabel="TEXT" bindValue="Id"
+              (search)="onStatesSearch($event)" formControlName="State" [(ngModel)]="location.StateCode"></ng-select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Contact Person<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.ContactPerson" maxlength="10" formControlName="ContactPerson">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Mobile No<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.MobileNo" maxlength="10" formControlName="MobileNo">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Phone No<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.PhoneNo" maxlength="10" formControlName="PhoneNo">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Email Id<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.EmailId" formControlName="EmailId">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <ng-select placeholder="GST Registration Type*" [items]="GSTRegistrationType.Data" bindLabel="TEXT" bindValue="Id"
+              formControlName="GSTRegistrationType"><i style="color: red">*</i>
+            </ng-select>
+          </div>
+          <div class="col-sm-6">
+            <ng-select placeholder="Pricing Group*" [items]="LocationPriceGroup.Data" bindLabel="TEXT" bindValue="Id"
+              formControlName="LocationPriceGroup">
+            </ng-select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <ng-select placeholder="Tax Type*" [items]="TaxType.Data" bindLabel="TEXT" bindValue="Id" formControlName="TaxType">
+              <i style="color: red">*</i>
+            </ng-select>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>GST Registration No<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.GSTRegistrationNo" minlength="15" maxlength="15" formControlName="GSTRegistrationNo">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Ship To GSX<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.ShipToGSX" formControlName="ShipToGSX">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Sold To GSX</mat-label>
+              <input matInput [(ngModel)]="location.SoldToGSX" formControlName="SoldToGSX">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>SAP Plant Code<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.SAPPlantCode" formControlName="SAPPlantCode">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>SAP Storage Location<i style="color: red">*</i></mat-label>
+              <input matInput [(ngModel)]="location.SAPStorageLocation" formControlName="SAPStorageLocation">
+            </mat-form-field>
+          </div>
+        </div>
+
+        
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>GSX Drop Off Code</mat-label>
+              <input matInput [(ngModel)]="location.GSXDropOffCode" formControlName="GSXDropOffCode">
+            </mat-form-field>
+          </div>
+
+
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Parent Location Code </mat-label>
+              <input matInput [(ngModel)]="location.ParentLocationCode" formControlName="ParentLocationCode">
+            </mat-form-field>
+          </div>
+
+        </div>
+
+
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Profit Center Code</mat-label>
+              <input matInput [(ngModel)]="location.ProfitCenterCode" formControlName="ProfitCenterCode">
+            </mat-form-field>
+          </div>
+           <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Region</mat-label>
+              <input matInput [(ngModel)]="location.Region" formControlName="Region">
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Google My Business</mat-label>
+              <input matInput [(ngModel)]="location.GoogleMyBusiness" formControlName="GoogleMyBusiness">
+            </mat-form-field>
+          </div>
+           <div class="col-sm-6">
+            <mat-form-field appearance="standard" [style.width.%]="100">
+              <mat-label>Apple Business Connect</mat-label>
+              <input matInput [(ngModel)]="location.AppleBusinessConnect" formControlName="AppleBusinessConnect">
+            </mat-form-field>
+          </div>
+
+        </div>
+        
+        
+        <br />
+
+        <div class="row">
+          <div class="col-sm-6" >
+            <div class="text-danger" style="display: inline-block" role="alert">
+              {{errorMessage}}
+            </div>
+          </div>
+          <div class="col-sm-5" style="text-align: right;">
+            <button type="submit" (click)="onSubmit()" class="btn btn-success">Save</button>
+          </div>
+          <div class="col-sm-1">
+            <button type="button" style="border:1px solid black" (click)="returnPrevious()" class="btn btn-light">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+</section>

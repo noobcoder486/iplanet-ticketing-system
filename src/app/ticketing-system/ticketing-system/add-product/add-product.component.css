@@ -1,0 +1,478 @@
+/* ── Container ─────────────────────────────────────────────────────────────── */
+.add-product-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 20px;
+    background: #f5f7fa;
+    min-height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+.ap-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 22px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+.ap-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.ap-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.ap-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0;
+}
+
+.ap-subtitle {
+    font-size: 12px;
+    color: #888;
+    margin: 2px 0 0;
+}
+
+.ap-count-badge {
+    background: #e8f0fe;
+    color: #1a73e8;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1px solid #c5d8fc;
+}
+
+/* ── Search Card ─────────────────────────────────────────────────────────────── */
+.ap-search-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px 22px 14px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+.ap-search-inner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 2px solid #e0e7ef;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+    background: #fafbfc;
+}
+
+.ap-search-inner:focus-within {
+    border-color: #1a73e8;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+}
+
+.ap-search-icon {
+    padding: 0 14px;
+    color: #aaa;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.ap-search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 14px;
+    color: #1a1a2e;
+    padding: 12px 8px;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+.ap-search-input::placeholder {
+    color: #bbb;
+}
+
+.ap-search-btn {
+    background: linear-gradient(135deg, #1a73e8, #1558b0);
+    color: #fff;
+    border: none;
+    padding: 12px 22px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+}
+
+.ap-search-btn:hover {
+    background: linear-gradient(135deg, #1558b0, #0d47a1);
+}
+
+.ap-search-btn:active {
+    transform: scale(0.98);
+}
+
+.ap-search-hint {
+    font-size: 11.5px;
+    color: #aaa;
+    margin: 8px 0 0 4px;
+}
+
+.ap-search-hint kbd {
+    background: #3a3b3d;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-size: 11px;
+    font-family: monospace;
+}
+
+.ap-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+
+.ap-close-btn:hover {
+    background: #fee2e2;
+    color: #dc2626;
+    border-color: #fca5a5;
+}
+
+/* ── Empty State ─────────────────────────────────────────────────────────────── */
+.ap-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+}
+
+.ap-empty-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #f0f4ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: #1a73e8;
+    margin-bottom: 16px;
+}
+
+.ap-empty-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    margin: 0;
+}
+
+.ap-empty-sub {
+    font-size: 13px;
+    color: #aaa;
+    margin: 6px 0 0;
+}
+
+/* ── Table Wrapper ───────────────────────────────────────────────────────────── */
+.ap-table-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+}
+
+.ap-table-scroll {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 420px;
+}
+
+/* ── Table ───────────────────────────────────────────────────────────────────── */
+.ap-table {
+    width: 100%;
+    min-width: 1400px;
+    border-collapse: collapse;
+}
+
+.ap-table th.mat-header-cell {
+    background: #3a3b3d !important;
+    color: #5a6880;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 14px;
+    border-bottom: 2px solid #e0e7ef;
+    white-space: nowrap;
+}
+
+.ap-table td.mat-cell {
+    padding: 12px 14px;
+    border-bottom: 1px solid #f0f3f8;
+    vertical-align: middle;
+    font-size: 13px;
+    color: #2c3e50;
+}
+
+.ap-table-row:hover td {
+    background: #f7f9ff;
+}
+
+.ap-table-row:last-child td {
+    border-bottom: none;
+}
+
+/* sticky image col */
+.col-img {
+    width: 60px;
+    min-width: 60px;
+    background: #fff;
+}
+
+.col-action {
+    width: 50px;
+    min-width: 50px;
+    text-align: center;
+    background: #fff;
+}
+
+/* ── Table Cell Styles ───────────────────────────────────────────────────────── */
+.ap-device-img-wrap {
+    width: 48px;
+    height: 48px;
+    background: #f5f7fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid #e8ecf2;
+}
+
+.ap-device-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.ap-product-name {
+    font-weight: 600;
+    color: #1a1a2e;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.ap-config-text {
+    font-size: 11.5px;
+    color: #666;
+    white-space: nowrap;
+}
+
+.ap-mono {
+    font-family: 'Courier New', monospace;
+    font-size: 12.5px;
+    color: #374151;
+}
+
+.ap-muted {
+    color: #888;
+}
+
+.ap-date {
+    font-size: 12.5px;
+    white-space: nowrap;
+}
+
+.ap-carrier {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #1a73e8;
+}
+
+/* ── Badges ──────────────────────────────────────────────────────────────────── */
+.ap-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ap-badge-success {
+    background: #e6f4ea;
+    color: #1e7e34;
+}
+
+.ap-badge-danger {
+    background: #fdecea;
+    color: #c62828;
+}
+
+/* ── Pills ───────────────────────────────────────────────────────────────────── */
+.ap-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.ap-pill-ok {
+    background: #e6f4ea;
+    color: #2e7d32;
+}
+
+.ap-pill-no {
+    background: #fdecea;
+    color: #c62828;
+}
+
+.ap-pill i {
+    font-size: 10px;
+}
+
+/* ── Remove Button ───────────────────────────────────────────────────────────── */
+.ap-remove-btn {
+    background: none;
+    border: 1px solid #fca5a5;
+    color: #ef4444;
+    width: 32px;
+    height: 32px;
+    border-radius: 7px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.ap-remove-btn:hover {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #f87171;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────────── */
+.ap-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px 22px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+.ap-footer-info {
+    font-size: 13px;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.ap-footer-info i {
+    color: #1a73e8;
+}
+
+.ap-submit-btn {
+    background: linear-gradient(135deg, #1a73e8, #1558b0);
+    color: #fff;
+    border: none;
+    padding: 10px 26px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    letter-spacing: 0.3px;
+    box-shadow: 0 3px 10px rgba(26, 115, 232, 0.3);
+}
+
+.ap-submit-btn:hover {
+    background: linear-gradient(135deg, #1558b0, #0d47a1);
+    box-shadow: 0 4px 14px rgba(26, 115, 232, 0.4);
+}
+
+.ap-submit-btn:active {
+    transform: scale(0.98);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────────── */
+.ap-table-scroll::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+}
+
+.ap-table-scroll::-webkit-scrollbar-track {
+    background: #f0f3f8;
+}
+
+.ap-table-scroll::-webkit-scrollbar-thumb {
+    background: #c5d0e0;
+    border-radius: 3px;
+}
+
+.ap-table-scroll::-webkit-scrollbar-thumb:hover {
+    background: #a0afc0;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .add-product-container {
+        padding: 12px;
+    }
+
+    .ap-search-btn {
+        padding: 12px 14px;
+        font-size: 12px;
+    }
+
+    .ap-footer {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .ap-submit-btn {
+        width: 100%;
+    }
+}

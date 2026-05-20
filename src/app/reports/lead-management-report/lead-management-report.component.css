@@ -1,0 +1,30 @@
+.btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(202, 212, 223), rgb(103, 163, 253)) !important;
+    height: 35px;
+    cursor: pointer;
+}
+
+
+.selected-locations-inline {
+    margin-top: 10px;
+}
+
+.selected-codes {
+    display: flex;
+    flex-wrap: wrap; 
+}
+
+.location-code {
+    display: flex;
+    flex-wrap: wrap; 
+    background-color: #f0f0f0;
+    margin-right: 10px;
+    margin-bottom: 10px; 
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block; 
+}

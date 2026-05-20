@@ -1,0 +1,12 @@
+<div [formGroup]="form"> 
+    <div class="">
+        <ng-select id="{{ctrl.ControlName}}" style="width: 100%;" appearance="outline" [items]="ctrl.Data" #select [selectOnTab]="true"
+            bindValue="Id" bindLabel="Text" labelForId="{{ctrl.DisplayLabel}}" placeholder="{{ctrl.DisplayLabel}}"
+            [formControlName]="ctrl.ControlName"
+            [multiple]="true"
+            (search)="onSearch($event)">
+        </ng-select>
+        <mat-error *ngIf="getRequired(ctrl)">{{ctrl.DisplayLabel}} is
+            required.</mat-error>
+    </div>
+</div>

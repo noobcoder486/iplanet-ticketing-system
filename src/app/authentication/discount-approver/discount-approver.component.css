@@ -1,0 +1,168 @@
+::ng-deep .modal .modal-content
+{
+padding: 0px;
+}
+.MainFooter
+{
+    height: 80px !important;
+    /* border: 1px solid black; */
+    background-image: linear-gradient(white,white);
+}
+.header-st{
+    width:100%;
+    height:100px;
+    background-image: linear-gradient(white, white);
+}
+.invoice-text-align{
+    font-size:25px;
+    text-align:end;
+    margin-right:25px;    
+}
+.footer{
+    width:50%;
+    height: 40px;
+    background-color: #0000FF;
+    border-end-end-radius:30px;
+}
+.text-fo-d{
+    width:50%;
+   color:white;
+   font-size:13px;
+   margin-left:10px;
+}
+.flext-footer{
+    display:flex;
+}
+.footer-ex{
+    width:50%;
+    height: 40px;
+    background-color:yellow;
+    border-top-left-radius:30px;
+}
+.text-fo-d-es{
+    width:50%;
+    color:black;
+    font-size:13px;
+    margin-left:17px;
+}
+.invvoice-to-header{
+    width:100%;
+    height:70px;
+}
+
+.invoice-details{
+    width:80%;
+    margin-left:20px;
+    display:flex;
+}
+.fon-cust-d3{
+    font-size:20px;
+}
+.fon-cust-d3-3{
+    margin-top:6px;
+    font-size:15px ;
+}
+
+/* table style */
+#customers {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #customers tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #customers tr:hover {background-color: #ddd;}
+  
+  #customers th {
+
+    text-align: left;
+    background-color: #6b6b6b;
+    color: white;
+  }
+  .to8e{
+    width:18%;
+  } 
+  .btn-fotter{
+    border:2px solid black;
+    display:flex;
+    /* justify-content:space-evenly; */
+    border:none;
+    justify-content:right;
+    position: absolute;
+    padding-bottom: 10px;
+    bottom: 0;
+
+  }
+  .btn-ts{
+    padding:5px 30px;
+    font-size:20px;
+    border:none !important;
+  }
+  .text-align{ 
+    justify-content:right;
+    display: flex;
+  }
+  .btn-success-2{
+    color: white;
+border:1px solid #198754;
+    background-color:#198754;
+    padding:5px 30px;
+
+  }
+  .btn-success-1{
+    color: white;
+    border:1px solid #dc3545;
+    background-color:#dc3545;
+    padding:5px 30px;
+  }
+::ng-deep footer
+{
+  background-color: rgb(255, 255, 255) !important;
+  color: black;
+  display: contents;
+}
+
+  .quation-left-details{
+    /* border:2px solid red; */
+    width:50%;
+    height:200px;
+  }
+  .quation-right-details{
+    /* border:3px solid yellow; */
+    width:50%;
+    height:200px;
+  }
+  .quation-header{
+    display:flex;
+    justify-content:space-around;
+  }
+  .pg-header{
+    margin-left:10px;
+  }
+  .flex-header{
+    /* border:2px solid red; */
+    width:60%;
+  }
+ .flex-header2{
+    /* border:2px solid yellow; */
+    width:40%;
+
+  }
+  .bot-flex{
+    /* border:2px solid black; */
+    display:flex;
+  }
+  .invoice-b{
+    font-size:20px !important;
+  }
+
+  .pop_up_flex{
+    display:flex;
+    justify-content:center;
+  }

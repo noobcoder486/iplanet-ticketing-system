@@ -1,0 +1,50 @@
+<ngx-spinner style="width: 100%; height: 100%; position: absolute;" size="medium"  [type]="typeSelected"
+    [fullScreen]="true">
+    <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<section class="content">
+    <mat-card class="mt-2">
+        <div >
+            <p style="font-size: 18px !important; font-weight: 700 !important;"> Call Management List </p>
+        </div>
+    </mat-card>
+
+    <mat-card class="mt-2">
+           <div class="row" style="align-content: center;">
+            <div class="col-lg-2 col-md-6 col-sm-6">
+                  <label style="font-weight: 600;">UniqueId</label>
+                  <input style="margin-top: 9px !important;" type="text" [(ngModel)]="UniqueId">
+            </div>
+            <div class="col-lg-2 col-md-6 col-sm-6">
+               <label style="font-weight: 600;">Mobile No</label>
+               <input style="margin-top: 9px !important;" type="text" [(ngModel)]="MobileNo">
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+               <label style="font-weight: 600;">Call Status</label>
+                <ng-select style="margin-top: -15px !important;" [items]="StatusDD" [(ngModel)]="CallStatus" > </ng-select>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <label style="font-weight: 600;">Location</label>
+                 <ng-select style="margin-top: -15px !important;" [items]="LocationForJob.Data"  [(ngModel)]="LocationCode" bindValue="Id" bindLabel="TEXT" ></ng-select>
+            </div>
+            <div style="align-content: center !important;" class="col-lg-2 col-md-6 col-sm-6">
+              <button  class="btn blue-button" (click)="GetCallManagementList('')">Search</button>
+            </div>
+           </div>
+    </mat-card>
+
+
+    <mat-card class="mt-2">
+        <div class="row clearfix">
+            <div class="table-responsive">
+                <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+                    [hideSpinnerEvents]="jobListHideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                    [isAllowSelect]="false" (changeEvent)="PageChange($event)">
+                </nitc-grid>
+            </div>
+        </div>
+
+    </mat-card>
+
+</section>

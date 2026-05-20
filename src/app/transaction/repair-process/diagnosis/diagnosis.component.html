@@ -1,0 +1,321 @@
+<div class="card-body" *ngIf="isDiagEdit == true" style="font-size: 14px !important;">
+  <div class="row">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Diagnosis Code</span>
+        <span class="hd_header_content"> {{objDiagnosis.DiagnosisCode}} </span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Diagnosis Date</span>
+        <span class="hd_header_content"> {{objDiagnosis.DiagnosisDate}} </span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Repair Type</span>
+        <span class="hd_header_content"> {{objDiagnosis.RepairType}} - {{objDiagnosis.RepairTypeDesc}} </span>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="objDiagnosis.RepairType == 'SVNR'">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Service Non Repair Type</span>
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'NTF'">
+          {{objDiagnosis.ServiceNRepairType}} - No Trouble Found </span>
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'SRC'">
+          {{objDiagnosis.ServiceNRepairType}} - Screening </span>
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'LUA'">
+          {{objDiagnosis.ServiceNRepairType}} - Loaner Unavailable </span>
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'CUA'">
+          {{objDiagnosis.ServiceNRepairType}} - Customer Unavailable </span>
+
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'CSL'">
+          {{objDiagnosis.ServiceNRepairType}} - Country of Service Limitation </span>
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'CDC'">
+          {{objDiagnosis.ServiceNRepairType}} - Customer Declined - Cost </span>
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'CDP'">
+          {{objDiagnosis.ServiceNRepairType}} - Customer Declined - Part Unavailable </span>
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'CDT'">
+          {{objDiagnosis.ServiceNRepairType}} - Customer Declined - Time </span>
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'FSL'">
+          {{objDiagnosis.ServiceNRepairType}} - Forward to Service Location </span>
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'ROT'">
+          {{objDiagnosis.ServiceNRepairType}} - Resolved - Other </span>
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'RSF'">
+          {{objDiagnosis.ServiceNRepairType}} - Resolved - Software </span>
+        <span class="hd_header_content" *ngIf="objDiagnosis.ServiceNRepairType == 'RUP'">
+          {{objDiagnosis.ServiceNRepairType}} - Reused Part(s) </span>
+
+
+      </div>
+    </div>
+    <div class="header_details_content_row" *ngIf="repa?.DIAG?.GSXCode">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Service Non-Repair Id</span>
+        <span class="hd_header_content"> {{repa?.DIAG?.GSXCode}} </span>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="repa?.DIAG?.GSXCode">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Service Non-Repair Id</span>
+        <span class="hd_header_content"> {{repa?.DIAG?.GSXCode}} </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Status</span>
+        <span class="hd_header_content"> {{objDiagnosis.DiagStatus}} </span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Billing Option</span>
+        <span class="hd_header_content"> {{objDiagnosis.BillingOption}} - {{objDiagnosis.BillingOptionDesc}} </span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Submission Date Time</span>
+        <span *ngIf="selectedDate == ''" class="hd_header_content">{{repa?.DIAG?.SubmissionDateTime}} </span>
+        <span *ngIf="selectedDate != ''" class="hd_header_content">{{selectedDate}} -&nbsp; {{selectedTime}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Submission Type</span>
+        <span class="hd_header_content"> {{objDiagnosis.SubmissionType}} - {{objDiagnosis.SubmissionTypeDesc}} </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> No Of days</span>
+        <span class="hd_header_content"> {{objDiagnosis.NoOfDays}} - {{objDiagnosis.NoOfDaysDesc}} </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Billable Repair</span>
+        <span class="hd_header_content"> {{objDiagnosis.BillableRepair}} 
+        &nbsp; <i matTooltip="Update Billable Flag " class="fa-solid fa-pencil" (click)="ResetDiagnosisPopupComponent()"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="header_details_content_row">
+      <div class="hd_column">
+        <span class="hd_header_heading"> Payment Terms</span>
+        <span class="hd_header_content"> {{objDiagnosis.PaymentTerms}} </span>
+      </div>
+    </div>
+  </div>
+  <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="example-viewport" style="height:135px;">
+    <mat-card class="example-card"
+      style="margin-left: 2px;box-shadow: 0px 1px 4px rgb(0 0 0 / 25%);margin-bottom: 20px;">
+      <div class="row" style="height:43px;">
+        <div class="col-sm-9">
+          <mat-card-header>
+            <mat-card-title style="font-size: 17px !important;font-weight:600">Components / Issue </mat-card-title>
+          </mat-card-header>
+        </div>
+      </div>
+      <mat-card-content>
+
+        <div *ngFor="let item of objDiagnosis.SelectedComponentIssue">
+          <mat-card class="example-card" (mouseenter)="compissuehoverguid=item.DiagnosisDetailGUID"
+            (mouseleave)="compissuehoverguid=''" [ngClass]="{'bg-primary':item.isDeleted==1}">
+            <div class="row">
+              <div class="col-sm-11 col-11">
+                <mat-card-content style="margin-top:-25">{{item.ComponentDesc}} / {{item.IssueDesc}} /
+                  {{item.ReproducibilityDescription}}</mat-card-content>
+              </div>
+              <div class="col-sm-1 col-1">
+                <i *ngIf="item.DiagnosisDetailGUID==compissuehoverguid" matTooltip="Delete"
+                  matTooltipClass="example-tooltip-red" matTooltipPosition="left" (click)="removeComponent(item)"
+                  style="align-content:right;color:red" class="fa-duotone fa-trash-can"></i>
+              </div>
+            </div>
+          </mat-card>
+          <div style="border:2px solid white"></div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </cdk-virtual-scroll-viewport>
+</div>
+
+<!-- Edit Mode  -->
+
+<div class="card-body" *ngIf="isDiagEdit == false " style="height: 385px !important;font-size: 14px !important;">
+  <div>
+    <form [formGroup]="diagForm" name="diagForm">
+      <div class="row">
+        <div class="col-sm-12">
+          <ng-select placeholder="Repair Type" (change)="toggleNRepairType()" [items]="RepairType.Data" bindLabel="TEXT"
+            bindValue="Id" formControlName="RepairType"
+            [ngClass]="{'ng-invalid-select':!diagForm.get('RepairType').valid && diagForm.get('RepairType').touched}">
+          </ng-select>
+        </div>
+
+        <div class="col-sm-12" *ngIf="diagForm.get('RepairType').value=='SVNR'">
+          <ng-select placeholder="Service Non Repair Type" [items]="SNRepairType.Data" bindLabel="TEXT" bindValue="Id"
+            formControlName="SNRepairType"></ng-select>
+        </div>
+
+
+        <div class="col-sm-12">
+          <ng-select placeholder="Billing Option" [items]="BillingOption.Data" bindLabel="TEXT" bindValue="Id"
+            formControlName="BillingOption"
+            [ngClass]="{'ng-invalid-select':!diagForm.get('BillingOption').valid && diagForm.get('BillingOption').touched}">
+          </ng-select>
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label>Submission Date</label><br>
+                <input class="form-control" type="date" [value]="selectedDate" (input)="updateDate($event.target.value)"
+                  [(ngModel)]="selectedDate" [ngModelOptions]="{standalone: true}" />
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label>Submission time</label><br>
+                <input class="form-control" id="timeInput" (input)="onTimeInput($event)" [(ngModel)]="selectedTime"
+                  [ngModelOptions]="{standalone: true}" type="time" #timeInput />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12">
+          <ng-select placeholder="Submission Type" [items]="SubmissionType.Data" bindLabel="TEXT" bindValue="Id"
+            formControlName="SubmissionType"
+            [ngClass]="{'ng-invalid-select':!diagForm.get('SubmissionType').valid && diagForm.get('SubmissionType').touched}">
+          </ng-select>
+        </div>
+        <div class="col-sm-12">
+          <ng-select placeholder="Days To Complete" [items]="NoOfDays.Data" bindLabel="TEXT" bindValue="Id"
+            formControlName="NoOfDays"
+            [ngClass]="{'ng-invalid-select':!diagForm.get('NoOfDays').valid && diagForm.get('NoOfDays').touched}">
+          </ng-select>
+        </div>
+        <!-- <div class="col-sm-12">
+          <mat-form-field appearance="fill">
+            <mat-label>Company Name</mat-label>
+            <input  matInput  formControlName="CompanyName"  [ngModelOptions]="{standalone: true}">
+          </mat-form-field>
+        </div> -->
+
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-3">
+              <mat-card-content>
+                <p> Billable Repair :</p>
+              </mat-card-content>
+            </div>
+            <div class="col-sm-9">
+              <mat-card-content align="start">
+                <mat-checkbox (change)="isCheckBoxFunc()" formControlName="billableRepair">
+                </mat-checkbox>
+              </mat-card-content>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-12" *ngIf="isCheckBox == true">
+          <ng-select placeholder="Payment Terms" [items]="PaymentTerms.Data" bindLabel="TEXT" bindValue="Id"
+            formControlName="PaymentTerms">
+          </ng-select>
+        </div>
+        <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="example-viewport" style="height:135px;">
+          <mat-card class="example-card"
+            style="margin-left: 2px;box-shadow: 0px 1px 4px rgb(0 0 0 / 25%);margin-bottom: 20px;">
+            <div class="row" style="height:43px;">
+              <div class="col-lg-9 col-sm-9 col-9">
+                <mat-card-header>
+                  <mat-card-title style="font-size: 17px !important;font-weight:600">Components / Issue</mat-card-title>
+                </mat-card-header>
+              </div>
+              <div class="col-lg-3 col-sm-3 col-3">
+                <mat-card-content style="float: right;font-size: 15px;padding-top: 5px;">
+                  <i (click)="openComponentIssuePopupEvent.emit(true)"
+                    style="align-content:right;font-size:25px;color:green;margin-top:-10px;" matTooltip="Add"
+                    matTooltipPosition="left" class="fa-regular fa-square-plus"></i>
+                </mat-card-content>
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-lg-12 col-sm-12 col-12">
+                <mat-card-content>
+                  <div *ngFor="let item of objDiagnosis.SelectedComponentIssue">
+                    <mat-card class="example-card" (mouseenter)="compissuehoverguid=item.DiagnosisDetailGUID"
+                      (mouseleave)="compissuehoverguid=''" [ngClass]="{'bg-primary':item.isDeleted==1}"
+                      style="margin-bottom: 10px;">
+                      <div class="row">
+                        <div class="col-sm-11 col-11">
+                          <mat-card-content style="margin-top:-25">{{item.ComponentDesc}} / {{item.IssueDesc}} /
+                            {{item.ReproducibilityDescription}}</mat-card-content>
+                        </div>
+                        <div class="col-sm-1 col-1">
+                          <i *ngIf="item.DiagnosisDetailGUID==compissuehoverguid" matTooltip="Delete"
+                            matTooltipClass="example-tooltip-red" matTooltipPosition="left"
+                            (click)="removeComponent(item)" style="align-content:right;color:red"
+                            class="fa-duotone fa-trash-can"></i>
+                        </div>
+                      </div>
+                    </mat-card>
+                  </div>
+                </mat-card-content>
+              </div>
+            </div>
+          </mat-card>
+        </cdk-virtual-scroll-viewport>
+
+        <div class="card-footer text-center" *ngIf="isDiagUpdate == false">
+          <button *ngIf="diagForm.get('RepairType').value != 'SVNR'" style="float: right;"
+            class=" x_final_button x_active_btn x_save_button " (click)="SaveDiagnosis()" type="button">Save
+            Diagnosis</button>
+          <button *ngIf="diagForm.get('RepairType').value == 'SVNR'" style="float: right;"
+            class=" x_final_button x_active_btn x_save_button " (click)="openQuestionPopup()" type="button">Save N
+            Repair</button>
+        </div>
+
+
+        <div class="card-footer text-center" *ngIf="isDiagUpdate == true">
+          <button *ngIf="diagForm.get('RepairType').value == 'SVNR'" style="float: right;"
+            class=" x_final_button x_active_btn x_save_button " (click)="openQuestionPopup()" type="button">Save N
+            Repair</button>
+
+          <button *ngIf="diagForm.get('RepairType').value != 'SVNR'" style="float: right;"
+            class=" x_final_button x_active_btn x_save_button " (click)="UpdateDiagnosis()" type="button">Update
+            Diagnosis</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

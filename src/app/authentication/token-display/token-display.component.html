@@ -1,0 +1,72 @@
+<div style="height: 685px;padding: 10px;">
+
+<div class="row" style="height:100%;">
+      <div class="col-lg-6 col-sm-12 d-flex justify-content-center" style="background-color: white;padding-top:5px;">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 d-flex justify-content-center">
+              <b style="font-size: 22px !important;">Current Serving Token Number</b>
+            </div>
+          </div>
+          <hr />
+          <div class="container">
+            <div *ngFor="let item of ServingArrayFinal" class="card rounded-0" style="border:2px solid black;padding:5px">
+              <div class="row">
+                <div class="col-lg-3 col-sm-6 col-md-3">
+                  <b class="TextStyle">{{item.Counter}}</b>
+                </div>
+                <div class="col-lg-7 col-sm-6 col-md-7 d-flex justify-content-center">
+                  <b class="TextStyle" style="color:rgb(64, 64, 238)">{{item.FirstName}} {{item.LastName}}</b>
+                </div>
+                <div class="col-lg-2 col-sm-6 col-md-2">
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-3 col-sm-6 col-md-3">
+                  <b class="TextStyle" style="color:orangered">{{item.TokenCode}}</b>
+                </div>
+                <div class="col-lg-7 col-sm-6 col-md-7 d-flex justify-content-center">
+                  <b class="TextStyle">{{item.VisitPurposeDesc}}</b>
+                </div>
+                <div class="col-lg-2 col-sm-6 col-md-2">
+                  <b class="TextStyle">{{item.WaitingTime}}</b>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  
+      <!--QUEUE-->
+      <div class="col-lg-6 col-sm-12 d-flex justify-content-center" style="border-left:1px solid rgb(170, 170, 170);background-color: white;padding-top:5px">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12 d-flex justify-content-center">
+              <b style="font-size: 22px !important;">Customer in Queue</b>
+            </div>
+          </div>
+          <hr />
+          <div class="container">
+            <div *ngFor="let item of QueueArrayFinal" class="card rounded-0" style="background-color:wheat;border:2px solid black;padding:5px">
+              <div class="row">
+                <div class="col-lg-3 col-sm-6 col-md-3">
+                  <b class="TextStyle" style="color:orangered">{{item.TokenCode}}</b>
+                </div>
+                <div class="col-lg-5 col-sm-6 col-md-7 d-flex justify-content-center">
+                  <b class="TextStyle" style="color: #515189 !important;">{{item.FirstName}} {{item.LastName}}</b>
+                </div>
+                <div class="col-lg-4 col-sm-6 col-md-2">
+                  <b class="TextStyle">{{item.VisitPurposeDesc}}</b>
+                </div>
+                <div class="col-lg-2 col-sm-6 col-md-2">
+                  <b class="TextStyle">{{item.WaitingTime}}</b>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>

@@ -1,0 +1,58 @@
+<style>
+    input[type=checkbox] {
+        transform: scale(1.5);
+    }
+</style>
+<div class="content-header">
+    <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+    <div class="card px-3 pb-3">
+        <div class="row">
+            <div class="col-12">
+                <div class="tabheader">
+                    <h3 style="font-size: 16px !important;  font-weight: 600;">Requote </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-6 col-md-12 col-sm-12">
+              <label style="font-weight: bold; font-size: 15px !important;">Select Reject Reason <i style="color: red;">*</i></label>
+              <ng-select style="margin-top: -20px;" (change)="onRejectQuoteReasoncChange()"  [items]="RejectQuoteReasonDD.Data"  bindLabel="TEXT" 
+                bindValue="Id" [(ngModel)]="RejectQuoteReason"  [ngModelOptions]="{standalone: true}">
+                
+              </ng-select>
+            </div>
+
+            <div class="col-lg-6 col-md-12 col-sm-12">
+              <label style="font-weight: bold; font-size: 15px !important;">Select Reason <i style="color: red;">*</i></label>
+              <ng-select style="margin-top: -20px;" [items]="ResetQuoteReasonDD.Data" bindLabel="TEXT" bindValue="Id" [(ngModel)]="ResetQuoteReason">
+
+              </ng-select>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <label style="font-weight: bold; font-size: 15px !important;">Remarks</label> <br>
+                 <textarea [(ngModel)]="Remarks"  style="width: 90%; height: 43%;"
+                 ></textarea>    
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-lg-5 col-sm-5 col-md-5">
+               
+            </div>
+            <div class="col-lg-2 col-sm-2 col-md-2">
+                <button class="btn btn-success"  (click)="ResetQuote()">
+                    Save
+                </button>
+            </div>
+           
+            <div class="col-lg-5 col-sm-5 col-md-5">
+                
+            </div>
+        </div>
+      
+    </div>
+</div>

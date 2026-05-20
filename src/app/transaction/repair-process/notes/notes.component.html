@@ -1,0 +1,82 @@
+
+<div *ngIf="isAddNotes"  class="">
+  <form [formGroup]="notesForm" name="notesForm" autocomplete="off">
+    <div class="row">
+        <div class="col-sm-12">
+          <ng-select placeholder="Note Type"  [items]="NoteTypeVal" formControlName="NotesType"
+          [ngClass]="{'ng-invalid-select':!notesForm.get('NotesType').valid && notesForm.get('NotesType').touched}"
+          >
+        </ng-select>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <mat-form-field class="textareafild" appearance="standard" [style.width.%]="100" >
+              <mat-label >Notes</mat-label>
+              <textarea matInput rows="1" [(ngModel)]="selectedTemp" [ngModelOptions]="{standalone: true}" formControlName="NotesText"></textarea >
+            </mat-form-field>
+          </div>
+          <div align="end" class="col-sm-12">
+            <!-- <a mat-button (click)="openNotesTemplate()" routerLink=".">Add From Template</a> -->
+            <button (click)="openNotesTemplate()" class="btn btn-link">Add From Template</button>
+          </div>
+      </div>
+  </form>
+  <div class="text-right " style="padding: 15px;" >
+    <div class="row">
+      <div class="col-sm-12 d-flex justify-content-end">
+        <button class="x_final_button x_active_btn x_save_button" type="submit" (click)=" onSubmit()">SAVE</button>
+        <button class="x_final_button x_active_btn x_save_button" type="submit"(click)=" onReset()" >RESET</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="repa?.NOTESLIST?.Notes != null && this.repa?.NOTESLIST?.Notes != undefined">
+  <mat-card *ngFor="let item of notesviewlist" style="margin:10px; border-radius:8px;" >
+    <div (mouseenter)="isDeletshover=item.Notes" (mouseleave)="isDeletshover=''">
+    <div class="row" >
+      <div class="col-sm-5">
+        <mat-card-content>
+          <p style="font-weight: bolder;"> {{item.NotesType }}</p>
+        </mat-card-content>
+      </div>
+      <div class="col-sm-6" >
+        <mat-card-content>
+          <p align="end">{{item.CreatedDate}}</p>
+        </mat-card-content>
+      </div>
+      <div class="col-sm-1" >
+        <mat-card-content *ngIf="showDeleteButton">
+         <i *ngIf="item.Notes == isDeletshover" (click)="callAPI()"  style="color: red;"  class="fa-duotone fa-trash-can"></i>
+         <ng-template #callAPIDialog>
+          <mat-card>
+            <h1 mat-dialog-title>Delete file</h1>
+            <div mat-dialog-content>
+              Would you like to delete this notes
+            </div>
+            <div mat-dialog-actions>
+              <button mat-button matDialogClose="no">No</button>
+              <button (click)="onDeleteItem(item)" mat-button matDialogClose="yes">Yes</button>
+            </div>  
+          </mat-card>
+        </ng-template>
+        </mat-card-content>
+      </div>
+    </div>
+    <mat-card-content>
+      <div [innerHTML]="item.Notes | replaceLineBreaks" ></div>
+    </mat-card-content>
+    <mat-card-content align="end">
+      <p>{{item.CreatedBy}}</p>
+    </mat-card-content>
+  </div>
+  </mat-card>
+</div>
+  
+
+
+
+
+
+

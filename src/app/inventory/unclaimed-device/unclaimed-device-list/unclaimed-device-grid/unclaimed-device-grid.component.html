@@ -1,0 +1,76 @@
+<section class="">
+  <div class="container-fluid">
+    <mat-card class="p-2 mb-4">
+
+      <div class="row" style="display: flex; align-items: center; justify-content: center;">
+
+        <mat-card class="p-2 mb-2">
+          <div class="row">
+  
+              <!-- First Field -->
+              <div class="col-lg-3 col-sm-2" >
+                  <label style="font-weight:600; padding-bottom: 2%;">Delivery Challan No</label>
+                      <div class="form-group">
+                          <input type="text" class="form-control"
+                          [(ngModel)]="DeliveryChallanNo" placeholder="Search Delivery Challan No" >
+                      </div>
+                  </div>
+              
+              <!-- Second Field -->
+              <div class="col-lg-3 col-sm-3">
+                  <ng-select [items]="DeliveryChallanStatusDD.Data" 
+                  bindLabel="TEXT" bindValue="Id" 
+                  [(ngModel)]="DeliveryChallanStatusCode" placeholder="Delivery Challan Status*"></ng-select>
+              </div>
+              
+              <!-- Third Field -->
+              <div class="col-lg-3 col-sm-3">
+                  <ng-select  (search)="onLocationSearch($event)" [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                  [(ngModel)]="LocationCode" placeholder="From Location" ></ng-select>
+              </div>
+              <div class="col-lg-3 col-sm-3">
+                  <ng-select (search)="onLocationSearch($event)" [items]="LocationForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                  [(ngModel)]="ToLocationCode" placeholder="To Location" ></ng-select>
+              </div>
+            </div>
+
+            <div class="row">
+              
+                 <!-- <div class="col-lg-3 col-sm-3" >
+                  <label style="font-weight:600; padding-bottom: 2%;">Serial No</label>
+                      <div class="form-group">
+                          <input type="text" class="form-control"
+                          [(ngModel)]="SerialNo" placeholder="Search Serial No" >
+                      </div>
+                  </div> -->
+                    <div class="col-lg-3 col-sm-3">
+                  <ng-select (search)="onDocTypeSearch($event)" [items]="DocTypeForJob.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                  [(ngModel)]="SelectedDocType" placeholder="Doc Type" ></ng-select>
+              </div>
+
+                <div class="col-lg-3 col-sm-3 mt-2" style="display: flex;align-items: center;">
+                    <!-- <label style="font-weight:600; padding-bottom: 2%;"></label> -->
+                    <button class="x_final_button x_active_btn x_save_button" (click)="Search('')">Search</button>
+                </div>
+               
+            </div>
+  
+      </mat-card>
+
+      <mat-card class="m-0 p-0">
+          <div class="row clearfix" *ngIf="columns.length > 0">
+              <!-- <div class="table-responsive"> -->
+                  <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+                      [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                      (changeEvent)="PageChange($event)" [isAllowSelect]="isChoose">
+                  </nitc-grid>
+              <!-- </div> -->
+          </div>
+      </mat-card>
+
+      </div>
+    </mat-card>
+  </div>
+
+<section>
+

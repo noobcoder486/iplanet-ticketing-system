@@ -1,0 +1,110 @@
+
+<style>
+input[type=checkbox] {
+    transform: scale(1.5);
+}
+</style>
+<div style="margin: 3% 28%;">
+    <div>
+        <div class="card" >
+
+            <div class="row">
+                <div class="col-12">
+                  <div class="tabheader" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                      <h3>Call Customer </h3>
+                    </div>
+        
+                    <div>
+                      <img (click)="CancelBtn1()" src="assets/images/close.png" alt="logo-full">
+                    </div>
+                 
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" style="padding:10px;" >
+                <!-- Background -->
+                <div class="col-lg-12"
+                  style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+                  <div class="row">
+
+                  <!-- Customer Details Section -->
+                    <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+                      <div class="row">
+                        <div class="col-6">
+                          <span style="font-size: 16px !important;color:black;font-weight: 600;">Location Details</span>
+                        </div>
+                      </div>
+                    </div> 
+            
+                      <div class="MainDiv" style="padding: 10px;">
+                        <mat-card-content>
+                          <b>Location Code:</b> {{repa?.LocationCode}}<br>
+                          <b>Mobile No:</b> &nbsp; <b>{{LocationMobileNo}}</b> <br>
+                        </mat-card-content>
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+
+              <div class="row" style="padding:10px;" >
+                <!-- Background -->
+                <div class="col-lg-12"
+                  style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+                  <div class="row">
+
+                  <!-- Customer Details Section -->
+                    <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+                      <div class="row">
+                        <div class="col-6">
+                          <span style="font-size: 16px !important;color:black;font-weight: 600;">Customer Details</span>
+                        </div>
+                      </div>
+                    </div> 
+            
+                      <div class="MainDiv" style="padding: 10px;">
+                        <mat-card-content>
+                          <b>Customer Name:</b> {{repa?.CUSTOMER.FirstName}}<br>
+                          <b>Mobile No:</b> &nbsp; <b>{{repa?.CUSTOMER.MobileNo}}</b> <br>
+                        </mat-card-content>
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+
+
+              <!-- <div style="display: flex;justify-content: end;align-items: center;column-gap: 10px;" *ngIf="repa.RepairFlag == '1'"  class="mt-3">
+                <div>
+                    <button class="btn btn-primary" (click)="onCall()">Call</button>
+                </div>      
+              </div> -->
+              <div style="display: flex;justify-content: end;align-items: center;column-gap: 10px;" class="mt-3">
+                <div>
+                    <button class="btn btn-primary" (click)="onCall()">Call</button>
+                </div>      
+              </div>
+            
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

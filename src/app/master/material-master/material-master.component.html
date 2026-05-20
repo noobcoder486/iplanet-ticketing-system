@@ -1,0 +1,155 @@
+<section class="content">
+    <div class="container-fluid">
+      <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row" style="display: flex; justify-content: space-between; align-items: center;">
+          <!-- Material Master Section (Left-aligned) -->
+          <div class="col-lg-3 col-sm-12" style="flex: 1;">
+            <p class="h4">Material Master</p>
+            <p class="mt-11 ml-8">
+              <span *ngFor="let cumb of breadCumbList; let i = index">
+                <span *ngIf="breadCumbList.length-1 == i">
+                  <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>{{cumb.text}}
+                </span>
+                <a *ngIf="breadCumbList.length-1 != i" (click)="breadCumbClick(cumb.url)" class="breadcumb">
+                  <span *ngIf="i != 0">
+                    <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>
+                  </span>
+                  {{cumb.text}}
+                </a>
+              </span>
+            </p>
+          </div>
+      
+          <div class="col-lg-9 col-sm-12 d-flex justify-content-end" style="flex: 3;">
+            <div class="d-flex flex-wrap" style="gap: 15px;">
+              <!-- Update Materials Section -->
+              <div>
+                <mat-accordion>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>Update HSN</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                      <input type="file" id="fileInput" accept=".xls, .xlsx" style="display: none;" (change)="UpdateMaterialBulk($event)">
+                      <button (click)="selectFile('UpdateMaterialExcelFormat')" matTooltip="Bulk Update Material/s" class="btn" style="background-color: #ff3603;">
+                        <img src="assets/images/uploadNew.png">
+                      </button>
+                      <button class="btn btn-warning btn-download" matTooltip="Download Sample Excel" (click)="downloadSampleFile('UpdateMaterialExcelFormat')">
+                        <i style="color: white;" class="fa fa-download" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </div>
+      
+              <!-- Download Material List Section -->
+              <div>
+                <mat-accordion>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>Download Material List</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                      <button class="btn btn-download" matTooltip="Download Material Report" (click)="exportReportData()">
+                        <i style="color: rgb(251, 255, 0);" class="fa fa-download" aria-hidden="true"></i>
+                      </button>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </div>
+      
+              <!-- Upload New Materials Section -->
+              <div>
+                <mat-accordion>
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>Upload New/Update Materials</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                      <div>
+                        <ng-container *ngIf="toolBarAction.length > 0">
+                          <ng-container *ngFor="let toolbar of toolBarAction">
+                            <button mat-raised-button color="primary" (click)="actionEvent(toolbar)" matTooltip="{{ toolbar.title }}">
+                              <mat-icon>{{ toolbar.icon }}</mat-icon>
+                            </button>
+                          </ng-container>
+                        </ng-container>
+                      </div>
+                      <div>
+                        <input type="file" id="NewMaterial" accept=".xls, .xlsx" style="display: none;" (change)="FileUploadMaterial($event)">
+                        <button (click)="selectFile('MaterialMasterExcelFormat')" matTooltip="Bulk Upload Material/s" class="btn" style="width: 30px; padding: 3px; border-radius: 4px; background-color: #233f76;">
+                          <img src="assets/images/uploadNew.png">
+                        </button>
+                      </div>
+                      <div>
+                        <button class="btn btn-warning btn-download" matTooltip="Download Sample Excel" (click)="downloadSampleFile('MaterialMasterExcelFormat')">
+                          <i style="color: white;" class="fa fa-download" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+
+      <mat-card class="p-2 mb-4">
+        <form>
+            <div class="mat-card-s3">
+                <div class="d-flex">
+                    <div class="col-sm-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <input type="text" class="x_input" matInput placeholder="Material Code"
+                                [(ngModel)]="materialCode" name="materialCode"
+                              >
+                        </mat-form-field>
+                    </div>
+                    <!-- first field -->
+                    <div class="col-sm-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <input type="text" class="x_input" matInput placeholder="Material Name"
+                                [(ngModel)]="materialName" name="materialName">
+                        </mat-form-field>
+                    </div>
+                    <!-- 2end Field -->
+                    <div class="col-sm-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <input type="text" class="x_input" matInput placeholder="EEE Code"
+                                [(ngModel)]="eeeCode" name="eeCode">
+                        </mat-form-field>
+                    </div>
+                    <!-- 3rd field -->
+                    <div class="col-sm-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <input type="text" class="x_input" matInput placeholder="ERP Material Code" [(ngModel)]="erpMaterialCode"
+                                name="erpMaterialCode">
+                        </mat-form-field>
+                    </div>
+                    <!-- 4rth field -->
+                    <div class="col-sm-2">
+                        <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+                            <button class="x_final_button x_active_btn x_save_button"
+                                (click)="search()">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-card>
+
+      
+  
+      <!-- Data -->
+      <mat-card class="m-0 p-0">
+        <div class="row clearfix" *ngIf="columns.length > 0">
+          <div class="table-responsive">  
+            <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent"
+            (actionEvent)="actionEmit($event)" (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+            </nitc-grid>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </section>

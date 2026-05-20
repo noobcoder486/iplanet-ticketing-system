@@ -1,0 +1,46 @@
+<section class="content">
+    <ngx-spinner size="medium" [type]="typeSelected">
+        <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+  
+    <mat-card class="p-2" style="z-index: 9;">
+        <div class="row">
+          <div class="col-sm-4 col-lg-4 col-md-4">
+              <p class="HeaderText">Transfer Order List</p>  
+          </div>
+        </div>
+  
+        <div class="row">
+           
+          <div class="col-sm-4 col-lg-4 col-md-4 justify-content-left">
+            <ng-select [items]="TransferOrderDocType.Data" placeholder="Document Type" disabled="true" [(ngModel)]="TransferOrderDocTypeData" bindLabel="TEXT" bindValue="Id">
+            </ng-select>
+          </div>
+        </div>
+    </mat-card><br />
+  
+    <mat-card>
+      <table class="table"> 
+        <thead>
+          <th>Header</th>
+          <th>Source Location</th>
+          <th>Destination Location</th>
+          <th>Document Date</th>
+          <th>Document Code</th>
+          <th>Document Type</th>
+        </thead>
+        
+        <tbody >
+          <tr *ngFor="let item of results">
+          <td><a (click)="navigateToTransferOrder(item)"><u  style="color:rgb(58, 135, 180);cursor:pointer">{{item?.TransferOrderHeaderGUID}}</u></a>
+          <td>{{item?.SourceLocationCode}}</td>
+          <td>{{item?.DestinationLocationCode}}</td>
+          <td>{{item?.DocumentDate}}</td>
+          <td> {{item?.DocumentCode}}</td>
+          <td> {{item?.DocumentType}}</td>
+        </tr>      
+        </tbody>
+        
+      </table>
+    </mat-card>
+  </section>

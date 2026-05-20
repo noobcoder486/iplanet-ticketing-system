@@ -1,0 +1,44 @@
+.mat-button-toggle-appearance-standard {
+    background-color: white;
+    color:gray;
+    line-height: 28px;
+    border: 2px solid lightgray;
+ }
+ 
+ .mat-button-toggle-checked {
+    background-color: #233f76;
+    color:white;
+    line-height: 28px;
+ }
+
+ ::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content
+{
+   line-height: 30px;
+} 
+
+
+  .card-body
+{
+    text-align: justify;
+    overflow: auto !important;
+    height: 380px;
+    
+} 
+
+
+.card-footer
+{
+ position: absolute !important;
+ width: 100%;
+ bottom: 0 !important;  
+ background-color: rgba(0, 0, 0, 0.03);
+}
+
+.containers
+{
+   padding: 10px;
+   height: 418px;
+   overflow: auto;
+   text-align: left;
+    
+}

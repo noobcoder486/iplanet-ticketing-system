@@ -1,0 +1,45 @@
+
+    <div class="content-header" >
+        <div class="card  pb-3" >
+            <div class="row" style="top: 0;position:sticky;z-index: 1;">
+              <div class="col-12">
+                <div class="tabheader">
+                  <label class="TextStyle" style="color: #515189 !important;">Token List</label>
+                </div>
+              </div>
+            </div>
+            <div style="padding-left: 5px;height: 500px;overflow: auto;">
+
+              <table>
+                <thead>
+                  <tr>
+                    <th>Token Number</th>
+                    <th>Customer Name</th>
+                    <th>Visit Purpose</th>
+                    <th>Status</th>
+                    <th>Select</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let item of QueueArray">
+                    <td> <label class="TextStyle">{{item?.TokenCode}}</label></td>
+                    <td style="color:  #515189; font-weight: 600;">{{item?.FirstName}} {{item?.LastName}}</td>
+                    <td>{{item?.VisitPurposeDesc}}</td>
+                    <td>
+                      <div *ngIf="item.TokenStatus  == 'HOLD' ">
+                       <p style="font-weight: 600; font-size: 19px !important; color: red;"> HOLD </p>
+                      </div>
+
+                      <div *ngIf="item.TokenStatus  == 'IN-QUEUE' ">
+                        <p style="font-weight: 600; font-size: 19px !important; "> IN-QUEUE </p>
+                      </div>
+                      
+                    </td>
+                    <td> <i (click)="selectedToken(item)" style="cursor: pointer;font-weight: 600;  font-size: 19px !important;"  class="fa-regular fa-square-dashed"></i> </td>
+                    
+                  </tr>
+                </tbody>
+              </table>           
+        </div>
+      </div>

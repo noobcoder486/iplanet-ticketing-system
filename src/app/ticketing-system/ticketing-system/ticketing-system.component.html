@@ -1,0 +1,493 @@
+<section class="content">
+  <ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+  <div class="ts-topbar">
+    <div class="ts-topbar-left">
+      <div>
+        <h1 class="ts-topbar-title">Ticketing System</h1>
+        <span class="ts-topbar-sub">{{ totalRecords }} total ticket{{ totalRecords !== 1 ? 's' : '' }}</span>
+      </div>
+    </div>
+    <button class="ts-create-btn" matTooltip="Create Ticket" (click)="openAddTicketPopup()">
+      <i class="fa fa-plus"></i>
+      <span>New Ticket</span>
+    </button>
+  </div>
+  <div class="ts-layout">
+    <div class="ts-left" [class.ts-left--collapsed]="!drawerOpen">
+      <div class="ts-drawer-inner">
+        <div class="ts-filter-wrap">
+          <i class="fa fa-filter ts-filter-icon"></i>
+          <ng-select [items]="ticketStatusDD.Data" bindLabel="TEXT" bindValue="Id" placeholder="All Statuses"
+            [(ngModel)]="selectedStatus" (change)="fetchRecordsForStatus()" class="ts-ng-select">
+          </ng-select>
+        </div>
+
+        <div class="ts-ticket-list">
+          <div class="ts-ticket-card" *ngFor="let ticket of tickets"
+            [ngClass]="[getStatusClass(ticket?.TicketStatus), selectedTicket?.TicketGuid === ticket?.TicketGuid ? 'ts-ticket-active' : '']"
+            (click)="selectTicket(ticket)">
+            <div class="ts-ticket-stripe"></div>
+            <div class="ts-ticket-body">
+              <div class="ts-ticket-top">
+                <span class="ts-ticket-no">{{ ticket?.TicketNo }}</span>
+                <span class="ts-status-pill ts-status-pill--{{ getStatusClass(ticket?.TicketStatus) }}">
+                  {{ ticket?.TicketStatus }}
+                </span>
+              </div>
+              <div class="ts-ticket-customer">
+                <i class="fa fa-user-circle ts-cust-icon"></i>
+                <span class="ts-cust-name">{{ ticket?.CustomerName || 'Unknown Customer' }}</span>
+              </div>
+              <div class="ts-ticket-phone" *ngIf="ticket?.CustomerNo">
+                <i class="fa fa-phone ts-phone-icon"></i>
+                <span>{{ ticket?.CustomerNo }}</span>
+              </div>
+              <div class="ts-ticket-phone" *ngIf="ticket?.CustomerNo">
+                <span>{{ ticket?.S13JobDetailsCount }} Out Of {{ticket?.TotalJobDetailsCount }} Job Closed</span>
+              </div>
+            </div>
+            <div class="ts-active-dot" *ngIf="selectedTicket?.TicketGuid === ticket?.TicketGuid"></div>
+          </div>
+
+          <div class="ts-list-empty" *ngIf="tickets.length === 0">
+            <i class="fa fa-inbox"></i>
+            <p>No tickets found</p>
+          </div>
+        </div>
+
+        <div class="ts-paginator-wrap">
+          <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageNo - 1" showFirstLastButtons
+            (page)="onPageChange($event)">
+          </mat-paginator>
+        </div>
+
+      </div>
+    </div>
+
+    <button class="ts-drawer-tab" (click)="drawerOpen = !drawerOpen"
+      [matTooltip]="drawerOpen ? 'Collapse ticket list' : 'Expand ticket list'">
+      <i class="fa" [ngClass]="drawerOpen ? 'fa-chevron-left' : 'fa-chevron-right'"></i>
+    </button>
+
+    <div class="ts-right">
+
+      <ng-container *ngIf="selectedTicket">
+
+        <div class="ts-detail">
+
+          <div class="ts-detail-header">
+            <div class="ts-detail-header-left">
+              <div class="ts-detail-ticketno">{{ selectedTicket.TicketNo }}</div>
+
+              <!-- ── VIEW MODE: status badge + pen icon ───────────────────────── -->
+              <ng-container *ngIf="!isEditingStatus">
+                <span class="ts-detail-status-badge" [ngClass]="{
+                  'ts-dsb--new':            selectedTicket.TicketStatus === 'NEW',
+                  'ts-dsb--inprogress':     selectedTicket.TicketStatus === 'IN-PROGRESS',
+                  'ts-dsb--closed':         selectedTicket.TicketStatus === 'CLOSED',
+                  'ts-dsb--partiallyclosed':selectedTicket.TicketStatus === 'PARTIALLY-COMPLETED',
+                  'ts-dsb--completed':      selectedTicket.TicketStatus === 'COMPLETED'
+                }">
+                  <span class="ts-dsb-dot"></span>
+                  {{ selectedTicket.TicketStatus }}
+                </span>s
+                <span>
+                  <i *ngIf="selectedTicket.TicketStatus !== 'CLOSED'" class="fa-solid fa-pen ts-status-pen-icon"
+                    matTooltip="Edit Status" (click)="startEditStatus()">
+                  </i>
+                </span>
+              </ng-container>
+
+              <ng-container *ngIf="isEditingStatus">
+                <ng-select [items]="ticketStatusDD.Data" bindLabel="TEXT" bindValue="Id" placeholder="Select Status"
+                  [(ngModel)]="editingStatus" class="ts-ng-select ts-status-inline-select">
+                </ng-select>
+
+                <button class="ts-status-save-btn" matTooltip="Save Status" (click)="saveTicketStatus()">
+                  <i class="fa fa-check"></i> Save
+                </button>
+
+                <i class="fa fa-times ts-status-cancel-icon" matTooltip="Cancel" (click)="cancelEditStatus()">
+                </i>
+              </ng-container>
+            </div>
+
+            <div class="ts-detail-header-actions">
+              <button *ngIf="selectedTicket?.LocationCode == null || selectedTicket?.LocationCode == ''"
+                matTooltip="Map Partner" (click)="openLocationPopUp(selectedTicket)"
+                class="ts-action-btn ts-action-btn--location">
+                <i class="fa fa-map-marker-alt"></i><span>Map Partner</span>
+              </button>
+
+              <button *ngIf="(selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
+                       (selectedTicket?.CustomerCode == null || selectedTicket?.CustomerCode == '')"
+                matTooltip="Add Customer" (click)="openCustomerPopup(selectedTicket)"
+                class="ts-action-btn ts-action-btn--customer">
+                <i class="fa fa-user-plus"></i><span>Add Customer</span>
+              </button>
+
+              <button class="ts-workflow-btn ts-workflow-btn--assign" *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') &&
+                     (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
+                     (selectedTicket?.TechIds == null || selectedTicket?.TechIds == '') &&
+                     selectedTicket?.TicketStatus === 'NEW'" (click)="openTechPopup(selectedTicket)">
+                <i class="fa fa-hard-hat"></i> Assign Technician
+              </button>
+
+              <button class="ts-workflow-btn ts-workflow-btn--product" *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') &&
+                     (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
+                     selectedTicket?.TicketStatus === 'IN-PROGRESS' &&
+                     (selectedTicket?.TechIds != null && selectedTicket?.TechIds != undefined)"
+                (click)="addProduct(selectedTicket)">
+                <i class="fa fa-box-open"></i> Add Product
+              </button>
+              <button class="ts-workflow-btn ts-workflow-btn--quotation" *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') &&
+       (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
+       selectedTicket?.TicketStatus === 'IN-PROGRESS' &&
+       (selectedTicket?.TechIds != null && selectedTicket?.TechIds != undefined) &&
+       selectedTicket?._jobHeaderGuid" (click)="openBulkQuotation(selectedTicket)">
+                <i class="fa fa-file-invoice-dollar"></i> Add Quotation
+              </button>
+
+              <button *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') ||
+                       (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '')"
+                matTooltip="View Customer & Location Details" (click)="openCustomerDetails(selectedTicket)"
+                class="ts-action-btn ts-action-btn--view">
+                <i class="fa fa-eye"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="ts-meta-grid">
+            <div class="ts-meta-item">
+              <span class="ts-meta-label">Customer Name</span>
+              <span class="ts-meta-value">{{ selectedTicket.CustomerName || '—' }}</span>
+            </div>
+            <div class="ts-meta-item">
+              <span class="ts-meta-label">Phone</span>
+              <span class="ts-meta-value">{{ selectedTicket.CustomerNo || '—' }}</span>
+            </div>
+            <div class="ts-meta-item" *ngIf="selectedTicket?.CustomerCode">
+              <span class="ts-meta-label">Customer Code</span>
+              <span class="ts-meta-value ts-meta-code">{{ selectedTicket.CustomerCode }}</span>
+            </div>
+            <div class="ts-meta-item" *ngIf="selectedTicket?.LocationCode">
+              <span class="ts-meta-label">Partner Location</span>
+              <span class="ts-meta-value ts-meta-code">{{ selectedTicket.LocationCode }}</span>
+            </div>
+            <div class="ts-meta-item">
+              <span class="ts-meta-label">Email</span>
+              <span class="ts-meta-value">{{ selectedTicket?.parsedTicketBody?.mails[0]?.from || '—' }}</span>
+            </div>
+            <div class="ts-meta-item">
+              <span class="ts-meta-label">Created At</span>
+              <span class="ts-meta-value">{{ selectedTicket.CreatedDate | date:'medium' }}</span>
+            </div>
+          </div>
+
+          <div class="job-status-grid" *ngIf="countArray.length > 0">
+            <!-- Iterate over the statuses -->
+            <div class="status-card" *ngFor="let status of countArray">
+              <div class="status-count">{{ status?.Count }}</div>
+              <div class="status-desc">{{ status?.Description | uppercase }}</div>
+            </div>
+          </div>
+
+          <hr class="ts-divider" />
+
+          <div *ngIf="productsSubmitted && submittedProducts.length > 0" class="ts-product-section">
+            <div class="ts-product-header">
+              <div class="ts-product-header-left">
+                <div class="ts-product-icon"><i class="fa fa-mobile-alt"></i></div>
+                <span style="color:black">Submitted Devices</span>
+                <span class="ts-product-count">{{ submittedProducts.length }} device{{ submittedProducts.length > 1 ?
+                  's' : '' }}</span>
+              </div>
+            </div>
+
+            <div class="ts-product-scroll">
+              <table class="ts-product-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Serial No.</th>
+                    <th>Device</th>
+                    <th>Configuration</th>
+                    <th>IMEI</th>
+                    <th>Warranty</th>
+                    <th>Coverage Start</th>
+                    <th>Coverage End</th>
+                    <th>Country</th>
+                    <th>Sold To</th>
+                    <th>Labor</th>
+                    <th>Parts</th>
+                    <th>Onsite</th>
+                    <th>AppleCare</th>
+                    <th>ELS Status *</th>
+                    <th>Contract Code</th>
+                    <th>Repair Type *</th>
+                    <th>Billing Option *</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let p of submittedProducts; let i = index" class="ts-product-row">
+
+                    <td class="ts-pd-img">
+                      <img [src]="p.productImageURL" [alt]="p.productDescription" class="ts-pd-device-img"
+                        onerror="this.src='assets/images/device-placeholder.png'">
+                      <a *ngIf="p._fromJob && p._caseGuid" (click)="openJobDetail(p._caseGuid)"
+                        class="ts-job-case-badge" [matTooltip]="'Click to see Job Details'">
+                        <i class="fa fa-check-circle" style="color:#2e7d32;"></i>
+                        {{ p._caseId }}
+                      </a>
+                    </td>
+
+                    <td><span class="ts-pd-mono">{{ p.serial }}</span></td>
+
+                    <td><span class="ts-pd-name">{{ p.productDescription }}</span></td>
+
+                    <td><span class="ts-pd-config">{{ p.configDescription }}</span></td>
+
+                    <td><span class="ts-pd-mono ts-pd-muted">{{ p.imei }}</span></td>
+
+                    <td>
+                      <span class="ts-pd-badge"
+                        [ngClass]="p.warrantyStatusCode === 'OO' ? 'ts-pd-badge--danger' : 'ts-pd-badge--success'">
+                        {{ p.warrantyStatusDescription }}
+                      </span>
+                    </td>
+
+                    <td>
+                      <span class="ts-pd-date">
+                        {{ p.coverageStartDate ? (p.coverageStartDate | date:'mediumDate') : '—' }}
+                      </span>
+                    </td>
+
+                    <td>
+                      <span class="ts-pd-date ts-pd-muted">
+                        {{ p.coverageEndDate ? (p.coverageEndDate | date:'mediumDate') : '—' }}
+                      </span>
+                    </td>
+
+                    <td><span class="ts-pd-muted">{{ p.purchaseCountryDesc || '—' }}</span></td>
+
+                    <td><span class="ts-pd-muted">{{ p.soldToName || '—' }}</span></td>
+
+                    <td>
+                      <span class="ts-pd-pill" [ngClass]="p.laborCovered ? 'ts-pd-pill--ok' : 'ts-pd-pill--no'">
+                        <i class="fa" [ngClass]="p.laborCovered ? 'fa-check' : 'fa-times'"></i>
+                        {{ p.laborCoverLabel }}
+                      </span>
+                    </td>
+
+                    <td>
+                      <span class="ts-pd-pill" [ngClass]="p.partCovered ? 'ts-pd-pill--ok' : 'ts-pd-pill--no'">
+                        <i class="fa" [ngClass]="p.partCovered ? 'fa-check' : 'fa-times'"></i>
+                        {{ p.partCoverLabel }}
+                      </span>
+                    </td>
+
+                    <td>
+                      <span class="ts-pd-pill" [ngClass]="p.onsiteCoverage ? 'ts-pd-pill--ok' : 'ts-pd-pill--no'">
+                        <i class="fa" [ngClass]="p.onsiteCoverage ? 'fa-check' : 'fa-times'"></i>
+                        {{ p.onsiteLabel }}
+                      </span>
+                    </td>
+
+                    <td>
+                      <span class="ts-pd-pill"
+                        [ngClass]="p.appleCareEligible === 'Eligible' ? 'ts-pd-pill--ok' : 'ts-pd-pill--no'">
+                        <i class="fa" [ngClass]="p.appleCareEligible === 'Eligible' ? 'fa-check' : 'fa-times'"></i>
+                        {{ p.appleCareEligible }}
+                      </span>
+                    </td>
+
+                    <td class="ts-pd-dd-cell">
+                      <ng-container *ngIf="p._fromJob; else elsEditable">
+                        <span class="ts-saved-field-badge">{{ p._elsStatus || '—' }}</span>
+                      </ng-container>
+                      <ng-template #elsEditable>
+                        <ng-select [items]="ELSStatusType.Data" bindLabel="TEXT" bindValue="Id"
+                          placeholder="Select ELS *" [(ngModel)]="p._elsStatus"
+                          [ngClass]="{'ts-ng-invalid': p._elsTouched && (!p._elsStatus || p._elsStatus === '')}"
+                          (change)="p._elsTouched = true" style="min-width:160px;">
+                        </ng-select>
+                        <small class="ts-field-error" *ngIf="p._elsTouched && (!p._elsStatus || p._elsStatus === '')">
+                          ELS Status is required
+                        </small>
+                      </ng-template>
+                    </td>
+
+                    <td class="ts-pd-dd-cell">
+                      <ng-container *ngIf="p._fromJob; else contractEditable">
+                        <span class="ts-saved-field-badge ts-saved-field-badge--grey">
+                          {{ p._contractCode || '—' }}
+                        </span>
+                        <ng-container *ngIf="p._contractStartDate || p._contractEndDate">
+                          <small class="ts-contract-dates">
+                            <span *ngIf="p._contractStartDate">
+                              <i class="fa fa-play-circle" style="color:#1a73e8;font-size:10px;"></i>
+                              {{ p._contractStartDate | date:'mediumDate' }}
+                            </span>
+                            <span *ngIf="p._contractEndDate" style="margin-left:6px;">
+                              <i class="fa fa-stop-circle" style="color:#c62828;font-size:10px;"></i>
+                              {{ p._contractEndDate | date:'mediumDate' }}
+                            </span>
+                          </small>
+                        </ng-container>
+                      </ng-container>
+                      <ng-template #contractEditable>
+                        <ng-select [items]="p._contractDD?.Data || []" bindLabel="Id" bindValue="Id"
+                          placeholder="Contract Code" [(ngModel)]="p._contractCode"
+                          (change)="onProductContractChange(p, p._contractCode)" style="min-width:160px;">
+                        </ng-select>
+                        <ng-container *ngIf="p._contractStartDate || p._contractEndDate">
+                          <small class="ts-contract-dates">
+                            <span *ngIf="p._contractStartDate">
+                              <i class="fa fa-play-circle" style="color:#1a73e8;font-size:10px;"></i>
+                              {{ p._contractStartDate | date:'mediumDate' }}
+                            </span>
+                            <span *ngIf="p._contractEndDate" style="margin-left:6px;">
+                              <i class="fa fa-stop-circle" style="color:#c62828;font-size:10px;"></i>
+                              {{ p._contractEndDate | date:'mediumDate' }}
+                            </span>
+                          </small>
+                        </ng-container>
+                      </ng-template>
+                    </td>
+
+                    <!-- ── Repair Type ─────────────────────────────────────────────────── -->
+                    <td class="ts-pd-dd-cell">
+                      <ng-container *ngIf="p._fromJob; else repairEditable">
+                        <span class="ts-saved-field-badge">{{ p._repairType || '—' }}</span>
+                      </ng-container>
+                      <ng-template #repairEditable>
+                        <ng-select [items]="RepairTypeDD.Data" bindLabel="TEXT" bindValue="Id"
+                          placeholder="Repair Type *" [(ngModel)]="p._repairType"
+                          [ngClass]="{'ts-ng-invalid': p._repairTypeTouched && (!p._repairType || p._repairType === '')}"
+                          (change)="p._repairTypeTouched = true" style="min-width:160px;">
+                        </ng-select>
+                        <small class="ts-field-error"
+                          *ngIf="p._repairTypeTouched && (!p._repairType || p._repairType === '')">
+                          Repair Type is required
+                        </small>
+                      </ng-template>
+                    </td>
+
+                    <td class="ts-pd-dd-cell">
+                      <ng-container *ngIf="p._fromJob; else billingEditable">
+                        <span class="ts-saved-field-badge ts-saved-field-badge--grey">{{ p._billingOption || '—'
+                          }}</span>
+                      </ng-container>
+                      <ng-template #billingEditable>
+                        <ng-select [items]="BillingOptionDD.Data" bindLabel="TEXT" bindValue="Id"
+                          placeholder="Billing Option *" [(ngModel)]="p._billingOption"
+                          [ngClass]="{'ts-ng-invalid': p._billingOptionTouched && (!p._billingOption || p._billingOption === '')}"
+                          (change)="p._billingOptionTouched = true" style="min-width:160px;">
+                        </ng-select>
+                        <small class="ts-field-error"
+                          *ngIf="p._billingOptionTouched && (!p._billingOption || p._billingOption === '')">
+                          Billing Option is required
+                        </small>
+                      </ng-template>
+                    </td>
+
+                    <td class="ts-pd-action">
+                      <button *ngIf="!p._fromJob" class="ts-pd-remove-btn" (click)="removeSubmittedProduct(i)"
+                        matTooltip="Remove device">
+                        <i class="fa fa-trash-alt"></i>
+                      </button>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="ts-voice-section">
+              <div class="ts-voice-row">
+
+                <div class="ts-voice-field">
+                  <mat-form-field appearance="standard" style="width:100%;">
+                    <mat-label>Customer Voice *</mat-label>
+                    <textarea matInput rows="3" [(ngModel)]="customerVoice" (blur)="customerVoiceTouched = true"
+                      placeholder="Describe the customer's complaint..." [readonly]="!hasNewProducts()"
+                      [class.ts-textarea-error]="isCustomerVoiceInvalid()"></textarea>
+                  </mat-form-field>
+                  <mat-error *ngIf="customerVoiceTouched && !customerVoice?.trim()">
+                    Customer Voice cannot be blank
+                  </mat-error>
+                  <mat-error *ngIf="customerVoiceTouched && customerVoice?.trim() && hasSpecialChars(customerVoice)">
+                    No special characters allowed
+                  </mat-error>
+                </div>
+
+                <div class="ts-voice-field">
+                  <mat-form-field appearance="standard" style="width:100%;">
+                    <mat-label>CRE Voice *</mat-label>
+                    <textarea matInput rows="3" [(ngModel)]="creVoice" (blur)="creVoiceTouched = true"
+                      placeholder="Enter CRE remark..." [readonly]="!hasNewProducts()"
+                      [class.ts-textarea-error]="isCreVoiceInvalid()">
+                    </textarea>
+                  </mat-form-field>
+                  <mat-error *ngIf="creVoiceTouched && !creVoice?.trim()">
+                    CRE Voice cannot be blank
+                  </mat-error>
+                  <mat-error *ngIf="creVoiceTouched && creVoice?.trim() && hasSpecialChars(creVoice)">
+                    No special characters allowed
+                  </mat-error>
+                </div>
+
+              </div>
+
+              <div class="ts-submit-row" *ngIf="hasNewProducts()">
+                <button class="ts-submit-btn" (click)="submitTicketProducts()">
+                  <i class="fa fa-check-circle" style="margin-right:7px;"></i>
+                  Submit {{ newProductCount() }} New Product{{ newProductCount() > 1 ? 's' : '' }}
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="ts-mail-section">
+            <div class="ts-mail-subject">
+              <i class="fa fa-envelope ts-mail-icon"></i>
+              <span>{{ selectedTicket?.parsedTicketBody?.subject | uppercase }}</span>
+            </div>
+            <div class="ts-mail-thread-scroll">
+              <div class="ts-mail-item" *ngFor="let mail of selectedTicket?.parsedTicketBody?.mails; let i = index">
+                <div class="ts-mail-avatar">{{ mail.from?.charAt(0)?.toUpperCase() || '?' }}</div>
+                <div class="ts-mail-content">
+                  <div class="ts-mail-meta">
+                    <div class="ts-mail-from-to">
+                      <span class="ts-mail-from">{{ mail.from }}</span>
+                      <span class="ts-mail-arrow">→</span>
+                      <span class="ts-mail-to">{{ mail.to }}</span>
+                    </div>
+                    <span class="ts-mail-date">{{ mail.sentAt | date:'medium' }}</span>
+                  </div>
+                  <div class="ts-mail-body">{{ mail.body }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </ng-container>
+
+      <div *ngIf="!selectedTicket" class="ts-empty-state">
+        <div class="ts-empty-icon"><i class="fa fa-ticket-alt"></i></div>
+        <h3 class="ts-empty-title">No ticket selected</h3>
+        <p class="ts-empty-sub">Choose a ticket from the left panel to view its details</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

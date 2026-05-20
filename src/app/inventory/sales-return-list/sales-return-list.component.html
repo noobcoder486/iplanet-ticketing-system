@@ -1,0 +1,234 @@
+<ngx-spinner style="width: 100%; height: 100%; position: absolute;" size="medium" *ngIf="Spinner"
+  [type]="typeSelected" [fullScreen]="true">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+
+<section class="sales_dasboard content x_container">
+  <div class="sales_order_action">
+    <div class="tabs_content">
+
+      <div class="tab_content_header" style="height: 30px;">
+        <h3 class="header_text">{{ pageTitle }}</h3>
+        <div class="create_btn" style="max-width: 108px !important;  width: 100%; height: 35px !important;">
+          <button  matTooltip="Create Sales Return Request" style="white-space: nowrap; width: 100%;  font-size: 12px !important;" class="create_btn_content" 
+          (click)="redirectToSalesReturnPage('')">  <i style="font-size:18px !important;color: blue; font-weight: 600; position: relative; top:3px;padding-right: 5px;"  
+           class="iconbtn fa-light fa-plus">      
+         </i> <span style="font-size: 12px !important; font-weight: 600;">Sales Return</span></button>
+        </div>
+        <ul class="layout_icons_wrapper wauto">
+          <li *ngFor="let tab of tabs; let index= index" (click)="selectTab(index)" [class.active]="tab.active">
+            <span *ngIf="tab.gridicon" class="grid_svg_layout layout_icons_content" [innerHtml]="tab.gridicon"></span>
+            <a *ngIf="tab.title">{{ tab.title }}</a>
+          </li>
+        </ul>
+      </div>
+         
+      <my-tab-create [(active)]="tabs[0].active" [gridicon]="content" >
+        <app-tiles (onCardSelected)="onCardSelected($event)" [data]="jobHeaderData"></app-tiles>
+    </my-tab-create>
+    
+      <!-- <my-tab-create [(active)]="tabs[0].active" [gridicon]="content" >
+        <app-tiles (onCardSelected)="onCardSelected($event, 'Request')" [data]="requestData"></app-tiles>
+      </my-tab-create>
+      <my-tab-create [(active)]="tabs[0].active" [gridicon]="content" >
+        <app-tiles (onCardSelected)="onCardSelected($event, 'Created')" [data]="createdData"></app-tiles>
+      </my-tab-create> -->
+
+      <!-- Grids -->
+      <div *ngIf="selectedGrid == 'REQUEST'">
+        <my-tab-create [(active)]="tabs[1].active" [gridicon]="contentOne">
+          <app-sales-list-grid [filters]="filtersEventRequest"></app-sales-list-grid>
+        </my-tab-create>
+      </div>
+      
+      <div *ngIf="selectedGrid === 'CREATED'">
+        <my-tab-create [(active)]="tabs[1].active" [gridicon]="contentOne">
+          <app-sales-created-list-grid [filters]="filtersEventCreated"></app-sales-created-list-grid>
+        </my-tab-create>
+      </div>
+      
+
+      <!-- <ng-container [ngSwitch]="SalesReturnType">
+        <ng-container  *ngSwitchCase="'Request'">
+            <my-tab-create [(active)]="tabs[1].active" [gridicon]="contentOne" >
+              <app-sales-list-grid  [filters]="filtersEvent"></app-sales-list-grid>
+            </my-tab-create>
+        </ng-container>
+        <ng-container *ngSwitchCase="'Created'">
+            <my-tab-create [(active)]="tabs[1].active" [gridicon]="contentOne" >
+              <app-sales-created-list-grid  [filters]="filtersEvent"></app-sales-created-list-grid>
+            </my-tab-create>
+        </ng-container> 
+      </ng-container>-->
+    </div>
+  </div>
+</section>
+
+
+<script> 
+/**
+ 
+<section class="content">
+  <div class="container-fluid"><br />
+      <mat-card class="p-2 mb-4" style="z-index: 9;">
+          <div class="row">
+              <div class="col-lg-2 col-sm-10 col-6" style="display: flex;align-items: center;">
+                  <label style="font-size: 20px !important;font-weight: 600;"> Return Request List</label>
+              </div>
+
+              <div class="col-lg-1 col-sm-4 col-md-4" style="display: flex;align-items: center;">
+              </div>
+              <div class="col-lg-2 col-sm-2 col-6 btn-head-group"  style="display: flex;align-items: center;flex: 1;justify-content: end;">
+                  <!-- <div class="d-flex justify-content-end">
+                      <label style="font-size:16px !important;">Invoice Doc Type:-  </label>
+                  </div> -->
+              </div>
+              <div class="col-lg-3 col-sm-4 col-md-4" >
+                  <!-- <ng-select [items]="InvoiceDocTypeDD.Data" 
+                      [(ngModel)]="InvoiceDocType" bindLabel="TEXT" bindValue="Id"
+                      placeholder="" (change)="GetSalesReturnRequestList()">
+                  </ng-select> -->
+              </div>
+
+              <div class="col-lg-2 col-sm-4 col-md-4" style="display: flex;align-items: center;">
+              </div>
+      
+
+
+              
+              <div class="col-lg-2 col-sm-2 col-6 btn-head-group"  style="display: flex;align-items: center;flex: 1;justify-content: end;">
+                  <div class="d-flex justify-content-end">
+                    <!-- <mat-form-field appearance="standard" [style.width.%]="100"> -->
+                      <button mat-raised-button color="primary" 
+                      (click)="redirectToSalesReturnPage('')">
+                      <mat-icon>add_circle_outline</mat-icon>                   
+                      </button>
+                    <!-- </mat-form-field> -->
+                  </div>
+              </div>
+
+          </div>
+
+          <div class="row">
+        
+          </div>
+      </mat-card> 
+
+      <mat-card  class="p-2 mb-4" style="z-index: 9;">
+        <div class="row">
+          <div class="col-lg-2 col-sm-2" >
+            <label style="font-size: 20px !important;font-weight: 600;">Summary:- </label>
+        </div>
+        <div class="col-lg-10 col-sm-10" >
+            <button class="status-box" [ngClass]="getStatusClass(status.name)" *ngFor="let status of statuses" (click)="Search(status.name)">
+              <div class="status-box-bg" >
+                {{ status.name }}   ({{ status.count }})
+              </div>
+            </button>
+        </div>
+        </div>
+      </mat-card>
+      
+      
+      
+
+      <mat-card class="m-0 p-0" >
+          <div class="row clearfix"  style="display: flex; align-items: center; justify-content: center;">
+              <div  class="col-lg-1 col-sm-2">
+              </div>
+              <!-- First Field -->
+              <div  class="col-lg-3 col-sm-2">
+                  <label style="font-weight:600; padding-bottom: 0%;">Approval Status</label>
+
+                  <ng-select  [items]="ApprovalStatusDD" 
+                  [(ngModel)]="ApprovalStatus" bindLabel="TEXT" bindValue="Id"
+                  placeholder="">
+                      </ng-select>
+              </div>
+              
+              <!-- Second Field -->
+              <div class="col-lg-3 col-sm-2"  style="padding-top: 1%;">
+                <label style="font-weight:600; padding-bottom: 0%;">Select Location</label>
+                <ng-select [items]="Location.Data" bindLabel="TEXT" bindValue="Id"
+                    [(ngModel)]="LocationCode" ></ng-select>
+              </div>
+              
+              <!-- Third Field -->
+              <div class="col-lg-3 col-sm-2"  style="padding-top: 1%;">
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                      <input matInput type="text" 
+                      [(ngModel)]="customerCode" placeholder="Search Customer Code" >
+                  </mat-form-field>
+              </div>
+              
+              <!-- Search Field -->
+              <div class="col-lg-1 col-sm-2" style="padding-top: 2%;">
+                <button class="btn btnClass" style="height: 30px;" (click)="Search('')">Search <i
+                  style="padding-left: 10px;" class="fa fa-search" aria-hidden="true"></i></button>
+       
+                   <!-- (changeEvent)="loadTransportData($event)" -->
+              </div>
+              <div  class="col-lg-1 col-sm-2">
+              </div>
+              
+          </div>
+      </mat-card>
+        
+      <mat-card  *ngIf="results.length>0">
+        <div class="MainDiv" style="padding: 10px;" >
+          <div class="row">
+            <div class="scrollcntr" style="height: 347px !important;">
+              <div class="contents table-responsive">
+                <table>
+                  <thead>
+                    <tr style="height: auto !important;">
+                      <th scope="col">Request Code</th>
+                      <th scope="col">Sales Return Date</th>
+                      <th scope="col">Approval Status</th>
+                      <th scope="col">Sales Return Status</th>
+                      <th scope="col">Sales Return Doc Type</th>
+                      <th scope="col">Invoice Code</th>
+                      <th scope="col">Customer Code</th>
+                      <th scope="col">Customer Name</th>
+                      <th scope="col">Mobile No</th>
+                      <th scope="col">Customer GSTNo</th>
+                      <th scope="col">Location Code</th>
+                      <th scope="col">Taxable Amount</th>
+                      <th scope="col">Tax Amount</th>
+                      <th scope="col">Net Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of results">
+                      <td><a style="color:blue;text-decoration: underline;cursor: pointer;position: relative;padding: 10px;" (click)="redirectToSalesReturnPage(item)">{{ item.SalesReturnCode }}</a></td>
+                      <td style="white-space: nowrap; "> <span> {{ item.SalesReturnDate |  date: 'dd/MM/yyyy : hh:mm a'}} </span></td>
+                      
+                      <td style="white-space: nowrap; "> <span> {{ item.ApprovalStatus}} </span></td>
+                      <td  style="white-space: nowrap; "> <span> {{item.SalesReturnStatus}} </span></td>
+                      <td>{{ item?.SalesReturnDocType}}</td>
+                      <td >{{ item?.InvoiceCode}}</td>
+                      <td >{{ item?.RetailCustomerCode}}</td>
+                      <td>{{ item?.CustomerName}}</td>
+                      <td>{{ item?.MobileNo}}</td>
+                      <td>{{ item?.GSTRegistrationNo == null || item?.GSTRegistrationNo == undefined?'N.A':item?.GSTRegistrationNo}}</td>
+                      <td style="text-align: right;">{{ item?.LocationCode}}</td>
+                      <td style="text-align: right;">{{ item?.TotalTaxableAmount | number: '1.2-2'}}</td>
+                      <td style="text-align: right;">{{ item?.TotalTaxAmount | number: '1.2-2'}}</td>
+                      <td style="text-align: right;">{{ item?.TotalNetAmount | number: '1.2-2'}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+
+  </div>
+</section>
+
+ * */
+</script>
+
+  

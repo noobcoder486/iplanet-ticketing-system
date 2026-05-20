@@ -1,0 +1,23 @@
+<div [formGroup]="form">
+    <!-- <mat-form-field id="{{ctrl.ControlName}}" style="width: 100%;" appearance="outline">
+        <mat-label>{{ctrl.DisplayLabel}} <span *ngIf="ctrl.IsRequired" class="colred">*</span></mat-label>
+        <mat-select id="{{ctrl.ControlName}}" matNativeControl [formControlName]="ctrl.ControlName">
+            <mat-option *ngIf="ctrl.IsRequired!=true">NA</mat-option>
+            <mat-option *ngFor="let opt of ctrl.Data" [value]="opt.Id">
+                {{ opt.Text}}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf="getRequired(ctrl)">{{ctrl.DisplayLabel}} is
+            required.</mat-error>
+    </mat-form-field> -->
+
+    <div class="">
+        <ng-select style="width: 100%;" appearance="outline" [items]="ctrl.Data" #select [selectOnTab]="true"
+            bindValue="Id" bindLabel="Text" labelForId="{{ctrl.DisplayLabel}}" placeholder="{{ctrl.DisplayLabel}}"
+            [formControlName]="ctrl.ControlName"
+            (search)="onSearch($event)">
+        </ng-select>
+        <mat-error *ngIf="getRequired(ctrl)">{{ctrl.DisplayLabel}} is
+            required.</mat-error>
+    </div>
+</div>

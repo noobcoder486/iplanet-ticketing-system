@@ -1,0 +1,873 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<section class="content">
+  <ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+  <mat-horizontal-stepper [linear]="true" #stepper="matHorizontalStepper" class="shadowbox pt-3"
+    style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+    <div class="card">
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+          <ng-template matStepLabel>Customer</ng-template>
+          <div>
+            <my-tabs>
+              <div class="content-header" style="margin-top: 20px;">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-header tabheader">
+                      <h3 class="text-dark">
+                        Customer Details
+                      </h3>
+                    </div>
+                    <div class="card-body" style="padding: 10px;padding-top: 0;margin: 0;">
+                      <div class="row">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-sm-4">
+                              CustomerCode:<b>{{CustomerCode1}}</b>
+                            </div>
+                            <div class="col-sm-4">
+                              CustomerName:<b>{{FirstName}} {{LastName}}</b>
+                            </div>
+                            <div class="col-sm-4">
+                              EmailID:<b>{{EmailID}}</b>
+                            </div>
+                          </div><br>
+                          <div class="row">
+                            <div class="col-sm-4">
+                              MobileNo:<b>{{MobileNo}}</b>
+                            </div>
+                            <div class="col-sm-4">
+                              CountryCode:<b>{{CountryCode}}</b>
+                            </div>
+                            <div class="col-sm-4">
+                              Address:<b>{{Address1}}</b>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Customer Dashboard -->
+                  <div class="dashboard">
+                    <div class="content-header" *ngIf="stepIndex == 0">
+                      <my-tab-create [(active)]="isDashBoardCard" [gridicon]="content">
+                        <app-tiles (onCardSelected)="onCardSelected($event)" [data]="jobHeaderData"></app-tiles>
+                      </my-tab-create>
+                      <my-tab-create [(active)]="isGridCard" [gridicon]="contentOne">
+                        <app-call-login-grid [filters]="filtersEvent"></app-call-login-grid>
+                      </my-tab-create>
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="row card-header tabheader">
+                    <div class="col-6">
+                      <h3 class="text-dark">
+                        Bill To Customer Details
+                      </h3>
+                    </div>
+                    <div class="col-6 d-flex justify-content-end">
+                      <span><i matTooltip="Change Bill To Customer Code" (click)="togglePopup()" class="fa fa-pen"></i></span>                    </div>
+                  </div>
+                  <div class="card-body" style="padding: 10px;padding-top: 0;margin: 0;">
+                    <div class="row">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-sm-4">
+                            Customer Code: <b>{{CustomerObject[0]?.CustomerCode == null || CustomerObject[0]?.CustomerCode == undefined?CustomerCode1:CustomerObject[0]?.CustomerCode}}</b>
+                          </div>
+                          <div class="col-sm-4">
+                            CustomerName: <b>{{CustomerObject[0]?.FirstName == null || CustomerObject[0]?.FirstName == undefined?FirstName + '' + LastName:CustomerObject[0]?.FirstName + ' ' + CustomerObject[0]?.LastName}}</b>
+                          </div>
+                          <div class="col-sm-4">
+                            EmailID: <b>{{CustomerObject[0]?.EmailID == null || CustomerObject[0]?.EmailID == undefined?EmailID:CustomerObject[0]?.EmailID}}</b>
+                          </div>
+                        </div><br>
+                        <div class="row">
+                          <div class="col-sm-4">
+                            MobileNo: <b>{{CustomerObject[0]?.MobileNo == null || CustomerObject[0]?.MobileNo == undefined?MobileNo:CustomerObject[0]?.MobileNo}}</b>
+                          </div>
+                          <div class="col-sm-4">
+                            CountryCode: <b>{{CustomerObject[0]?.CountryCode == null || CustomerObject[0]?.CountryCode == undefined?CountryCode:CustomerObject[0]?.CountryCode}}</b>
+                          </div>
+                          <div class="col-sm-4">
+                            Address: <b>{{CustomerObject[0]?.Address1 == null || CustomerObject[0]?.Address1 == undefined?Address1:CustomerObject[0]?.Address1}}</b>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </my-tabs>
+          </div>
+          <div class="x_final_buttons">
+            <div class="col-6">
+            </div>
+            <div class="btn-tsf">
+              <button mat-button (click)="goForward(stepper)"
+                class="x_final_button x_active_btn x_save_button">Next</button> <!--matStepperNext-->
+            </div>
+          </div>
+        </form><br><br>
+      </mat-step>
+      <!--Add Product -->
+      <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>Add Product</ng-template><br>
+          <ngx-spinner bdColor="rgba(0, 0, 0, 0)" size=" large" color="white" type="ball-scale-multiple">
+            <p style="font-size: 20px; color: white">Loading...</p>
+          </ngx-spinner>
+
+          <div class="card" style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;margin-bottom: 15px !important;">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-4"><b>Name : </b>{{CustomerName}}
+                </div>
+                <div class="col-sm-4">
+                  <b> EmailID : </b>{{EmailID}}
+                </div>
+                <div class="col-sm-4">
+                  <b> MobileNo : </b>{{MobileNo}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="card" style="margin-bottom: 15px !important;box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;">
+            <div class="card-body" style="padding-bottom: 15px !important;">
+              <div class="DisplayBox">
+                <div class="MainBox">
+                  <div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                      <ng-select placeholder="Call Type*" [items]="callForm.Data" bindLabel="TEXT" bindValue="Id"
+                        [(ngModel)]="product.ServiceType" formControlName="ServiceType"  [readonly]="DocType == 'snr'"
+                        [ngClass]="{'ng-invalid-select':!secondFormGroup.get('ServiceType').valid && secondFormGroup.get('ServiceType').touched}">
+                      </ng-select>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                      <ng-select placeholder="Product Type*" (change)="this.Set_Non_Serialised()"
+                        [items]="ProductType1.Data" bindLabel="TEXT" bindValue="Id"
+                        [(ngModel)]="product.ProductTypeValues" formControlName="ProductTypeValues"
+                        [ngClass]="{'ng-invalid-select':!secondFormGroup.get('ProductTypeValues').valid && secondFormGroup.get('ProductTypeValues').touched}">
+                      </ng-select>
+                    </div>
+                    <!-- non serialized -->
+                    <div class="col-lg-3 col-sm-6" style="display: flex;"
+                      *ngIf="product.ProductTypeValues == 'SERIALIZED' || product.ProductTypeValues == 'NONSERIALIZED'|| product.ProductTypeValues == 'WOHDMI' ">
+                      <fieldset [disabled]="disable">
+                        <mat-form-field appearance="standard">
+                          <mat-label>Serial No*</mat-label>
+                          <input matInput placeholder="Search Serial No " [(ngModel)]="product.SerialNo"
+                            formControlName="SerialNo" bindLabel="TEXT" bindValue="Id">
+                        </mat-form-field>
+                      </fieldset>
+                    </div>
+                    <!--  -->
+
+                    <div class="col-lg-1 col-sm-6" style="display: flex;margin-left: -5px;">
+
+                      <div id="child2">
+                        <button class="SearchBtn"
+                          style="border:none;color:white;width: 80px;height: 30px;border-radius: 20px;background-color: #233F76;margin-left: 9px;margin-top: 18px;"
+                          (click)="Search_Serialno()">
+                          <span> <i class="fa-light fa-magnifying-glass"></i> </span>
+                          Search
+                        </button>
+
+
+                        <!-- <button 
+                      class="SearchBtn" 
+                        style="border:none;color:white;width: 80px;height: 30px;border-radius: 20px;background-color: #233F76;margin-left: 9px;margin-top: 18px;"
+                        (click)="Search_Serialno()">Search
+                        
+                      </button> -->
+                      </div>
+
+                    </div>
+
+                    <div class="col-lg-2 col-sm-6" style="display: flex; align-items: center; justify-content: end;">
+                      <button (click)="diagnosisOpen()"
+                        style="border:none;color:white;height: 30px;border-radius: 20px;background-color: #233F76;margin-left: 9px;"
+                        class="SearchBtn">Diagnostics</button>
+                    </div>
+                  </div>
+                  <!-- Hiddin Second Row -->
+                  <div class="row"
+                    *ngIf="product.ProductTypeValues == 'SERIALIZED' || product.ProductTypeValues == 'NONSERIALIZED' ">
+
+                    <div class="col-lg-10 col-sm-10">
+                      <div class="row">
+
+
+
+
+
+                        <div class="col-sm-3 col-lg-3 col-sm-3">
+                          <p>
+                            Product Name:<br><b>{{product.ProductDescription}}</b></p>
+                        </div>
+
+                        <div class="col-sm-3 col-lg-5 col-sm-3">
+                          <p>Config Desc:<br><b>{{product.ConfigDescription}}</b></p>
+                        </div>
+                        <div class="col-sm-5 col-lg-4 col-md-3">
+                          <p>GSX Warranty:<br><b>{{product.GsxWarrantyStatusDescription}}</b></p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-4 col-lg-3 col-sm-3">
+                          <p>Labor Covered:<br><b>{{laborCover}}</b></p>
+                        </div>
+                        <div class="col-sm-3 col-lg-5 col-sm-3">
+                          <p>Part Covered:<br><b>{{partCover}}</b></p>
+                        </div>
+                        <div class="col-sm-3 col-lg-4 col-sm-3">
+                          <p>Onsite Coverage:<br><b>{{onSiteCoverage}}</b></p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3 col-lg-3 col-sm-3">
+                          <p>Purchase Country:<br><b>{{this.product.PurchaseCountryDesc}}</b></p>
+                        </div>
+                        <div class="col-sm-3 col-lg-5 col-sm-3">
+                          <p>Eligible Apple Care:<br><b>{{appleCare}}</b></p>
+                        </div>
+                        <div class="col-sm-3 col-lg-4 col-sm-3">
+                          <p>Purchase Date :<br><b>{{this.product.CoverageStartDate | date :  'dd/MM/yyyy : hh:mm a' }}</b></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-sm-2">
+                      <div class="col-sm-5 col-lg-2"
+                        *ngIf="product.ProductTypeValues == 'SERIALIZED' || product.ProductTypeValues == 'NONSERIALIZED' "
+                        class="ImageBox">
+                        <div class="ImageBorder">
+                          <img src="{{product.ImageUrl}}" [(ngModel)]="product.ImageUrl" style="height:136px;"
+                            formControlName="ImageUrl" [ngModelOptions]="{standalone: true}">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Second Row -->
+                  <div class="row">
+
+                    <div class="col-lg-4 col-sm-4">
+                      <ng-select placeholder="Billing Option*" [items]="BillableOptions" bindLabel="TEXT" bindValue="Id"
+                        [(ngModel)]="product.BillingOptions" formControlName="BillingOptions"
+                        [ngClass]="{'ng-invalid-select':!secondFormGroup.get('BillingOptions').valid && secondFormGroup.get('BillingOptions').touched}">
+                      </ng-select>
+                    </div>
+
+                    <div class="col-lg-4 col-sm-4">
+                      <ng-select [items]="LocationForJob.Data" bindLabel="TEXT" bindValue="Id" placeholder="Location*"
+                        [(ngModel)]="LocationCode" (search)="onLocationSearch($event)" formControlName="LocationCode"
+                        [ngClass]="{'ng-invalid-select':!secondFormGroup.get('LocationCode').valid && secondFormGroup.get('LocationCode').touched}">
+                      </ng-select>
+                    </div>
+                    <div class="col-lg-4 col-sm-4"  *ngIf="DocType != 'snr'">
+                      <ng-select placeholder="ELS Status*" (change)="getTextValue()" [items]="ELSStatusType.Data"
+                        bindLabel="TEXT" [(ngModel)]="product.ElsStatus" formControlName="ElsStatus" bindValue="Id"  [readonly]="DocType == 'snr'"
+                        [ngClass]="{'ng-invalid-select':!secondFormGroup.get('ElsStatus').valid && secondFormGroup.get('ElsStatus').touched}">
+                      </ng-select>
+                    </div>
+
+                    <div class="col-sm-4 col-lg-4 " *ngIf="product.ProductTypeValues == 'WOHDMI'">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Select Product Desc</mat-label>
+                        <mat-select>
+                          <mat-option [value]="value">
+                            {{product.ProductDescription}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <!-- <button (click)="productDesription()">Product D</button> -->
+                    <div class="col-sm-4 col-lg-4" *ngIf="product.ProductTypeValues == 'WOHDMI'">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Date</mat-label>
+                        <input matInput [matDatepicker]="picker">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+
+                    <!-- non serialized -->
+                    <div class="col-sm-4 col-lg-4" *ngIf="product.ProductTypeValues == 'NONSERIALIZED'">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Date</mat-label>
+                        <input matInput [matDatepicker]="picker">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+
+                    
+                    <!-- end here -->
+                    <div class="col-sm-4 col-lg-4" *ngIf="product.ProductTypeValues == ''">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Date</mat-label>
+                        <input matInput  [matDatepicker]="picker">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-lg-4 col-sm-4"  *ngIf="DocType != 'snr'">
+                      <ng-select placeholder="Table Replacement*" (change)="getTextValue()" [items]="tableReplacement"
+                        [(ngModel)]="product.TableReplacement" formControlName="TableReplacement" [readonly]="DocType == 'snr'"
+                        [ngClass]="{'ng-invalid-select':!secondFormGroup.get('TableReplacement').valid && secondFormGroup.get('TableReplacement').touched}">
+                      </ng-select>
+                    </div>
+                    <div class="col-lg-4 col-sm-4"  >
+                      <ng-select placeholder="Data Backup*" (change)="getTextValue()" [items]="tableReplacement"
+                        [(ngModel)]="product.DataBackup" formControlName="DataBackup" 
+                        [ngClass]="{'ng-invalid-select':!secondFormGroup.get('DataBackup').valid && secondFormGroup.get('DataBackup').touched}">
+                      </ng-select>
+                    </div>
+
+                    <div class="col-lg-4 col-sm-4" *ngIf="true" >
+                      <ng-select placeholder="Device Purchased From*" [items]="PartnerListDD.Data" bindLabel="TEXT" bindValue="Id"
+                        [(ngModel)]="product.PartnerList" formControlName="PartnerList" 
+                        [ngClass]="{'ng-invalid-select':!secondFormGroup.get('PartnerList').valid && secondFormGroup.get('PartnerList').touched}">
+                      </ng-select>
+                    </div>
+
+                    <div class="col-lg-4 col-sm-4">
+                      <mat-form-field class="text" appearance="standard" [style.width.%]="100">
+                        <mat-label>Estimated Service Charges*</mat-label>
+                        <input  matInput rows="1" type="number" formControlName="EstimatedServiceCharges"  placeholder=""
+                        [(ngModel)]="product.EstimatedServiceCharges" />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-sm-4" *ngIf="DocType != 'snr'">
+                      <mat-form-field class="text" appearance="standard" [style.width.%]="100">
+                        <mat-label>Estimated Parts Cost*</mat-label>
+                        <input  matInput rows="1" type="number" formControlName="EstimatedPartsCost"  placeholder=""
+                        [readonly]="DocType == 'snr'"
+                        [(ngModel)]="product.EstimatedPartsCost" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                
+                  
+                  <div class="row">
+
+
+                    <div class="col-lg-4 col-sm-4" >
+                      <mat-form-field class="text" appearance="standard" [style.width.%]="100">
+                        <mat-label>Membership Card No</mat-label>
+                        <input  matInput rows="1" type="text" formControlName="MembershipCardNo"  placeholder=""
+                        [(ngModel)]="product.MembershipCardNo" />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-sm-4">
+                      <mat-form-field class="text" appearance="standard" [style.width.%]="100">
+                        <mat-label>CVV</mat-label>
+                        <input  matInput rows="1" type="tel" maxlength="3" formControlName="SecurityNo"  placeholder=""
+                        [(ngModel)]="product.SecurityNo" />
+                      </mat-form-field>
+                    </div>
+                    <div class="col-lg-4 col-sm-4" style="display: flex; align-items: center; justify-content: start;">
+                      <button (click)="validateCard()"
+                        style="border:none;color:white;height: 30px;border-radius: 20px;background-color: #45913e;margin-left: 9px;"
+                        class="SearchBtn">Validate Card</button>
+                      
+                    </div>
+                  </div>
+
+                  <!-- amc contract details -->
+
+                  <div class="row">
+                     <div class="col-lg-4 col-md-4 col-sm-4">
+                       <ng-select (change)="onAmcContractDetailsChange(ContractCode)" placeholder="Contract Code " [items]="BindAmcContractDetailsDD.Data" bindLabel="Id" bindValue="Id" [(ngModel)]="ContractCode" [ngModelOptions]="{standalone: true}"></ng-select>
+                     </div>
+                     <div class="col-lg-4 col-md-4 col-sm-4">
+                        <label>Contract Start Date</label> <br>
+                        <input style="margin-top: 3px !important;" [disabled]="true" [(ngModel)]="ContractStartDate" [ngModelOptions]="{standalone: true}" type="text" style="width: 100%;">
+                     </div>
+                     <div class="col-lg-4 col-md-4 col-sm-4">
+                          <label>Contract Start Date</label> <br>
+                        <input style="margin-top: 3px !important;" [disabled]="true" [(ngModel)]="ContractEndDate" [ngModelOptions]="{standalone: true}" style="width: 100%;" type="text">
+                     </div>
+                  </div>
+
+                  <!-- amc contract details -->
+
+
+
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <mat-form-field class="textareafild" appearance="standard" [style.width.%]="100">
+                        <mat-label>Customer Voice*</mat-label>
+                        <textarea matInput rows="1" formControlName="CustomerVoice"
+                          [(ngModel)]="product.CustomerVoice"></textarea> <!--[ngModelOptions]="{standalone: true}"-->
+                      </mat-form-field>
+                      <!--{{this.product.CustomerVoice}}-->
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <mat-form-field class="textareafild" appearance="standard" [style.width.%]="100">
+                        <mat-label>CCE Voice*</mat-label>
+                        <textarea matInput rows="1" formControlName="CREVoice"
+                          [(ngModel)]="product.CREVoice"></textarea> <!--[ngModelOptions]="{standalone: true}"-->
+                      </mat-form-field>
+                      <!--{{this.product.CREVoice}}-->
+                    </div>
+                  </div>
+                  <div class="row"  *ngIf="DocType != 'snr'">
+                    <div class="col-sm-6">
+                      <mat-form-field class="text" appearance="standard" [style.width.%]="100">
+                        <mat-label>Customer Company Name</mat-label>
+                        <textarea matInput rows="1" formControlName="CustomerCompanyName"
+                          [(ngModel)]="product.CustomerCompanyName"></textarea> <!--[ngModelOptions]="{standalone: true}"-->
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <mat-form-field class="text" appearance="standard" [style.width.%]="100">
+                        <mat-label>Pouch Number</mat-label>
+                        <input matInput rows="1" formControlName="PouchNo" type="text"
+                          [(ngModel)]="product.PouchNo"/> 
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <!-- <div class="row"  *ngIf="DocType == 'snr'">
+                    <div class="col-sm-12">
+                      <mat-form-field class="textareafild" appearance="standard" [style.width.%]="100">
+                        <mat-label>Technician Remark*</mat-label>
+                        <textarea matInput  formControlName="TechnicianRemark"
+                        [(ngModel)]="product.TechnicianRemark" ></textarea>
+                      </mat-form-field>
+                    </div>
+                  </div> -->
+
+
+               
+                  <br>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+
+
+
+          <div class="x_final_buttons">
+            <div class="col-6">
+              <button class="x_final_button x_cancel_button float-start" style="background-color: #233F76; color:white"
+                mat-button (click)="goBack(stepper)">Previous</button> <!--matStepperPrevious-->
+            </div>
+            <div class="col-sm-6 d-flex justify-content-end">
+              <button class="x_final_button x_active_btn x_save_button resetbtn"
+                (click)="ResetSecondFormdata()">Reset</button>
+              <button mat-button (click)="goForward(stepper)" class="x_final_button x_active_btn x_save_button"
+                [disabled]="isSubmitBtnDisabled">Next</button> <!--matStepperNext-->
+            </div>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
+        <form [formGroup]="thirdFormGroup">
+          <ng-template matStepLabel>OverView</ng-template>
+          <div class="card"
+            style="box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;margin-top: 8px;margin-bottom: 9px !important;">
+
+
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-4"><b>Product Name : </b>{{product.ProductDescription}}
+                </div>
+                <div class="col-sm-4">
+                  <b>Config Desc : </b>{{product.ConfigDescription}}
+                </div>
+                <div class="col-sm-4">
+                  <b>GSX Warranty : </b>{{product.GsxWarrantyStatusDescription}}
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- <div class="row" style="padding: 10px;"> -->
+
+          <div class="row">
+
+            <div class="col-lg-6" *ngIf="DocType != 'snr'">
+              <mat-card
+                style="padding: 0px !important;box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; border-radius: 10px; border: 1px solid #e1e8f2;">
+                <div class="HeaderBox">
+                  <div class="row">
+                    <div class="col-11">
+                      <i style="font-size: 18px;" class="fa-duotone fa-file-waveform px-3"></i>
+                      <span>Check List</span>
+                    </div>
+                    <div class="col-1" *ngIf="isAddProductButtonShow">
+                      <i (click)="addProductForCheckList()" class="swiper-edit fa-duotone fa-pen-to-square HeaderText"
+                        matTooltip="Add Product" matTooltipClass="example-tooltip-red" matTooltipPosition="below"></i>
+                    </div>
+                  </div>
+                </div>
+                <mat-card style="padding-right: 10px;  height: 400px !important;border-radius: 10px;overflow: auto;">
+
+
+
+
+                  <div *ngFor="let item of checklistTotalvalues">
+                    <div style="padding: 10px;">
+                      <div class="switch-field" *ngIf="item.FldType=='COMBO'">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label
+                              style="font-size: 12px;font-weight: 400;padding: 1px;">{{item.ChecklistDescription}}</label>
+                          </div>
+                          <div class="col-lg-3">
+                            <mat-button-toggle-group formControlName="{{item.formControlName}}" aria-label="Font Style">
+                              <mat-button-toggle *ngFor="let item1 of item.arrFldValue;"
+                                [checked]="item1.value==item.answer" (change)="checklistvaluechange(item,item1)"
+                                [value]="item1.value">{{item1.value}}</mat-button-toggle>
+                            </mat-button-toggle-group>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </mat-card>
+
+              </mat-card>
+              <div *ngIf="isAddProduct" class="Ux_popup">
+                <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isAddProduct = false"></i>
+                <app-add-product [StoreAllResponse]="StoreAllResponse"> </app-add-product>
+              </div>
+            </div>
+
+
+            <!-- =====IMAGES====== -->
+            <div class="col-lg-6 col-sm-12">
+              <mat-card
+                style="padding: 0px !important;box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; border-radius: 10px; border: 1px solid #e1e8f2; height: 420px;">
+                <div class="" style="height:100%;">
+                  <div class="form-container   text-left ">
+                    <div class="HeaderBox">
+                      <div class="row" style="height: 26px;">
+
+                        <div class="col-lg-11 col-sm-9">
+                          <svg xmlns="http://www.w3.org/2000/svg" style="height: 22px; width: 30px;" fill="currentColor"
+                            class="bi bi-images" viewBox="0 0 16 16">
+                            <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+                            <path
+                              d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z" />
+                          </svg>
+                          <span> Images(Add Front, Back, Left, Right)*</span>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="formcntr" style="height: 361px !important; overflow: auto;">
+
+                      <!-- 1 ROW -->
+                      <div class="row">
+
+                        <!-- Front image -->
+                        <div class="col-lg-4 col-sm-4 col-4">
+                          <div style="border: 1px dotted rgb(170, 170, 170);padding: 10px;border-radius: 4px;">
+                            <div class="row">
+
+                              <div class="col-12" *ngIf="isFrontIcon">
+                                <input #frontImage type="file" (click)="frontImage.value = null"
+                                  (change)="frontImageClick($event)" style="display:none" accept="image/*">
+                                <i style="display: flex;justify-content: center; cursor: pointer; padding: 15px;"
+                                  (click)="frontImage.click()" class="fa fa-plus" aria-hidden="true" type="file"></i>
+                              </div>
+
+                              <div class="col-12" *ngFor="let item of frontImageList">
+                                <div class="swaper-card" style="min-height: 0 !important;padding: 0px !important;">
+                                  <span class="hd_header_content">
+                                    <img [src]="item.src || 'http://placehold.it/180'" alt="your image" />
+                                  </span>
+                                </div>
+
+                                <!-- Footer of Front image -->
+                                <div class="col-12" style="padding-top:7px;border-top:1px dotted rgb(170, 170, 170)">
+                                  <div style="display: flex;align-items: center;justify-content: space-between;">
+                                    <div>
+                                      <i (click)="viewImage(item)" class="fa fa-eye" aria-hidden="true"></i>
+                                    </div>
+
+                                    <div>
+                                      <i (click)="removefrontImage(item)" class="fa fa-trash" aria-hidden="true"></i>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                          <!-- label -->
+                          <div style="text-align: center;">
+                            <label style="font-weight: 600;">Front Image</label>
+                          </div>
+                        </div>
+
+                        <!-- Back image -->
+                        <div class="col-lg-4 col-sm-4 col-4">
+                          <div style="border: 1px dotted rgb(170, 170, 170);padding: 10px;border-radius: 4px;">
+                            <div class="row">
+
+                              <div class="col-12" *ngIf="isBackIcon">
+                                <input #backImage type="file" (click)="backImage.value = null"
+                                  (change)="backImageClick($event)" style="display:none" accept="image/*">
+                                <i style="display: flex;justify-content: center; padding: 15px; cursor: pointer;"
+                                  (click)="backImage.click()" class="fa fa-plus" aria-hidden="true" type="file"></i>
+                              </div>
+
+                              <div class="col-12" *ngFor="let item of backImageList">
+                                <div class="swaper-card" style="min-height: 0 !important;padding: 0px !important;">
+                                  <span class="hd_header_content">
+                                    <img [src]="item.src || 'http://placehold.it/180'" alt="your image" />
+                                  </span>
+                                </div>
+
+                                <!-- Footer of Front image -->
+                                <div class="col-12" style="padding-top:7px;border-top:1px dotted rgb(170, 170, 170)">
+                                  <div style="display: flex;align-items: center;justify-content: space-between;">
+                                    <div>
+                                      <i (click)="viewImage(item)" class="fa fa-eye" aria-hidden="true"></i>
+                                    </div>
+
+                                    <div>
+                                      <i (click)="removebackImage(item)" class="fa fa-trash" aria-hidden="true"></i>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                          <!-- label -->
+                          <div class="labelStyle">
+                            <label style="font-weight: 600;">Back Image</label>
+                          </div>
+                        </div>
+
+                        <!-- Top image -->
+                        <div class="col-lg-4 col-sm-4 col-4" *ngIf="DocType != 'snr'"  >
+                          <div style="border: 1px dotted rgb(170, 170, 170);padding: 10px;border-radius: 4px;">
+                            <div class="row">
+
+                              <div class="col-12" *ngIf="isTopIcon">
+                                <input #topImage type="file" (click)="topImage.value = null"
+                                  (change)="topImageClick($event)" style="display:none" accept="image/*">
+                                <i style="display: flex;justify-content: center;  padding: 15px; cursor: pointer;"
+                                  (click)="topImage.click()" class="fa fa-plus" aria-hidden="true" type="file"></i>
+                              </div>
+
+                              <div class="col-12" *ngFor="let item of topImageList">
+                                <div class="swaper-card" style="min-height: 0 !important;padding: 0px !important;">
+                                  <span class="hd_header_content">
+                                    <img [src]="item.src || 'http://placehold.it/180'" alt="your image" />
+                                  </span>
+                                </div>
+
+                                <!-- Footer of Front image -->
+                                <div class="col-12" style="padding-top:7px;border-top:1px dotted rgb(170, 170, 170)">
+                                  <div style="display: flex;align-items: center;justify-content: space-between;">
+                                    <div>
+                                      <i (click)="viewImage(item)" class="fa fa-eye" aria-hidden="true"></i>
+                                    </div>
+
+                                    <div>
+                                      <i (click)="removetopImage(item)" class="fa fa-trash" aria-hidden="true"></i>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                          <!-- label -->
+                          <div class="labelStyle">
+                            <label style="font-weight: 600;">Top Image</label>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <!-- 2 ROW -->
+                      <div class="row mt-2" *ngIf="DocType != 'snr'">
+
+                        <!-- Bottom image -->
+
+                        <div class="col-lg-4 col-sm-4 col-4">
+                          <div style="border: 1px dotted rgb(170, 170, 170);padding: 10px;border-radius: 4px;">
+                            <div class="row">
+
+                              <div class="col-12" *ngIf="isBottomIcon">
+                                <input #bottomImage type="file" (click)="bottomImage.value = null"
+                                  (change)="bottomImageClick($event)" style="display:none" accept="image/*">
+                                <i style="display: flex;justify-content: center;  padding: 15px; cursor: pointer;"
+                                  (click)="bottomImage.click()" class="fa fa-plus" aria-hidden="true" type="file"></i>
+                              </div>
+
+                              <div class="col-12" *ngFor="let item of bottomImageList">
+                                <div class="swaper-card" style="min-height: 0 !important;padding: 0px !important;">
+                                  <span class="hd_header_content">
+                                    <img [src]="item.src || 'http://placehold.it/180'" alt="your image" />
+                                  </span>
+                                </div>
+
+                                <!-- Footer of Front image -->
+                                <div class="col-12" style="padding-top:7px;border-top:1px dotted rgb(170, 170, 170)">
+                                  <div style="display: flex;align-items: center;justify-content: space-between;">
+                                    <div>
+                                      <i (click)="viewImage(item)" class="fa fa-eye" aria-hidden="true"></i>
+                                    </div>
+
+                                    <div>
+                                      <i (click)="removebottomImage(item)" class="fa fa-trash" aria-hidden="true"></i>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                          <!-- label -->
+                          <div class="labelStyle">
+                            <label style="font-weight: 600;">Bottom Image</label>
+                          </div>
+                        </div>
+
+
+                        <!-- left image -->
+
+                        <div class="col-lg-4 col-sm-4 col-4">
+                          <div style="border: 1px dotted rgb(170, 170, 170);padding: 10px;border-radius: 4px;">
+                            <div class="row">
+
+                              <div class="col-12" *ngIf="isLeftIcon">
+                                <input #leftImage type="file" (click)="leftImage.value = null"
+                                  (change)="leftImageClick($event)" style="display:none" accept="image/*">
+                                <i style="display: flex;justify-content: center;  padding: 15px; cursor: pointer;"
+                                  (click)="leftImage.click()" class="fa fa-plus" aria-hidden="true" type="file"></i>
+                              </div>
+
+                              <div class="col-12" *ngFor="let item of leftImageList">
+                                <div class="swaper-card" style="min-height: 0 !important;padding: 0px !important;">
+                                  <span class="hd_header_content">
+                                    <img [src]="item.src || 'http://placehold.it/180'" alt="your image" />
+                                  </span>
+                                </div>
+
+                                <!-- Footer of Front image -->
+                                <div class="col-12" style="padding-top:7px;border-top:1px dotted rgb(170, 170, 170)">
+                                  <div style="display: flex;align-items: center;justify-content: space-between;">
+                                    <div>
+                                      <i (click)="viewImage(item)" class="fa fa-eye" aria-hidden="true"></i>
+                                    </div>
+
+                                    <div>
+                                      <i (click)="removeleftImage(item)" class="fa fa-trash" aria-hidden="true"></i>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                          <!-- label -->
+                          <div class="labelStyle">
+                            <label style="font-weight: 600;">Left Image</label>
+                          </div>
+                        </div>
+
+                        <!-- Right image -->
+                        <div class="col-lg-4 col-sm-4 col-4">
+                          <div style="border: 1px dotted rgb(170, 170, 170);padding: 10px;border-radius: 4px;">
+                            <div class="row">
+
+                              <div class="col-12" *ngIf="isRightIcon">
+                                <input #rightImage type="file" (click)="rightImage.value = null"
+                                  (change)="rightImageClick($event)" style="display:none" accept="image/*">
+                                <i style="display: flex;justify-content: center;  padding: 15px; cursor: pointer;"
+                                  (click)="rightImage.click()" class="fa fa-plus" aria-hidden="true" type="file"></i>
+                              </div>
+
+                              <div class="col-12" *ngFor="let item of rightImageList">
+                                <div class="swaper-card"
+                                  style="min-height: 0 !important;padding: 0px !important;padding: 0px !important;">
+                                  <span class="hd_header_content">
+                                    <img [src]="item.src || 'http://placehold.it/180'" alt="your image" />
+                                  </span>
+                                </div>
+
+                                <!-- Footer of Front image -->
+                                <div class="col-12" style="padding-top:7px;border-top:1px dotted rgb(170, 170, 170)">
+                                  <div style="display: flex;align-items: center;justify-content: space-between;">
+                                    <div>
+                                      <i (click)="viewImage(item)" class="fa fa-eye" aria-hidden="true"></i>
+                                    </div>
+
+                                    <div>
+                                      <i (click)="removerightImage(item)" class="fa fa-trash" aria-hidden="true"></i>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                          <!-- label -->
+                          <div class="labelStyle">
+                            <label style="font-weight: 600;">Right Image</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div><br>
+                </div>
+              </mat-card>
+            </div>
+
+          </div>
+
+          <div class="row" style="padding: 10px;">
+          </div>
+          <div class="x_final_buttons">
+            <div class="col-6">
+            </div>
+            <div class="col-sm-6 d-flex justify-content-end">
+              <button mat-button matStepperNext class="x_final_button x_active_btn x_save_button"
+                (click)="Save_Job_Details()">Save And Next</button>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+    </div>
+  </mat-horizontal-stepper>
+
+  <div *ngIf="isdiagnosticPop" class="Ux_popup">
+    <!-- <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isdiagnosticPop = false" ></i> -->
+    <app-diagnostic (CancelBtn)="Cancel($event)" [ProductData]="product"> </app-diagnostic>
+  </div>
+
+  <div *ngIf="isverificationPopup" class="Ux_popup">
+    <app-verification-popup (signatureValidate)="jobCreateSignature($event)"
+      (authorizationValidate)="authorizationValidate($event)" (SaveBtn)="verificationSubmit($event)"
+      [verificationArray]="verificationList" [questionArray]="questionArray"
+      [addcosmeticWithCondition]="addcosmeticWithCondition" [answerArray]="answerArray"
+      [imageListArray]="imageListArray" (CancelBtn)="Cancel($event)" [ProductData]="product"> </app-verification-popup>
+  </div>
+
+
+</section>

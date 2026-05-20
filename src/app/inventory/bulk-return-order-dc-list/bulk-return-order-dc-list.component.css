@@ -1,0 +1,27 @@
+
+.header{
+  font-weight: bolder;
+  font-size: larger !important;
+}
+.btnClass
+{
+  border:  1.5px solid rgb(95 165 243);
+  color: blue;
+  border-radius: 0px;
+  background-image: linear-gradient(rgb(202, 212, 223), rgb(103, 163, 253)) !important;
+  height: 25px;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+
+
+/* List Dashboard Part */
+.tab-close {
+color: gray;
+text-align: right;
+cursor: pointer;
+}

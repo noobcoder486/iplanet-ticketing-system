@@ -1,0 +1,76 @@
+::ng-deep .navbar{
+    position: initial !important;
+}
+
+.card2{
+    margin: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    /* background: #807f8542; */
+    background: #c987b9;
+    height: 100px;
+}
+.card1{
+    background: #61c361;
+    height: 95px;
+    margin: 10px;
+}
+.scroll{
+    overflow: auto;
+    height: 250px;
+    background: #e6e0e0;
+}
+.fontZ{
+    font-size: 20px;
+    margin-bottom: 0px;
+
+   
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.heading1{
+    color: white;
+    margin: 5px;
+    line-height: 14px;
+    
+}
+.TokenDisplay
+{
+    margin: 9% auto;
+    text-align: center;
+    font-weight: 900;
+    font-size: 70px;
+}
+/* .no-drop{
+    cursor: no-drop;} */
+
+    .tokenLabel
+    {
+        font-weight: 600; 
+        white-space: nowrap;   
+        font-size: 26px !important; 
+        padding-left: 10%;
+    }
+
+    .tokenNumber
+    {
+        font-weight: 600; 
+        white-space: nowrap;   
+        font-size: 26px !important; 
+        padding-left: 112%;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .tokenLabel{
+            padding-left: 0px;
+        }
+
+        .tokenNumber
+        {
+            padding-left: 0px;
+        }
+    }

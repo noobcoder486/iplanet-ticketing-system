@@ -1,0 +1,195 @@
+<section class="content">
+    <ngx-spinner size="medium" [type]="typeSelected">
+      <p style="font-size: 20px; color: white">Loading...</p>
+    </ngx-spinner>
+  
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+      <div class="row">
+        <div class="col-lg-10  col-sm-10 ">
+          <p class="h4"> Consignment Scanning </p>
+          <p class="mt-11 ml-8">
+            <span *ngFor="let cumb of breadCumbList;let i = index">
+              <span *ngIf="breadCumbList.length-1 == i">
+                <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>{{cumb.text}}
+              </span>
+              <a *ngIf="breadCumbList.length-1 != i" (click)="breadCumbClick(cumb.url)" class="breadcumb">
+                <span *ngIf="i!=0">
+                  <mat-icon class="breadcumb-icon">arrow_forward_ios</mat-icon>
+                </span> {{cumb.text}}
+              </a>
+            </span>
+          </p>
+  
+        </div>
+  
+        <div class="col-lg-2 col-sm-2 btn-head-group">
+          <div  style="display: flex;align-items: center; justify-content: end;column-gap: 20px;">
+  
+            <div >
+              <!-- <label style="white-space: nowrap;"><b>Add Material  </b></label> -->
+              <div class="d-flex justify-content-end"> 
+  
+                <ng-container *ngIf="toolBarAction.length > 0">
+                  <ng-container *ngFor="let toolbar of toolBarAction">
+                    <button mat-raised-button color="primary" class="{{toolbar.title}}" (click)="actionEvent(toolbar)">
+                      <mat-icon>{{toolbar.icon}}</mat-icon>
+                      <span class="{{toolbar.title}}">{{toolbar.title}}</span>
+                    </button>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+  
+  
+            <div>
+              <div style="margin-top: 5px;padding-right: 5px;">
+                <input type="file" id="fileInput" accept=".xls, .xlsx" style="display: none;" (change)="FileUploadStock($event)">
+                <button  matTooltip="Upload {{isApproverPermission ? 'Master Data' : 'Verification Data'}}" style="white-space: nowrap; width: 100%;  font-size: 12px !important;" class="create_btn_content" 
+                    (click)="selectFile()">  <i style="font-size:18px !important;color: blue; font-weight: 600; position: relative; top:3px;padding-right: 5px;"  
+                    class="iconbtn fa-light fa-plus">      
+                  </i> <span style="font-size: 12px !important; font-weight: 600;">  {{isApproverPermission ? "Upload Master" : "Verify Data"}}</span></button>
+                        
+                <!-- <button (click)="" 
+                matTooltip="Bulk Upload Master Consignment" class="btn " style="width:30px; padding: 3px; border-radius: 4px;background-color: #233f76;">
+              
+                <img src="assets/images/uploadNew.png">
+              </button> -->
+              </div>
+            </div> 
+  
+  
+            <div>
+              <div style="margin-top: 5px;"> 
+                <button class="btn btn-warning btn-download" matTooltip="Download Sample Excel" (click)="downloadSampleFile()" >
+                  <i style="color: white;" class="fa fa-download" aria-hidden="true"></i>
+                </button>
+              </div> 
+            </div>
+  
+  
+          </div>
+        </div>
+     
+      </div>
+  
+    </mat-card>
+  
+  
+    <mat-card style="z-index: 9;"  *ngIf="isApproverPermission == false">
+      <div class="row" style="border: 1px solid #dddddd;padding: 10px;">
+        <div class="col-sm-3 col-lg-2 col-md-3">
+          <label style="font-weight: 600;padding-bottom: 2px;">Location</label>
+          <ng-select [items]="LocationForJob.Data" [(ngModel)]="LocationCode" (change)="getLocationData()"
+            bindLabel="TEXT" bindValue="Id"></ng-select>
+        </div> 
+        <div class="col-lg-4 col-sm-12 col-md-12 ">
+          <label style="font-weight: 600;padding-bottom: 2px;">Serial No </label>
+          <input placeholder="Serial Number"
+            style="width:100% !important;border-radius:5px;height:35px !important" 
+            [(ngModel)]="SerialNo" />
+        </div>
+        
+        <div class="col-lg-4 col-sm-12 col-md-12 ">
+          <label style="font-weight: 600;padding-bottom: 2px;">Material Code </label>
+          <input placeholder="Verify Material Code"
+            style="width:100% !important;border-radius:5px;height:35px !important" 
+            [(ngModel)]="MaterialCode" />
+        </div>
+    
+      </div>
+  
+  
+      <div class=" " style="padding-top: 10px;display: flex;justify-content: flex-end;">
+        <div style="padding-right: 40px;">
+          <button  class="btn btn-danger reject"
+          style="width: 100%;"type="submit" (click)="VerifyStock('GSX')">Validate GSX Stock</button>
+        </div>
+  
+        <div style="padding-right: 40px;">
+          <button  class="btn btn-danger reject"
+          style="width: 100%;" type="submit" (click)="VerifyStock('COMPANY')">Validate Company Stock</button>
+        </div>
+      </div>
+  
+  
+    </mat-card>
+    <br />
+  
+    <mat-card *ngIf="isApproverPermission" >
+  
+      <div class="row">
+          <div class="col-sm-3 col-lg-2 col-md-3">
+            <label style="font-weight: 600;padding-bottom: 2px;">Location</label>
+            <ng-select [items]="LocationForJob.Data" [(ngModel)]="LocationCode" 
+              bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+          <div class="col-sm-3 col-lg-2 col-md-3">
+            <label style="font-weight: 600;padding-bottom: 2px;">Material</label>
+              <div class="form-group">
+                <input type="text" class="form-control"
+                [(ngModel)]="MaterialCode" placeholder="Search Material" >
+            </div>
+          </div>
+          <div class="col-sm-5 col-md-5 col-lg-2"  >
+            <mat-form-field appearance="fill">
+            <mat-label style="padding-top: 3px;">Enter a date range</mat-label>
+    
+            <div style="display: flex;align-items: center;">
+            <div>
+            <mat-date-range-input  [rangePicker]="picker">
+              <input matStartDate [(ngModel)]="StartDate" placeholder="Start date" >
+              <input matEndDate [(ngModel)]="EndDate" placeholder="End date">
+            </mat-date-range-input>
+            </div>
+    
+            <div>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+            </div>
+            </div>
+          </mat-form-field>
+        </div>
+        
+      </div>
+  
+      <div class="row">
+        <div class="col-sm-8 col-md-12 col-lg-12 ">
+        </div>  
+        <div class="col-sm-2 col-md-12 col-lg-12 ">
+          <div style="padding-right: 40px;">
+            <button style="float:right" type="submit" (click)="getReportData('')" class="btn btnClass">Generate Report</button>
+          </div>
+    
+          <div style="padding-right: 40px;">
+            <button style="float:right" type="submit" (click)="exportReportData()" class="btn btnClass">Export Report</button>
+          </div>
+
+          <div style="padding-right: 40px;">
+            <button style="float:right" type="submit" (click)="GetInwardOutwardRegistryList('')" class="btn btnClass">Get This Week's Report</button>
+          </div>
+        </div>
+      </div>
+    </mat-card><br />
+  
+  
+    <mat-card *ngIf="isApproverPermission">
+    
+      <mat-card class="m-0 p-0">
+        <div class="row clearfix" *ngIf="columns.length > 0">
+          <label style="font-weight: 600;padding-bottom: 2px;">{{isReport ? 'All Registry Report' : "This Week's Report" }}</label>
+          <div class="table-responsive">  
+            <nitc-grid [gridcolumns]="columns"  [dataSource]="detail" (actionEvent)="actionEmit($event)" [actions]="actionDetails"
+              [hideSpinnerEvents]="hideSpinnerEvent"
+             (changeEvent)="PageChange($event)" [isAllowSelect]="isChoose">
+            </nitc-grid>
+          </div>
+        </div>
+      </mat-card>
+      
+    </mat-card>
+  
+  
+  </section>
+  
+  
+  

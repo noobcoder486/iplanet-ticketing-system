@@ -1,0 +1,139 @@
+<style>
+  p{
+    margin-bottom: 2px;
+  }
+</style>
+<div *ngIf="isReadyToPick" class="scrollcntr">
+  <div>
+    <form [formGroup]="pickupForm" >
+      <div class="row">
+        <div class="col-sm-12"> 
+          <!-- <ng-select
+                placeholder="Ready For Pickup Status" 
+                [items]="RPFStatusList"
+                formControlName="PickUpStatus"
+                [ngClass]="{'ng-invalid-select':!pickupForm.get('PickUpStatus').valid && pickupForm.get('PickUpStatus').touched}"
+                >
+          </ng-select> -->
+          <ng-select
+                placeholder="Ready For Pickup Status" 
+                [items]="RFUStatusDD.Data"
+                bindValue="Id"
+                bindLabel="TEXT"
+                formControlName="PickUpStatus"
+                [ngClass]="{'ng-invalid-select':!pickupForm.get('PickUpStatus').valid && pickupForm.get('PickUpStatus').touched}"
+                >
+          </ng-select>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field appearance="fill">
+            <mat-label>Ready For Pickup date</mat-label>
+            <input  matInput [matDatepicker]="picker"
+              formControlName="PickUpDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12">
+          <mat-form-field class="textareafild" appearance="standard" [style.width.%]="100">
+            <mat-label>Remark</mat-label>
+            <textarea matInput rows="3" formControlName="PickUpRemark"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 d-flex justify-content-end">
+          <!-- <button appDebounceClick
+          [debounceTime]="2000"
+          [disabled]="submitClicked"
+          class="x_final_button x_active_btn x_save_button" type="submit" (debounceClick)="onSubmit()">SAVE</button> -->
+          <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="validateRFP()">SAVE</button>
+          <button class="x_final_button x_active_btn x_save_button" type="submit" (click)="onReset()">RESET</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+ 
+  <div *ngIf="this.repa?.RFP?.RFPStatus == 'Release' || this.repa?.RFP?.RFPStatus== 'COMPLETED' || this.repa?.RFP?.RFPStatus== 'NOTCOMPLETED' ">
+    <mat-card *ngFor="let item of rpfviewlist" style="margin:10px; border-radius:8px;">
+      <div class="row">
+        <div class="col-sm-6">
+          <mat-card-content>
+            <p>  {{item.RFPCode }}</p>
+          </mat-card-content>
+        </div>
+        <div class="col-sm-6">
+          <mat-card-content>
+            <p align="end">{{item.CreatedDate}}</p>
+          </mat-card-content>
+        </div>
+      </div>
+      <mat-card-content>
+          <p> <b> PickUp Status: </b> {{item?.RFPStatus }}</p>
+        <p> <b> PickUp Status Desc: </b> {{item?.RFPStatusDesc }}</p>
+        <p> <b> Remark: </b> {{item?.Remark }}</p>
+      </mat-card-content>
+      <mat-card-content align="end">
+        <p>{{repa.ASGTECH.CreatedBy}}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-accordion *ngIf="isUnclaimed">
+      <mat-expansion-panel   [expanded]="true"   >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Device Unclaimed For:-   </mat-panel-title>
+            <mat-panel-description><span style="font-weight: 600"> {{noOfDaysFromCreation }} Days</span> </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div style="height:240px;">
+                <div *ngIf="noOfDaysFromCreation > 40" class="accordion">
+                    <div class="row">
+                      <div class="col-sm-12"> 
+                        <ng-select [disabled]="repa.JobStatus == 'S15'" 
+                              placeholder="Unclaimed Device Reason" [items]="UnclaimedDeviceDD.Data" bindLabel="TEXT"
+                              bindValue="Id" [(ngModel)]="UnclaimedDeviceReason"  >
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-12 d-flex justify-content-end">
+                        <button  *ngIf="repa.JobStatus !='S15'"
+                        appDebounceClick   [debounceTime]="2000" [hidden]="repa.JobStatus == 'S15'" 
+                        [disabled]="submitClicked" style="border-radius: 10px;" 
+                        class="x_final_button x_active_btn x_save_button"  (debounceClick)="onSubmitUnclaimedDevice()">Save Reason</button>
+
+                        <button  *ngIf="repa.JobStatus =='S15' && isApproverPermission == true"
+                        appDebounceClick   [debounceTime]="2000" 
+                        [disabled]="submitClicked" style="border-radius: 10px;" 
+                        class="x_final_button x_active_btn x_save_button"  (debounceClick)="ReverseUnclaimedDevice()">Move to Ready for Pickup</button>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            </mat-expansion-panel>
+      </mat-accordion>
+    <!--   <mat-accordion *ngIf="isApproverPermission == true">
+        <mat-expansion-panel   [expanded]="false"   >
+          <mat-expansion-panel-header>
+            <mat-panel-title>Send Inbox Letter Mail  </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div style="height:240px;">
+                  <div class="accordion">
+                      <div class="row">
+                        <div class="col-sm-12"> 
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-12 d-flex justify-content-end">
+                          <button   style="border-radius: 10px;" 
+                          class="x_final_button x_active_btn x_save_button"  (click)="sendMail()">Send Mail</button>
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              </mat-expansion-panel>
+        </mat-accordion> -->
+  </div> 
+
+ 

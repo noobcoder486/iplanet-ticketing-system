@@ -1,0 +1,54 @@
+.token-box{
+    border-radius:7px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    padding: 6px;
+}
+ 
+.next-btn{
+    font-size:15px;
+}
+.btn-tojen-swe{
+    padding:8px 20px 8px 20px;
+}
+
+.btn-text-w3{
+ width:100%;
+}
+
+.current-status{
+    border:2px solid gray;
+    border-radius:20px;
+    height:120px;
+    width:50%;
+}
+
+.tokenNumberr{
+    font-size:20px; 
+}
+
+
+::ng-deep Showbtn{
+    cursor: not-allowed! important;
+}
+
+.token-number-dis{
+    border:2px solid yellow;
+    display:flex;
+}
+.token-dsc{
+    border:2px solid gray;
+    width:100%;
+    padding:15px;
+}
+
+.TokenDisplay
+{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    /* row-gap: 6px; */
+    column-gap: 222px;
+    padding: 22px;
+
+}
+  

@@ -1,0 +1,109 @@
+<section class="content">
+    <div class="container-fluid">
+     <!-- ADD Button -->
+     <mat-card class="p-2 mb-4" style="z-index: 9;">
+
+
+
+            <div class="row">
+              <div class="col-sm-8">
+                <p style="font-size: 16px !important;color:black;font-weight: 600;">User Master</p>
+              </div>
+      
+      
+              <div class="col-sm-4"  >
+                <div class="row" >
+                
+                  <div class="col-sm-6">
+                    <div style="margin-top: 15px; display: flex;align-items: center;">
+                      <div class="d-flex justify-content-end"> 
+                        <ng-container *ngIf="toolBarAction.length > 0">
+                          <ng-container *ngFor="let toolbar of toolBarAction">
+                            <button mat-raised-button color="primary" class="{{toolbar.title}}" (click)="actionEvent(toolbar)">
+                              <mat-icon>{{toolbar.icon}}</mat-icon>
+                              <span class="{{toolbar.title}}">{{toolbar.title}}</span>
+                            </button>
+                          </ng-container>
+                        </ng-container>
+                      </div>
+                    </div>
+                    </div>
+                  <div class="col-sm-6">
+                    <div style="margin-top: 15px; display: flex;align-items: left;">
+                      <button class="btn btn-warning btn-download"  style="width:40px;height: 35px; padding: 3px; border-radius: 4px;background-color: #5cb945;"
+                   matTooltip="Download User Report" (click)="exportReportData()">
+                    <i style="color: rgb(251, 255, 0);" class="fa fa-download" aria-hidden="true"></i>
+                  </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            
+             
+          </div>
+
+
+      </mat-card>
+      <mat-card class="p-2 mb-4">
+        <form>
+            <div class="mat-card-s3">
+                <div class="d-flex">
+                    <div class="col-sm-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <input type="text" class="x_input" matInput placeholder="Username"
+                                [(ngModel)]="userName" name="UserName"
+                              >
+                        </mat-form-field>
+                    </div>
+                    <!-- first field -->
+                    <div class="col-sm-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <input type="text" class="x_input" matInput placeholder="Email"
+                                [(ngModel)]="primaryEmail" name="PrimaryEmail">
+                        </mat-form-field>
+                    </div>
+                    <!-- 2end Field -->
+                    <div class="col-sm-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <input type="text" class="x_input" matInput placeholder="Mobile No"
+                                [(ngModel)]="mobieleNo" name="MobileNo">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <input type="text" class="x_input" matInput placeholder="Employee Code"
+                                [(ngModel)]="EmployeeCode" name="EmployeeCode">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-sm-2">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <input type="text" class="x_input" matInput placeholder="Base Location Code"
+                                [(ngModel)]="BaseLocationCode" name="BaseLocationCode">
+                        </mat-form-field>
+                    </div>
+                    <!-- 4rth field -->
+                    <div class="col-sm-2">
+                        <div class="x_final_buttons1" style="margin: 20px 0 15px !important;">
+                            <button class="x_final_button x_active_btn x_save_button"
+                                (click)="search()">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-card>
+
+      
+  
+      <!-- Data -->
+      <mat-card class="m-0 p-0">
+        <div class="row clearfix" *ngIf="columns.length > 0">
+          <div class="table-responsive">  
+            <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent"
+            (actionEvent)="actionEmit($event)" (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+            </nitc-grid>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </section>

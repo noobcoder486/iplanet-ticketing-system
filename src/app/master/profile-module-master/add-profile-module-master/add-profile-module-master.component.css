@@ -1,0 +1,22 @@
+th{
+    height: 30px;
+}
+table thead th
+{
+    background-color: rgb(167, 167, 167);
+}
+table tbody
+{
+    border: none !important;
+}
+.btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(202, 212, 223), rgb(103, 163, 253)) !important;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

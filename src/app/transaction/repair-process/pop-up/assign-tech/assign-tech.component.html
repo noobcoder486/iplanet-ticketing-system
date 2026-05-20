@@ -1,0 +1,60 @@
+<style>
+    input[type=checkbox] {
+      transform: scale(1.5);
+  }
+  </style>
+  <div class="content-header" >
+    <div class="card px-3 pb-3" >
+        <div class="row">
+          <div class="col-12">
+            <div class="tabheader">
+              <h3>Assign Technician</h3>
+            </div>
+          </div>
+        </div>
+        
+        
+       
+        <br />
+        <div class="row">
+          <div class="col-12">
+            <form [formGroup]="assignTechForm"  name="atForm" autocomplete="off">
+                <div class="row">
+
+                  <div class="col-sm-6">
+                      <div class="row">
+                        <label>Technician</label>
+                        <ng-select
+                          [items]="technicians?.Data"
+                          bindLabel="TEXT"
+                          bindValue="Id"
+                          placeholder=""
+                          formControlName="techSelect"
+                          (search)="onTechnicianSearch($event)">
+                        </ng-select>
+                      </div>
+                        <div class="row" *ngIf="repa.LOCATION.LocationAccGroupCode == 'DROPOFF'">
+                            <label>Parent Location</label>
+                            <ng-select  [items]="ParentLocationDD.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                            [(ngModel)]="ParentLocationCode" placeholder="" ></ng-select>
+                        </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <mat-form-field class="textareafild" appearance="standard" [style.width.%]="100" >
+                      <mat-label>Remark</mat-label>
+                      <textarea matInput rows="1"  formControlName="remark"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+                  <div class="col-12 d-flex justify-content-end">
+                    <button  class="x_final_button x_active_btn x_save_button" type="submit" (click)="onSubmit()">Assign Technician</button>
+                  </div>
+              </form>
+          </div>
+        </div>
+    </div>
+  </div>
+  
+  
+  

@@ -1,0 +1,173 @@
+<section class="content">
+
+  <mat-card style="padding: 0px !important;">
+    <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+      <div class="row">
+
+        <div class="col-lg-6 col-sm-12">
+          <div class="row" style="align-items: center;">
+            <div class="col-lg-6 col-sm-6 col-6 " style=" border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+                <div class="mt-1" style=" padding-right: 15px;">
+                  <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+                </div>
+                <div class="mt-1">
+                  <h4><span style="color: black;font-size: 14px; " title="">Unique Id </span></h4>
+                  <div class="mt-1">
+                    <h4><span style="color: blue ;font-size: 14px; font-weight: 600; " title=""> {{LeadObject?.UniqueId == null || LeadObject?.UniqueId == undefined ? 'No ID' : LeadObject?.UniqueId}}</span> </h4>
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-6" style=" border-right: 1px solid rgb(112, 111, 111);">
+                <!-- inside Box -->
+                <div class="JobTypeDesc mt-1"
+                    style="color: {{ LeadObject?.LeadStatus === 'NEW' ? 'green' : 'red'}};text-align: center;display: flex; align-items: center; justify-content: center;">
+                    <b style="color: black;padding-right: 10px;">Lead Status: </b>{{LeadObject?.LeadStatus === undefined || LeadObject?.LeadStatus === null ? 'NEW' : LeadObject?.LeadStatus}}
+
+                  </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-sm-12 mt-3">
+          <div class="row" style="align-items: center;">
+<!-- 
+              <div class="col-lg-5 col-sm-3 col-md-3 col-6"
+                  style=" color: {{RefundStatus === 'CLOSED' ? 'green' : 'red'}};border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+                  <b style="color: black;padding-right: 10px;">Refund Status  ({{RefundDocType == 'SREFUND' ? 'Sales' : 'Repair Advance' }}): </b>{{RefundStatus
+                  === undefined || RefundStatus ===
+                  null?'NA':RefundStatus}}
+              </div> -->
+              <div class="col-lg-5 col-sm-3 col-6 ">
+                  <div class="col-12"
+                    style="text-align: center;display: flex; align-items: center; justify-content: center;">
+                    <label style="white-space: nowrap;"><b>Created Date:-  </b> <span style="padding-right: 5px;">{{ LeadObject?.CreatedDate != null || LeadObject?.CreatedDate != undefined ? ( LeadObject?.CreatedDate | date: 'dd/MM/yyyy : hh:mm a' ): 'No Date Found' }}</span></label>
+                  </div>
+              </div>
+              <div class="col-lg-2 col-sm-3 col-6 " >
+              </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+  
+  <div class="row" style="padding:10px;" >
+    <!-- Background -->
+    <div class="col-lg-12"
+      style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+      <div class="row">
+         
+
+       
+        <div class="col-lg-6 col-sm-12 col-md-6 col-12"  style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+          <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+            <div class="row">
+              <div class="col-6">
+                <span style="font-size: 16px !important;color:black;font-weight: 600;">Lead Details</span>
+              </div>
+            </div>
+          </div>
+         
+    
+          <mat-card-content> 
+            <div style="padding: 5px;">
+            
+                <div class="mt-1"> 
+                  <strong>Lead Management Code:</strong> {{LeadObject?.LeadManagementCode}}
+                </div>
+
+                <div class="mt-1"> 
+                  <strong>Lead Status:</strong> {{LeadObject?.LeadStatus}}
+                </div>
+
+                <div class="mt-1"> 
+                  <strong>Store Type:</strong> {{LeadObject?.StoreType}}
+                </div>
+
+                <div class="mt-1"> 
+                  <strong>Call Category:</strong> {{LeadObject?.CallCategory}}
+                </div>
+
+                <div class="mt-1"> 
+                  <strong>Parent Details:</strong> {{LeadObject?.ParentDetails}}
+                </div>
+
+                <div class="mt-1"> 
+                  <strong>Call Details:</strong> {{LeadObject?.CallDetails}}
+                </div>
+
+                <div class="mt-1"> 
+                  <strong>Notes:</strong> {{LeadObject?.Notes}}
+                </div>
+                <div class="mt-1"> 
+                  <b><strong>Location Mobile No:</strong> &nbsp; {{LocationMobileNo}}</b>
+                </div>
+
+            </div>
+             
+          </mat-card-content>
+    
+      </div>
+
+      <!-- Customer Details Section -->
+      <div class="col-lg-6 col-sm-12 col-md-6 col-12">
+        <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+          <div class="row">
+            <div class="col-6">
+              <span style="font-size: 16px !important;color:black;font-weight: 600;">Customer Details</span>
+            </div>
+          </div>
+        </div> 
+
+          <div class="MainDiv" style="padding: 10px;">
+            <mat-card-title class="header">{{LeadObject?.FirstName}}&nbsp;{{LeadObject?.LastName}}</mat-card-title>
+            <mat-card-content>
+              <b>Location Code:</b> {{LeadObject?.LocationCode}}<br>
+              <b>Customer Name:</b> {{LeadObject?.CustomerName}}<br>
+              <b>Email Id:</b> {{LeadObject?.EmailId}}<br>
+              <b>Mobile No:</b> &nbsp; <b>{{LeadObject?.MobileNo}}</b> <br>
+            </mat-card-content>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <mat-card class="mt-2">
+    <div class="row">
+      <div class="col-lg-6 col-sm-12 col-md-12">
+        <div style="display: flex; flex-direction: column;">
+          <div>
+            <label style="float:left"><b>Lead Disposition: </b></label>
+         
+            <ng-select [disabled]="!isEdit" [(ngModel)]="LeadDisposition" [items]="LeadDispositionDD.Data" bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-sm-12 col-md-12">
+        <div style="display: flex; flex-direction: column;">
+          <div>
+            <label style="float:left"><b>Remarks: </b></label>
+       
+            <input type="text" style="float:left; width:80% !important; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; width: 100% !important; height: 30px;" 
+            [disabled]="!isEdit" placeholder="Remarks" maxlength="4000" [(ngModel)]="Remarks">
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+  
+  <div style="display: flex;justify-content: end;align-items: center;column-gap: 10px;" *ngIf="isEdit"  class="mt-3">
+    <div>
+    <button class="btn btn-primary" (click)="onCall()">Call</button>
+    </div> 
+    <div>
+      <button class="btn btn-warning" (click)="onFollowUp()">Follow-up</button>
+    </div>
+    <div>
+      <button class="btn btn-danger" (click)="onClose()">Close</button>
+    </div>
+   
+  </div>
+</section>

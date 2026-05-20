@@ -1,0 +1,51 @@
+<section class="content">
+    <mat-card class="mt-2" style="display: flex; justify-content: space-between; align-items: center;">
+        <h3><strong>CheckIn and CheckOut Details</strong></h3>
+        <p style=" margin-right: 58px;">
+            <strong>Current Status : </strong>
+            <strong [ngStyle]="{ color: (CurrentStatus === 'CHECKIN' || CurrentStatus === '') ? 'green' : 'red' }">
+                {{ CurrentStatus !== '' ? CurrentStatus : 'Welcome, Please Check In' }}
+            </strong>
+        </p>
+    </mat-card>
+
+    <mat-card class="mt-2" style="height: 80vh;">
+        <mat-card class="mt-4 mat-elevation-z8" style="    width: 90%;margin-left: 56px;">
+            <div class="row mt-2" style="display: flex; flex-direction: row;     justify-content: space-around;">
+                <div class="col-lg-6" style="display: flex;flex-direction: column; justify-content: center;">
+                    <label for=""><strong> UserName</strong></label>
+                    <input [disabled]="true" type="text" [(ngModel)]="UserName">
+                </div>
+            </div>
+            <div *ngIf="CurrentStatus == 'CHECKIN' " class="row mt-2"
+                style="display: flex; flex-direction: row;     justify-content: space-around;">
+                <div class="col-lg-6" style="display: flex;flex-direction: column; justify-content: center;">
+                    <label style="margin-bottom: -20px;"> <strong>Select Reason <i matTooltip="Compulsory Field"
+                                style="color: red;">*</i></strong> </label>
+                    <ng-select [items]="ReasonsList" [(ngModel)]="SelectedReason"></ng-select>
+                    <div *ngIf="SelectedReason == 'Other'">
+                        <label style="margin-bottom: -20px;"> <strong>Enter Reason <i
+                                    style="color: red;">*</i></strong></label>
+                        <textarea rows="1" placeholder="Please Enter Specific Reason !"
+                            [(ngModel)]="SpecifiedReason"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-lg-12" style="display: flex; justify-content: center;">
+                    <button style="width: 150px;" (click)="onSubmit()" class="btn btn-success"
+                         appDebounceClick   [debounceTime]="3000"  [disabled]="IsDisabled"
+                        *ngIf="CurrentStatus =='CHECKOUT' || CurrentStatus =='' ">CHECK-IN</button>
+                    <button style="width: 150px;" (click)="onSubmit()" class="btn btn-success"
+                          appDebounceClick   [debounceTime]="3000" [disabled]="IsDisabled"
+                        *ngIf="CurrentStatus =='CHECKIN' ">CHECK-OUT</button>
+                </div>
+            </div>
+        </mat-card>
+
+    </mat-card>
+
+
+
+</section>

@@ -1,0 +1,101 @@
+<strong>{{gridSectionDetail?.SectionName}}</strong>
+<hr />
+<div class="container">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6 btn-head-group bottombtnhead" style="margin-bottom: 15px;">
+                <div class="right">
+                    <button mat-button type="button" class="Add" (click)="showForm()">
+                        <mat-icon>add</mat-icon>            
+                        <span class="Add">Add</span>
+                    </button>
+                      <!-- <button  mat-button type="button" (click)="addFormGroup()">
+                            <mat-icon>add</mat-icon></button> -->
+                   
+                </div>
+            </div>
+        </div>
+       
+        
+    </div>
+</div>
+
+
+
+<div>
+    <nitc-form-child-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails" (actionEvent)="actionEmit($event)" (changeEvent)="loadPageData($event)">
+    </nitc-form-child-grid>
+</div>
+
+<div *ngIf="isAddForm == true">
+    <form [formGroup]="formDetail" name="form" autocomplete="disabled">
+        <mat-card>
+            <div class="col-md-12 pt-8">
+                <div class="row">
+                    <ng-container *ngFor="let ctrl of gridSectionDetail.FormDetail">
+                        <div class="col-md-6"
+                            *ngIf="ctrl.ControlType=='TEXT' || ctrl.ControlType=='MAIL' || ctrl.ControlType=='PHONE'">
+                            <nitc-text [form]="formDetail" [ctrl]="ctrl" [External]="external"
+                                (dependancyControlEvent)="loadDependentCtrl($event)" [formSection]="gridSectionDetail">
+                            </nitc-text>
+                        </div>
+                        <div class="col-md-6" *ngIf="ctrl.ControlType=='NUMBER'">
+                            <nitc-number [form]="formDetail" [ctrl]="ctrl" [External]="external"
+                                (dependancyControlEvent)="loadDependentCtrl($event)" [formSection]="gridSectionDetail">
+                            </nitc-number>
+                        </div>
+                        <div class="col-md-6" *ngIf="ctrl.ControlType=='CHECKBOX'">
+                            <div class="pt-8">
+                                <nitc-checkbox [form]="formDetail" [ctrl]="ctrl" [External]="external" [formSection]="gridSectionDetail"></nitc-checkbox>
+                            </div>
+                        </div>
+                        <div class="col-md-6" *ngIf="ctrl.ControlType=='TEXTAREA'">
+                            <mat-form-field class="textareafild" style="width: 100%;" [id]="ctrl.ControlName" appearance="outline">
+                                <mat-label>{{ctrl.DisplayLabel}} <span *ngIf="ctrl.IsRequired" class="colred">*</span>
+                                </mat-label>
+                                <textarea matInput [formControlName]="ctrl.ControlName"
+                                    [placeholder]="ctrl.DisplayLabel" rows="6" cols="35"
+                                    maxlength="{{ctrl.FieldMaxLength}}"></textarea>
+                                <mat-error *ngIf="getRequired(ctrl)">{{ctrl.DisplayLabel}}
+                                    is
+                                    required.</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-6" *ngIf="ctrl.Type=='FILE'">
+                            <input [id]="ctrl.ControlName" type="file" [formControlName]="ctrl.ControlName" />
+                        </div>
+                        <div class="col-md-6" *ngIf="ctrl.ControlType=='COMBO'">
+                            <nitc-dropdown [form]="formDetail" [ctrl]="ctrl"
+                                (dependancyControlEvent)="loadDependentCtrl($event)" 
+                                [External]="external"
+                                [formSection]="gridSectionDetail">
+                            </nitc-dropdown>
+                        </div>
+                        <div class="col-md-6" *ngIf="ctrl.ControlType=='COMBOSEARCH'">
+                            <nitc-dropdown [form]="formDetail" [ctrl]="ctrl"
+                                (dependancyControlEvent)="loadDependentCtrl($event)"
+                                [External]="external"
+                                (searchDetail)="loadDropdownData($event)"
+                                [formSection]="gridSectionDetail">
+                            </nitc-dropdown>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="row bor-box margtop10 pt-8">
+                    <div class="col-md-11"></div>
+                    <div class="col-md-1 btn-head-group" style="text-align: right;display: flex;padding: 0 !important;">
+                        <button mat-button class="Cancel" style="margin: 0 !important;margin-top: 0 !important;" (click)="cancel()">
+                            <mat-icon>cancel</mat-icon>                            
+                            <span class="Cancel">Cancel</span> 
+                        </button>
+                        <button mat-raised-button class="Add" style="margin-top: 0 !important;" color="primary" (click)="saveForm()">
+                            <mat-icon>add</mat-icon>  
+                            <span class="Add">Add</span>                             
+                        </button>
+                    </div>                  
+                </div>
+            </div>
+        </mat-card>
+    </form>
+</div>

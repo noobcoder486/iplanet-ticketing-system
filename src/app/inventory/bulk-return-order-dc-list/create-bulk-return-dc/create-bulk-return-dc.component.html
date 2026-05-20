@@ -1,0 +1,475 @@
+<section class="content">
+    <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-clip-rotate" [fullScreen]="true">
+        <p style="color: white"> Loading... </p>
+    </ngx-spinner>
+
+    <mat-card class="mt-2">
+        <p style="font-size: 16px !important; font-weight: 700 !important;">Bulk Return order DC</p>
+    </mat-card>
+    <mat-card class="mt-2">
+        <div class="row">
+            <div class="col-lg-8 col-sm-8 col-md-8">
+                <div class="row">
+                    <div class="col-lg-4 col-md-4 col-sm-4" style="display: flex; flex-direction: column;">
+                        <Label>Challan No.</Label>
+                        <label class="Bold" style="color: blue;"
+                            matTooltip="Challan Number">{{DeliveryChallanNo}}</label>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-4" style="display: flex; flex-direction: column;">
+                        <label>Status</label>
+                        <label class="Bold" style="color: blue;" matTooltip="Challan Status">{{Status}}</label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4" style="display: flex; flex-direction: column;">
+                        <label>Created Date </label>
+                        <label class="Bold" style="color: blue;">{{CreatedDate}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="row">
+                    <div class="col-lg-10 col-md-10 col-sm-10">
+                        <ng-select style="margin-top: -15px;" [items]="printTypeArray" bindLabel="TEXT" bindValue="Id"
+                            [(ngModel)]="printTypeData"></ng-select>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2"> <button (click)="PrintDocument()"
+                            class="btn blue-button">Print</button>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </mat-card>
+    <!--  -->
+    <mat-card *ngIf="DeliveryChallanNo" class="mt-2">
+        <!-- documentList Image -->
+        <div class="row">
+            <div class="col-8" style="padding-right: 10px;">
+                <div class="row">
+                    <div class="col-lg-2 col-sm-4 col-4 mt-2" *ngFor="let file of FileUploadList; let index = index">
+                        <div style="border: 1px dotted rgb(170, 170, 170);padding: 10px;border-radius: 4px;">
+                            <div class="row">
+
+                                <div class="col-12" *ngIf="!file?.src && AddFiles">
+                                    <input #fileInput type="file" (click)="fileInput.value = null"
+                                        (change)="UploadFile($event, index)" style="display:none"
+                                        accept="image/*, application/pdf/*">
+                                    <i style="display: flex;justify-content: center; cursor: pointer; padding: 15px;"
+                                        (click)="fileInput.click()" class="fa fa-plus" aria-hidden="true"
+                                        type="file"></i>
+                                </div>
+                                <!-- For Approver Access and if no File Present  -->
+                                <div class="col-12" *ngIf="!file?.src && !AddFiles">
+                                    <div class="swaper-card" style="min-height: 10 !important;padding: 0px !important;">
+                                        <span class="hd_header_content">
+                                            <i class="far fa-file" style="color:red;min-height: 10 !important;padding: 0px !important;    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 70px !important;"></i>
+                                        </span>
+                                    </div>
+                                    <hr>
+                                    <!-- label of the File-->
+                                    <div style="text-align: center;">
+                                        <label style="font-weight: 600; color: red">No File Found</label>
+                                    </div>
+                                </div>
+
+                                <!-- Show only when FileUploadList for that index has a File -->
+                                <div *ngIf="file?.src">
+                                    <!-- Viewing the File -->
+                                    <div *ngIf="file?.type.includes('image')">
+                                        <div class="swaper-card"
+                                            style="min-height: 0 !important;padding: 0px !important;">
+                                            <span class="hd_header_content">
+                                                <img [src]="file?.src || 'http://placehold.it/180'"
+                                                    alt="{{file?.filename}}" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="file?.type.includes('pdf')">
+                                        <div class="swaper-card"
+                                            style="min-height: 0 !important;padding: 0px !important;">
+                                            <span class="hd_header_content">
+                                                <i class="far fa-file-pdf" style="color:rgb(0, 132, 255); min-height: 0 !important;padding: 0px !important;  display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                font-size: 69px !important;"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Footer of File -->
+                                    <div class="col-12"
+                                        style="padding-top:7px;border-top:1px dotted rgb(170, 170, 170)">
+                                        <div style="display: flex;align-items: center;justify-content: space-between;">
+                                            <div>
+                                                <i (click)="viewImage(file, index)" class="fa fa-eye"
+                                                    style="color:rgb(111, 178, 255);cursor: pointer;"
+                                                    aria-hidden="true"></i>
+                                            </div>
+                                            <div>
+                                                <i (click)="removeFile(file, index)" class="fa fa-trash"
+                                                    style="color:red ; cursor: pointer;" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- label of the File-->
+                                    <div style="text-align: center;">
+                                        <label style="font-weight: 600;">{{ file.filename.slice(0,13) }}</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4" style="padding-right: 10px;">
+                <label for="">Approver Remark's</label>
+                <textarea rows="2" style="width: 100%;" cols="50" maxlength="1000" [(ngModel)]="ApproverRemark"
+                    placeholder="Write Your Remarks here:- "> </textarea>
+            </div>
+        </div>
+
+    </mat-card>
+    <!--  -->
+
+    <mat-card class="mt-2">
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <label style="font-size: 14px !important; font-weight: 600 !important;">Return Type </label>
+                <ng-select [disabled]="true" (search)="onBulkReturnType($event)" [items]="BulkReturnTypeDD.Data"
+                    bindLabel="TEXT" bindValue="Id" [(ngModel)]="BulkReturnType" (change)="changeVendor()"></ng-select>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5">
+                <div>
+                    <label style="font-size: 14px !important; font-weight: 600 !important;">Ship To</label>
+                    <ng-select (search)="onLocationSearch($event)" [items]="LocationForJob.Data" bindLabel="TEXT"
+                        bindValue="Id" [(ngModel)]="LocationCode" (change)="changeVendor()">
+                    </ng-select>
+                </div>
+                <div>
+                    <div *ngFor="let item of LocationObject ">
+                        <p>Location Name :- <span class="Bold">{{item.LocationName}}</span></p>
+                        <p>Ship To Code :- <span class="Bold">{{item.SHIP_TO_GSX}}</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-5">
+                <label style="font-size: 14px !important; font-weight: 600 !important;">Return To</label>
+                <div></div>
+                <div *ngFor="let item of VendorObject">
+                    <p>Vendor Name:- <span class="Bold">{{item.extraData.VendorName}}</span></p>
+                    <p>Address :- <span class="Bold">{{item.extraData.Address1}} {{item.Address2}}</span> </p>
+                    <p>Email :- <span class="Bold">{{item.extraData.EmailID}}</span></p>
+                    <p>Mobile No :- <span class="Bold">{{item.extraData.MobileNo}}</span></p>
+                </div>
+            </div>
+        </div>
+
+    </mat-card>
+
+
+    <!-- E- way Details -->
+    <mat-card class="mt-2">
+        <div class="row">
+            <h3 style="font-size: 16px !important; font-weight: 600 !important;">E-Way Bill Details</h3>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-12"><label style="font-weight: 600 !important;   font-size: 14px !important;">Distance
+                        In KM</label></div>
+                <div class="col-12"><input style="width:100%; margin-top: 4px;" type="text" [(ngModel)]="DistanceInKm"
+                        placeholder="Enter Distance in KM"></div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <div class="col-12"><ng-select [items]="ModeofTransport.Data" bindLabel="TEXT" bindValue="Id"
+                        placeholder="Mode of Transport" (change)="GetVehicleData()" [(ngModel)]="ModeOfTransportData">
+                    </ng-select></div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3" *ngIf="ModeOfTransportData =='ROAD'">
+                <div class="col-12"> <label style="font-weight: 600 !important;   font-size: 14px !important;">Vehicle
+                        Number </label></div>
+                <div class="col-12"> <input style="width:100%; margin-top: 4px;" type="text" [(ngModel)]="VehicleNumber"
+                        placeholder="Vehicle Number"></div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3" *ngIf="ModeOfTransportData =='ROAD'">
+                <div class="col-12"><ng-select [items]="VehicleType.Data" bindLabel="TEXT" bindValue="Id"
+                        placeholder="Vehicle Type Data" [(ngModel)]="VehicleTypeData">
+                    </ng-select></div>
+            </div>
+        </div>
+
+
+    </mat-card>
+
+    <!-- Tote  -->
+    <mat-card class="mt-2">
+        <div class="row">
+            <div class="col-lg-11 col-md-11 col-sm-11">
+                <p style="font-size: 16px !important; font-weight: 600 !important;">Tote Details</p>
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                <div class="MainDiv" style="padding: 10px;">
+                    <div class="row">
+                        <div class="scrollcntr" style="height: 170px;">
+                            <div class="contents" style="overflow: auto;height: 168px;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Sr.No</th>
+                                            <th>Tote No</th>
+                                            <th>SealNo</th>
+                                            <th>DCNo</th>
+                                            <th>AWBNo</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of SelectedToteList;  let i= index">
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ i + 1 }}</td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.ToteNo }}</td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.SealNo }}
+                                            </td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.DCNo }}</td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.AWBNo }}</td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </mat-card>
+    <mat-card class="mt-2">
+        <div class="row">
+            <div class="col-lg-1 col-md-1 col-sm-1">
+
+                <p style="cursor: pointer;" [ngStyle]="{ color: ShowPart ? 'blue' : '',
+    'font-weight': ShowPart ? '600' : ''   }" (click)="ChangePartButtonName('PART')">Parts</p>
+
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10">
+                <p style="cursor: pointer; " [ngStyle]="{ color: ShowPartDetails ? 'blue' : '',
+    'font-weight': ShowPartDetails ? '600' : ''   }" (click)="ChangePartButtonName('PARTDETAILS')">Part Details</p>
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-1" *ngIf="!DeliveryChallanNo">
+                <button (click)="ShowAddPopUp()" class="btn blue-button"> Add Parts </button>
+            </div>
+
+        </div>
+        <!-- Parts -->
+        <div class="row" *ngIf="ShowPart">
+            <div>
+                <div class="MainDiv" style="padding: 10px;">
+                    <div class="row">
+                        <div class="scrollcntr" style="height: 270px;">
+                            <div class="contents" style="overflow: auto;height: 268px;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Sr.No</th>
+                                            <th>Bulk Return Id </th>
+                                            <th>Vendor Code</th>
+                                            <th>Tracking Number</th>
+                                            <th>Total Stock Price</th>
+                                            <th>Transportation Carrier</th>
+                                            <th *ngIf="!DeliveryChallanNo">Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of FinalSelectedParts;  let i= index">
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ i + 1 }}</td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.BulkReturnId }}
+                                            </td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.VendorCode }}
+                                            </td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.TrackingNumber }}
+                                            </td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{ item?.TotalStockPrice
+                                                }}</td>
+                                            <td [ngClass]="{'tableRow':item.IsDeleted == 1 }">{{
+                                                item?.TransportationCarrier
+                                                }}</td>
+                                            <td *ngIf="!DeliveryChallanNo"
+                                                [ngClass]="{'tableRow':item.IsDeleted == 1 }"><span
+                                                    style="padding: 20px;"><i style="color:red"
+                                                        (click)="RemoveItem(item)"
+                                                        class="fa-regular fa-trash"></i></span></td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part Details -->
+        <div class="row" *ngIf="ShowPartDetails">
+            <div>
+                <div class="MainDiv" style="padding: 10px;">
+                    <div class="row">
+                        <div class="scrollcntr" style="height: 270px;">
+                            <div class="contents" style="overflow: auto;height: 268px;">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                             <th>Bulk Return Id </th>
+                                            <th>PartCode</th>
+                                            <th>PartDescription</th>
+                                            <th>ProductDescription</th>
+                                            <th>SerialNo</th>
+                                            <th>StockPrice</th>
+                                            <th>HSNSACCode</th>
+                                            <th>Dangerous Goods Code</th>
+                                            <th>Issue Code</th>
+                                             <th>IsGSXPosted</th>
+                                             <th>OverPackBox</th>
+                                             <th>RepairId</th>
+                                             <th>ReturnLabelPrinted</th>
+                                             <th>ReturnOrderNumber</th>
+                                             <th>ToteNumber</th>
+                                             <th>sequenceNumber</th>
+                                             <th>PurchaseOrderNumber</th>
+                                             <th>BatteryNetWeight</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr *ngFor="let item of FinalSelectedPartDetails ">
+                                             <td>{{ item?.BulkReturnId }}</td>
+                                            <td>{{ item?.PartCode }}</td>
+                                            <td>{{ item?.PartDescription }}</td>
+                                            <td>{{ item?.ProductDescription }}</td>
+                                            <td>{{ item?.SerialNo }}</td>
+                                            <td>{{ item?.StockPrice }}</td>
+                                            <td>{{ item?.HSNSACCode }}</td>
+                                            <td>{{ item?.dangerousGoods }}</td>
+                                            <td>{{ item?.issueCode }}</td>
+                                            <td>{{ item?.IsGSXPosted }}</td>
+                                            <td>{{ item?.OverPackBox }}</td>
+                                            <td>{{ item?.RepairId }}</td>
+                                            <td>{{ item?.ReturnLabelPrinted }}</td>
+                                            <td>{{ item?.ReturnOrderNumber }}</td>
+                                            <td>{{ item?.ToteNumber }}</td>
+                                            <td>{{ item?.sequenceNumber }}</td>
+                                            <td>{{ item?.PurchaseOrderNumber }}</td>
+                                            <td>{{item.BatteryNetWeight}}</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </mat-card>
+    <mat-card>
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <p>Parts Selected Count :- {{SelectedPartsCount}}</p>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8"></div>
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <div *ngIf="FinalSelectedParts.length > 0 && !DeliveryChallanNo">
+                    <button class="btn btn-success" (click)="onSubmit('NEW')">
+                        Save
+                    </button>
+                </div>
+                <div *ngIf="FinalSelectedParts.length > 0 && Status== 'NEW'  && DeliveryChallanNo ">
+                    <button class="btn btn-success" (click)="ChangeStatus('SENTFORAPPROVAL')">
+                        Send For Approval
+                    </button>
+
+                </div>
+                <div *ngIf="FinalSelectedParts.length > 0 && Status == 'SENTFORAPPROVAL' && DeliveryChallanNo ">
+                    <button class="btn btn-success" (click)="ChangeStatus('APPROVED')">
+                        Approve
+                    </button>
+
+                </div>
+                <div *ngIf="FinalSelectedParts.length > 0 && Status == 'APPROVED' && DeliveryChallanNo ">
+                    <button class="btn btn-success" (click)="ChangeStatus('SHPCF')">
+                        Confirm Shipment
+                    </button>
+
+                </div>
+                <div *ngIf="FinalSelectedParts.length > 0 && Status == 'SHPCF' && DeliveryChallanNo ">
+                    <button class="btn btn-success" (click)="validateEwayBill()">
+                        Generate E-Way Bill
+                    </button>
+
+                </div>
+
+
+            </div>
+        </div>
+    </mat-card>
+
+
+</section>
+
+<!-- Pop Up for Add Part  -->
+<div class="popup-overlay" *ngIf="isPopShow">
+    <div class="popup-card">
+
+        <div class="popup-header">
+            <input width="80%" type="text" style="margin-left: 12%;width: 70%;"
+                placeholder="Enter caseId or Serial No to Search" (input)="onSearchInput($event)" />
+        </div>
+
+        <div class="popup-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr.No</th>
+                        <th>Select</th>
+                        <th>Bulk Return Id </th>
+                        <th>Vendor Code</th>
+                        <th>Total Stock Price</th>
+                        <th>TrackingNumber</th>
+                        <th>TransportationCarrier</th>
+                        <th>Company Code</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of PopUpArray; let i = index">
+                        <td>{{ i+1 }}</td>
+                        <td><input type="checkbox" [(ngModel)]="item.Selected" (change)="UpdateSelectedCount()" /></td>
+                        <td>{{ item?.BulkReturnId}}</td>
+                        <td>{{ item?.VendorCode }}</td>
+                        <td>{{ item?.TotalStockPrice }}</td>
+                        <td>{{ item?.TrackingNumber}}</td>
+                        <td>{{ item?.TransportationCarrier }}</td>
+                        <td>{{ item?.CompanyCode }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Sticky Footer -->
+        <div class="popup-footer">
+            <button class="btn btn-success" (click)="onPopUpSubmit()">Save</button>
+            <button class="btn btn-warning" (click)="ClosePopUp()">Cancel</button>
+        </div>
+
+    </div>
+</div>

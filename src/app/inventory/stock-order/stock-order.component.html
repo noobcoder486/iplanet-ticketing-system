@@ -1,0 +1,279 @@
+<section class="content">
+  <ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+  <div class="card" style="margin-bottom: 0px;min-height: 0% !important;border-radius: 5px;"> 
+    <div class="row">
+      
+      <div class="col-lg-5 col-sm-12">
+        <div class="row">
+      <div class="col-lg-8 col-sm-6 col-6 " >
+        <!-- inside Box -->
+        <div style="float: left;padding-left: 10px;padding-top: 8px;padding-right: 24px;">
+            <i class="fa-sharp fa-solid fa-boxes-stacked"></i> 
+        </div>
+          <div align="center" style="margin-top: 6px; border-right: 1px solid rgb(112, 111, 111); flex: auto;">
+            <h4><span style="color: black;font-size: 14px !important;  font-weight: 500;">{{purchaseOrderNumber}}</span> </h4>
+          </div>
+          <!-- </div> -->
+      </div>
+      <div class="col-lg-4 col-sm-6 col-6 " >
+        <!-- inside Box -->
+          <div class="JobTypeDesc" style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+            <h4><span style="color: black;font-size: 14px; font-weight: 500; ">Stock Order</span></h4>
+          </div>
+      </div>
+      </div>
+      </div>
+      <div class="col-lg-4 col-sm-12">
+        <div class="row">
+          <div class="col-lg-6 col-sm-6 col-6 " >
+            <!-- inside Box -->
+              <div style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+                <h4><span style="color: black;font-size: 14px; font-weight: 500; ">{{stockData?.orderStatusCode}}</span></h4>
+              </div>
+          </div>
+          </div>
+          </div>
+          <div *ngIf="stockData?.orderStatusCode == 'CLOSED'" class="col-lg-3 col-sm-12" style="    padding-top: 6px; padding-right: 18px;">
+            <button (click)="getInvoicePdf()"  class="btnClass" style="float: right;"> Download Invoice </button>
+          </div>
+    </div>
+</div>
+    <div  class="row" style="padding:10px;padding-bottom: 10px;">
+        <!-- Background -->
+              <div class="col-lg-12" style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+                <div class="row">
+                   <!-- Details -->
+                  <div class="col-lg-4 col-sm-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-right: 1px solid hsl(0, 0%, 92%);    border-top-left-radius: 5px;    border-bottom-left-radius: 5px;">
+                    <!-- Details Heading -->
+                    <div  style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;    border-top-left-radius: 5px;">
+                      <span style="font-size: 16px !important;color:black;font-weight: 600;">Details</span>
+                    </div>
+                    <!-- Details Content -->
+                    <div >
+                      <div class="MainDiv"  style="padding: 10px;">
+                        <div class="row">
+                            <div  class="col-lg-12 col-sm-6">
+                              <div class="row">
+                                <div class="row">
+                                  <div class="col-lg-4" >
+                                    <h5><span style="color: black;font-size: 13px !important;  font-weight: 600;">Purchase Order:</span> </h5>
+                                  </div>
+                                  <div class="col-lg-6" style="flex: auto;">
+                                    <div class=" " appearance="standard" [style.width.%]="100">
+                                      <input  class="purchaseDiv"  matInput   [(ngModel)]="purchaseOrderNumber">
+                                    </div>
+                                    <!-- <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{stockData?.purchaseOrderNumber}}</span> </h4> -->
+                                  </div>
+                                </div>
+                                </div>
+                                <div class="row">
+                                  <div class="row">
+                                    <div class="col-lg-4">
+                                    <h4><span style="color: black;font-size: 13px !important;  font-weight: 600;">Created By:</span> </h4>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{stockData?.createdByFirstName}} {{stockData?.createdByLastName}}</span> </h4>
+                                  </div>
+                                  </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="row">
+                                      <div class="col-lg-4">
+                                      <h4><span style="color: black;font-size: 13px !important;  font-weight: 600;">Created On:</span> </h4>
+                                    </div>
+                                    <div class="col-lg-6" >
+                                    <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{stockData?.orderCreateDate}}</span> </h4>
+                                    </div>
+                                    </div>
+                                    </div>
+                            </div>
+                        </div>
+                     </div>
+                    </div>
+                  </div>
+      
+                  <!-- Ship To -->
+                <div class="col-lg-3 col-sm-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+                  <!-- Ship To  -->
+                  <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+                   <div class="row">
+                    <div class="col-6">
+                      <span style="font-size: 16px !important;color:black;font-weight: 600;">Ship To</span>
+                    </div>
+                    
+                   </div>
+                  </div>
+                   <!-- Customer Content -->
+                   <div  >
+                    <div class="MainDiv"  style="padding: 10px;">
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-6">
+                              <ng-select [items]="LocationForJob.Data" [(ngModel)]="locationCode" bindLabel="TEXT" bindValue="Id"
+                              placeholder="Location">
+                          </ng-select>
+                            </div>
+                        </div>
+                       </div>
+                      </div>
+                </div>
+                <div class="col-lg-5 col-sm-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+                    <!-- Order Heading -->
+                    <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+                     <div class="row">
+                      <div class="col-6">
+                        <span style="font-size: 16px !important;color:black;font-weight: 600;">Order Amount</span>
+                      </div>
+                      <div class="row" style="padding: 10px;">
+                        <div class="row">
+                        <div class="col-lg-3">
+                        <h4><span style="color: black;font-size: 13px !important;  font-weight: 600;">Subtotal:</span> </h4>
+                        </div>
+                        <div class="col-lg-9">
+                        <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{stockData?.price?.subTotalAmount}}</span> </h4>
+                        </div>
+                        </div>
+                        <div  class="row">
+                        <div class="col-lg-3">
+                        <h4><span style="color: black;font-size: 13px !important;  font-weight: 600;"> Tax:</span> </h4>
+                        </div>
+                        <div class="col-lg-9">
+                        <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{stockData?.price?.tax}}</span> </h4>
+                        </div>
+                        </div>
+                        <div class="row">
+                        <div class="col-lg-3">
+                        <h4><span style="color: black;font-size: 13px !important;  font-weight: 600;">Total: </span> </h4>
+                        </div>
+                        <div class="col-lg-9">
+                        <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">{{stockData?.price?.totalAmount}}</span> </h4>
+                        </div>
+                        </div>
+                      </div>
+                      </div>
+                      </div>
+                </div>
+                    </div>
+                  </div>
+                  </div>
+
+<div class="row">
+<div class="col-lg-7 col-sm-6  col-12" style="flex-grow: 1;">
+    <div class="col-lg-12 col-sm-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+        <!-- Order Heading -->
+        <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;border-top-left-radius: 5px;">
+         <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <span style="font-size: 16px !important;color:black;font-weight: 600;">Parts</span>
+          </div>
+          <div *ngIf="stockData?.orderStatusCode == 'OPEN'|| stockData?.orderStatusCode == null || stockData?.orderStatusCode == undefined">
+            <button (click)="openPartSelector()"  class="btnClass" > Add Parts </button>
+          </div>
+         </div>
+        </div>
+         <!-- Order Content -->
+
+
+         <div  class="MainDiv"  style="padding: 10px;">
+         <div class="row">
+          <div class="scrollcntr" style="height: 347px !important;"> 
+            <div class="contents table-responsive">
+                      <table  >
+                        <thead  >
+                          <tr style="height: auto !important;">
+                            <th style="width: 8%;" scope="col">Image</th>
+                            <th style="width: 15%;"scope="col">Code</th>
+                            <th style="width: 40%;"scope="col">Description</th>
+                            <th style="width: 15%;"scope="col">Price</th>
+                            <th style="width: 10%;"scope="col">Qty</th>
+                            <th *ngIf="stockData?.orderStatusCode == 'OPEN'|| stockData?.orderStatusCode == null || stockData?.orderStatusCode == undefined" style="width: 10%;"scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of finalSelectedElements" [ngClass]="{'bg-primary':item.isDeleted==1}">
+                            <td style="width: 8%; "> <img width="40px" src={{item.imageUrl}}/></td>
+                            <td style="width: 15%;white-space: nowrap; "> <span> {{ item.partNumber}} </span></td>
+                            <td style="width: 40%; "> <span> {{ item.description}} </span></td>
+                            <td style="width: 15%; "> <span> {{ item.stockPrice}}</span></td>
+                            <td *ngIf="stockData?.orderStatusCode == 'CLOSED'" style="width: 10%;text-align: center; "> {{item.quantity}} </td>
+                            <td *ngIf="stockData?.orderStatusCode == 'OPEN'|| stockData?.orderStatusCode == null || stockData?.orderStatusCode == undefined" style="width: 10%; "> <span><input [value]="item.quantity" matInput type="text" [(ngModel)]="item.quantity" (change)="UpdateSelectedCount()"></span></td>
+                            <td *ngIf="stockData?.orderStatusCode == 'OPEN'|| stockData?.orderStatusCode == null || stockData?.orderStatusCode == undefined" style="width: 10%;text-align: center; "> <span><i (click)="deleteitem(item)" (click)="removeItem(item)"  class="fa-regular fa-trash"></i></span></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    </div>
+            </div>
+            </div>
+      </div>
+</div>
+<div *ngIf="shipmentList.length > 0" class="col-lg-5 col-sm-6 col-12" style="flex-grow: 1;">
+  <div class="col-lg-12 col-sm-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+      <!-- Order Heading -->
+      <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;border-top-left-radius: 5px;">
+       <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <span style="font-size: 17px;color:black;">Shipment</span>
+        </div>
+       </div>
+      </div>
+       <!-- Order Content -->
+       <div *ngFor="let item of shipmentList" >
+        <div  class="MainDiv"  style="padding: 10px;">
+          <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">Shipping: {{item.number}}</span> </h4>
+          <h4><span style="color: black;font-size: 13px !important;  font-weight: 500;">Parts Quantity: {{item.totalQuantityDelivered}}</span> </h4>
+
+            <div class="row">
+              <div class="scrollcntr" style="height: 288px !important;"> 
+                <div class="contents table-responsive">
+                    <table>
+                      <thead  style="position: sticky; top: 0; z-index: 1;">
+                        <tr style="height: auto !important;">
+                          <th style="width: 20%;" scope="col">Part</th>
+                          <th style="width: 10%;" scope="col">Qty</th>
+                          <th style="width: 30%;" scope="col">Date</th>
+                          <th style="width: 40%;" scope="col">Tracking No</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of item.parts">
+                          <td style="width: 20%; "> <span> {{item.number}} </span></td>
+                          <td style="width: 10%; "> <span> {{item.quantity}} </span></td>
+                          <td style="width: 30%;white-space: nowrap; "> <span> {{item.shippedDate}} </span></td>
+                          <td style="width: 40%; "> <span> {{item.trackingDetails[0].trackingNumber}} </span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+              </div>
+            </div>
+           </div>
+          </div>
+    </div>
+</div>
+</div>  
+
+
+<div *ngIf="isPartSelector" class="Ux_popup">
+    <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isPartSelector = false"></i>
+    <app-part-selector (partSelector)="partSelector($event)" (closePartSelector)="closePartSelector($event)"  (CancelBtn)="Cancel($event)"> </app-part-selector>
+  </div>
+  <div class="card-footer">
+    <div class="row" style="padding-top: 5px;" >
+      <div class="col-2 col-lg-6 col-sm-6">
+        Part Quantity: ({{addedPartCount}})
+      </div>
+      <div class="col-4 col-lg-3 col-sm-3">
+        Stock Price: {{stockPrice}}
+      </div>
+      <div  class="col-6 col-lg-2 col-sm-6">
+        <button class="btnClass" style="letter-spacing: 2px;text-align: center;float: right;" (click)="onSubmit()"> Save </button>
+      </div>
+    </div> 
+    <div>
+    </div>
+    <div >
+    </div>
+</div>
+</section>

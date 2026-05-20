@@ -1,0 +1,131 @@
+<section >
+    <mat-card class="m-3" >
+     <div class="row">
+       <div class="col-lg-12">
+          <p  style="font-size: 15px !important; font-weight: 600;" >Stock List </p>
+       </div>
+        <div >
+            <table  style="margin: 20px 0;">
+            <thead>
+              <tr>
+                <th scope="col">Material Code </th>
+                <th scope="col">MaterialDescription</th>
+                <th scope="col">SerialNo</th>
+                <th scope="col">Delete</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of FinalCompanyStockList" [ngStyle]="{'tableDelete': false}">
+                <td  [ngClass]="{'tableDelete':item.IsDeleted==1}" style=" white-space: nowrap;">{{item?.MaterialCode}}</td>
+                <td   [ngClass]="{'tableDelete':item.IsDeleted==1}" style=" white-space: nowrap;">{{item?.MaterialDescription}}</td>
+                <td   [ngClass]="{'tableDelete':item.IsDeleted==1}" style=" white-space: nowrap;">{{item?.SerialNo}}</td>
+                 <td  [ngClass]="{'tableDelete':item.IsDeleted==1}"  style="text-align: center; "> <span><i style="color:red" (click)="deleteFromFCSL(item)"
+                        class="fa-regular fa-trash"></i></span></td>
+
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div >
+        <button style="width: 28% !important" class="btn btn-success" (click)="onSubmit('STOCK')"> Save Stock </button>
+
+        </div>
+     </div>
+    </mat-card>
+
+    <mat-card class="m-3" *ngIf="isShowReplenish == true  ">
+        <div class="col-lg-12">
+          <p style="font-size: 15px !important; font-weight: 600;">Replenish List </p>
+       </div>
+       <div class="row">
+        
+         <div class="col-lg-5 col-sm-4 col-md-4">
+           <label for="">Enter Material Code </label> <br>
+           <input type="text" [(ngModel)]="R_MaterialCode" >
+         </div>
+         <div class="col-lg-5 col-sm-4 col-md-4">
+              <label for="">Enter Serial Code </label> <br>
+              <input type="text" [(ngModel)]="R_SerialNo">
+         </div>
+         <div class="col-lg-2 col-sm-4 col-md-4">
+             <label for=""></label>
+            <button style="margin-top: 15px !important;"  class="btn blue-button" matTooltip="Add Replenish" (click)="ValidateMaterialCode()"> Add </button>
+         </div>
+
+       </div>
+
+    
+      <div class="row"   *ngIf="R_ReplenishList.length > 0 ">
+
+     
+          <table  style="margin: 20px 0;">
+            <thead>
+              <tr>
+                <th  scope="col">Material Code </th>
+                <th   scope="col">MaterialDescription</th>
+                <th   scope="col">SerialNo</th>
+                <th   scope="col">Delete</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of R_ReplenishList" [ngStyle]="{'tableDelete': false}">
+                <td  [ngClass]="{'tableDelete':item.IsDeleted==1}"  style=" white-space: nowrap;">{{item?.MaterialCode}}</td>
+                <td  [ngClass]="{'tableDelete':item.IsDeleted==1}"  style=" white-space: nowrap;">{{item?.MaterialDescription}}</td>
+                <td  [ngClass]="{'tableDelete':item.IsDeleted==1}"  style=" white-space: nowrap;">{{item?.SerialNo}}</td>
+                 <td [ngClass]="{'tableDelete':item.IsDeleted==1}"  style="text-align: center; "> <span><i style="color:red" (click)="deleteFromFRSL(item)"
+                        class="fa-regular fa-trash"></i></span></td>
+
+               
+              </tr>
+            </tbody>
+          </table>
+
+          <div>
+            <button  style="width: 28% !important" (click)="onReplenishSubmit('REPLENISH')" class="btn btn-success"> Save Replenish </button>
+          </div>
+
+      </div>
+      <!-- <div class="row">
+
+        <div class="col-lg-12">
+          <p style="font-size: 15px !important; font-weight: 600;">Replenish List </p>
+       </div>
+          <table  style="margin: 20px 0;">
+            <thead>
+              <tr>
+                <th  scope="col">Material Code </th>
+                <th   scope="col">MaterialDescription</th>
+                <th   scope="col">SerialNo</th>
+                <th   scope="col">Delete</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of FinalReplenishStockList" [ngStyle]="{'tableDelete': false}">
+                <td  [ngClass]="{'tableDelete':item.IsDeleted==1}"  style=" white-space: nowrap;">{{item?.MaterialCode}}</td>
+                <td  [ngClass]="{'tableDelete':item.IsDeleted==1}"  style=" white-space: nowrap;">{{item?.MaterialDescription}}</td>
+                <td  [ngClass]="{'tableDelete':item.IsDeleted==1}"  style=" white-space: nowrap;">{{item?.SerialNo}}</td>
+                 <td [ngClass]="{'tableDelete':item.IsDeleted==1}"  style="text-align: center; "> <span><i style="color:red" (click)="deleteFromFRSL(item)"
+                        class="fa-regular fa-trash"></i></span></td>
+
+               
+              </tr>
+            </tbody>
+          </table>
+
+          <div>
+            <button  (click)="onSubmit('REPLENISH')" class="btn blue-button"> Save Replenish </button>
+          </div>
+
+      </div> -->
+
+    </mat-card>
+
+
+</section>

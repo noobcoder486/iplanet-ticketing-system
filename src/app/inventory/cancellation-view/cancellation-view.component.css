@@ -1,0 +1,101 @@
+.HeaderText
+{
+    font-size: 17px !important;
+    letter-spacing: 2px;
+    color: black;
+    font-weight: 600;
+}
+
+.mainCard
+{ 
+    border-radius: 10px;
+    border: 1px solid rgb(121, 121, 121);
+    margin-left: 75px;
+    margin-right: 30px;
+    margin-top: 40px;
+    margin-bottom: 40px; 
+    padding-bottom: 20px;    
+}
+
+.Ux_close {
+    position: initial !important; 
+  }
+
+  .eye-button-container {
+    position: fixed;
+    bottom: 60px; /* Adjust as needed to position above the timeline belt */
+    right: 20px; /* Adjust as needed for horizontal positioning */
+    z-index: 1001; /* Ensure it appears above other elements */
+  }
+  
+  .eye-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 40%;
+    padding: 10px;
+    font-size: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .eye-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent background */
+    z-index: 9999;
+  }
+  
+  .popup {
+    background-color: #fff;
+    width: 35%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+  }
+  
+  section.content {
+    filter: blur(0); /* Initial state without blur */
+    transition: filter 0.3s ease; /* Add transition for smooth effect */
+  }
+  
+  section.blurred {
+    filter: blur(3px); /* Apply blur effect */
+  }
+
+  .btnClass {
+    border: 1.5px solid #eb4242;
+    color: white;
+    border-radius: 20px;
+    background-image: linear-gradient(to right, #eb4242, #eb4242); 
+    height: 30px;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-image 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  
+  .btnClass:hover {
+    background-image: linear-gradient(to right, #ff4d4d, #ff3333); 
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  .btnClass:active {
+    background-image: linear-gradient(to right, #ff3333, #e60000); 
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(0);
+  }
+  
+  

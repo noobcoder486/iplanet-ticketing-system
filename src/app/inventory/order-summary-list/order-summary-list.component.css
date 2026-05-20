@@ -1,0 +1,47 @@
+ 
+
+.btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(231, 236, 241), rgb(103, 163, 253)) !important;
+    height: 25px;
+}
+
+td, th 
+{
+    padding: 2px;
+}
+   
+
+  table {
+    font-family: Verdana;
+    font-size: 14px;
+    border-collapse: collapse;
+    
+  }
+  
+  td, th {
+    padding: 5px;
+    text-align: left;
+    margin: 0;
+  }
+  
+ 
+  
+  th {
+    position: sticky;
+    top: 0;
+    background-color: #333;
+    color: white;
+  }
+
+  /* .contents {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  grid-area: content;
+  height: 200px;
+  overflow-y: scroll;
+} */

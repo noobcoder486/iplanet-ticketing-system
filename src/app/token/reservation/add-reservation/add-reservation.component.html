@@ -1,0 +1,438 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<section class="content" [ngClass]="{'blurred': !hidePopup}">
+  <mat-card style="padding: 0px !important;" *ngIf ="params.rt != 'DREPAIR'">
+    <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+      <div class="row">
+
+        <div class="col-lg-6 col-sm-12">
+          <div class="row" style="align-items: center;">
+            <div class="col-lg-6 col-sm-6 col-6 "
+              style=" border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+              <div class="mt-1" style=" padding-right: 15px;">
+                <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+              </div>
+              <div class="mt-1">
+                <h4><span style="color: black;font-size: 14px; " title="">Reservation Code </span></h4>
+                <div class="mt-1">
+                  <h4><span style="color: blue ;font-size: 14px; font-weight: 600; " title=""> {{ ReservationCode ==
+                      null
+                      || ReservationCode == undefined ? ReservationCode : ReservationCode }}</span> </h4>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-6" style=" border-right: 1px solid rgb(112, 111, 111);">
+              <!-- inside Box -->
+              <div class="JobTypeDesc mt-1"
+                style="color: {{ReservationObject?.ApprovalStatus === 'APPROVED' ? 'green' : 'red'}};text-align: center;display: flex; align-items: center; justify-content: center;">
+                <b style="color: black;padding-right: 10px;">ServiceRefNo: </b>{{ReservationObject?.ServiceRefNo ===
+                undefined || ReservationObject?.ServiceRefNo === null?'NEW':ReservationObject?.ServiceRefNo}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-sm-12 mt-3">
+          <div class="row" style="align-items: center;">
+
+            <div class="col-lg-5 col-sm-3 col-md-3 col-6"
+              style=" color: {{ReservationObject?.ReservationStatus === 'CLOSED' ? 'green' : 'red'}};border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+              <b style="color: black;padding-right: 10px;">Reservation Status:
+              </b>{{ReservationObject?.ReservationStatus
+              === undefined || ReservationObject?.ReservationStatus ===
+              null?'NA':ReservationObject?.ReservationStatus}}
+            </div>
+            <div class="col-lg-5 col-sm-3 col-6 ">
+              <!-- inside Box -->
+              <div class="col-12"
+                style="text-align: center;display: flex; align-items: center; justify-content: center;">
+                <label style="white-space: nowrap;"><b>Request Date:- </b> <span style="padding-right: 5px;">{{
+                    CreatedDate != null || CreatedDate != undefined ? ( CreatedDate | date: 'dd/MM/yyyy : hh:mm a' ):
+                    'No Date Found' }}</span></label>
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card style="padding: 5px !important;" *ngIf ="params.rt == 'DREPAIR'">
+    <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+      <div class="row">
+            <div class="col-lg-1 col-sm-1 col-md-1">
+              <b>Repair Id:</b>&nbsp;<br>
+            </div>
+            <div class="col-lg-3 col-sm-5 col-md-5">
+              <input type="text" placeholder="Get Repair Details" style="width: 100%; border:1px solid rgb(194, 193, 193);border-radius:2px;height:35px" 
+              [(ngModel)]="RepairId" />
+            </div>
+  
+            <div class="col-2">
+              <div><button class="btn btn-primary"  (click)="getRepairDetails()">Search</button></div>
+            </div>
+      </div>
+    </div>
+  </mat-card>
+  <!-- Customer and Location Details -->
+  <div class="row" style="padding:10px;padding-bottom: 15px;">
+    <!-- Background -->
+    <div class="col-lg-12"
+      style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+      <div class="row">
+
+
+        <!-- PRODUCT  -->
+        <div class="col-lg-6 col-sm-12" *ngIf ="params.rt != 'DREPAIR'"
+          style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+          <div
+            style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+            <div class="row">
+              <div class="col-6">
+                <span style="font-size: 16px !important;color:black;font-weight: 600;">Product Details</span>
+              </div>
+            </div>
+          </div>
+          <!-- Product Content -->
+          <div>
+            <div class="MainDiv" style="padding: 10px;">
+              <mat-card-content>
+                <p>ProductFamily:- {{ReservationObject?.ProductFamily}}.</p>
+                <p>ProductDescription:- {{ReservationObject?.ProductDescription}}</p>
+                <p>Serial No:- {{ReservationObject?.SerialNo}}</p>
+                <p>Warranty Status:- {{ReservationObject?.WarrantyStatus}}</p>
+                <p>Problem Or Remark:- {{ReservationObject?.ProblemOrRemark}}</p>
+              </mat-card-content>
+            </div>
+
+            <div class="row">
+              <div class="col-6">
+                  <ng-select  [items]="LocationDD.Data" placeholder="Select Location" bindLabel="TEXT" bindValue="Id"
+                      [(ngModel)]="LocationCode" ></ng-select>
+              </div>
+              <div class="col-6" *ngIf ="params.rt != 'DREPAIR'">
+                  <button type="Edit"   (click)="onSubmit()" class="btn btn-success mt-4">Change Location </button>
+              </div>
+            </div>
+
+            <div class="row"  *ngIf="RepairId " >
+              <div class="col-lg-6 col-sm-6 col-md-6">
+                <mat-form-field appearance="standard" class="w-100">
+                  <mat-label>Repair Id <i style="color: red">*</i></mat-label>
+                  <input matInput [disabled]="true" [(ngModel)]="ReservationObject.RepairId" name="Repair Id">
+                </mat-form-field>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+
+          <!-- PRODUCT  -->
+        <div class="col-lg-6 col-sm-12" *ngIf ="params.rt == 'DREPAIR'" 
+        style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-right: 1px solid hsl(0, 0%, 92%);    border-top-left-radius: 5px;    border-bottom-left-radius: 5px;">
+        <div
+          style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+          <div class="row">
+            <div class="col-6">
+              <span style="font-size: 16px !important;color:black;font-weight: 600;">Product Details</span>
+            </div>
+          </div>
+        </div>
+        <!-- Product Content -->
+        <div class="container mt-2" style="padding: 5px;">
+          <div class="col-12" style="padding-left:0px; padding-right:0px; background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);
+              border-top-left-radius: 5px; border-bottom-left-radius: 5px;">
+
+            <!-- Details Content -->
+            <div>
+              <div class="MainDiv" style="padding: 10px;">
+                <div class="row">
+                  <!-- Location Code -->
+                  <div class="col-lg-6 col-sm-6 col-md-6">
+                    <label>Location Code <i style="color:red">*</i></label>
+                    <ng-select class="Transportation" [items]="LocationDD.Data" placeholder="" bindLabel="TEXT" bindValue="Id"
+                              [(ngModel)]="LocationCode">
+                    </ng-select>
+                  </div>
+
+                  <!-- Product Family -->
+                  <div class="col-lg-6 col-sm-6 col-md-6">
+                      <mat-form-field appearance="standard" class="w-100">
+                        <mat-label>Product Family <i style="color: red">*</i></mat-label>
+                          <input matInput maxlength="20" 
+                          (keypress)="onKeyPress($event, '', 20)" [(ngModel)]="ReservationObject.ProductFamily" >
+                      </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row mt-3">
+                  <!-- Product Description -->
+                  <div class="col-lg-6 col-sm-6 col-md-6">
+                    <mat-form-field appearance="standard" class="w-100">
+                      <mat-label>Product Description <i style="color: red">*</i></mat-label>
+                      <input matInput (keypress)="onKeyPress($event, '', 96)" [(ngModel)]="ReservationObject.ProductDescription" 
+                            name="ProductDescription">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Serial No -->
+                  <div class="col-lg-6 col-sm-6 col-md-6">
+                    <mat-form-field appearance="standard" class="w-100">
+                      <mat-label>Serial No <i style="color: red">*</i></mat-label>
+                      <input matInput (keypress)="onKeyPress($event, '', 96)" [(ngModel)]="ReservationObject.SerialNo" 
+                            name="SerialNo">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row mt-3">
+                  <!-- Warranty Status -->
+                  <div class="col-lg-6 col-sm-6 col-md-6">
+                    <mat-form-field appearance="standard" class="w-100">
+                      <mat-label>Warranty Status <i style="color: red">*</i></mat-label>
+                      <input matInput [(ngModel)]="ReservationObject.WarrantyStatus" name="WarrantyStatus">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+
+                <div class="row mt-3">
+                  <!-- Problem or Remark -->
+                  <div class="col-lg-12 col-sm-12 col-md-12">
+                    <mat-form-field appearance="standard" class="w-100">
+                      <mat-label>Problem or Remark <i style="color: red">*</i></mat-label>
+                      <textarea matInput rows="3" class="form-control" [(ngModel)]="ReservationObject.ProblemOrRemark" ></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment Details -->
+          <div class="col-12" style="padding-left: 0px; padding-right: 0px;">
+            <div style="color:rgb(0, 0, 0); padding-left: 10px; background-color: #dddddd; height: 31px; padding-top: 4px;
+                border-top-left-radius: 5px;">
+              <span style="font-size: 16px !important; color:black; font-weight: 600;">Payment Details <i style="color: red">*</i></span>
+            </div>
+            <div>
+              <div class="row" style="padding: 10px;">
+                <div class="col-4">
+                  <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Payment Mode <i style="color: red">*</i></mat-label>
+                    <input matInput [(ngModel)]="ReservationObject.PaymentMode">
+                  </mat-form-field>
+                </div>
+
+                <div class="col-4">
+                  <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Amount <i style="color: red">*</i></mat-label>
+                    <input matInput [(ngModel)]="ReservationObject.Amount" >
+                  </mat-form-field>
+                </div>
+
+                <div class="col-4">
+                  <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Transaction No </mat-label>
+                    <input matInput [(ngModel)]="ReservationObject.PaymentTransactionNo">
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+     </div>
+
+
+        <!-- Customer  -->
+        <div class="col-lg-6 col-sm-12"
+          style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-right: 1px solid hsl(0, 0%, 92%);    border-top-left-radius: 5px;    border-bottom-left-radius: 5px;">
+          <!-- Customer Heading -->
+          <div
+            style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;    border-top-left-radius: 5px;">
+            <span style="font-size: 16px !important;color:black;font-weight: 600;">Customer Details</span>
+          </div>
+          <!-- Details Content -->
+          <div class="container mt-2 " style="padding: 5px;">
+            <form name="customerForm" autocomplete="off">
+              <div class="row">
+                <div class="col-4">
+                  <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>First Name <i style="color:red">*</i></mat-label>
+                    <input matInput (keypress)="onKeyPress($event, '', 96)" [(ngModel)]="CustomerFirstName" name="FirstName">
+                  </mat-form-field>
+                </div>
+                <div class="col-4">
+                  <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Last Name <i style="color:red">*</i></mat-label>
+                    <input matInput (keypress)="onKeyPress($event, '', 96)" [(ngModel)]="CustomerLastName" name="LastName">
+                  </mat-form-field>
+                </div>
+                <div class="col-4">
+                  <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Mobile No <i style="color:red">*</i></mat-label>
+                    <input (keypress)="onKeyPress($event, 'int', 10)" type="number" minlength="10" maxlength="10" matInput
+                      [(ngModel)]="CustomerMobileNo" name="PhoneNo">
+                  </mat-form-field>
+                </div>
+              </div>
+          
+              <div class="row">
+                <div class="col-4">
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Land Mark</mat-label>
+                    <input matInput [(ngModel)]="CustomerAddressLandmark" name="LandMark">
+                  </mat-form-field>
+                </div>
+                <div class="col-4">
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>City <i style="color:red">*</i></mat-label>
+                    <input matInput [(ngModel)]="CustomerCity" name="City">
+                  </mat-form-field>
+                </div>
+                <div class="col-4">
+                  <mat-form-field appearance="standard" [style.width.%]="100">
+                    <mat-label>Pincode <i style="color:red">*</i></mat-label>
+                    <input (keypress)="onKeyPress($event, 'int', 6)" type="number" matInput minlength="6" maxlength="6"
+                      [(ngModel)]="CustomerPincode" name="PinCode" >
+                  </mat-form-field>
+                </div>
+              </div>
+ 
+              <div class="row">
+                <div class="col-12">
+                  <mat-form-field appearance="standard" class="w-100">
+                    <mat-label>Email Address <i style="color:red">*</i></mat-label>
+                    <input matInput [(ngModel)]="CustomerEmailId" name="EmailId">
+                  </mat-form-field>
+                </div>
+              </div> 
+              
+              <div class="row">
+                <div class="col-6"> 
+                    <mat-label>Address Line 1 <i style="color:red">*</i></mat-label>
+                    <textarea rows="3" class="form-control" (keypress)="onKeyPress($event, '', 60)" [(ngModel)]="CustomerAddressLine1" name="Address1"></textarea>
+                </div>
+
+                <div class="col-6">
+                    <mat-label>Address Line 2 <i style="color:red">*</i></mat-label>
+                    <textarea rows="3" class="form-control" (keypress)="onKeyPress($event, '', 60)" [(ngModel)]="CustomerAddressLine2" name="Address2"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+                </div>
+              </div>
+          </div>
+        </div>
+
+        <div  *ngIf ="params.rt == 'DREPAIR'" class="col-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+          <div class="mt-2" style="background-color: white; border-radius: 8px;">
+              <div style="padding: 5px;height: 170px;">
+              <mat-card-title class="header">
+                <mat-card-header>
+                  <mat-card-title style="font-size: 17px !important;font-weight:600">Components / Issue </mat-card-title>
+                </mat-card-header>
+              </mat-card-title>
+              <mat-card class="example-card" 
+              style="margin-left: 2px;box-shadow: 0px 1px 4px rgb(0 0 0 / 25%);margin-bottom: 20px;">
+              <mat-card-content>
+                <div *ngFor="let item of RepairObject?.componentIssues">
+                  <mat-card class="example-card" >
+                    <div class="row">
+                      <div class="col-sm-11 col-11">
+                        <mat-card-content style="margin-top:-25">{{item.componentDescription}} / {{item.issueDescription}} /
+                          {{item.reproducibilityDescription}}</mat-card-content>
+                      </div>
+                    </div>
+                  </mat-card>
+                  <div style="border:2px solid white"></div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+              </div>
+          </div>  
+      </div>
+
+  <div class="col-12" style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+          <div class="mt-2" style="background-color: white; border-radius: 8px;">
+              <div style="padding: 5px;height: 170px;">
+              <mat-card-title class="header">
+
+                <div>
+                    <label style="font-weight: 600; font-size:18px !important;">Reservation Stage</label>
+                </div>
+
+                <div style="width: 100%;border-radius: 50px;padding: 5px;">
+                  <div style="display: flex;align-items: center;justify-content: space-between;">
+                      <div class="statusText"> Assign To Rider </div>   
+                      <div class="statusText">Pickup </div>
+                      <div class="statusText">Delivery </div> 
+                      <div class="statusText">Acknowledge </div>
+                  </div>
+                </div>
+
+                <div class="statusBar">
+                    <div style="display: flex;align-items: center;justify-content: space-between;width: 100%;">
+                        <div class="{{ReservationObject?.AssignRiderFlag == '0' ? 'statusCircle' : 'statusChangeCircle' }}"> </div>   
+                        <div class="{{ReservationObject?.PickupFlag == '0' ? 'statusCircle' : 'statusChangeCircle' }}"> </div>   
+                        <div class="{{ReservationObject?.DeliveryFlag == '0' ? 'statusCircle' : 'statusChangeCircle' }}"> </div>   
+                        <div class="{{ReservationObject?.AckFlag == '0' ? 'statusCircle' : 'statusChangeCircle' }}"> </div>   
+                    </div>
+                </div>
+
+              </mat-card-title>
+              </div>
+          </div>  
+  </div>
+
+
+  
+
+      <div style="position: fixed;bottom: 0;width: 100%;background-color: #dddddd;z-index: 999;padding: 5px;"
+      *ngIf ="params.rt != 'DREPAIR'"> 
+        <div class="row"> 
+          <div class="col-sm-7 col-lg-7 col-md-7">
+          </div>
+          <div class="col-sm-3 col-lg-3 col-md-3">
+            <div *ngIf="false" class="button-container" style="display: flex;column-gap: 10px;align-items: end;align-items: center;">
+              <button type="Edit" (click)="onSubmit('')" class="btn btn-success">Edit Customer Details</button>
+              <button *ngIf="posttoAppButton" class="btn btn-success" style="border-radius: 10px;"  (click)="postToApp()">Post To App</button>
+            </div>
+          </div>
+          <div class="col-sm-2 col-lg-2 col-md-2">
+            <div class="button-container" style="display: flex;column-gap: 10px;align-items: end;align-items: center;">
+              <button type="Edit" *ngIf="ReservationObject?.ReservationStatus == 'OPEN' && RepairId "  (click)="onSubmit('DTS')" class="btn x_final_button x_active_btn x_save_button" style="width: 100%;" >
+                Drop to Service Center</button>
+            </div>
+          </div>
+        
+        </div>
+      
+        
+      </div> 
+    
+      
+      <div style="position: fixed;bottom: 0;width: 100%;background-color: #dddddd;z-index: 999;padding: 5px;"
+      *ngIf ="params.rt == 'DREPAIR'"> 
+        <div class="row"> 
+          <div class="col-sm-9 col-lg-9 col-md-9">
+          </div>
+          <div class="col-sm-3 col-lg-3 col-md-3">
+            <div class="button-container" style="display: flex;column-gap: 10px;align-items: end;align-items: center;">
+              <button type="Edit" (click)="saveReservation()" class="btn btn-success">Create Pickup</button>
+            </div>
+          </div>
+        
+        </div>
+      
+        
+      </div> 
+</section>

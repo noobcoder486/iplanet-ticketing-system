@@ -1,0 +1,374 @@
+<section class="content">
+    <div *ngIf="isOtpVerification" class="Ux_popup">
+        <app-otp-verification [Data]="tokendata" (openCreateJob)="validatedOTP($event)"></app-otp-verification>
+    </div>
+    <div class="">
+        <mat-card class="p-2 mb-2" style="z-index: 9;">
+            <div class="row">
+                <div class="col-9">
+                    <mat-card>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <ng-select placeholder="Select Token Counter" [items]="CounterData"
+                                            (change)="ButtonValidate()" [(ngModel)]="SelectedCounter"></ng-select>
+                                    </div>
+                                    <div class="col-6">
+                                        <ng-select [items]="LocationForJob.Data" bindLabel="TEXT" bindValue="Id"
+                                            placeholder="Location*" [(ngModel)]="selectedLocationCode"></ng-select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12 col-sm-12">
+                                <div class="row" style="float:right;">
+                                    <div class="col-lg-2 col-sm-4">
+                                        <button class="x_final_button x_active_btn x_save_button"
+                                            style="font-size: 12px !important;" type="button" [disabled]="isNextBtn"
+                                            (click)="loadPageData()">Next Token</button>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-4">
+                                        <button [disabled]="isSelectBtn" (click)="selectToken()"
+                                            class="x_final_button x_active_btn x_save_button"
+                                            style="font-size: 12px !important;white-space: nowrap;" type="button">Select
+                                            Token</button>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-4">
+                                        <button [disabled]="isCloseBtn"
+                                            class="x_final_button x_active_btn x_save_button"
+                                            style="font-size: 12px !important;" type="button"
+                                            (click)="CloseTokenBtn()">Close</button>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-4">
+                                        <button [disabled]="isNoShowBtn"
+                                            class="x_final_button x_active_btn x_save_button"
+                                            style="font-size: 12px !important;" type="button" (click)="NoShowFun()">No
+                                            Show</button>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-4">
+                                        <button [disabled]="isNoShowBtn"
+                                            class="x_final_button x_active_btn x_save_button"
+                                            style="font-size: 12px !important;" type="button"
+                                            (click)="HoldToken()">Hold</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+                <div class="col-3">
+                    <mat-card>
+                        <mat-card-content style="height: 120px;">
+                            <div class="TokenDisplay">
+                                <div>
+                                    <h1><b>{{TokenNumber}}</b></h1>
+                                </div>
+                                <div>
+                                    <h5>{{TokenFirstName}}{{TokenLastName}}</h5>
+                                </div>
+                                <div>
+                                    <!-- <h5>{{VisitPurpose}}</h5> -->
+                                    <h5>{{VisitPurposeDesc}}</h5>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </mat-card>
+        <!-- Added for ReferredBy  -->
+        <!-- <mat-card class="mt-2"> 
+            <div style="margin-left: 30%">
+                <ng-select style="width: 50%;" [items]="ReferredByDD.Data" bindLabel="TEXT" bindValue="Id" placeholder="Referred By*"
+                        [(ngModel)]="ReferredBy" (search)="onReferredBy($event)">
+                       
+                    </ng-select>
+            </div>
+         </mat-card> -->
+        <mat-card class="mt-2">
+            <div class="row">
+                <div class="col-lg-4 col-sm-4 col-md-4">
+                    <ng-select [items]="CustomerVisitSourceDD.Data" bindLabel="TEXT" bindValue="Id"
+                        placeholder="Customer Visit Soure*" [(ngModel)]="CustomerVisitSourceSelected"
+                        (search)="OnCustomerVisitSource($event)" (change)="custVistSrcChange()">
+                    </ng-select>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-md-4">
+                    <ng-select [items]="CustomerSourceNameDD.Data" bindLabel="TEXT" bindValue="Id"
+                        placeholder="Customer Soure Name *" [(ngModel)]="CustomerSourceNameSelected"
+                        (search)="OnCustomerSourceName($event)">
+                    </ng-select>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-md-4">
+                   <ng-select placeholder="Visit Purpose *" [(ngModel)]="VisitPurpose"
+                        [items]="VisitPurposeDropDown.Data" bindLabel="TEXT" bindValue="Id">
+                      </ng-select>
+                </div>
+            </div>
+        </mat-card>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <mat-card class="p-2 mb-2" *ngIf="CustomerObject?.length > 0 && isCustomerView">
+                    <form>
+                        <ngx-spinner size="medium" [type]="typeSelected">
+                            <p style="font-size: 20px; color: white">Loading...</p>
+                        </ngx-spinner>
+                        <div class="mat-card-s3">
+                            <div class="row">
+                                <div class="col-sm-12" *ngFor="let item of CustomerObject">
+                                    <div class="row">
+                                        <div class="col-lg-9">
+                                            <div class="row" style=" margin: 20px 0 15px !important;">
+                                                <div class="col-lg-4 col-sm-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-sm-12 col-12"
+                                                            style="padding-bottom: 10px;">
+                                                            <span class="hd_header_content"><b>Customer Code:</b>
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-lg-6 col-sm-12 col-12">
+                                                            <span class="hd_header_content">{{item?.CustomerCode}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-sm-12 col-12"
+                                                            style="padding-bottom: 10px;">
+                                                            <span class="hd_header_content"><b>Customer Name:</b>
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-lg-7 col-sm-12 col-12">
+                                                            <span
+                                                                class="hd_header_content">{{item?.FirstName}}{{item?.LastName}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-4">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-sm-12 col-12"
+                                                            style="padding-bottom: 10px;"> <span
+                                                                class="hd_header_content"> <b>MobileNumber</b> </span>
+                                                        </div>
+                                                        <div class="col-lg-6 col-sm-12 col-12">
+                                                            <span class="hd_header_content">{{item?.MobileNo}} </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12" *ngFor="let item of CustomerObject">
+                                                    <div class="row" style=" margin: 0px 0 15px !important;">
+                                                        <div class="col-lg-4 col-sm-4">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 col-sm-12 col-12"
+                                                                    style="padding-bottom: 10px;">
+                                                                    <span class="hd_header_content"><b>Email ID:</b>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-lg-6 col-sm-12 col-12">
+                                                                    <span class="hd_header_content">{{item?.EmailID}}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-sm-4">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 col-sm-12 col-12"
+                                                                    style="padding-bottom: 10px;">
+                                                                    <span class="hd_header_content"><b>Open Calls:</b>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-lg-6 col-sm-12 col-12">
+                                                                    <span
+                                                                        class="hd_header_content">{{item?.OPENCalls}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-sm-4">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 col-sm-12 col-12"
+                                                                    style="padding-bottom: 10px;">
+                                                                    <span class="hd_header_content"><b>Close Calls:</b>
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-lg-6 col-sm-12 col-12">
+                                                                    <span
+                                                                        class="hd_header_content">{{item?.CloseCalls}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Button Div -->
+                                        <div class="col-lg-3">
+                                            <!-- Button -->
+                                            <div class="col-lg-12" style="padding-bottom: 5px;">
+                                                <mat-card style="display: flex;  flex-direction: column;">
+
+                                                    <div class="col-lg-12 col-sm-12 col-12" *ngIf="isCreateJobShow">
+                                                        <div *ngIf="CustomerCode != null && CustomerCode != undefined ">
+                                                            <div class="p-2 mb-2">
+                                                                <div
+                                                                    style="display: flex;justify-content: space-evenly;">
+                                                                    <div class="x_final_buttons2">
+                                                                        <button (click)="  createNewJobWithout()"
+                                                                            type="button"
+                                                                            style="width: 141px; height: 47px;"
+                                                                            class="btn create_btn_content">Create
+                                                                            Job</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-12 col-12"
+                                                        *ngIf="CustomerCode != null && CustomerCode != undefined">
+                                                        <div class="p-2 mb-2">
+                                                            <div style="display: flex;justify-content: space-evenly;">
+                                                                <div class="x_final_buttons2">
+                                                                    <button type="button"
+                                                                        style="width: 141px; height: 47px;"
+                                                                        (click)="Open()"
+                                                                        class="btn create_btn_content">Enquiry</button>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngIf="isEnquiryForm" class="Ux_popup not-allowed ">
+                                                                <i class="Ux_close fa-duotone fa-circle-xmark not-allowed "
+                                                                    (click)="isEnquiryForm = false"
+                                                                    (click)="ClosePopUp()"></i>
+                                                                <app-enquiry-form [CustomerAllDetails]="CustomerObject"
+                                                                    (CloseEvent)="CloseEvent($event)">
+                                                                </app-enquiry-form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12 col-sm-12 col-12" *ngIf="isCreateJobShow"
+                                                        style="display: flex;justify-content: center;">
+                                                        <div *ngIf="CustomerCode != null && CustomerCode != undefined ">
+                                                            <div class="p-2 mb-2">
+                                                                <div
+                                                                    style="display: flex;justify-content: space-evenly;">
+                                                                    <div class="x_final_buttons2">
+                                                                        <button (click)="navigatetoAccessorySales()"
+                                                                            type="button" class="btn create_btn_content"
+                                                                            style=" white-space: nowrap; padding: 13px;">Accessory
+                                                                            Sales</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- AMC SALES -->
+                                                    <div class="col-lg-12 col-sm-12 col-12" *ngIf="isCreateJobShow"
+                                                        style="display: flex;justify-content: center;">
+                                                        <div *ngIf="CustomerCode != null && CustomerCode != undefined ">
+                                                            <div class="p-2 mb-2">
+                                                                <div
+                                                                    style="display: flex;justify-content: space-evenly;">
+                                                                    <div class="x_final_buttons2">
+                                                                        <button (click)="navigatetoAMCSales()"
+                                                                            type="button" class="btn create_btn_content"
+                                                                            style=" white-space: nowrap; padding: 13px;">AMC
+                                                                            Sales</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="col-lg-12 col-sm-12 col-12" *ngIf="isCreateJobShow">
+                                                        <div *ngIf="CustomerCode != null && CustomerCode != undefined ">
+                                                            <div class="p-2 mb-2">
+                                                                <div
+                                                                    style="display: flex;justify-content: space-evenly;">
+                                                                    <div class="x_final_buttons2">
+                                                                        <button (click)="createServiceNonRepairJob()"
+                                                                            type="button" class="btn create_btn_content"
+                                                                            style=" white-space: nowrap; padding: 13px;">Create
+                                                                            Service Non-Repair Job</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </mat-card>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </mat-card>
+            </div>
+        </div>
+
+        <div *ngIf="showAddCustomer == true">
+            <!-- <div *ngIf="true"> -->
+            <mat-card style="width: 30%;  margin: 2% auto;" *ngIf="CustomerCode == null || CustomerCode == undefined ">
+                <div style="display: flex;justify-content: space-evenly;">
+                    <div class="x_final_buttons2" style="margin: 20px 0 15px !important;">
+                        <div class="btn-group" role="group" aria-label="Third group">
+                            <button type="button" style="width: 141px; height: 47px;" (click)="isAddCustomer()"
+                                class="btn create_btn_content">Add Customer</button>
+                            <div *ngIf="isAddCustomerShow" class="Ux_popup not-allowed ">
+                                <i class="Ux_close fa-duotone fa-circle-xmark not-allowed "
+                                    (click)="isAddCustomerShow = false" (click)="ClosePopUp()"></i>
+                                <app-add-customer [TokenAllDetails]="tokendata" [ReservationDetails]="reservationData"
+                                    (closeAddCustomer)="closeAddCustomer($event)"
+                                    (AddCustomerData)="customeradded($event)" (search)="search($event)">
+                                </app-add-customer>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+    <div>
+        <div>
+            <mat-card *ngIf="isGridShow">
+                <div class="col-sm-12">
+                    <nitc-grid [gridcolumns]="JobColumns" [dataSource]="JobDetail" [actions]="actionDetails"
+                        (actionEvent)="actionEmit($event)" [hideSpinnerEvents]="jobListHideSpinnerEvent"
+                        (changeEvent)="jobLoadPageData($event)"></nitc-grid>
+                </div>
+            </mat-card>
+        </div>
+        <div style="padding-top: 5px;" *ngIf="isEnquiryGridShow">
+            <mat-card>
+                <div>
+                    <mat-button-toggle-group aria-label="Font Style">
+                        <mat-button-toggle (click)="GridCall()" value="bold">Call Login</mat-button-toggle>
+                        <mat-button-toggle (click)="GridCall()" value="italic">Enquiry List</mat-button-toggle>
+                    </mat-button-toggle-group>
+                </div>
+                <div class="col-sm-12" *ngIf="isEnquiryGridShow">
+                    <nitc-grid [gridcolumns]="JobColumnsEnquiry" [dataSource]="JobDetailEnquriy"
+                        [actions]="actionDetails" (actionEvent)="actionEmit($event)"
+                        [hideSpinnerEvents]="jobListHideSpinnerEvent"
+                        (changeEvent)="jobLoadPageData($event)"></nitc-grid>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+
+    <div *ngIf="isSelectToken" class="Ux_popup not-allowed ">
+        <i class="Ux_close fa-duotone fa-circle-xmark not-allowed " (click)="isSelectToken = false"></i>
+        <app-select-token [LocationCode]="selectedLocationCode" (TokenObj)="TokenObj($event)"
+            (CloseEvent)="CloseSelectedToken($event)"> </app-select-token>
+    </div>
+
+</section>

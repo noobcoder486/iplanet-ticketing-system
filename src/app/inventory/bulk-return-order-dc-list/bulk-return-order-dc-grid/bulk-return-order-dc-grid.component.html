@@ -1,0 +1,35 @@
+<section class="content">
+
+    <mat-card class="mt-2">
+        <div class="row">
+         <div class="col-lg-4 col-md-4 col-sm-4">
+            <label style="font-size: 16px !important; font-weight: 600;" for="">Status</label>
+             <ng-select (search)="onBulkReturnStatus($event)" [items]="BulkReturnStatusDD.Data" bindLabel="TEXT"
+                            bindValue="Id" [(ngModel)]="Status" >
+                        </ng-select>
+         </div>            
+         <div class="col-lg-4 col-md-4 col-sm-4">
+             <div  class="col-12">
+                <label  style="font-size: 16px !important; font-weight: 600;">Challan No</label>
+             </div>
+                <div class="col-12">
+                     <input  type="text" [(ngModel)]="ChallanNo">
+                </div>
+               
+              
+         </div>            
+         <div class="col-lg-4 col-md-4 col-sm-4">
+              <button (click)="GetBulkOrderList('')" class="btn blue-button">Search</button>
+         </div>            
+        </div>
+    </mat-card>
+
+    <mat-card class="mt-2">
+        <div class="row clearfix" *ngIf="columns.length > 0">
+            <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+                [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                (changeEvent)="PageChange($event)" [isAllowSelect]="isChoose">
+            </nitc-grid>
+        </div>
+    </mat-card>
+</section>

@@ -1,0 +1,15 @@
+<div [formGroup]="form">
+    <mat-form-field style="width: 100%;" appearance="outline">
+        <mat-label>{{ctrl.DisplayLabel}} <span *ngIf="ctrl.IsRequired"
+            class="colred">*</span></mat-label>
+        <input matInput [formControlName]="ctrl.ControlName"            
+            (keypress)="onKeyPressEvent($event)"
+            (blur)="onBlurEvent($event)"
+            maxlength="{{ctrl.FieldMaxLength}}" id="{{ctrl.ControlName}}" type="number">
+        <mat-error *ngIf="getRequired(ctrl)">{{ctrl.DisplayLabel}} is
+            required.</mat-error>
+        <mat-error *ngIf="getEmailRequired(ctrl)">Email format of
+            {{ctrl.DisplayLabel}} is not correct.</mat-error>
+    </mat-form-field>
+</div>
+

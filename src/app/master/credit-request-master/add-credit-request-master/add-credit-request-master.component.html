@@ -1,0 +1,91 @@
+<section class="content">
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="ml-2 p-10 text-dark">
+                    <b>{{formTitle}} Credit Request</b>
+                </h3>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card class="p-2 mb-4" style="z-index: 9;">
+        <form [formGroup]="creditRequestForm" name="creditRequestForm" autocomplete="off">
+            <div class="row">
+                <!-- Customer Code -->
+                <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Customer Code</mat-label>
+                        <input matInput type="text" formControlName="CustomerCode">
+                    </mat-form-field>
+                </div>
+
+                <!-- Location Code -->
+                <div class="col-sm-4">
+                    <ng-select placeholder="Location Code*" [items]="LocationForJob.Data" bindLabel="TEXT"
+                        bindValue="Id" formControlName="LocationCode">
+                    </ng-select>
+                </div>
+
+                <!-- Mode of Payment -->
+                <div class="col-sm-4">
+                    <ng-select placeholder="Mode Of Payment" [items]="ModeofPayment.Data" bindValue="Id"
+                        bindLabel="TEXT" formControlName="ModeOfPayment" name="ModeOfPayment"></ng-select>
+                </div>
+
+                <!-- Mobile No -->
+                <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Mobile No <i style="color:red">*</i></mat-label>
+                        <input (keypress)="onKeyPress($event, 'int', 10)" type="number" minlength="10" maxlength="10"
+                            matInput formControlName="MobileNo">
+                    </mat-form-field>
+                </div>
+
+                <!-- Transaction Type -->
+                <div class="col-sm-4">
+                    <ng-select [items]="TransactionTypeDD" bindLabel="TEXT" bindValue="ID"
+                        placeholder="Transaction Type" formControlName="TransactionType">
+                    </ng-select>
+                </div>
+
+                <!-- Expiry Date -->
+                <div class="col-sm-4">
+                    <label>Expiry Date <i style="color:red">*</i></label><br>
+                    <input class="form-control" type="date" [value]="ExpiryDate" [(ngModel)]="ExpiryDate"
+                        [ngModelOptions]="{standalone: true}" [required]="true" />
+                </div>
+
+                <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Credit Limit <i style="color:red">*</i></mat-label>
+                        <input matInput type="text" formControlName="CreditLimit">
+                    </mat-form-field>
+                </div>
+
+                <!-- <div class="col-sm-4">
+                    <mat-form-field appearance="standard" [style.width.%]="100">
+                        <mat-label>Credit Spent <i style="color:red">*</i></mat-label>
+                        <input matInput type="text" formControlName="CreditSpent">
+                    </mat-form-field>
+                </div> -->
+            </div>
+        </form>
+    </mat-card>
+    <mat-card>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="text-danger" style="display: inline-block" role="alert">
+                    {{errorMessage}}
+                </div>
+            </div>
+            <div class="col-sm-5" style="text-align: right;">
+                <button appDebounceClick style="position: relative;" (debounceClick)="onSubmit()"
+                    class="btn btn-success" [debounceTime]="200">Save</button>
+            </div>
+            <div class="col-sm-1">
+                <button appDebounceClick type="button" style="position: relative;" (debounceClick)="cancelfunction()"
+                    class="btn btn-secondary" [debounceTime]="200">Cancel</button>
+            </div>
+        </div>
+    </mat-card>
+</section>

@@ -1,0 +1,102 @@
+<section class="content">
+  <ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+
+  <mat-card style="z-index: 9;">
+
+    <div class="row" style="display: flex;justify-content: space-between;">
+      <div class="col-sm-4 col-lg-12 col-md-4">
+        <p class="HeaderText">Job Report </p>
+      </div>
+    </div>
+
+    <div class="row" style="border: 1px solid #dddddd;padding: 10px;">
+      <div class="col-sm-3 col-lg-2 col-md-3">
+        <ng-select [items]="LocationForJob.Data" placeholder="Location" [(ngModel)]="LocationData" bindLabel="TEXT"
+          bindValue="Id"></ng-select>
+          <!-- <ng-select [items]="LocationForJob.Data" placeholder="Location" [(ngModel)]="MultipleLocationData" bindLabel="TEXT"
+          [multiple]="true" [disabled]="false" bindValue="Id"></ng-select> -->
+      </div>
+
+      <div class="col-sm-3 col-lg-2 col-md-3">
+        <ng-select [items]="GSXStatusDD.Data" placeholder="GSX Status Codes" [(ngModel)]="GSXStatus" bindLabel="TEXT"
+          bindValue="Id"></ng-select>
+      </div>
+
+
+      <div class="col-sm-3 col-md-3 col-lg-2 col-12">
+        <label style="font-weight: 600;padding-bottom: 2px;">Case Id</label><br>
+        <input type="text" style="border-radius: 4px; height: 30px; width: 100%; border: 1px solid rgb(211, 211, 211);"
+          placeholder="CaseId" [(ngModel)]="CaseIdData" />
+      </div>
+
+      <div class="col-sm-5 col-md-5 col-lg-2">
+        <mat-form-field appearance="fill">
+          <mat-label style="padding-top: 3px;">Enter a date range</mat-label>
+
+          <div style="display: flex;align-items: center;justify-content: space-between;">
+            <div>
+              <mat-date-range-input [rangePicker]="picker">
+                <input matStartDate [(ngModel)]="StartDate" placeholder="Start date">
+                <input matEndDate [(ngModel)]="EndDate" placeholder="End date">
+              </mat-date-range-input>
+            </div>
+
+            <div>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </div>
+          </div>
+        </mat-form-field>
+      </div>
+
+    </div>
+  <div class="row" style="padding-top: 10px;display: flex;">
+      <div class="col-lg-6" style="display:flex; flex-direction: row;">
+      <div  matTooltip="Export Declined Service Report" style="padding-right: 40px;">
+        <button    type="submit" (click)="exportReportData_Declined()" class="btn" style="background-color: #0d6efd; color: #ffffff;">Export Declined Report</button>
+      </div>
+
+      <div matTooltip="Generate Summary Service Report">
+        <button  type="submit" (click)="DownloadSummary()" class="btn" style="background-color: #0d6efd; color: #ffffff;">Download Summary</button>
+      </div> 
+      </div>
+      <div class="col-lg-6" style="display:flex; flex-direction: row; align-content: left;">
+      <div  matTooltip="Export Service Report" style="    margin-left: 45%;    padding-right: 8%;">
+        <button  type="submit" (click)="exportReportData()" class="btn btn-success">Export Report</button>
+      </div>
+
+      <div matTooltip="Generate Service Report">
+        <button type="submit" (click)="getReportData()" class="btn btn-success">Generate Report</button>
+      </div>
+      </div>
+
+    <!-- <div class=" " style="padding-top: 10px;display: flex;justify-content: flex-end;">
+      <div style="padding-right: 40px;">
+        <button style="float:right" type="submit" (click)="exportReportData()" class="btn btnClass">Export Report</button>
+      </div>
+
+      <div>
+        <button style="float:right" type="submit" (click)="getReportData()" class="btn btnClass">Generate Report</button>
+      </div>
+   
+    </div> -->
+    </div>
+  </mat-card><br />
+
+  <mat-card *ngIf="results.length>0">
+
+    <mat-card class="m-0 p-0">
+      <div class="row clearfix" *ngIf="columns.length > 0">
+        <div class="table-responsive">
+          <nitc-grid [gridcolumns]="columns" [dataSource]="detail" (actionEvent)="actionEmit($event)"
+            [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent" (changeEvent)="loadPageData($event)"
+            [isAllowSelect]="isChoose">
+          </nitc-grid>
+        </div>
+      </div>
+    </mat-card>
+
+  </mat-card>
+</section>

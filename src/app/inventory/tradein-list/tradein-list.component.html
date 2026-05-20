@@ -1,0 +1,115 @@
+<section class="content">
+
+  <ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-clip-rotate" [fullScreen]="true">
+    <p style="color: white"> {{spinnerValue}} </p>
+  </ngx-spinner>
+
+
+  <mat-card class="mt-2">
+    <div class="row">
+      <div class="col-lg-4 col-sm-4 col-md-4">
+        <h3 style="font-weight: 600;font-size: 19px !important;">Tradein List</h3>
+      </div>
+      <div class="col-lg-6 col-sm-6 col-md-6"></div>
+      <div class="col-lg-2 col-sm-2 col-md-2" style="gap: 5%; display: flex; height: fit-content; margin-top: 16px; ">
+          <button style="width: 50%;" (click)="GetTradeinList('')" class="btn blue-button">Search</button>
+        <button style="width: 50%;" (click)="ExportTradeinList()" class="btn btn-success">Export</button>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="mt-2">
+
+    <div class="row">
+
+      <div class="col-lg-2 col-sm-2 col-md-2">
+        <label style="font-weight: 600;" for="">TradeinId</label> <br>
+        <input style="width: 100%; height: 28px; margin-top: 5px !important;" type="text" [(ngModel)]="TradeinId">
+      </div>
+
+      <div class="col-lg-2 col-sm-2 col-md-2">
+        <label style="font-weight: 600;" for="">Transaction No </label> <br>
+        <input style="width: 100%; height: 28px; margin-top: 5px !important;" type="text" [(ngModel)]="TransactionNo">
+      </div>
+
+      <div class="col-lg-2 col-sm-2 col-md-2">
+        <label style="font-weight: 600;" for="">Case Id</label> <br>
+        <input style="width: 100%; height: 28px; margin-top: 5px !important;" type="text" [(ngModel)]="CaseId">
+      </div>
+
+      <div class="col-lg-2 col-sm-2 col-md-2">
+        <label style="font-weight: 600;" for="">CustomerCode </label> <br>
+        <input style="width: 100%; height: 28px; margin-top: 5px !important;" type="text" [(ngModel)]="CustomerCode">
+      </div>
+
+      <div class="col-lg-2 col-sm-2 col-md-2">
+        <label style="font-weight: 600;" for="">Quotation Number</label> <br>
+        <input style="width: 100%; height: 28px; margin-top: 5px !important;" type="text" [(ngModel)]="QuotationNumber">
+      </div>
+       <div class="col-lg-2 col-sm-2 col-md-2">
+         <label style="font-weight: 600;">MobileNo</label>
+          <input style="width: 100%; height: 28px; margin-top: 5px !important;" type="text" [(ngModel)]="MobileNo">
+      </div>
+
+    </div>
+
+  
+    <div class="row mt-2">
+
+      <div class="col-lg-3 col-sm-3 col-md-3">
+        <ng-select placeholder="Tradein Partner" [items]="TradeinPartnerDD.Data" bindLabel="TEXT" bindValue="Id"
+          [(ngModel)]="TradeinPartner">
+        </ng-select>
+      </div>
+      <div class="col-lg-3 col-sm-3 col-md-3">
+        <ng-select [items]="LocationForJob.Data" placeholder="Select Location" [(ngModel)]="LocationCode" bindValue="Id"
+          bindLabel="TEXT"></ng-select>
+      </div>
+
+       <div class="col-lg-2 col-sm-2 col-md-2">
+         
+           <ng-select [items]="TradeinCategoryDD.Data" placeholder="Select Tradein Type" [(ngModel)]="TransactionCategory"
+          bindValue="Id" bindLabel="TEXT">
+
+        </ng-select>
+       </div>
+
+      <div class="col-lg-4 col-sm-4 col-md-4" style="gap: 5px; display: flex;">
+        <mat-form-field appearance="fill" style="width: 49%;">
+          <mat-label>Start Date</mat-label>
+          <input matInput [matDatepicker]="startPicker" [(ngModel)]="StartDate" name="StartDate"
+            placeholder="Start date">
+          <mat-datepicker-toggle matTooltip="Select Start Date" matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill" style="width: 49%;">
+          <mat-label>End Date</mat-label>
+          <input matInput [matDatepicker]="endPicker" [(ngModel)]="EndDate" name="EndDate" placeholder="End date">
+          <mat-datepicker-toggle matTooltip="Select End Date" matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <!-- <div class="col-lg-2 col-sm-2 col-md-2" style="gap: 5%; display: flex; height: fit-content; margin-top: 16px; ">
+        <button style="width: 50%;" (click)="GetTradeinList('')" class="btn blue-button">Search</button>
+        <button style="width: 50%;" (click)="ExportTradeinList()" class="btn btn-success">Export</button>
+      </div> -->
+      
+
+    </div>
+  </mat-card>
+
+  <mat-card class="mt-2">
+    <div class="row clearfix">
+      <div class="table-responsive">
+        <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails"
+          (actionEvent)="actionEmit($event)" [isAllowSelect]="false" (changeEvent)="PageChange($event)">
+        </nitc-grid>
+      </div>
+    </div>
+  </mat-card>
+
+
+</section>

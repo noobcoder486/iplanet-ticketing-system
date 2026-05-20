@@ -1,0 +1,39 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+
+<section class="sales_dasboard content x_container">
+    <div class="sales_order_action">
+      <div class="tabs_content">
+  
+        <div class="tab_content_header" style="height: 30px;">
+          <h3 class="header_text">{{ pageTitle }}</h3>
+          <div class="create_btn" style="max-width: 108px !important;  width: 100%; height: 35px !important;">
+            <button  matTooltip="Create Apple Registry Request" style="white-space: nowrap; width: 100%;  font-size: 12px !important;" class="create_btn_content" 
+            (click)="add()">  <i style="font-size:18px !important;color: blue; font-weight: 600; position: relative; top:3px;padding-right: 5px;"  
+             class="iconbtn fa-light fa-plus">      
+           </i> <span style="font-size: 12px !important; font-weight: 600;">Apple I/O </span></button>
+          </div>
+          <ul class="layout_icons_wrapper wauto">
+            <li *ngFor="let tab of tabs; let index= index" (click)="selectTab(index)" [class.active]="tab.active">
+              <span *ngIf="tab.gridicon" class="grid_svg_layout layout_icons_content" [innerHtml]="tab.gridicon"></span>
+              <a *ngIf="tab.title">{{ tab.title }}</a>
+            </li>
+          </ul>
+        </div>
+        <my-tab-create [(active)]="tabs[0].active" [gridicon]="content" >
+          <app-tiles (onCardSelected)="onCardSelected($event)" [data]="DeliveryChallanData"></app-tiles>
+        </my-tab-create>
+  
+        <!-- Grid -->
+        <div>
+          <!-- <my-tab-create [(active)]="tabs[1].active" [gridicon]="contentOne">
+            <app-apple-registry-grid [filters]="filtersEventRequest"></app-apple-registry-grid>
+          </my-tab-create> -->
+        </div>
+
+      </div>
+    </div>
+  </section>
+  

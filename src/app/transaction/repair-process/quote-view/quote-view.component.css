@@ -1,0 +1,38 @@
+::ng-deep .bg-primary
+{
+    background-color: rgb(252, 175, 175) !important;
+}
+
+.card-footer
+{
+ position: absolute !important;
+ width: 100%;
+ bottom: 0 !important;
+
+}
+
+
+.inputStyle
+{
+  border-radius: 5px;
+  border:  1px solid rgba(0, 0, 0, 0.125);
+ 
+}
+.card
+{
+  margin-bottom: 0px !important;
+}
+
+.card-header
+{
+ border-top-left-radius:8px ;
+ border-top-right-radius:8px ;
+
+}
+
+.card-body
+{
+  text-align: justify;
+ overflow: auto; 
+ 
+}

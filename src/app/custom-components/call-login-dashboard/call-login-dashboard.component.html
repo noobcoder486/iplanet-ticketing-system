@@ -1,0 +1,16 @@
+<section class="sales_dasboard content x_container">
+  <div class="sales_order_action">
+    <div class="tabs_content">
+      <my-tabs-create  [pageTitle]='pageTitle' [onCreate]="onCreate"
+      [onStockFinder]="onStockFinder" [viewBulletinBoard]="viewBulletinBoard"
+      [onPriceFinder]="onPriceFinder">
+        <my-tab-create [(active)]="isDashBoardCard"  [gridicon]="content">
+          <app-tiles (onCardSelected)="onCardSelected($event)" [data]="jobHeaderData"></app-tiles>
+        </my-tab-create>
+        <my-tab-create [(active)]="isGridCard"  [gridicon]="contentOne">
+          <app-call-login-grid [filters]="filtersEvent"></app-call-login-grid>
+        </my-tab-create>
+      </my-tabs-create>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,165 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+<section class="content">
+  <mat-card>
+      <div class="row">
+        <div class="col-2 d-flex justify-content-left">
+          <h1 class="header">Sales List</h1>
+        </div>
+
+        <div class="col-lg-2 col-sm-4 col-md-4" style="display: flex;align-items: center;">
+          <label style="font-size:16px !important;">Invoice Document Type </label>
+        </div>
+        <div class="col-lg-4 col-sm-4 col-md-4" >
+           <ng-select  [items]="InvoiceDocType.Data" bindLabel="TEXT" bindValue="Id" [(ngModel)]="docTypeData" (change)="GetAccessorySalesList(MobileNo,locationcodedata,invoiceCode)"></ng-select>
+        </div>
+        <div class="col-sm-2 mt-2 btn-head-group">
+          <div class="d-flex justify-content-end">
+            <!-- <button [hidden]="userName != 'sarathnesh@consolidated.one'" matTooltip="Enable or Disable Restriction" class="btn btn-primary"
+              (click)="hidePopUp = false" (click)="getData()">
+              <span style="font-size: 12px !important; font-weight: 600;">Enable Restrictions</span></button> -->
+               <button [hidden]="!allowedUsers.includes(userName)" matTooltip="Enable or Disable Restriction" class="btn btn-primary"
+              (click)="hidePopUp = false" (click)="getData()">
+              <span style="font-size: 12px !important; font-weight: 600;">Enable Restrictions</span></button>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-sm-4 col-md-4" *ngIf="isApproverPermission == true">
+          <div class="row">
+            <div class="col-lg-6 col-sm-4 col-md-4"  >
+              <div style="margin-top: 15px; display: flex;align-items: center;">
+                <input type="file" id="fileInput" accept=".xls, .xlsx" style="display: none;" (change)="FileUploadInvoicePGI($event)">
+                <button (click)="selectFile()" 
+                matTooltip="Bulk Upload Invoice PGI Data" class="btn " style="width:40px; padding: 3px; border-radius: 4px;background-color: #233f76;">
+                <img src="assets/images/uploadNew.png">
+              </button>
+              </div>
+            </div>
+            <div class="col-lg-6 col-sm-4 col-md-4"  >
+              <div style="margin-top: 15px; display: flex;align-items: center;">
+                <button class="btn btn-warning btn-download"  style="width:40px;height: 35px; padding: 3px; border-radius: 4px;background-color: #5cb945;" 
+                  matTooltip="Download Sample Excel" (click)="downloadSampleFile()" >
+                  <i style="color: white;" class="fa fa-download" aria-hidden="true"></i>
+                </button>
+                </div>
+            </div>
+          </div>
+
+          </div>
+
+          <div class="col-lg-2 col-sm-4 col-md-4" *ngIf="isApproverPermission == true && userName.startsWith('admin')">
+            <div class="row">
+              <div class="col-lg-6 col-sm-4 col-md-4"  >
+                <div style="margin-top: 15px; display: flex;align-items: center;">
+                  <input type="file" id="resetName" accept=".xls, .xlsx" style="display: none;" (change)="Reset_SAPPosting4Invoice($event)">
+                  <button (click)="selectResetFile()" 
+                  matTooltip="Bulk Reset SAP Posting for Invoice" class="btn " style="width:40px; padding: 3px; border-radius: 4px;background-color: #233f76;">
+                  <img src="assets/images/uploadNew.png">
+                </button>
+                </div>
+              </div>
+              <div class="col-lg-6 col-sm-4 col-md-4"  >
+                <div style="margin-top: 15px; display: flex;align-items: center;">
+                  <button class="btn btn-warning btn-download"  style="width:40px;height: 35px; padding: 3px; border-radius: 4px;background-color: #5cb945;" 
+                    matTooltip="Download Sample Excel" (click)="downloadSampleFile()" >
+                    <i style="color: white;" class="fa fa-download" aria-hidden="true"></i>
+                  </button>
+                  </div>
+              </div>
+            </div>
+  
+            </div>
+
+        </div>
+    </mat-card><br />
+
+    <mat-card>
+      <div class="row" style="display: flex; align-items: center;">
+        <div class="col-lg-3 col-sm-5 col-md-5">
+          <label>MobileNo:</label>&nbsp;<br>
+          <input type="number" placeholder="MobileNo" style="border:1px solid rgb(194, 193, 193);border-radius:5px;height:35px" [(ngModel)]="MobileNo" />
+        </div>
+        <div class="col-lg-3 col-sm-5 col-md-5">
+          <label>Invoice Code:</label>&nbsp;<br>
+          <input type="text" placeholder="Invoice Code" style="border:1px solid rgb(194, 193, 193);border-radius:5px;height:35px" [(ngModel)]="invoiceCode" />
+        </div>
+        <div class="col-lg-4 col-sm-5 col-md-5 justify-content-end">
+          <ng-select [items]="Location.Data" [(ngModel)]="locationcodedata" bindValue="Id" bindLabel="TEXT" placeholder="Location"></ng-select>
+        </div>
+        <div class="col-lg-2 col-sm-2 col-md-2">
+          <button class="btnClass" (click)="GetAccessorySalesList(MobileNo,locationcodedata,invoiceCode)">Search</button>
+        </div>
+      </div>
+    </mat-card><br />
+
+    <mat-card>
+      <div class="MainDiv" style="padding: 10px;">
+        <div class="row">
+          <mat-card class="m-0 p-0">
+            <div class="row clearfix" *ngIf="columns.length > 0">
+              <div class="table-responsive">  
+                <nitc-grid [gridcolumns]="columns" [dataSource]="detail" [actions]="actionDetails" [hideSpinnerEvents]="hideSpinnerEvent"
+                (actionEvent)="actionEmit($event)" (changeEvent)="loadPageData($event)" [isAllowSelect]="isChoose">
+                </nitc-grid>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </mat-card>
+</section>
+
+
+<!-- Enable Cash Deposit Popupp Starts Here -->
+<div class="container" style="width: 50%; margin: 2% auto; max-width: 61%;">
+  <div class="background" [hidden]="hidePopUp">
+    <div class="Ux_popup popup" style="position: relative; width: 50% !important; cursor: pointer;">
+      <!-- POPUP CONTENT -->
+      <mat-card>
+        <!-- Spinner for loading -->
+        <ngx-spinner size="medium" [type]="typeSelected">
+          <p style="font-size: 20px; color: white">Loading...</p>
+        </ngx-spinner>
+
+        <div class="header">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <b style="font-size: 17px;">Enable or Disable Restriction</b>
+            <i class="Ux_close fa-duotone fa-circle-xmark" (click)="hidePopUp = true"></i>
+          </div>
+        </div>
+        <hr>
+
+        <div class="row">
+          <div class="col-12 locationDiv">
+              <table>
+                <thead>
+                <tr style="height: auto !important;">
+                    <th scope="col">Restriction Name</th>
+                    <th scope="col">Restriction Enable/Disabled</th>
+                </tr>
+                </thead>
+                <tbody>
+              
+                  <tr *ngFor="let item of RestrictionList; let index = index" >
+                    <td>{{item?.RestrictionName}} Restriction</td>
+                    <td style="white-space: nowrap; "> <span>                   
+                        <mat-slide-toggle [(ngModel)]="item.RestrictionFlag" (change)='newslide($event)'></mat-slide-toggle>
+                    </span></td>
+
+                    <div style="display: flex; justify-content: space-around; margin-top: 10px;">
+                    </div>
+                  <br/>
+                </tbody>
+            </table>
+          </div>
+        </div>
+
+       
+        <div class="col-12" style="display: flex; align-items: center; justify-content: center;">
+          <button class="x_final_button x_active_btn x_save_button"  (click)="onSubmit()">Update Restriction</button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

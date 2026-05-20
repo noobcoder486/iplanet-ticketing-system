@@ -1,0 +1,74 @@
+[   
+    {
+        "ScreenCode":"SalesOrder",
+        "OnLoad" : [
+            { "ControlName" : "SocCode", "Action": "ACTIVATION"}
+        ],
+        "Event": [
+            { "ControlName" : "DocType", "Action": "ACTIVATION" , "ControlType": "COMBOSEARCH", "PropertyName":"Text"},
+            { "ControlName" : "ShipTo", "Action": "ASSIGNTO" , "ControlType": "COMBOSEARCH","PropertyName":""},
+            { "ControlName" : "BillTo", "Action": "ASSIGNTO" , "ControlType": "COMBOSEARCH", "PropertyName":""},
+            { "ControlName" : "Material", "Action": "ASSIGNTO" , "ControlType": "COMBOSEARCH", "PropertyName":""},
+            { "ControlName" : "ShipTo", "Action": "RESETGRID" , "ControlType": "COMBOSEARCH","PropertyName":""},
+            { "ControlName" : "Quantity", "Action": "ASSIGNTO" , "ControlType": "NUMBER", "PropertyName":""}                                            
+        ],
+        "ActionPerform": [
+            { 
+                "ControlName": "ShipTo", "ConditionVal": "", "ActionType": "ASSIGNTO",
+                "API": null, "ControlValue": [],"Action":[],
+                "AssignControl": [
+                    {"Control": "ShiptoAddress", "FieldName": "Address"} 
+                ]
+            },
+            { 
+                "ControlName": "BillTo", "ConditionVal": "", "ActionType": "ASSIGNTO",
+                "API": null, "ControlValue": [],"Action":[],
+                "AssignControl": [
+                    {"Control": "BilltoAddress", "FieldName": "Address"}
+                ]
+            },
+            { 
+                "ControlName": "Material", "ConditionVal": "", "ActionType": "ASSIGNTO",
+                "API": null, "ControlValue": [],"Action":[],
+                "AssignControl": [
+                    {"Control": "Quantity", "FieldName": "Quantity"},
+                    {"Control": "UnitPrice", "FieldName": "UnitPrice"},
+                    {"Control": "Discount", "FieldName": "Discount"},
+                    {"Control": "BaseAmount", "FieldName": "BaseAmount"},
+                    {"Control": "Tax", "FieldName": "Tax"},
+                    {"Control": "TaxAmount", "FieldName": "TaxAmount"},
+                    {"Control": "NetAmount", "FieldName": "NetAmount"}
+                ]
+            },
+            { 
+                "ControlName": "ShipTo", "ConditionVal": "", "ActionType": "RESETGRID",
+                "API": null, "ControlValue": [],"Action":[],
+                "AssignControl": [
+                    {"Control": "Material", "FieldName": "Material"}               
+                ]
+            },
+            { 
+                "ControlName": "Quantity", "ConditionVal": "", "ActionType": "ASSIGNTO",
+                "API": [{"Control":"Material","FieldName": "MaterailId"},{"Control":"Quantity","FieldName": "Quantity"}],
+                "ControlValue": [],"Action":[],
+                "AssignControl": [
+                    {"Control": "UnitPrice", "FieldName": "UnitPrice"},
+                    {"Control": "Discount", "FieldName": "Discount"},
+                    {"Control": "BaseAmount", "FieldName": "BaseAmount"},
+                    {"Control": "Tax", "FieldName": "Tax"},
+                    {"Control": "TaxAmount", "FieldName": "TaxAmount"},
+                    {"Control": "NetAmount", "FieldName": "NetAmount"}          
+                ]
+            },
+            { 
+                "ControlName": "DocType", "ConditionVal": "VAT", "ActionType": "ACTIVATION",
+                "API": null, "ControlValue": [],
+                "AssignControl": [],"Action":[
+                    { "ActionControl": "SocCode", "Value": true}
+                ]
+            }
+
+        ]
+       
+    }
+]

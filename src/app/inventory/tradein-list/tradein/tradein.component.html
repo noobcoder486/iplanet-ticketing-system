@@ -1,0 +1,85 @@
+<section class="content">
+    <mat-card class="mt-2">
+        <div class="row">
+            <div class="col-lg-4 col-sm-4 col-md-4">
+                <h1 style="font-size: 18px !important; font-weight: 600;">Tradein</h1>
+            </div>
+            <div class="col-lg-4 col-sm-4 col-md-4">
+                <label style="margin-left: 38px;font-size: 15px !important;">Tradein Id </label> <br>
+                <label
+                    style="font-weight: 600; color: blue; font-size: 15px !important;">{{tradeinObject?.TradeinId}}</label>
+            </div>
+            <div class="col-lg-4 col-sm-4 col-md-4">
+                <label style="font-size: 15px !important;">Created Date </label> <br>
+                <label style="font-weight: 600; color: blue; font-size: 15px !important;">{{tradeinObject?.CreatedDate |
+                    date:'yyyy-MM-dd' }}</label>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card class="mt-2">
+        <div class="row" style="border: 2px solid #e3dcdc; background: #e3dcdc; color: black; border-style: none;">
+            <div style="font-size: 16px !important; font-weight: 500;" class="col-lg-6">Tradein Details</div>
+            <div style="font-size: 16px !important; font-weight: 500;" class="col-lg-6">Customer Details</div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-6 col-sm-6 col-md-6">
+                <label>Tradein Id : <span><b>{{tradeinObject?.TradeinId}} </b></span> </label> <br>
+                <label>Transaction No : <span><b>{{tradeinObject?.TransactionNo}} </b></span> </label> <br>
+                <label>TransactionCategory : <span><b>{{tradeinObject?.TransactionCategoryDesc}} </b></span></label>
+                <br>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-md-6">
+                <label>CustomerName : <span> <b> {{this.CustomerObject?.FirstName}} {{this.CustomerObject?.LastName}}
+                        </b></span> </label> <br>
+                <label>MobileNo : <span><b>{{this.CustomerObject?.MobileNo}} </b></span> </label><br>
+                <label>PhoneNo : <span><b>{{this.CustomerObject?.PhoneNo}} </b></span> </label><br>
+                <label>EmailID : <span><b>{{this.CustomerObject?.EmailID}} </b></span> </label><br>
+            </div>
+        </div>
+    </mat-card>
+
+    <mat-card class="mt-2">
+        <div class="row">
+
+            <div class="col-lg-3 col-sm-3 col-md-3">
+                <ng-select [disabled]="IsDisabled == true" placeholder="Select Category"
+                    [items]="TradeinCategoryDD.Data" [(ngModel)]="TradeinCategory" bindValue="Id"
+                    bindLabel="TEXT"></ng-select>
+            </div>
+
+            <div class="col-lg-3 col-sm-3 col-md-3">
+                <ng-select [disabled]="IsDisabled == true" placeholder="Tradein Partner" [items]="TradeinPartnerDD.Data" bindLabel="TEXT" bindValue="Id"
+                    [(ngModel)]="TradeinPartner">
+                </ng-select>
+            </div>
+
+            <div class="col-lg-3 col-sm-3 col-md-3">
+                <label style="font-weight: 600;">Enter Transaction No <i *ngIf="TradeinCategory == 'CONVERTED'" style="color:red">*</i></label> <br>
+                <input [disabled]="IsDisabled == true" style="width: 100%; margin-top: 2px; height: 30px;" type="text"
+                    [(ngModel)]="TransactionNo">
+            </div>
+
+            <div class="col-lg-3 col-sm-3 col-md-3">
+                <label style="font-weight: 600;"> Quotation Number </label> <br>
+                <input style="width: 100%; margin-top: 2px; height: 29px;" type="text" [(ngModel)]="QuotationNumber">
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-6 col-sm-6 col-md-6">
+                <label style="font-weight: 600;">Enter Remarks </label> <br>
+                <input [disabled]="IsDisabled == true" style="width: 100%; margin-top: 3px; height: 30px;" type="text"
+                    [(ngModel)]="Remark">
+            </div>
+            <div class="col-lg-5">
+
+            </div>
+            <div class="col-lg-1">
+                <button [disabled]="IsDisabled == true" style="margin-top: 12px; width: 90%;" class="btn btn-success" (click)="UpdateTradein()">Save</button>
+            </div>
+        </div>
+    </mat-card>
+
+</section>

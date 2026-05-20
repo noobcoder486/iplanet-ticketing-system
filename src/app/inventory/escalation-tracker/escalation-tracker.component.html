@@ -1,0 +1,119 @@
+<section>
+    <div class="container d-flex flex-column">
+        <mat-card style="margin-top: 5px !important;">
+            <div class="card" style="margin-bottom: 5px; min-height: 0% !important; border-radius: 2px;">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-12">
+                        <div class="row" style="align-items: center;">
+                            <div class="col-lg-5 col-sm-6 col-6"
+                                style="border-right: 1px solid rgb(112, 111, 111); text-align: center; display: flex; align-items: center; justify-content: center;">
+                                <div class="mt-1" style="padding-right: 15px;">
+                                    <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+                                </div>
+                                <div class="mt-1">
+                                    <h4><span style="color: black; font-size: 14px; font-weight: 600;" title="">Ticket Code </span></h4>
+                                    <div class="mt-1">
+                                        <h4><span style="color: blue ;font-size: 14px; font-weight: 600; " title=""> {{ TicketCode == null
+                                          || TicketCode == undefined ? 'NA' : TicketCode }}</span> </h4>
+                                      </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 col-sm-6 col-6" style="border-right: 1px solid rgb(112, 111, 111);">
+                                <div class="JobTypeDesc"
+                                    style="color: blue; text-align: center; display: flex; align-items: center; justify-content: center;">
+                                    <b style="color: black; padding-right: 10px;">Ticket Status: </b>{{TicketStatus ===
+                                     undefined || TicketStatus === null?'NA': TicketStatus}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 mt-3">
+                        <div class="row" style="align-items: center;">
+                            <div class="col-lg-1 col-sm-3 col-6"
+                                style="text-align: center; display: flex; align-items: center; justify-content: center;">
+                            </div>
+                            <div class="col-lg-5 col-sm-3 col-md-3 col-6"
+                                style="color: black; border-right: 1px solid rgb(112, 111, 111); text-align: center; display: flex; align-items: center; justify-content: center;">
+                                <b style="color: black; padding-right: 10px;">Location Code: </b>{{LocationCode ===
+                                     undefined || LocationCode === null?'NA': LocationCode}}
+                            </div>
+                            <div class="col-lg-4 col-sm-3 col-6">
+                                <div class="col-12"
+                                    style="text-align: center; display: flex; align-items: center; justify-content: center;">
+                                    <label style="white-space: nowrap;"><b>Date:-  </b> <span style="padding-right: 5px;">{{ CreatedDate != null || CreatedDate != undefined ? ( CreatedDate | date: 'dd/MM/yyyy : hh:mm a' ): 'No Date Found' }}</span></label>
+                                </div>
+                            </div>
+                            <div class="col-lg-1 col-sm-3 col-6"
+                                style="text-align: center; display: flex; align-items: center; justify-content: center;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+
+        <!-- All Escalation List Section -->
+        <div class="escalation-section">
+            <mat-card class="all-escalation p-2 mb-4">
+                <div class="row">
+                    <div class="col-md-12 list-item" *ngFor="let items of filteredEscalationTrackerObject">
+                        <mat-card>
+                            <mat-card-title>{{ items.MessageId }}</mat-card-title>
+                            <mat-card-subtitle>{{ items.MessageSubject }}</mat-card-subtitle>
+                            <mat-card-content>
+                                <div class="popup-body" [innerHTML]="items.MessageBody"></div>
+                                <!-- <p>{{  }}</p> -->
+                            </mat-card-content>
+                            <mat-card-footer>{{ items.CreatedDate }}</mat-card-footer>
+                        </mat-card>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+
+        <mat-card>
+            <div class="row">
+                <div class="col-lg-4 justify-content-center col-md-4 col-sm-4">
+                    <ng-select [items]="Location.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                        [(ngModel)]="LocationCode" placeholder="Location"></ng-select>
+                </div>
+                <div class="col-lg-3 justify-content-center col-md-4 col-sm-4"
+                    style="display: flex; align-items: center;">
+                    <button class="btn" style="height: 36px; display: flex; align-items: center; background-color: rgb(93, 148, 250) !important; color: white;"
+                        mat-raised-button (click)="asignLocation()">
+                        <i aria-hidden="true"></i>
+                       Asign Location
+                    </button>
+                </div>
+            </div>
+        </mat-card>
+
+        <!-- ReplyTo Section -->
+        <mat-card class="reply-to p-2 mb-4" *ngIf="LocationCode == null && TicketStatus != TicketStatus">
+            <mat-card-title>Reply To</mat-card-title>
+            <mat-card-content>
+                <form>
+                    <div class="form-group">
+                        <label for="escalation-title">Escalation Title:</label>
+                        <select class="form-control" id="escalation-title">
+                            <option value="Escalation 1">Escalation 1</option>
+                            <option value="Escalation 2">Escalation 2</option>
+                            <option value="Escalation 3">Escalation 3</option>
+                            <option value="Escalation 4">Escalation 4</option>
+                            <option value="Escalation 5">Escalation 5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject:</label>
+                        <input type="text" class="form-control" id="subject" placeholder="Enter subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message:</label>
+                        <textarea class="form-control" id="message" rows="5" placeholder="Enter your message"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</section>

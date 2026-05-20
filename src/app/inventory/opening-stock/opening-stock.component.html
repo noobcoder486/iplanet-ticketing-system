@@ -1,0 +1,86 @@
+<section class="content">
+  <ngx-spinner size="medium" [type]="typeSelected">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+
+  <mat-card class="p-2" style="z-index: 9;">
+      <div class="row">
+        <div class="col-sm-4 col-lg-4 col-md-4">
+            <p class="HeaderText">Opening Stock Order </p>  
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-3 col-lg-3 col-md-3 justify-content-left">
+          <ng-select [items]="LocationForJob.Data" placeholder="Location"  [(ngModel)]="locationData" bindLabel="TEXT" bindValue="Id">
+          </ng-select>
+        </div>
+
+        <div class="col-sm-3 col-lg-3 col-md-3 justify-content-left">
+          <ng-select [items]="GMDocType.Data" placeholder="Document Type" disabled="True" [(ngModel)]="GMDocTypeData" bindLabel="TEXT" bindValue="Id">
+          </ng-select>
+        </div>
+
+      <div class="col-sm-3 col-lg-3 col-md-3">
+        <ng-select [items]="stockType" placeholder="Stock Type" [(ngModel)]="stockTypeData"></ng-select>
+      </div>
+
+      <div class="col-sm-3 col-lg-3 col-md-3 d-flex justify-content-end" style="align-items: center;">
+          <button style="height: 35px !important;"  class="btnClass" (click)="addOpenStock()" > Add Opening Stock </button>
+        </div>
+
+      </div>
+     
+  </mat-card><br />
+
+      <mat-card>
+              <div class="scrollcntr" style="height: 370px;">
+                <div class="items_details_grid">
+                <div class="row" style="border:1 px solid black; color:white;   background-color: #585858 !important; height: 34px;  align-items: center;top: 0;position: sticky;">
+                  <div class="col-lg-1 col-sm-2 col-md-1 col-1 fontFamily"  >Material Code</div>
+                  <div class="col-lg-2 col-sm-2 col-md-2  col-2 fontFamily"  >Material Name</div>
+                  <div class="col-lg-2 col-sm-2 col-md-2  col-2 fontFamily" >Material Description</div>
+                  <div class="col-lg-1 col-sm-1 col-md-1  col-1 fontFamily"  >Part Type</div>
+                  <div class="col-lg-2 col-sm-2 col-md-2  col-2 fontFamily"  >Add Stock</div>
+                  <div class="col-lg-1 col-sm-1 col-md-1  col-1 fontFamily"  style="flex: 1;"></div>
+                  <div class="col-lg-1 col-sm-1 col-md-1  col-1 fontFamily" style="padding-right: 10%;white-space: nowrap;">Delete</div>
+                </div><br />
+
+                <div *ngFor="let item of results">
+                  <div class="row" style="border-bottom: 1px solid black; padding-bottom: 10px;">
+                    <div class="col-lg-1 col-sm-2 col-md-1 fontFamily">{{item.MaterialCode}}</div>
+                    <div class="col-lg-2 col-sm-2 col-md-2 fontFamily">{{item.MaterialName}}</div>
+                    <div class="col-lg-2 col-sm-2 col-md-2 fontFamily">{{item.MaterialDescription}}</div>
+                    <div class="col-lg-1 col-sm-1 col-md-1 fontFamily">{{item.PartType}}</div>
+                    <div class="col-lg-2 col-sm-2 col-md-2 fontFamily"  style="flex: 1;"><input type="number" [(ngModel)]="item.Quantity" (change)="addQuantity(item)" /></div>
+                    <div class="col-lg-1 col-sm-1 col-md-1 arrowDiv"><i  *ngIf='item.SerializedModule ==="1"' [class.arrowDivRotate]="rotate" (click)="toggleCollapse(item)" style="font-size: 14px;cursor: pointer;color: rgb(53, 53, 53) !important;cursor: pointer;"  class="fa fa-angle-right"></i></div>
+                    <div class="col-lg-1 col-sm-1 col-md-1 fontFamily"><button style="cursor: pointer;" (click)="removeItem(item)" class="trash" (click)="deleteitem(item)"><i class="fa-regular fa-trash"></i></button></div>
+                  </div><br />
+
+                  <div *ngIf="item.visible">
+                    <div  class="row" *ngFor="let object of item.ArrayList" style="align-items: center; background: #dbdbdb; height: 40px;">
+                      <div class="col-lg-3 col-sm-2 col-md-2">{{object.MaterialCode}}</div>
+                      <div class="col-lg-3 col-sm-2 col-md-2">{{object.MaterialDescription}}</div>
+                      <div class="col-lg-2 col-sm-2 col-md-2"><input [(ngModel)]="object.SerialNumber"/></div>
+                    </div><br />
+                  </div>
+                </div><br />
+                </div>
+              </div>
+   </mat-card>
+
+    <div class="row">
+      <div class="col-sm-8 col-lg-8 col-md-8">
+
+      </div>
+      <div class="col-sm-4 col-lg-4 col-md-4 d-flex justify-content-end" style="padding-top: 10px;">
+          <button  class="btnClass" (click)="saveStock()" > Save Stock </button>
+        </div>
+  </div>
+
+    <div *ngIf="isOpeningStockSelector" class="Ux_popup">
+      <i class="Ux_close fa-duotone fa-circle-xmark" (click)="isOpeningStockSelector= false"></i>
+      <app-opening-stock-list [stockTypeData]="stockTypeData" (materialList)="materialList($event)"></app-opening-stock-list>
+    </div>
+</section>

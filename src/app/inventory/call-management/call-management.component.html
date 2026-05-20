@@ -1,0 +1,155 @@
+<section class="content">
+    <mat-card>
+        <div>
+            <p style="font-size: 18px !important; font-weight: 700 !important;">Call Management </p>
+        </div>
+    </mat-card>
+    <mat-card class="mt-2">
+        <div class="row" style="text-align: center !important;">
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <label style="font-size: 14px !important; font-weight: 600 !important;">Unique Id</label>
+                <p style="font-size: 14px !important; font-weight: 700 !important; color: blue;">
+                    {{CallObject?.UniqueId}}</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <label style="font-size: 14px !important; font-weight: 600 !important;">Call Status</label>
+                <p style="font-size: 14px !important; font-weight: 700 !important; color: blue;">
+                    {{CallObject?.CallStatus}}</p>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <label style="font-size: 14px !important; font-weight: 600 !important;">Created Date </label>
+                <p style="font-size: 14px !important; font-weight: 700 !important; color: blue;">
+                    {{CallObject?.CreatedDate | date:'yyyy-MM-dd HH:mm'}}</p>
+            </div>
+        </div>
+    </mat-card>
+
+    <mat-card class="mt-2">
+        <div class="row" style="padding:10px;">
+            <div class="col-lg-12"
+                style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-12 col-md-6 col-12"
+                        style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+                        <div
+                            style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+                            <div class="row">
+                                <div class="col-6">
+                                    <span style="font-size: 16px !important;color:black;font-weight: 600;">Call
+                                        Details</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <mat-card-content>
+                            <div style="padding: 5px;">
+
+                                <div class="mt-1">
+                                    <strong>Call Status:</strong> {{CallObject?.CallStatus}}
+                                </div>
+
+                                <div class="mt-1">
+                                    <strong>Store Type:</strong> {{CallObject?.StoreType}}
+                                </div>
+                                <div class="mt-1">
+                                    <strong>Call Category:</strong> {{CallObject?.CallCategory}}
+                                </div>
+                                <div class="mt-1">
+                                    <strong>Parent Details:</strong> {{CallObject?.ParentDetails}}
+                                </div>
+                                <div class="mt-1">
+                                    <strong>Call Details:</strong> {{CallObject?.CallDetails}}
+                                </div>
+                                <div class="mt-1">
+                                    <strong>Notes:</strong> {{CallObject?.Notes}}
+                                </div>
+                                <div class="mt-1">
+                                    <b><strong>Location Mobile No:</strong> &nbsp; {{LocationMobileNo}}</b>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </div>
+                    <div class="col-lg-6 col-sm-12 col-md-6 col-12">
+                        <div
+                            style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+                            <div class="row">
+                                <div class="col-6">
+                                    <span style="font-size: 16px !important;color:black;font-weight: 600;">Customer
+                                        Details</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="MainDiv" style="padding: 10px;">
+                            <mat-card-title
+                                class="header">{{CallObject?.FirstName}}&nbsp;{{CallObject?.LastName}}</mat-card-title>
+                            <mat-card-content>
+                                <b>Location Code:</b> {{CallObject?.LocationCode}}<br>
+                                <b>Customer Name:</b> {{CallObject?.CustomerName}}<br>
+                                <b>Email Id:</b> {{CallObject?.EmailId}}<br>
+                                <b>Mobile No:</b> &nbsp; <b>{{CallObject?.MobileNo}}</b> <br>
+                            </mat-card-content>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card class="mt-2">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+                <div class="col-12">
+                    <ng-select [disabled]="IsOnlyView" style="width: 80% !important;" [(ngModel)]="CallDisposition"
+                        [items]="CallDispositionDD.Data" bindLabel="TEXT" bindValue="Id"
+                        placeholder="Select Call Disposition"></ng-select>
+                </div>
+                <div class="col-12">
+                    <p>Remark</p>
+                    <textarea [disabled]="IsOnlyView" [(ngModel)]="Remark" style="width: 80% !important;" rows="2" cols="40"
+                        placeholder="Enter Remarks..."></textarea>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6  col-sm-12" style="align-content: center !important;">
+                <div class="row g-3">
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <button style="width: 60% !important;" class="btn btn-primary" (click)="onCall()">Call</button>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <button style="width: 60% !important;" class="btn blue-button" (click)="showPopup()">Convert To
+                            Lead</button>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <button style="width: 60% !important;" class="btn btn-warning"
+                            (click)="UpdateStatus('FOLLOW-UP')">Follow-up</button>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-md-6">
+                        <button style="width: 60% !important;" class="btn btn-danger"
+                            (click)="UpdateStatus('CLOSED')">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-card>
+</section>
+
+<!-- Pop Up  -->
+<div class="popup-overlay" *ngIf="IsShowPopup">
+    <mat-card class="popup-card">
+        <div class="row" style="text-align: center !important;">
+            <p style="font-size: 20px !important;">Convert to Lead </p>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <ng-select   [disabled]="IsOnlyView" [(ngModel)]="CallCategory" placeholder="Select Call Category" [items]="CallCategoryDD.Data"
+                    bindLabel="TEXT" bindValue="Id"></ng-select>
+            </div>
+            <div class="col-12">
+                <ng-select [disabled]="IsOnlyView" [(ngModel)]="ParentDetails" placeholder="Select Parent Details "
+                    [items]="ParentDetailsDD.Data" bindLabel="TEXT" bindValue="TEXT"> </ng-select>
+            </div>
+        </div>
+        <div class="popup-buttons">
+            <button class="btn btn-success" (click)="ConvertToLead('CONVERTED-TO-LEAD')">Save</button>
+            <button class="btn btn-warning" (click)="ClosePopUp()">Cancel</button>
+        </div>
+    </mat-card>
+</div>

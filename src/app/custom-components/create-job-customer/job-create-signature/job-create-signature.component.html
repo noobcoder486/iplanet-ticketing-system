@@ -1,0 +1,38 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-12 col-sm-12 mt-2"  >
+        
+          <mat-card  style="height:300px; padding: 0px !important;box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px; border-radius: 10px; border: 1px solid #e1e8f2;"> 
+            <!-- <div class="BorderBox card_heading_text " style="height: 100%;"> -->
+              <div class="swiperBox" style="height:100%;">  
+        
+                <div class="HeaderBox"> 
+                 <div class="row " >
+                    <div class="col-lg-9 col-sm-9"  >
+                      <i class="fa-solid fa-pen"></i>
+                      <span style="padding-left:17px;">Signature</span>
+                    </div>
+                     
+                </div>
+                </div>
+          
+                <div class="col-lg-12" style="height: 80%;">
+                  <!-- <div class="" style="background-color:gray;border:2px solid red;"> -->
+                    <canvas #canvas  width="850" height="200"  style="background-color:white;"></canvas>
+                  <!-- </div> -->
+                </div>
+    
+                 <!-- Button -->
+                <div class="col-lg-12" style="display:flex; justify-content:right;">
+                    <div class="btn-flex" style="float: right;">
+                  <button (click)="SaveSignature()" class="btn-success">Save</button>
+                  <button (click)="ClearSignature()" class="btn-danger">Reset</button>
+                    </div>
+                </div>
+                 
+               <br>
+            </div>
+          </mat-card>
+        </div>
+        </div>
+    </div>

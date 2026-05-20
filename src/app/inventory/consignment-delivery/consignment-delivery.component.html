@@ -1,0 +1,272 @@
+<ngx-spinner size="medium" [type]="typeSelected">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+<section class="content" *ngFor="let item of responseData">
+  <div class="card">
+    <div class="row">
+
+      <div class="col-lg-5 col-sm-12">
+        <div class="row">
+          <div class="col-lg-6 col-sm-6 col-6 ">
+
+            <!-- inside Box -->
+            <!-- <div style="display: flex;justify-content: space-between;"> -->
+            <div style="float: left;padding-left: 60px;padding-top: 8px;padding-right: 24px;">
+              <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+            </div>
+
+            <div style="margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+              <h4><span
+                  style="color: black;font-size: 14px !important;  font-weight: 500;">{{item.deliveryNumber}}</span>
+              </h4>
+            </div>
+            <!-- </div> -->
+          </div>
+          <div class="col-lg-6 col-sm-6 col-6 ">
+            <!-- inside Box -->
+            <div class="JobTypeDesc"
+              style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+              <h4><span style="color: black;font-size: 14px; font-weight: 500; ">Consignment Delivery</span></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7 col-sm-12">
+        <div class="row">
+          <div class="col-lg-6 col-sm-6 col-6 ">
+            <!-- inside Box -->
+            <div style="text-align: center; margin-top: 6px; border-right: 1px solid rgb(112, 111, 111);">
+              <h4><span style="color: black;font-size: 14px; font-weight: 500; ">{{item.statusDescription}}</span></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="padding:10px;padding-bottom: 15px;">
+    <!-- Background -->
+    <div class="col-lg-12"
+      style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+      <div class="row">
+        <!-- Details -->
+        <div class="col-lg-12 col-sm-12 HeaderCard">
+          <!-- Details Heading -->
+          <div class="HeaderTitle">
+            <span style="font-size: 17px;color:black;">Delivery Details</span>
+          </div>
+          <!-- Details Content -->
+          <div>
+            <div class="MainDiv" style="padding: 10px;">
+              <div class="row">
+                <div class="col-lg-3 col-sm-6 col-8">
+                  <label><b style="padding-right: 15px;">Delivery Date:</b><span>{{item.deliveredDate}}</span></label>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-4">
+                  <label><b style="padding-right: 15px;">Total Quantity:</b><span>{{item.TotalQty}}</span></label>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-8">
+                  <label><b style="padding-right: 15px;"> Status:</b><span>{{item.statusDescription}}</span></label>
+                </div>
+                <div class="col-lg-3 col-sm-6 col-4">
+                  <label><b style="padding-right: 15px;">Ship To:</b>{{Ship_to_GSX}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class=" col-lg-7 col-sm-12 col-12" >
+      <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;border-top-left-radius: 5px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;padding-right: 14px;">
+          <div>
+            <span style="font-size: 17px;color:black;">Parts To Acknowledge</span>
+          </div>
+          <div>
+            <button class="btnClass" (click)="SaveAcknowldge()" style="font-size: 12px !important;" type="button">Acknowledge</button>
+          </div>
+        </div>
+      </div>
+      <!-- Order Content -->
+
+      <div class="row" style="display: contents;">
+        <div class=" " style=" overflow: auto;background-color: white;height: 430px; border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;">
+
+          <div class="MainBox" style="height: 100%;">
+            <!-- Header -->
+              <div class="row"  style="background-color: rgb(136, 136, 136);color: white !important;height: 28px;align-items: center;">
+
+                  <div class="col-lg-2 col-sm-2 col-3">
+                    <label style="color: white;">Code</label>
+                  </div>
+
+                  <div class="col-lg-2 col-sm-2 col-3">
+                    <label  style="color: white;">Description</label>
+                  </div>
+
+                  <div class="col-lg-2 col-sm-2 col-3" style="text-align: center;">
+                    <label  style="color: white;">Quantity</label>
+                  </div>
+
+                  <div class="col-lg-2 col-sm-2 col-3">
+                    <label  style="color: white;">Acknowledge</label>
+                  </div>
+
+              </div>
+
+
+              <!-- Body -->
+              <div style="padding-top: 10px;" >
+                 <div *ngFor="let items of item.parts" >
+
+                  <div class="row" style="padding-bottom: 10px;padding-top: 3px;">
+                    <div class="col-lg-2 col-sm-2 col-3" >
+                        <div style=" width: 100px;white-space: nowrap; ">
+                        <label>{{ items?.number}}</label>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-2 col-sm-2 col-3">
+                  <div style=" width: 123px; ">
+                    <label>{{ items?.description}}</label>
+                  </div>
+                  </div>
+
+                  <div class="col-lg-2 col-sm-2 col-3">
+                  <div style=" width: 100px; text-align: center;">
+                    <label>{{items.TotalAcknowledgeQuantity}}/{{items?.quantityDelivered}}</label>
+                  </div>
+                  </div>
+
+                  <div *ngIf="(items.TotalAcknowledgeQuantity < items?.quantityDelivered) && items.serialized==false" class="col-lg-4  col-sm-4 col-3">
+                    <div style="display:flex">
+                  <div >
+                    <input [disabled]="isdisabled" placeholder="Quantity"  type="text" (change)="acknowledgeValueChange(items)" [(ngModel)]="items.acknowledgeValue">
+                    </div>
+                    <div> 
+                    <i (click)="updateAcknowledge(items)" style="font-size: 20px;cursor: pointer;color: black !important;padding: 3px;margin-left: 0px;"  class="fa fa-arrow-circle-right" ></i>
+                  </div>
+                  </div>
+                  </div>
+                  <div *ngIf="(items.TotalAcknowledgeQuantity < items?.quantityDelivered) && items.serialized==true " class="col-lg-4  col-sm-4 col-3">
+                    <div style="display:flex">
+                    <div >Serialized</div>
+                    </div>
+                  </div>
+
+                  <div *ngIf="(items.TotalAcknowledgeQuantity == items?.quantityDelivered)" class="col-lg-4  col-sm-4 col-3">
+                  <div style="display:flex">
+                  <div >Completed</div>
+                  </div>
+                  </div>
+
+
+                  <div class="col-lg-2  col-sm-2 col-3">
+                  <div class="arrowDiv">
+                    
+                    <i [class.arrowDivRotate] = "rotate" (click)="toggleCollapse(items)" style="font-size: 14px;cursor: pointer;color: rgb(53, 53, 53) !important;"  class="fa fa-angle-right"></i>
+                  </div>
+                  </div>
+
+               </div>
+
+                 
+                    <!-- hide Div -->
+                 
+                    <div  *ngIf="items.visible "  class="col-lg-12 col-sm-12" style="height: 40px;background-color: #dddddd;display: grid;align-content: center;">
+
+                      <!--<div *ngFor="let part of item.parts" > -->
+                       <div *ngFor="let object of items.AcknowledgeRows">
+                        
+                        <div class="row" style="align-items: center; margin-bottom: 5px;">
+                           <div class="col-lg-2 col-sm-2 col-2" style="padding-left: 0px !important;">
+                            <label style="padding-right: 15% !important; white-space: nowrap;"> <span> {{ object?.Code}} </span></label>
+                          </div>
+
+                          <div class="col-lg-3 col-sm-3 col-12" style="padding-left: 0px !important;">
+                            <label> <span> {{ object?.Description}} </span></label>
+                          </div>
+
+                          <div *ngIf="items.serialized==false" class="col-lg-5 col-sm-2 col-12" style="padding-left: 0px !important;">
+                            <label style="padding-right: 10% !important; "> <span>{{object?.AcknowledgeQuantity}}</span></label>
+                          </div>
+                          <div *ngIf="items.serialized==true" class="col-lg-5 col-sm-2 col-12" style="padding-left: 0px !important;">
+                            <input [disabled]="object.PreviousAcknowldgeFlag==1" placeholder="Serial No"  type="text"  [(ngModel)]="object.SerialNo">
+                          </div>
+                          <div *ngIf="(object.PreviousAcknowldgeFlag == 0) && items.serialized==false" class="col-lg-2 col-sm-2 col-12" style="padding-left: 0px !important;">
+                            <label style="padding-right: 24% !important;float: right; "> <span><button class="trash" (click)="deleteitem(object,items)"><i   class="fa-regular fa-trash" ></i></button></span></label>
+                          </div>
+                      
+                        </div>
+                        </div>
+                     <!--</div>--> 
+                  </div>
+                 </div>
+
+                  
+                </div>
+
+            
+          </div>
+        </div>
+      </div>
+      <br />
+
+      
+    </div>
+
+    
+    <div class="col-lg-5 col-sm-12 col-12">
+      <div class="col-lg-12 col-sm-12"
+        style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; ">
+        <!-- Order Heading -->
+        <div
+          style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;border-top-left-radius: 5px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 17px;color:black;">Acknowledge Parts</span>
+            </div>
+            <div>
+            </div>
+          </div>
+        </div>
+        <!-- Order Content -->
+        <div>
+          <div class="MainDiv" style="padding: 10px;height: 430px;">
+            <div class="row">
+              <div class="scrollcntr" style="height: 100%;">
+
+                <div class="contents" style="overflow: auto;height: 100%;">
+                  <table>
+                    <thead>
+                      <tr style="height: 30px !important;">
+                        <th class="fontFamily" style="width: 10%;height: 30px !important;" scope="col">PartNumber</th>
+                        <th class="fontFamily" style="width: 50%;height: 30px !important;" scope="col">Part Description</th>
+                        <th class="fontFamily" style="width: 20%;height: 30px !important;" scope="col">Serial No</th>
+                        <th class="fontFamily" style="width: 10%;height: 30px !important;" scope="col">Acknowledge Qty</th>
+                        <th class="fontFamily" style="width: 10%;height: 30px !important;" scope="col">Previous Acknowledge Flag</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of AcknowledgedData">
+                        <td style="width: 10%; "><a class="tableBody">{{item.Code}}</a></td>
+                        <td style="width: 50%; "> <span>{{item.Description}} </span></td>
+                        <td style="width: 20%; "> <span> {{ item.SerialNo}} </span></td>
+                        <td style="width: 10%; "> <span>{{ item.AcknowledgeQuantity}}</span></td>
+                        <td style="width: 10%; "> <span> {{item.PreviousAcknowldgeFlag}} </span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- </div>  -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

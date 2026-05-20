@@ -1,0 +1,20 @@
+ 
+
+.btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(202, 212, 223), rgb(103, 163, 253)) !important;
+    height: 35px;
+    cursor: pointer;
+}
+
+:host ::ng-deep .locationDiv .ng-select-container
+{
+    height: 85px !important;
+    width: 100% !important;
+
+    overflow: auto;
+    padding-top: 37px !important
+}

@@ -1,0 +1,126 @@
+.scrollcntr
+{
+    overflow: hidden !important;
+}
+
+.btnClass
+{
+   border:  1.5px solid rgb(95 165 243);
+    color: white;
+    border-radius: 0px;
+    background-image: linear-gradient(rgb(231, 236, 241), rgb(103, 163, 253)) !important;
+    height: 25px;
+}
+
+.trash
+{
+  border: none;
+}
+
+.trash:hover
+{
+  color: red;
+}
+
+::ng-deep .bg-primary
+{
+    background-color: rgb(252, 175, 175) !important;
+}
+
+::ng-deep td span .ng-select.ng-select-single .ng-select-container
+{ 
+  margin: -1px 0 15px !important;
+}
+
+.reject
+{
+  border-radius: 20px; 
+  border: none; 
+  background-color: rgb(210, 48, 39); 
+  color: white;
+  width: 100%;
+  font-weight: 600;
+}
+.needmoreinfo
+{
+  border-radius: 20px; 
+  border: none; 
+  background-color: rgb(172, 169, 3); 
+  color: white;
+  width: 100%;
+  font-weight: 600;
+}
+
+/* PopUp Details  */
+
+.reject:hover
+{
+  background-color:#198754 !important;
+}
+.tableRow{
+  background-color: rgb(255, 135, 124) !important;
+ }
+
+.needmoreinfo:hover
+{
+  background-color:#198754 !important;
+}
+.card-body
+{
+overflow: auto;
+height: 300px;
+}
+.Ux_close {
+position:initial !important;
+
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 9999;
+}
+
+.popup {
+    background-color: #fff; 
+    width: 100%; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+}
+.iconbtn:hover .badge {
+display: block;
+}
+.disabled-select {
+  pointer-events: none;
+  opacity: 1;
+}
+.ex1 {
+  width: 450px;
+  height: 100px;
+  overflow: scroll;
+}
+.overlay {  
+    margin: 25% 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 80%; 
+    z-index: 9999; /* Ensure it appears above other elements */
+    color: white; /* Optional: Change text color for better visibility */ 
+    background-color: transparent !important;
+}
+section.content {
+filter: blur(0); /* Initial state without blur */
+transition: filter 0.3s ease; /* Add transition for smooth effect */
+}
+
+section.blurred {
+filter: blur(3px); /* Apply blur effect */
+}
+

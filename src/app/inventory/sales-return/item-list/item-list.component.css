@@ -1,0 +1,9 @@
+
+.btnClass
+{
+border: 1.5px solid rgb(95 165 243);
+color: white;
+border-radius: 0px;
+background-image: linear-gradient(rgb(202, 212, 223), rgb(103, 163, 253)) !important;
+height: 30px;
+}

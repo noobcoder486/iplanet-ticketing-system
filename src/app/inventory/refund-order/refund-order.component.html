@@ -1,0 +1,341 @@
+<ngx-spinner size="medium" *ngIf="Spinner"  [type]="typeSelected">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+
+<section class="content ">
+  <mat-card style="padding: 0px !important;">
+    <div class="card" style="margin-bottom: 7px;min-height: 0% !important;border-radius: 2px;">
+      <div class="row">
+
+        <div class="col-lg-6 col-sm-12">
+          <div class="row" style="align-items: center;">
+            <div class="col-lg-6 col-sm-6 col-6 " style=" border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+                <div class="mt-1" style=" padding-right: 15px;">
+                  <i class="fa-sharp fa-solid fa-boxes-stacked"></i>
+                </div>
+                <div class="mt-1">
+                  <h4><span style="color: black;font-size: 14px; " title="">Request Code </span></h4>
+                  <div class="mt-1">
+                    <h4><span style="color: blue ;font-size: 14px; font-weight: 600; " title=""> {{ RequestCode == null
+                      || RequestCode == undefined ? 'NA' : RequestCode }}</span> </h4>
+                  </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-6" style=" border-right: 1px solid rgb(112, 111, 111);">
+                <!-- inside Box -->
+                <div class="JobTypeDesc mt-1"
+                    style="color: {{ ApprovalStatus === 'APPROVED' ? 'green' : 'red'}};text-align: center;display: flex; align-items: center; justify-content: center;">
+                    <b style="color: black;padding-right: 10px;">Approval Status: </b>{{ApprovalStatus ===
+                    undefined || ApprovalStatus === null?'NA': ApprovalStatus}}
+                  </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-sm-12 mt-3">
+          <div class="row" style="align-items: center;">
+
+              <div class="col-lg-5 col-sm-3 col-md-3 col-6"
+                  style=" color: {{RefundStatus === 'CLOSED' ? 'green' : 'red'}};border-right: 1px solid rgb(112, 111, 111);text-align: center;display: flex; align-items: center; justify-content: center;">
+                  <b style="color: black;padding-right: 10px;">Refund Status   </b>{{RefundStatus
+                  === undefined || RefundStatus ===
+                  null?'NA':RefundStatus}}
+              </div>
+              <div class="col-lg-5 col-sm-3 col-6 ">
+                  <!-- inside Box -->
+                  <div class="col-12"
+                    style="text-align: center;display: flex; align-items: center; justify-content: center;">
+                    <label style="white-space: nowrap;"><b>Request Date:-  </b> <span style="padding-right: 5px;">{{ CreatedDate != null || CreatedDate != undefined ? ( CreatedDate | date: 'dd/MM/yyyy : hh:mm a' ): 'No Date Found' }}</span></label>
+                  </div>
+              </div>
+              <div class="col-lg-2 col-sm-3 col-6 " >
+              </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+
+  <div class="row" style="padding:10px;padding-bottom: 15px;" >
+    <!-- Background -->
+    <div class="col-lg-12"
+      style="background-color: rgb(255, 255, 255); box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;  border-radius: 5px;">
+      <div class="row">
+        
+
+        <!-- Location  -->
+        <div class="col-lg-4 col-sm-12"
+          style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255); border-right: 1px solid hsl(0, 0%, 92%);">
+          <div  style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;">
+            <div class="row">
+              <div class="col-6">
+                <span style="font-size: 16px !important;color:black;font-weight: 600;">Location Details</span>
+              </div>
+            </div>
+          </div>
+          <!-- Location Content -->
+          <div *ngFor="let item of LocationObject">
+            <div class="MainDiv" style="padding: 10px;">
+                <mat-card-title >Location Name:- {{item?.LocationName}}</mat-card-title>
+                <p>Address:- {{item?.Address1}}, {{item?.Address2}}, {{item?.City}} - {{item?.ZipCode}}, {{item?.StateCode}}.</p>
+                <mat-card-content>
+                  <p>Email:- {{item?.EmailId}}</p>
+                  <p>Mobile No:- {{item?.MobileNo}}</p>
+                  <!-- <p><b>GST Registration No: </b>&nbsp;{{item?.GSTRegistrationNo[0]}}, &nbsp; <b>Ship To:</b>&nbsp; {{item?.SHIP_TO_GSX[0]}}</p> -->
+                </mat-card-content>
+              </div>
+          </div>
+        </div>
+
+        <!-- Customer  -->
+        <div class="col-lg-4 col-sm-12"
+          style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-right: 1px solid hsl(0, 0%, 92%);    border-top-left-radius: 5px;    border-bottom-left-radius: 5px;">
+          <!-- Customer Heading -->
+          <div
+            style="color:rgb(0, 0, 0);padding-left: 10px;background-color: #dddddd;height: 31px;padding-top: 4px;    border-top-left-radius: 5px;">
+            <span style="font-size: 16px !important;color:black;font-weight: 600;">Customer Details</span>
+          </div>
+          <!-- Details Content -->
+          <div  *ngFor="let item of CustomerObject" >
+            <div class="MainDiv" style="padding: 10px;">
+                <mat-card-title >Customer Code:- {{item?.CustomerCode}}</mat-card-title>
+                <mat-card-title>Name:- {{item?.FirstName}}&nbsp;{{item?.LastName}}</mat-card-title>
+                <mat-card-content>
+                  <p> Address:- {{item?.Address1}}, {{item?.Address2}}, {{item?.City}} -  {{item?.ZipCode}}, {{item?.StateCode}}, {{item?.CountryCode}}</p>
+                  <p>Email:- {{item?.EmailID}}</p>
+                  <!-- <p><b>GST Registration No: </b>{{ item?.GSTRegistration ? item?.GSTRegistration : 'N.A' }}</p> -->
+                </mat-card-content>
+            </div>
+          </div>
+          
+        </div>
+
+        <div class="col-lg-4 col-sm-12"
+          style="padding-left:0px ;padding-right:0px;background-color:rgb(255, 255, 255);border-radius: 5px;">
+          <!-- Refund Type DropDown Heading -->
+            <div
+              style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+              <div class="row">
+                <div class="col-12">
+                  <span style="font-size: 16px !important;color:black;font-weight: 600;">Request Remark</span>
+                </div>
+              </div>
+            </div>
+            <!-- DD Content -->
+            <div>
+              <div class="MainDiv" style="padding: 10px;">
+                <span> <textarea style="width: 80%;" [disabled]="true"
+                  [(ngModel)]="RemarkUploadList[0].RemarkDescription"
+                  class="form-control" rows="3"></textarea> </span>
+                <!-- <ng-select  [readonly]="!params.locationcode || !params.customercode" [items]="RepairOrSalesReturnDD.Data" bindLabel="TEXT" [disabled]="false" bindValue="Id"
+                [(ngModel)]="guid" (change)="routeToSalesReturn()"  placeholder="" ></ng-select> -->
+              </div> 
+            </div>
+          <!-- Remark Content -->
+          <div>
+                <div
+                style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+                <div class="row">
+                  <div class="col-12">
+                    <span style="font-size: 16px !important;color:black;font-weight: 600;">Refund Requested Amount<i style="color:red">*</i></span>
+                  </div>
+
+                </div>
+              </div>
+              <div>
+                <div class="MainDiv" style="padding: 10px;">
+                  <input [disabled]="true" type="number" [(ngModel)]="RefundRequestedAmount" placeholder="Enter Amount" style="width: 100%; color: blue; border: 1px solid rgb(184, 183, 183);" />
+                </div>
+              </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+      <!-- Headers -->  
+      <div class="row" style="padding-bottom: 15px;height: 30px;padding-left: 0px;" >
+        <div class="col-12">
+          <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+            <div style="display: flex; width:300px">
+            <div style="padding-right: 5%;">
+              <span style="font-size: 16px !important;color:black;font-weight: 600;">Payment List</span>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- GRIDS  -->
+      <div class="row"   style="padding:10px">
+        <!-- Customer Ledger List  -->
+        <div class="col-12" style=" padding: 0px;" > 
+            <div class="scrollcntr mt-2" style="height: 100px !important;">
+              <div class="contents table-responsive" >
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="white-space: nowrap; padding-right: 140px;background-color: rgb(96, 96,96);"
+                        scope="col">
+                        <span>Refund Type</span>
+                      </th>
+                      <th style="white-space: nowrap; padding-right: 140px;background-color: rgb(96, 96,96);"
+                      scope="col">
+                      <span>Transaction Code</span>
+                    </th>
+                      <th
+                        style="white-space: nowrap; padding-right: 50px;text-align: center;background-color: rgb(96, 96,96);">
+                        Refund Amount</th>
+                      
+  
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of PaymentList" [ngStyle]="{'tableDelete': false}">
+                      <td  style=" white-space: nowrap;"> <span
+                          style="padding: 10px;">{{ item?.RefundDocType}} </span>
+                      </td>
+                      <td  style=" white-space: nowrap;"> <span
+                        style="padding: 10px;">{{ item?.TransactionCode}} </span>
+                    </td>
+                      <td  style="text-align: center !important;"> <span
+                          style="padding: 20px;">{{ item?.RefundAmount }}
+                        </span></td>
+                                     
+                     
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div> 
+        </div>
+    </div>
+ 
+    <!-- header -->  
+    <div class="row" style="padding-bottom: 15px;height: 30px;padding-left: 0px;" >
+      <!-- Customer Ledger Header  -->
+      <div [ngClass]="{'col-6 col-lg-6': RefundList.length > 0, 'col-12 headerTag': RefundList.length == 0}">
+        <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+          <div style="display: flex; width:300px">
+          <div style="padding-right: 5%;">
+            <span style="font-size: 16px !important;color:black;font-weight: 600;">Customer Ledger</span>
+          </div>
+          <div style="padding-right: 10%;">
+            <div (click)="isImageUpload = true" style="text-align: center;padding-top: 5px; position: relative;">
+          
+              <i style="font-size:18px !important;" class="iconbtn fa-light fa-paperclip" matTooltip="File Attachments">
+                  <div style="padding-bottom: 5px;padding-left: 18px;">  
+                    <span class="badge" style="position: absolute; top:0;" *ngIf="FileUploadList.length >= 0"> {{ FileUploadList.length }}</span>
+                </div>
+              </i> 
+          </div>
+          </div>
+
+          <div>
+            <div (click)="isRemarkUpload = true" style="text-align: center;padding-top: 5px; position: relative;">
+          
+              <i style="font-size:18px !important;" class="iconbtn fa-light fa-comment" matTooltip="Refund Remarks">
+                  <div style="padding-bottom: 5px;padding-left: 18px;">  
+                    <span class="badge" style="position: absolute; top:0;" *ngIf="getNonEmptyRemarksCount() >= 0">{{ getNonEmptyRemarksCount() }}</span>
+                </div>
+              </i> 
+          </div>
+          </div>
+          </div>
+        </div>
+        <!-- <div>
+          <button style="height: 30px;" class="btn btnClass" (click)="openItemSelector()" [hidden]="!guid">Add {{  params.docType == 'SREFUND'? 'Parts' :'Payments'}} to be Refunded</button>
+        </div> -->
+      </div>
+
+      <!-- Refund Request Header  -->
+      <div class="col-6 col-lg-6" style="padding-bottom: 15px;height: 30px;padding-left: 0px;" *ngIf="RefundList.length > 0">
+        <div style="color:rgb(0, 0, 0);height: 31px;padding-left: 10px;background-color: #dddddd;font-size: 10px !important;padding-top:3px;    border-top-right-radius: 5px;">
+          <div style="display: flex; width:300px">
+          <div style="padding-right: 5%;">
+            <span style="font-size: 16px !important;color:black;font-weight: 600;">Previous Requests</span>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRIDS  -->
+    <div class="row" style="padding:10px" >
+        <!-- Customer Ledger List  -->
+        <div [ngClass]="{'col-6 col-lg-6': RefundList.length > 0, 'col-12 ': RefundList.length == 0}" style=" padding: 0px;" > 
+            <div class="scrollcntr mt-2" style="height: 420px !important;">
+              <div class="contents table-responsive" *ngIf="true">
+                  <nitc-grid [gridcolumns]="LedgerColumns" [dataSource]="detailLedger" [actions]="actionDetails"
+                  [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                  (changeEvent)="PageChangeLedger($event)">
+                  </nitc-grid>
+              </div>
+            </div> 
+        </div>
+      
+        <!-- Refund Request List  -->
+        <div class="col-6 col-lg-6" *ngIf="RefundList.length > 0"   style=" padding: 0px; padding-right: 0px;" > 
+          <div class="scrollcntr mt-2" style="height: 420px !important;">
+            <div class="contents table-responsive" >
+                <nitc-grid [gridcolumns]="RequestColumns" [dataSource]="detailRequest" [actions]="actionDetails"
+                [hideSpinnerEvents]="hideSpinnerEvent" (actionEvent)="actionEmit($event)"
+                (changeEvent)="PageChangeRefund($event)"></nitc-grid>
+            </div>
+          </div> 
+      </div>
+    </div>
+
+
+              
+    <div style="position:sticky;bottom:0;background-color: gainsboro;padding-bottom: 7px;">
+      <div class="row" style="padding: 10px;">
+
+        <div class="col-9">
+          <div class="row">
+              <div class="col-sm-3 col-lg-3 col-md-2"  >
+                Total Balance Amount:<br> <b style="color:rgb(33, 33, 100)">{{TotalBalanceAmount  | number: '1.2-2'}}</b>
+              </div>
+               <div  class ='col-sm-7 col-lg-3 col-md-2'>
+                Previously Requested Amount: <br><b style="color:rgb(33, 33, 100)">{{PreviousRequestedAmount  | number: '1.2-2'}}</b>
+              </div>
+              <div class="col-sm-2 col-lg-3 col-md-2 col-12">
+                Refund Requested Amount : <br><b style="color:rgb(33, 33, 100)">{{RefundRequestedAmount  | number: '1.2-2'}}</b>
+              </div>
+              <div class="col-sm-2 col-lg-3 col-md-2 col-12">
+                Refund Paid Amount: <br><b style="color:rgb(33, 33, 100)">{{RefundPaidAmount  | number: '1.2-2'}}</b>
+              </div>
+            </div>
+        </div>
+
+        <div class="col-3"  style=" float: right; flex: 1;">
+              <div *ngIf="ifStatusChange"  style="display: flex; align-items: center;float: right;">
+                <button class="btn " style="height: 30px; display: flex; align-items: center; background-color: rgb(48, 202, 99) !important; color: white;" mat-raised-button 
+                (click)="RefundApproveReject('APPROVED' )">Approve Refund 
+                </button>
+                <button class="btn " style="height: 30px; display: flex; align-items: center; float: right; background-color: rgb(233, 38, 38) !important; color: white;" mat-raised-button 
+                (click)="RefundApproveReject('REJECTED')">Reject Refund   
+                </button>
+              </div>
+        </div>
+
+      </div>
+      <div>
+      </div>
+      <div>
+      </div>
+    </div>
+  </section>
+
+
+  <div *ngIf="isImageUpload" class="Ux_popup">
+    <app-image-list [FileList]="FileUploadList"  [isEdit]="false" (FileListChanged)="onFileListChanged($event)" (CancelBtn)="this.isImageUpload = false;"> </app-image-list>
+  </div>
+  
+  <div *ngIf="isRemarkUpload" class="Ux_popup">
+    <app-remark-list [RemarkList]="RemarkUploadList" [isEdit]="ifStatusChange"  [Level]="RemarkLevel" (RemarkListChanged)="onRemarkListChanged($event)" (CancelBtn)="this.isRemarkUpload = false;"> </app-remark-list>
+  </div>

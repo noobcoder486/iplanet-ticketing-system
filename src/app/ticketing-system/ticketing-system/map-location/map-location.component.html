@@ -1,0 +1,59 @@
+<div class="ml-container">
+
+    <!-- Header -->
+    <div class="ml-header">
+        <div class="ml-header-left">
+            <div class="ml-header-icon" [ngClass]="showAssignTechnician ? 'ml-icon--tech' : 'ml-icon--location'">
+                <i class="fa" [ngClass]="showAssignTechnician ? 'fa-hard-hat' : 'fa-map-marker-alt'"></i>
+            </div>
+            <div>
+                <h2 class="ml-title">{{ showAssignTechnician ? 'Assign Technician' : 'Map Partner' }}</h2>
+                <p class="ml-subtitle">{{ showAssignTechnician ? 'Select one or more technicians for this ticket' :
+                    'Link a partner location to this ticket' }}</p>
+            </div>
+        </div>
+        <button class="ml-close-btn" (click)="onCancel()" matTooltip="Close">
+            <i class="fa fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Body -->
+    <div class="ml-body">
+
+        <!-- Location Mode -->
+        <div *ngIf="!showAssignTechnician" class="ml-field-wrap">
+            <label class="ml-label">
+                <i class="fa fa-map-marker-alt"></i> Partner Location
+            </label>
+            <ng-select [(ngModel)]="locationCode" [items]="LocationAccGroup.Data" bindLabel="TEXT" bindValue="Id"
+                class="ml-select">
+            </ng-select>
+            <p class="ml-hint">Choose the partner location associated with this ticket</p>
+        </div>
+
+        <!-- Technician Mode -->
+        <div *ngIf="showAssignTechnician" class="ml-field-wrap">
+            <label class="ml-label">
+                <i class="fa fa-users"></i> Technician(s)
+            </label>
+            <ng-select [items]="technicians?.Data" bindLabel="TEXT" bindValue="Id" [multiple]="true"
+                [(ngModel)]="selectedTechnicians" class="ml-select">
+            </ng-select>
+            <p class="ml-hint">You can assign multiple technicians to this ticket</p>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="ml-footer">
+        <button class="ml-cancel-btn" (click)="onCancel()">
+            Cancel
+        </button>
+        <button class="ml-submit-btn" [ngClass]="showAssignTechnician ? 'ml-submit--tech' : 'ml-submit--location'"
+            (click)="onSubmit()">
+            <i class="fa" [ngClass]="showAssignTechnician ? 'fa-hard-hat' : 'fa-link'"></i>
+            {{ showAssignTechnician ? 'Assign Technician' : 'Map Location' }}
+        </button>
+    </div>
+
+</div>

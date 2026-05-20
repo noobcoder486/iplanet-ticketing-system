@@ -1,0 +1,62 @@
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-left"></div>
+        <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-end"><button class="btnClass" (click)="addLoaner()">Add Loaner</button></div>
+    </div>
+
+    <mat-card class="mt-2" *ngFor="let item of partList">
+        <div class="row">
+            <div class="col-lg-8 col-sm-8 col-md-8"><b style="font-size: 17px !important;">{{item.description}}</b></div>
+            <div class="col-lg-4 col-sm-4 col-md-4 d-flex justify-content-end"><i matTooltip="Remove Loaner" style="color:red;cursor:pointer;" (click)="deleteLoaner()" class="fa-duotone fa-trash-can"></i></div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-lg-8 col-sm-8 col-md-8">
+                <div class="row mt-2">
+                    <div class="col-lg-6 col-sm-6 col-md-6"><b>Part</b></div>
+                    <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-left"><u style="color:rgb(95 165 243)">{{item?.number}}</u></div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-6 col-sm-6 col-md-6"><b>Consignment</b></div>
+                    <div class="col-lg-6 col-sm-6 col-md-6 d-flex justify-content-left">{{item?.serialized == true?"Yes":"No"}}</div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-4 col-md-4 d-flex justify-content-end">
+                <img src={{item.imageUrl}} style="width: 48px;height:48px;" onerror="this.src='./assets/images/crm-logo-icon.png';" />
+            </div>
+        </div><br />
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="row">
+                    <span><b>Loaner Serial Number/IMEI</b></span>
+                </div>
+                <div class="row">
+                    <span><input type="text" [(ngModel)]="serialNumber" style="border:1px solid rgb(131, 130, 130);border-radius:3px;" /></span>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6 d-flex justify-content-end">
+                <button type="submit" (click)="markDOA()" style="border-radius:3px;height:30px;width:60% !important;border:1px rgb(87, 87, 87)">Mark DOA</button>
+            </div>
+        </div>
+        <div class="row" *ngIf="serialNumber != ''">
+            <div class="col-12 d-flex justify-content-end">
+                <mat-card-content style="float: right;font-size: 15px;padding-top: 5px;">
+                    <button *ngIf="compoissuelist == null || compoissuelist == undefined || compoissuelist == 0" class="btn btn-primary" (click)="openComponentIssuePopupEvent.emit(true)"  matTooltip="Add" matTooltipPosition="left" >ADD  <i style="padding-left: 6px;" class="fa-regular fa-square-plus"></i></button>
+                  </mat-card-content>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12 col-md-12" *ngFor="let item of compoissuelist">
+                <mat-card class="example-card" style="margin-bottom: 10px;">
+                    <div class="row" >
+                      <div class="col-sm-11 col-11" >
+                        <mat-card-content style="margin-top:-25"><b>{{item.ComponentDesc}} / {{item.IssueDesc}} / {{item.ReproducibilityDescription}}</b></mat-card-content>
+                      </div>
+                    </div>
+                  </mat-card> 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-end"><button class="btnClass" (click)="saveLoaner()">Save</button></div>
+        </div>
+    </mat-card>
+</div>

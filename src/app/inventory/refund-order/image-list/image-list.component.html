@@ -1,0 +1,143 @@
+
+<div class="content-header" >
+    <div class="card px-6 pb-6"  >
+        <div class="row">
+          <div class="col-12"> 
+            <div class="tabheader" style="display: flex;justify-content: space-between;">
+              <div>
+              <h3>{{ isEdit? 'Upload': 'View'}} Files</h3> 
+              </div>
+              <div>
+                <i (click)="Cancel()" class="Ux_close fa-duotone fa-circle-xmark" ></i>
+              </div>
+            </div>
+        </div>
+    </div>
+  
+  
+  
+  
+        
+      <div class="formcntr" style="padding: 20px;" >
+        <div class="row" style="display: flex; align-items: center;">
+
+
+          <div class="col-lg-4 col-4 ">  
+            <label>File Name</label> 
+              <input class="form-control" type="text" style="border: 1px solid rgb(168, 168, 168);"
+              [(ngModel)]="FileName" placeholder="Search File Name" >
+            
+          </div>
+
+
+          <div class="col-lg-4 col-4 ">  
+            <label>File Type</label> 
+              <input class="form-control"  type="text"  style="border: 1px solid rgb(168, 168, 168);"
+              [(ngModel)]="FileType" placeholder="Search File Type" > 
+          </div>
+
+
+          <div class="col-lg-2 mt-3 "style="">  
+            <button class="btn btnClass" style="height: 30px;"    (click)="search() ">Search <i
+              style="padding-left: 10px;" class="fa fa-search" aria-hidden="true"></i></button>
+          </div>
+
+            <div class="col-lg-2 mt-4"style="width: 35px;height:35px;" *ngIf="isEdit">  
+                <label for="filetype" class="x_final_button" id="FileTypeBtn">
+                  <i  class="fa fa-upload" aria-hidden="true"></i>
+                </label>
+                <input  class="x_final_button " (click)="fileInput.click()"  accept="image/*,.pdf,.zip,.rar,.doc,.docx" #attachments type="file"
+                (change)="onFileAdd($event)"  #fileInput multiple="true"  bindValue="Id" id="filetype" type="file"   style="border-radius:-10%;display: none;width: 35px !important;height: 35px !important;"> 
+            </div>
+
+
+
+            <div>
+
+            </div>
+        </div>
+    </div>
+    <br>
+  
+  
+    <div style="height:350px;overflow:auto;">
+        <div  class="items_details_grid">
+          <table class="table table-success table-striped table-wrap" >
+            <thead>
+              <tr style="height: auto !important;">
+                <th  scope="col">Sr. No.</th>
+                <th  scope="col">Image</th>
+                <th  scope="col">File Name</th>
+                <th  scope="col">File Type</th>
+                <th  scope="col">Date</th>
+                <th *ngIf="isEdit" scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of FilteredFileList; let index =index" >
+                <td  > <span> {{ index + 1}} </span></td>
+                <td >  
+                  <span class="hd_header_content"  *ngIf="item?.src" (click)="openImage(item)">
+                    <a [attr.href]="item.src" target="_blank" >
+                        <!-- <i  *ngIf="item.src.includes('zip') || item.src.includes('rar')" class="fa fa-file-archive-o zipIcon"></i>
+                        <i  *ngIf="item.src.includes('doc') || item.src.includes('docx')" class="fa fa-file-word-o wordIcon"></i> -->
+  
+                        <i (click)="viewFiles(item.src)" *ngIf="item.type.includes('pdf')"  class="fa fa-file-pdf-o pdfIcon" style="font-size: 90px !important;color:rgb(0, 132, 255);" ></i>
+                        <img (click)="viewFiles(item.src)" *ngIf="!item.type.includes('pdf')"  style="height: 100px;" [src]="item.src || 'http://placehold.it/180'" alt="{{item.filename}}" />
+                  </a>
+                  </span>
+                </td>
+
+                <td  > <span> {{ item?.filename}} </span></td>
+                <td > <span> {{ item?.type.split('/')[1]}} </span></td>
+                <td > <span> {{ item?.createdDateTime |  date: 'dd/MM/yyyy : hh:mm a'}} </span></td>
+                <td *ngIf="isEdit"> <span (click)="DeleteFile(item)" class="fa fa-trash-can" aria-hidden="true"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+        <div style="position:sticky;bottom:0;background-color: gainsboro; padding: 5px;" *ngIf="FileList.length>0">
+            <div class="row" >
+              <div class="col-9" style=" padding: 5px;">
+                <div class="row">
+                    <div class="col-sm-3 col-lg-3 col-md-3 col-12">
+                        Total File/s: <b>({{FileList.length}})</b>
+                    </div>
+                    <div class="col-sm-3 col-lg-3 col-md-3 col-12">
+                        <!-- Taxable Amount: <b>{{totalTaxableAmount | number: '1.2-2'}}</b> -->
+                    </div>
+                    <div class="col-sm-3 col-lg-3 col-md-3 col-12">
+                        <!-- Tax Amount: <b>{{totalTaxAmount | number: '1.2-2'}}</b> -->
+                    </div>
+                    <div class="col-sm-3 col-lg-3 col-md-3 col-12">
+                        <!-- Net Amount: <b>{{totalNetAmount | number: '1.2-2'}}</b> -->
+                    </div>
+                </div>
+              </div>
+        
+        
+              <div class="col-3" >
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12 col-md-12">
+                        <button class="btn btnClass" style="letter-spacing: 2px;text-align: center;float: right; white-space:nowrap; height: 30px;" (click)="onSubmit()"
+                        *ngIf="isEdit"> Submit Files
+                        </button>
+                    </div>
+                </div>
+              </div>
+        
+            </div>
+        <div>
+        </div>
+        <div>
+        </div>
+    </div>
+
+
+
+    </div>
+</div>
+  
+  
+  
