@@ -135,7 +135,9 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
                     item.isSelected = false;
                     item.ItemType=matchingElement.ItemType;
                     item.InventoryStockType= matchingElement?.PartType;
-                    item.PriceSource = matchingElement?.PriceSource
+                    item.PriceSource = matchingElement?.PriceSource;
+                    item.RevenueType = matchingElement?.RevenueType;
+      
                     if ( item?.MaterialCode == '6490' )
                       console.log("Resource ", data.Resource.Resource)
                   } 
@@ -150,6 +152,7 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
                   item.ItemType=data.InvoiceSalesMaterialDetail.ItemType;
                     item.InventoryStockType= data.InvoiceSalesMaterialDetail?.PartType;
                     item.PriceSource =data.InvoiceSalesMaterialDetail?.PriceSource
+                    item.RevenueType = data.InvoiceSalesMaterialDetail?.RevenueType
 
 
                 }
@@ -204,7 +207,7 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
         next: (Value) => {
             try {
                   
-                
+                debugger
                 let response = JSON.parse(Value.toString());
                 if (response.ReturnCode == '0') {
                     let data = JSON.parse(response?.ExtraData);
@@ -220,7 +223,8 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
                                 "InventoryStockType": item?.PartType,
                                 "isSelected": false,
                                 "ItemType": item?.ItemType,
-                                "PriceSource" : item?.PriceSource
+                                "PriceSource" : item?.PriceSource,
+                                "RevenueType" : item?.RevenueType
                             });
                         }
 
@@ -240,7 +244,8 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
                             "InventoryStockType": data?.Resource?.Resource?.PartType,
                             "isSelected": false,
                             "ItemType": data?.Resource?.Resource?.ItemType,
-                            "PriceSource" : data?.Resource?.Resource?.PriceSource
+                            "PriceSource" : data?.Resource?.Resource?.PriceSource,
+                            "RevenueType" : data?.Resource?.Resource?.RevenueType
 
                         });
                     }

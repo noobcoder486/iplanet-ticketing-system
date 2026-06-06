@@ -124,10 +124,15 @@
                 <div class="row"  *ngIf="isLocationDDshow">
                   <div class="col-lg-12 col-sm-6">
                     <ng-select [items]="LocationForJob.Data" [disabled]="disableDeliveryChallanType" 
-                      (change)="showToLocation()"
+                      (change)="getLocationData()"
                       bindLabel="TEXT" bindValue="Id" 
                       placeholder="" [(ngModel)]="LocationCode">
                     </ng-select>
+                    <!-- <ng-select [items]="LocationForJob.Data" [disabled]="disableDeliveryChallanType" 
+                      (change)="showToLocation()"
+                      bindLabel="TEXT" bindValue="Id" 
+                      placeholder="" [(ngModel)]="LocationCode">
+                    </ng-select> -->
                   </div>
                 </div>
                 <div class="row">
@@ -156,10 +161,12 @@
                 </div>
                 <div *ngIf="isReturnAddress == false ">
                   <div class="col-lg-12 col-sm-6" *ngIf="isLocationDDshow">
-                    <ng-select   [items]="LocationToJob.Data" [disabled]="true" 
+                    <!-- <ng-select [readonly]="true"  [items]="LocationToJob.Data"
                       bindLabel="TEXT" bindValue="Id" 
+                      (change)="getToLocationData()"
                       placeholder="" [(ngModel)]="ToLocationCode">
-                    </ng-select>
+                    </ng-select> -->
+                    <label for=""></label><br> <br> <br>
                     </div>
                 </div>
               </div>
@@ -167,7 +174,7 @@
                 <div *ngFor="let item of ToLocationObject ">
                   <div class="MainDiv" style="padding:4px;">
                       <mat-card-title >Location Name:- {{item?.LocationName}}</mat-card-title>
-                      <p>Address:- {{item?.Address1}}, {{item?.Address2}}, <br>
+                      <p>Address:- {{item?.Address1}}, <br> {{item?.Address2}}, <br>
                         {{item?.City}} - {{item?.ZipCode}}, {{item?.StateCode}}.</p>
                       <mat-card-content>
                         <p>Email:- {{item?.EmailId}}</p>

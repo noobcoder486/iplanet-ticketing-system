@@ -411,6 +411,7 @@
                   <th scope="col">Price Range Start</th>
                   <th scope="col">Price Range End</th>
                   <th scope="col">InventoryStockType</th>
+                  <th scope="col">RevenueType</th>
                   <th scope="col">Delete</th>
                 </tr>
               </thead>
@@ -422,12 +423,12 @@
                   <td style="white-space: nowrap; ">{{ item?.ItemType }}</td>
                   <td style="white-space: nowrap; ">
                     <span>
-                      <ng-select [items]="PricingOptionDD.Data" bindLabel="TEXT" bindValue="Id"
+                      <ng-select [disabled]="params?.doctype == 'RSALES' && item?.ItemSource !== 'NEW' " [items]="PricingOptionDD.Data" bindLabel="TEXT" bindValue="Id"
                         [(ngModel)]="item.PriceType" (ngModelChange)="onPriceOptionChange(item)"
                         [appendToBody]="true"></ng-select>
                     </span>
                   </td>
-                  <!-- <td *ngIf="item?.InventoryStockType != 'LABOR'" style="text-align: center;">{{ item?.Quantity}}</td>
+                  <!-- <td *ngIf="item?.InventoryStockType != 'LABO R'" style="text-align: center;">{{ item?.Quantity}}</td>
 
                   <td *ngIf="item?.InventoryStockType == 'LABOR' " style="text-align: right;white-space: nowrap;">
                     <input  style="width: 100% !important;" type="number" (change)="calculatePrices(item)" [(ngModel)]="item.Quantity">
@@ -441,9 +442,19 @@
 
 
 
-                  <td style="text-align: right;white-space: nowrap;"><input matTooltip="{{item.UnitPrice}}"
-                      (change)="calculatePrices(item)" type="text" style="width: 100% !important;"
-                      [(ngModel)]="item.UnitPrice"></td>
+                  <!-- <td style="text-align: right;white-space: nowrap;"><input [disabled]="params?.doctype == 'RSALES' && item?.ItemSource !== 'NEW'" matTooltip="{{item.UnitPrice}}"
+                      (change)="calculatePrices(item)" type="text" style="width: 100% !important; font-weight: 900; color: black;"
+                      [(ngModel)]="item.UnitPrice"></td> -->
+                  <td style="text-align: right;white-space: nowrap;">
+                    <input *ngIf="IsCustUnitPriceEditAllwoed ==false " [disabled]="item.RevenueType != 'Accessories Revenue' " matTooltip="{{item.UnitPrice}}"
+                      (change)="calculatePrices(item)" type="text" style="width: 100% !important; font-weight: 900; color: black;"
+                      [(ngModel)]="item.UnitPrice">
+
+                        <input  *ngIf="IsCustUnitPriceEditAllwoed == true "  matTooltip="{{item.UnitPrice}}"
+                      (change)="calculatePrices(item)" type="text" style="width: 100% !important; font-weight: 900; color: black;"
+                      [(ngModel)]="item.UnitPrice">
+
+                    </td>
                   <td style="text-align: right;"><input readonly (ngModelChange)="calculatePrices(item)" type="text"
                       style="width: 100% !important;border:none" [(ngModel)]="item.DiscountAmount" /><br /><span>
                       <i *ngIf="item.DiscountAmount == 0 " class="fa fa-tag fa-lg discountTag"
@@ -471,6 +482,8 @@
                   <td style="text-align: right;">{{ item?.PriceRangeStart }}</td>
                   <td style="text-align: right;">{{ item?.PriceRangeEnd }}</td>
                   <td style="text-align: right;">{{ item?.InventoryStockType }}</td>
+                  <td style="text-align: right;">{{ item?.RevenueType }}</td>
+
                   <td style="text-align: center; "> <span><i style="color:red" (click)="deleteitem(item)"
                         class="fa-regular fa-trash"></i></span></td>
                 </tr>

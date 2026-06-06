@@ -91,7 +91,8 @@ export class TradeinListComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.GetTradeinList('')
+    // this.GetTradeinList('')
+    this.UpdateTradeinToAutoClose()
     this.onLocationSearch({ term: "", item: [] });
     this.onTradeinSubCategorySearch({ term: "", items: [] });
     this.OnTradeinPartnerSearch({ term: "", items: [] });
@@ -372,6 +373,47 @@ export class TradeinListComponent implements OnInit {
         this.TradeinPartnerDD = this.getBlankObject();
       }
     });
+  }
+
+// calling this function to autoclose the case older than 7 days
+   UpdateTradeinToAutoClose() {
+    debugger
+    this.spinner.show()
+
+    let requestdata = []
+    requestdata.push({
+      "Key": "ApiType",
+      "Value": "UpdateTradeinToAutoClose"
+    })
+
+    let strRequestData = JSON.stringify(requestdata);
+    let contentRequest =
+    {
+      "content": strRequestData
+    };
+    this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
+      {
+        next: (Value) => {
+          debugger
+
+          try {
+            let response = JSON.parse(Value.toString());
+            if (response.ReturnCode == '0') { 
+              this.toaster.success('updated successfully!')
+              this.GetTradeinList('')
+            }
+          } catch (ext) {
+          }
+        },
+        error: err => {
+          this.spinner.hide()
+          this.spinnerValue = 'Please wait ,Loading'
+
+          console.log(err)
+        }
+
+      }
+    );
   }
 
 

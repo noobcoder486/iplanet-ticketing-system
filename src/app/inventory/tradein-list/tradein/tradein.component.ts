@@ -32,6 +32,8 @@ export class TradeinComponent implements OnInit {
   QuotationNumber: any;
   TradeinPartner: any;
 
+  TradeinCategoryDDList:any[]=[];
+
   constructor(
     private dynamicService: DynamicService,
     private toaster: ToastrService,
@@ -120,6 +122,9 @@ export class TradeinComponent implements OnInit {
           debugger
           this.TradeinCategoryDD = value;
           console.log("TradeinSubCategoryDD ", this.TradeinCategoryDD)
+
+          this.TradeinCategoryDDList =  this.TradeinCategoryDD.Data.filter(item => item.Id !== 'AUTOCLOSE' )
+
         }
       },
       error: (err) => {

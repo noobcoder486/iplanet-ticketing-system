@@ -16,6 +16,14 @@
       <span class="ap-count-badge" *ngIf="productList.length > 0">
         {{ productList.length }} device{{ productList.length > 1 ? 's' : '' }} added
       </span>
+      <!-- Import Button — IMPORT FEATURE -->
+      <button class="ap-import-btn" (click)="bulkImportInput.click()" matTooltip="Import Excel (Max 30 serial no)">
+        <i class="fa fa-upload"></i>
+      </button>
+
+      <!-- Hidden File Input — IMPORT FEATURE -->
+      <input #bulkImportInput type="file" accept=".xlsx, .xls" style="display: none;"
+        (change)="testExcelUpload($event)" />
       <!-- ✅ Close button -->
       <button class="ap-close-btn" (click)="dialogRef.close()" matTooltip="Close">
         <i class="fa fa-times"></i>
@@ -23,6 +31,7 @@
     </div>
   </div>
 
+  <!-- Search Bar -->
 
   <div class="ap-search-card">
     <div class="ap-search-inner">
@@ -36,6 +45,7 @@
         {{ isSearching ? 'Searching...' : 'Add Device' }}
       </button>
     </div>
+
     <p class="ap-search-hint">Press <kbd>Enter</kbd> or click Add Device — you can search multiple serials</p>
   </div>
 

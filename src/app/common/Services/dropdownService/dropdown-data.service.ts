@@ -445,6 +445,9 @@ export class DropdownDataService {
          case DropDownType.InsuranceType:
         strType = "MasterContent";
         break;
+        case DropDownType.BindNretToLocation:
+        strType = "BindNretToLocation";
+        break;
     }
     return strType;
   }

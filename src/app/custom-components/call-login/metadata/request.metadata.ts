@@ -148,6 +148,9 @@ export enum DropDownType {
     TicketStatus,
     TRADEINPARTNER,
     InsuranceType,
+     BindNretToLocation,
+
+     
 
      
 }

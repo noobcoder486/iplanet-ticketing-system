@@ -39,6 +39,7 @@
                         <th  style="background-color: rgb(66, 66, 66); color: white;">Serial Number</th>
                         <th  style="background-color: rgb(66, 66, 66); color: white;">Stock Type</th>
                         <th  style="background-color: rgb(66, 66, 66); color: white;">Item Type</th>
+                        <th  style="background-color: rgb(66, 66, 66); color: white;">RevenueType</th>
                 </thead>
                 <tbody>
                     <ng-container *ngFor="let item of invoiceStockData">
@@ -50,6 +51,7 @@
                             <td>{{item.SerialNumber}}</td>
                             <td>{{item.InventoryStockType}}</td>
                             <td>{{item.ItemType}}</td>                            
+                            <td>{{item.RevenueType}}</td>                            
                         </tr>
                     </ng-container>
                 </tbody>

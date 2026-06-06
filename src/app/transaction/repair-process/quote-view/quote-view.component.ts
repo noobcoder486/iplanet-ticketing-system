@@ -349,10 +349,10 @@ export class QuoteViewComponent implements OnInit, OnChanges {
   }
 
   isPriceTypeFuc(item) {
-    if(this.quoteStatus != 'OPEN'){
-      this.toaster.error('Allowed only when the Quote Status is OPEN')
-      return
-    }   
+    // if(this.quoteStatus != 'OPEN'){
+    //   this.toaster.error('Allowed only when the Quote Status is OPEN')
+    //   return
+    // }   
 
     if (item.isPriceType == true) {
       item.isPriceType = false;

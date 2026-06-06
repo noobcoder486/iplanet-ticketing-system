@@ -123,7 +123,7 @@ export class NretManagementComponent implements OnInit {
     this.onTransportationCarrier({ term: '', items: [] })
     this.onDeliveryChallanStatus({ term: '', items: [] })
     this.onLocationSearch({ term: "", item: [] });
-    this.onToLocationSearch ( { term: "", item: []})
+    // this.onToLocationSearch ( { term: "", item: []})
   }
 
 
@@ -178,6 +178,7 @@ export class NretManagementComponent implements OnInit {
   
 
   getData() {
+    debugger
     let requestData = [];
     requestData.push({
       "Key": "ApiType",
@@ -194,6 +195,7 @@ export class NretManagementComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (value) => {
+          debugger
           let response = JSON.parse(value.toString());
           let data = JSON.parse(response.ExtraData.toString())
           if (response.ReturnCode == '0') {
@@ -456,7 +458,7 @@ export class NretManagementComponent implements OnInit {
   }
 
   onSubmit() {
-    
+    debugger
     const today = new Date();
     let ShipmentTodayDate = this.datePipe.transform(today, 'yyyy-MM-dd');
     let validateDeliveryChallan: boolean = this.ValidateDeliveryChallan()
@@ -649,6 +651,7 @@ export class NretManagementComponent implements OnInit {
 
         if (value != null) {
           this.LocationForJob = value;
+          console.log('this.LocationForJob',this.LocationForJob)
 
         }
       },
@@ -659,14 +662,20 @@ export class NretManagementComponent implements OnInit {
   }
 
   onToLocationSearch($event: { term: string; item: any[] }) {
-    this.dropdownDataService.fetchDropDownData(DropDownType.ToLocation, $event.term, {
-      CompanyCode: glob.getCompanyCode().toString()
+    debugger
+    this.dropdownDataService.fetchDropDownData(DropDownType.BindNretToLocation, $event.term, {
+      CompanyCode: glob.getCompanyCode().toString(),
+      LocationCode: this.LocationCode
+
     }).subscribe({
       next: (value) => {
-
+          debugger
         if (value != null) {
+          
           this.LocationToJob = value;
-
+           this.ToLocationCode = this.LocationToJob.Data[0].Id
+           this.getToLocationData()
+          
         }
       },
       error: (err) => {
@@ -680,6 +689,12 @@ export class NretManagementComponent implements OnInit {
       this.LocationObject = []
       return
     }
+
+    if (this.params?.headerguid == null || this.params?.headerguid == undefined){
+     this.onToLocationSearch ( { term: "", item: []})
+         
+    }
+
     this.LocationObject =[]
     let requestData = [];
     requestData.push({
@@ -721,6 +736,7 @@ export class NretManagementComponent implements OnInit {
 
   locationDetails:any[]=[]
   getToLocationData() {
+    debugger
     if (this.ToLocationCode == null || this.ToLocationCode == undefined) {
       this.ToLocationObject = []
       return
@@ -729,7 +745,7 @@ export class NretManagementComponent implements OnInit {
     let requestData = [];
     requestData.push({
       "Key": "ApiType",
-      "Value": "GetLocationObject"
+      "Value": "GetNretLocationObject"
     });
     requestData.push({
       "Key": "CompanyCode",
@@ -737,6 +753,10 @@ export class NretManagementComponent implements OnInit {
     });
     requestData.push({
       "Key": "LocationCode",
+      "Value": this.LocationCode
+    });
+    requestData.push({
+      "Key": "ToLocationCode",
       "Value": this.ToLocationCode
     });
     let strRequestData = JSON.stringify(requestData);
@@ -746,6 +766,7 @@ export class NretManagementComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (value) => {
+          debugger
           let response = JSON.parse(value.toString());
           if (response.ReturnCode == '0') { 
             this.ToLocationObject = []

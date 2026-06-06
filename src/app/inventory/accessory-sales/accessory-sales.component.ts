@@ -193,8 +193,9 @@ export class AccessorySalesComponent implements OnInit {
   IsAutoDiscountApplicable:boolean=false;
   Discount_Add_Amount:any;
 
+  IsCustUnitPriceEditAllwoed:boolean=false;
 
-
+  CustomerAllowedtoChangeUnitPriceList:any[]=[];
 
   getBlankObject(): DropDownValue {
     const ddv = new DropDownValue();
@@ -222,6 +223,7 @@ export class AccessorySalesComponent implements OnInit {
 
 
   ngOnInit(): void {
+   
 
     this.onDiscountTypeSearch({ term: "", items: [] });
     this.submitClicked = false;
@@ -302,6 +304,8 @@ export class AccessorySalesComponent implements OnInit {
     }
     this.onProductType({ term: "", items: [] });
 
+    // this.IsCustAllowedtoChangeUnitPrice()
+    this.GetCustomerAllowedtoChangeUnitPriceList()
   }
 
 
@@ -654,6 +658,7 @@ export class AccessorySalesComponent implements OnInit {
       {
         next: (Value) => {
           this.ngxSpinnerService.hide()
+          debugger
           try {
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {
@@ -800,7 +805,7 @@ export class AccessorySalesComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-          
+          debugger
           this.ngxSpinnerService.hide()
           try {
             let response = JSON.parse(Value.toString());
@@ -875,7 +880,8 @@ export class AccessorySalesComponent implements OnInit {
                           "PriceType" : item?.PriceType ?? '' ,
                           "InventoryStockType" : item?.PartType ?? '',
                           "PriceSource" : item?.PriceSource,
-                          "GSTPercentage" : item?.GSTPercentage
+                          "GSTPercentage" : item?.GSTPercentage,
+                          "RevenueType" : item?.RevenueType ?? ''
                        })
                    }
 
@@ -1168,6 +1174,11 @@ export class AccessorySalesComponent implements OnInit {
         if (result) {
 
           for (let item of result) {
+             debugger
+            if( (item?.RevenueType == 'Service Revenue' || item?.RevenueType == 'Repair Revenue' ) &&  this.params.doctype == 'RSALES' ){
+               this.toastMessage.error( 'Please Add Service Revenue Parts in Quotation and then proceed for billing !!')
+            }
+            else{
             this.finalSelectedElements.push({
               "Batch": item.Batch == null || item.Batch == undefined ? "" : item.Batch,
               "MaterialCode": item.Material,
@@ -1180,10 +1191,13 @@ export class AccessorySalesComponent implements OnInit {
               "InventoryStockType": item?.InventoryStockType == null || item?.InventoryStockType == undefined ? '' : item?.InventoryStockType,
               "PriceSource": item?.PriceSource ?? 'PRICELIST',
               "UnitPrice": 0,
-              "ItemSource" : 'NEW'
+              "ItemSource" : 'NEW',
+              "RevenueType" : item?.RevenueType ?? ''
+              
 
 
             })
+          }
           }
             
           for (let item1 of this.finalSelectedElements) {
@@ -1585,7 +1599,7 @@ export class AccessorySalesComponent implements OnInit {
     this.ngxSpinnerService.show();
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
       next: (response: any) => {
-        
+        debugger
         this.ngxSpinnerService.hide();
         let data = JSON.parse(response)
           ;
@@ -1643,7 +1657,8 @@ export class AccessorySalesComponent implements OnInit {
                   item.PriceRangeApplicable = object?.PriceRangeApplicable;
                   item.PriceRangeStart = object?.PriceRangeStart;
                   item.PriceRangeEnd = object?.PriceRangeEnd;
-                  item.InventoryStockType = object?.Type
+                  item.InventoryStockType = object?.Type;
+                  item.RevenueType = object?.RevenueType;
 
                 }
               }
@@ -1696,6 +1711,7 @@ export class AccessorySalesComponent implements OnInit {
                 obj.PriceRangeEnd = extraData?.QuoteItem?.PriceRangeEnd;
                 // obj.InventoryStockType =obj?.Type ?? '';
                 obj.InventoryStockType = extraData?.QuoteItem?.Type ?? '';
+                obj.RevenueType =  extraData?.QuoteItem?.RevenueType ?? '';
 
 
 
@@ -2556,7 +2572,11 @@ export class AccessorySalesComponent implements OnInit {
     }
   }
   showAddParts(item) {
-
+       debugger
+    if(this.params.doctype == 'RSALES' && item?.ItemSource != 'NEW' ){
+      this.toastMessage.error('Cannot Apply Discount while billing for RSALES')
+      return
+    }
 
     console.log("Discount item ", item)
     this.hidePopup = !this.hidePopup;
@@ -2982,6 +3002,12 @@ export class AccessorySalesComponent implements OnInit {
 
 
   deleteitem(item) {
+    debugger
+    if(this.params.doctype == 'RSALES' && item.RevenueType == 'Service Revenue'){
+        this.toastMessage.error('Cannot Delete ,As it is present in quotation !!')
+        return
+    }
+
     let index = this.finalSelectedElements.indexOf(item)
     this.finalSelectedElements.splice(index, 1)
     this.SetSchemeCode()
@@ -5014,6 +5040,58 @@ export class AccessorySalesComponent implements OnInit {
      }
   }
 
+
+  
+
+   GetCustomerAllowedtoChangeUnitPriceList() {
+    debugger
+    let requestData = []
+    requestData.push({
+      "Key": "APIType",
+      "Value": "GetCustomerAllowedtoChangeUnitPriceList"
+    })
+    
+    let strRequestData = JSON.stringify(requestData);
+    let contentRequest =
+    {
+      "content": strRequestData
+    };
+    
+    this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
+      {
+        next: (Value) => {
+           debugger
+          try {
+            let response = JSON.parse(Value.toString());
+            if (response.ReturnCode == '0') {
+              let data = JSON.parse(response?.ExtraData);
+              
+              if (Array.isArray(data?.CustomerAllowedtoChangeUnitPriceList?.CustomerAllowedtoChangeUnitPrice)) {
+                this.CustomerAllowedtoChangeUnitPriceList = data?.CustomerAllowedtoChangeUnitPriceList?.CustomerAllowedtoChangeUnitPrice
+              }
+              else {
+                this.CustomerAllowedtoChangeUnitPriceList.push(data?.CustomerAllowedtoChangeUnitPriceList?.CustomerAllowedtoChangeUnitPrice)
+              }
+            }
+            console.log('this.CustomerAllowedtoChangeUnitPriceList', this.CustomerAllowedtoChangeUnitPriceList)
+
+           this.IsCustUnitPriceEditAllwoed = this.CustomerAllowedtoChangeUnitPriceList.some( x => x.CustomerCode === this.params.customercode && x.IsAllowed === "1" );
+            
+
+     
+
+            
+          } catch (ext) {
+            console.log(ext);
+          }
+        },
+        error: err => {
+          console.log(err);
+        }
+      }
+    );
+
+  }
 
 
 
