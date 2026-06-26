@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TicketingBulkQuotationComponent } from './ticketing-system/ticketing-bulk-quotation/ticketing-bulk-quotation.component';
 import { AddQuotePartsComponent } from './ticketing-system/ticketing-bulk-quotation/add-quote-parts/add-quote-parts.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { TicketDashboardComponent } from './ticketing-system/ticket-dashboard/ticket-dashboard.component';
 
 
 
@@ -30,6 +31,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     ConfirmCustomerMappingComponent,
     TicketingBulkQuotationComponent,
     AddQuotePartsComponent,
+    TicketDashboardComponent
   ],
   imports: [
     CommonModule,

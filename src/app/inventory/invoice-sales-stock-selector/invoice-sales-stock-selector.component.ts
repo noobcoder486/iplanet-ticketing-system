@@ -17,7 +17,7 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
   invoiceStockData: any[] = [];
   selectedStockData: any[] = [];
   searchedSerialNumber: string = '';
-  showAllRows: boolean ;
+  showAllRows: boolean;
   typeSelected = 'ball-clip-rotate';
   CustomerObject
 
@@ -39,13 +39,10 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
   }
 
 
-  addInvoiceSalesStocks()
-  {
-    this.selectedStockData=[]
-    for(let item of this.invoiceStockData)
-    {
-      if(item.isSelected == true)
-      {
+  addInvoiceSalesStocks() {
+    this.selectedStockData = []
+    for (let item of this.invoiceStockData) {
+      if (item.isSelected == true) {
         this.selectedStockData.push(item)
       }
     }
@@ -62,16 +59,15 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
 
 
   getInvoiceSalesPart() {
-    
+
     this.ngxSpinnerService.show()
     this.gsxService.getInvoiceStock(this.data.SAPPlantCode, this.data.SAPStorageLocation).subscribe({
       next: (response: any) => {
-       // this.ngxSpinnerService.hide()
-        
+        // this.ngxSpinnerService.hide()
+
         if (Array.isArray(response.d.results)) {
           this.invoiceStockData = response.d.results
-          for(let item of this.invoiceStockData)
-          {
+          for (let item of this.invoiceStockData) {
             delete item.__metadata
           }
           const uniqueItems = this.invoiceStockData.filter((item, index, self) =>
@@ -83,7 +79,7 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
         }
         else {
           this.invoiceStockData.push(response.d.results)
-          this.getInvoiceMaterialName(this.invoiceStockData) 
+          this.getInvoiceMaterialName(this.invoiceStockData)
         }
         this.GetResourceList()
       },
@@ -96,7 +92,7 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
 
 
   getInvoiceMaterialName(materialcodearray: any[]) {
-    
+
     let requestData = []
     requestData.push({
       "Key": "APIType",
@@ -117,52 +113,47 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
       {
         next: (Value) => {
           try {
-            
+
             //this.ngxSpinnerService.hide()
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {
               let data = JSON.parse(response?.ExtraData);
               console.log('data.InvoiceSalesMaterialDetail', data.InvoiceSalesMaterialDetail)
-              if(Array.isArray(data.InvoiceSalesMaterialDetail))
-              {
-                for(let item of this.invoiceStockData)
-                {
+              if (Array.isArray(data.InvoiceSalesMaterialDetail)) {
+                for (let item of this.invoiceStockData) {
                   const matchingIndex = data.InvoiceSalesMaterialDetail.findIndex(obj => obj.MaterialCode == item.Material)
-                  if(matchingIndex > -1)
-                  {
+                  if (matchingIndex > -1) {
                     const matchingElement = data.InvoiceSalesMaterialDetail[matchingIndex]
                     item.MaterialName = matchingElement.MaterialName
                     item.isSelected = false;
-                    item.ItemType=matchingElement.ItemType;
-                    item.InventoryStockType= matchingElement?.PartType;
+                    item.ItemType = matchingElement.ItemType;
+                    item.InventoryStockType = matchingElement?.PartType;
                     item.PriceSource = matchingElement?.PriceSource;
                     item.RevenueType = matchingElement?.RevenueType;
-      
-                    if ( item?.MaterialCode == '6490' )
+
+                    if (item?.MaterialCode == '6490')
                       console.log("Resource ", data.Resource.Resource)
-                  } 
-                  
+                  }
+
                 }
               }
-              else
-              {
-                for(let item of this.invoiceStockData)
-                {
+              else {
+                for (let item of this.invoiceStockData) {
                   item.MaterialName = data.InvoiceSalesMaterialDetail.MaterialName
-                  item.ItemType=data.InvoiceSalesMaterialDetail.ItemType;
-                    item.InventoryStockType= data.InvoiceSalesMaterialDetail?.PartType;
-                    item.PriceSource =data.InvoiceSalesMaterialDetail?.PriceSource
-                    item.RevenueType = data.InvoiceSalesMaterialDetail?.RevenueType
+                  item.ItemType = data.InvoiceSalesMaterialDetail.ItemType;
+                  item.InventoryStockType = data.InvoiceSalesMaterialDetail?.PartType;
+                  item.PriceSource = data.InvoiceSalesMaterialDetail?.PriceSource
+                  item.RevenueType = data.InvoiceSalesMaterialDetail?.RevenueType
 
 
                 }
               }
 
-       
+
             }
             this.ngxSpinnerService.hide()
           } catch (ext) {
-              this.ngxSpinnerService.hide()
+            this.ngxSpinnerService.hide()
           }
         },
         error: err => {
@@ -192,88 +183,88 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
     return xml;
   }
   GetResourceList() {
-    
+
     let requestData = [];
     requestData.push({
-        "Key": "APIType",
-        "Value": "GetResourcePriceList"
+      "Key": "APIType",
+      "Value": "GetResourcePriceList"
     });
     let strRequestData = JSON.stringify(requestData);
     let contentRequest = {
-        "content": strRequestData
+      "content": strRequestData
     };
     //this.ngxSpinnerService.show()
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
-        next: (Value) => {
-            try {
-                  
-                debugger
-                let response = JSON.parse(Value.toString());
-                if (response.ReturnCode == '0') {
-                    let data = JSON.parse(response?.ExtraData);
-                    let ResourceList = data?.Resource?.Resource;
-                    if (Array.isArray(ResourceList)) {
-                        for (let item of ResourceList) {
-                            this.invoiceStockData.push({
-                                "MaterialName": item.MaterialName,
-                                "Material": item.MaterialCode,
-                                "SerialNumber": "",
-                                "Batch": "",
-                                "SerializedModule": item?.SerializedModule,
-                                "InventoryStockType": item?.PartType,
-                                "isSelected": false,
-                                "ItemType": item?.ItemType,
-                                "PriceSource" : item?.PriceSource,
-                                "RevenueType" : item?.RevenueType
-                            });
-                        }
+      next: (Value) => {
+        try {
 
-                        this.invoiceStockData.forEach(element => {
-                            let matchedItem = ResourceList.find(item => item.MaterialCode === element.Material);
-                            if (matchedItem) {
-                                element.InventoryStockType = matchedItem?.PartType;
-                            }
-                        });
-                    } else {
-                        this.invoiceStockData.push({
-                            "MaterialName": data?.Resource?.Resource?.MaterialName,
-                            "Material": data?.Resource?.Resource?.MaterialCode,
-                            "SerialNumber": data?.Resource?.Resource?.SerialNumber ?? "000000",
-                            "Batch": data?.Resource?.Resource?.Batch ?? "",
-                            "SerializedModule": data?.Resource?.Resource?.SerializedModule,
-                            "InventoryStockType": data?.Resource?.Resource?.PartType,
-                            "isSelected": false,
-                            "ItemType": data?.Resource?.Resource?.ItemType,
-                            "PriceSource" : data?.Resource?.Resource?.PriceSource,
-                            "RevenueType" : data?.Resource?.Resource?.RevenueType
 
-                        });
-                    }
+          let response = JSON.parse(Value.toString());
+          if (response.ReturnCode == '0') {
+            let data = JSON.parse(response?.ExtraData);
+            let ResourceList = data?.Resource?.Resource;
+            if (Array.isArray(ResourceList)) {
+              for (let item of ResourceList) {
+                this.invoiceStockData.push({
+                  "MaterialName": item.MaterialName,
+                  "Material": item.MaterialCode,
+                  "SerialNumber": "",
+                  "Batch": "",
+                  "SerializedModule": item?.SerializedModule,
+                  "InventoryStockType": item?.PartType,
+                  "isSelected": false,
+                  "ItemType": item?.ItemType,
+                  "PriceSource": item?.PriceSource,
+                  "RevenueType": item?.RevenueType
+                });
+              }
 
-                    if (this.data.DocType === 'DSALES') {
-                          
-                        this.CustomerObject = this.data.CustomerObject
-                        console.log("** Customer Object ", this.CustomerObject )
-                        let excludedCTPLCustomers = new Set(['123909265', '123909277', '123909247', '123909249','E2500000021' ,'E2500000365','E2500000535','12324889135','C2500088312','C2500073671','E2500001298']);
-                        if (!excludedCTPLCustomers.has(this.CustomerObject.CustomerCode) && this.CustomerObject.CustAccGroupCode !== 'ALLSTAFF') {
-                              this.invoiceStockData = this.invoiceStockData.filter(item =>  
-                                ['3PP', 'EXTWAR', 'PROTECTPLUS', 'ACPLUS', 'WARCLAIMS', 'APPLE ACC','Other'].includes(item.InventoryStockType)
-                              );
-                        }
-                    }
+              this.invoiceStockData.forEach(element => {
+                let matchedItem = ResourceList.find(item => item.MaterialCode === element.Material);
+                if (matchedItem) {
+                  element.InventoryStockType = matchedItem?.PartType;
                 }
-                this.ngxSpinnerService.hide()
-            } catch (ext) {
-                this.ngxSpinnerService.hide()
-                console.log(ext);
+              });
+            } else {
+              this.invoiceStockData.push({
+                "MaterialName": data?.Resource?.Resource?.MaterialName,
+                "Material": data?.Resource?.Resource?.MaterialCode,
+                "SerialNumber": data?.Resource?.Resource?.SerialNumber ?? "000000",
+                "Batch": data?.Resource?.Resource?.Batch ?? "",
+                "SerializedModule": data?.Resource?.Resource?.SerializedModule,
+                "InventoryStockType": data?.Resource?.Resource?.PartType,
+                "isSelected": false,
+                "ItemType": data?.Resource?.Resource?.ItemType,
+                "PriceSource": data?.Resource?.Resource?.PriceSource,
+                "RevenueType": data?.Resource?.Resource?.RevenueType
+
+              });
             }
-        },
-        error: err => {
-            this.ngxSpinnerService.hide()
-            console.log(err);
+
+            if (this.data.DocType === 'DSALES') {
+
+              this.CustomerObject = this.data.CustomerObject
+              console.log("** Customer Object ", this.CustomerObject)
+              let excludedCTPLCustomers = new Set(['123909265', '123909277', '123909247', '123909249', 'E2500000021', 'E2500000365', 'E2500000535', '12324889135', 'C2500088312', 'C2500073671', 'E2500001298']);
+              if (!excludedCTPLCustomers.has(this.CustomerObject.CustomerCode) && this.CustomerObject.CustAccGroupCode !== 'ALLSTAFF') {
+                this.invoiceStockData = this.invoiceStockData.filter(item =>
+                  ['3PP', 'EXTWAR', 'PROTECTPLUS', 'ACPLUS', 'WARCLAIMS', 'APPLE ACC', 'Other'].includes(item.InventoryStockType)
+                );
+              }
+            }
+          }
+          this.ngxSpinnerService.hide()
+        } catch (ext) {
+          this.ngxSpinnerService.hide()
+          console.log(ext);
         }
+      },
+      error: err => {
+        this.ngxSpinnerService.hide()
+        console.log(err);
+      }
     });
-}
+  }
 
 
 }

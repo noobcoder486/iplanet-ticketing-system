@@ -150,7 +150,16 @@ export class SalesReturnListComponent implements OnInit {
           console.log("Dashboard", this.jobHeaderData)
         }
         else{
-
+ let dashboardList= []
+          dashboardList.push(data?.Dashboard)
+          let headers = new Set(dashboardList.map(item => item.SalesReturnTypeDesc))
+          for( let header of headers){
+            this.jobHeaderData.push( {
+              "header": header,
+              "list": dashboardList.filter(item => item.SalesReturnTypeDesc == header)
+            });
+          }
+          console.log("Dashboard", this.jobHeaderData)
         }
       }
     } catch (err) {

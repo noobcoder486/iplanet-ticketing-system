@@ -32,7 +32,7 @@ export class TradeinComponent implements OnInit {
   QuotationNumber: any;
   TradeinPartner: any;
 
-  TradeinCategoryDDList:any[]=[];
+  TradeinCategoryDDList: any[] = [];
 
   constructor(
     private dynamicService: DynamicService,
@@ -54,7 +54,7 @@ export class TradeinComponent implements OnInit {
 
 
   GetTradeinObject() {
-    debugger
+
     let requestData = [];
     requestData.push({
       "Key": "ApiType",
@@ -77,7 +77,7 @@ export class TradeinComponent implements OnInit {
       next: (value) => {
         let response = JSON.parse(value.toString());
         if (response.ReturnCode == '0') {
-          debugger
+
           let data = JSON.parse(response.ExtraData);
           this.tradeinObject = data?.TradeinList?.Tradein
           this.LocationObject = data?.TradeinList?.Tradein?.LOCATION
@@ -88,7 +88,7 @@ export class TradeinComponent implements OnInit {
           this.TradeinCategory = this.tradeinObject?.TransactionCategory ?? ''
           this.Remark = this.tradeinObject?.Remark ?? ''
           this.TransactionNo = this.tradeinObject?.TransactionNo ?? ''
-          this.QuotationNumber =  this.tradeinObject?.QuotationNumber ?? ''
+          this.QuotationNumber = this.tradeinObject?.QuotationNumber ?? ''
           this.TradeinPartner = this.tradeinObject?.TradeinPartner ?? ''
 
           if (this.tradeinObject?.TransactionCategory == 'CONVERTED') {
@@ -119,11 +119,11 @@ export class TradeinComponent implements OnInit {
     this.dropdownDataService.fetchDropDownData(DropDownType.TRADEINCATEGORY, $event.term).subscribe({
       next: (value) => {
         if (value != null) {
-          debugger
+
           this.TradeinCategoryDD = value;
           console.log("TradeinSubCategoryDD ", this.TradeinCategoryDD)
 
-          this.TradeinCategoryDDList =  this.TradeinCategoryDD.Data.filter(item => item.Id !== 'AUTOCLOSE' )
+          this.TradeinCategoryDDList = this.TradeinCategoryDD.Data.filter(item => item.Id !== 'AUTOCLOSE')
 
         }
       },
@@ -140,7 +140,7 @@ export class TradeinComponent implements OnInit {
     this.dropdownDataService.fetchDropDownData(DropDownType.TRADEINPARTNER, $event.term).subscribe({
       next: (value) => {
         if (value != null) {
-          debugger
+
           this.TradeinPartnerDD = value;
           console.log("TradeinSubCategoryDD ", this.TradeinPartnerDD)
         }
@@ -167,7 +167,7 @@ export class TradeinComponent implements OnInit {
       return
     }
 
-    debugger
+
     let requestData = [];
     requestData.push({
       "Key": "ApiType",
@@ -208,7 +208,7 @@ export class TradeinComponent implements OnInit {
 
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
       next: (value) => {
-        debugger
+
         let response = JSON.parse(value.toString());
         if (response.ReturnCode == '0') {
           this.toaster.success("Saved Successfully");

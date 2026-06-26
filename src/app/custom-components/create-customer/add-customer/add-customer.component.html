@@ -142,6 +142,11 @@
 
                                 </ng-select>
                             </div>
+                             <div class="col-sm-4">
+                    <ng-select   [items]="CustomerTypeDD.Data" bindLabel="TEXT" bindValue="Id" placeholder="Customer Type"
+                       formControlName="CustomerType" (search)="onCustomerType($event)">
+                    </ng-select>
+                </div>
 
                             <div class="col-lg-2 col-sm-4">
                                 <label for="filetype" class="x_final_button" id="FileTypeBtn"><span

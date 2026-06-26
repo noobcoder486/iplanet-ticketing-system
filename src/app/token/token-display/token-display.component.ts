@@ -1,6 +1,7 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DynamicService } from 'src/app/common/Services/dynamicService/dynamic.service';
+import * as glob from "src/app/config/global";
 
 @Component({
   selector: 'app-token-display',
@@ -42,6 +43,11 @@ RemoveArray: any = []
           "Key":"LocationCode",
           "Value": ''
         });
+            requestData.push({
+         "Key": "CompanyCode",
+         "Value": glob.getCompanyCode()
+        });
+
 
         let strRequestData = JSON.stringify(requestData);
         let contentRequest =

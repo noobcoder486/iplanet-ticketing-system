@@ -65,8 +65,8 @@ export class RepairPopComponent implements OnInit {
         this.SelectedPartList.push(item);
       }
     }
-    debugger
-      console.log('this.SelectedPartList' , this.SelectedPartList)
+
+    console.log('this.SelectedPartList', this.SelectedPartList)
     if (this.PartSelectionMode == "Normal") {
       if (this.repa.DIAG?.RepairType == "WUMS") {
         this.getTierPartDataAndEmit();

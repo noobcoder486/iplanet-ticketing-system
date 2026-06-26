@@ -178,7 +178,7 @@ export class RepairProcessComponent implements OnInit {
   SelectedCompanyStockList: any = [];
   SelectedReplenishList: any = [];
 
-   IsResetDiagnosisBillableFlag:boolean=false;
+  IsResetDiagnosisBillableFlag: boolean = false;
 
 
 
@@ -299,9 +299,9 @@ export class RepairProcessComponent implements OnInit {
   selectedMaterialPartRequest: any;
   handoverstatus = ""
   show = false;
-    IsDataBackupResetPopup: boolean = false;
+  IsDataBackupResetPopup: boolean = false;
 
-  
+
 
   ngOnInit(): void {
 
@@ -658,10 +658,9 @@ export class RepairProcessComponent implements OnInit {
 
   editDaig() {
 
-    if(this.objCaseDetail.HandoverFlag == 1 || this.objCaseDetail.HandoverFlag == '1'  )
-    {
-       this.toastr.error('Cannot Proceed as HandOver Already Done !')
-       return
+    if (this.objCaseDetail.HandoverFlag == 1 || this.objCaseDetail.HandoverFlag == '1') {
+      this.toastr.error('Cannot Proceed as HandOver Already Done !')
+      return
     }
 
     this.Diagnosis.editDiagForm()
@@ -679,13 +678,13 @@ export class RepairProcessComponent implements OnInit {
   }
 
   addHandOverDevice() {
-      
+
     if (this.activatedRoute.snapshot.queryParams.tc == null || this.activatedRoute.snapshot.queryParams.tc == undefined) {
       this.toastr.error('Cannot Proceed For HandOver without Token code  ')
       return;
     }
     if (this.activatedRoute.snapshot.queryParams.vp != 'CPR') {
-       this.toastr.error('Please Select Visit Purpose as COLLECTION  For Handover while  Token Selection ')
+      this.toastr.error('Please Select Visit Purpose as COLLECTION  For Handover while  Token Selection ')
       return;
     }
     //this.isOtpVerification = false
@@ -753,7 +752,7 @@ export class RepairProcessComponent implements OnInit {
   }
 
   PartConstraintStatusChange($event) {
-    
+
     this.objCaseDetail.JobStatus = $event.JobStatusDesc;
   }
 
@@ -1084,7 +1083,7 @@ export class RepairProcessComponent implements OnInit {
             this.toastr.success('Repair Reset Succesfully')
           }
           else {
-            
+
             this.errorMessage = response.ReturnMessage;
             this.toastMessage.error("Error While Saving Invoice")
             let errorMessage = response.ErrorMessage;
@@ -1281,7 +1280,7 @@ export class RepairProcessComponent implements OnInit {
   }
 
   UpdateRepairQuestions($event) {
-    
+
     this.repairView.UpdateRepairQuestions($event)
   }
 
@@ -1328,7 +1327,7 @@ export class RepairProcessComponent implements OnInit {
 
 
   ValidRepair() {
-    debugger
+
     this.isRepairPop = false
     if (this.objCaseDetail?.DIAG) {
       if (this.objCaseDetail?.DIAG?.RepairType != 'SVNR' && this.objCaseDetail.DIAG.BillableRepair == 1) {
@@ -1543,7 +1542,7 @@ export class RepairProcessComponent implements OnInit {
   }
 
   closeCompanyStockPopupEvent($event) {
-    
+
     this.isCompanyStockPopup = false
     this.SelectedCompanyStockList = $event
   }
@@ -1559,7 +1558,7 @@ export class RepairProcessComponent implements OnInit {
   }
 
   closeReplenishPopupEvent($event) {
-    
+
     this.isReplenishPopup = false
     this.SelectedReplenishList = $event
   }
@@ -1572,23 +1571,23 @@ export class RepairProcessComponent implements OnInit {
   }
 
   CloseResetTableReplacementPopup($event) {
-    
+
     this.IsTableReplacementResetPopup = false;
     this.location.reload()
   }
-  
-    openResetDiagnosisPopup(){
-    
+
+  openResetDiagnosisPopup() {
+
     this.IsResetDiagnosisBillableFlag = true;
   }
 
-  CloseResetDiagnosisPopupComponentEvent(){
-    
+  CloseResetDiagnosisPopupComponentEvent() {
+
     this.IsResetDiagnosisBillableFlag = false;
   }
 
-   CloseDataBackupPopupEvent($event) {
-    
+  CloseDataBackupPopupEvent($event) {
+
     console.log($event)
     this.IsDataBackupResetPopup = false;
     this.location.reload()

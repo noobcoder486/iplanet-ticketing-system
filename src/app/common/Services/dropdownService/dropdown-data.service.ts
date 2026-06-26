@@ -448,6 +448,10 @@ export class DropdownDataService {
         case DropDownType.BindNretToLocation:
         strType = "BindNretToLocation";
         break;
+         case DropDownType.CUSTOMERTYPE:
+        strType = "MasterContent";
+        break;
+
     }
     return strType;
   }
@@ -717,6 +721,9 @@ export class DropdownDataService {
         break; 
         case DropDownType.InsuranceType:
         strType = "InsuranceType";
+        break; 
+         case DropDownType.CUSTOMERTYPE:
+        strType = "CUSTOMERTYPE";
         break; 
     }
     return strType;

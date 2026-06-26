@@ -149,6 +149,7 @@ export enum DropDownType {
     TRADEINPARTNER,
     InsuranceType,
      BindNretToLocation,
+      CUSTOMERTYPE,
 
      
 

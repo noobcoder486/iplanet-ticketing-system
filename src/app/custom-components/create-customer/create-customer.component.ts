@@ -37,7 +37,7 @@ export class CreateCustomerComponent implements OnInit {
   VisitPurposeDesc: string;
   Phonenumbersearched = ""
   typeSelected = 'ball-clip-rotate';
-  CounterData: any = ['C1', 'C2','C3', 'C4','C5'];
+  CounterData: any = ['C1', 'C2', 'C3', 'C4', 'C5'];
   EnquiryList: any = [] = []
   showAddCustomer: boolean = false;
   isSelectToken: boolean = false;
@@ -52,16 +52,16 @@ export class CreateCustomerComponent implements OnInit {
   isCloseBtn: boolean = true;
   isNoShowBtn: boolean = true;
   isOtpVerification: boolean = false;
-  ReservationCode: string; 
+  ReservationCode: string;
 
-    ReferredByDD:DropDownValue = this.getBlankObject();
-  ReferredBy:any
+  ReferredByDD: DropDownValue = this.getBlankObject();
+  ReferredBy: any
 
-  CustomerVisitSourceDD:DropDownValue = this.getBlankObject();
-  CustomerVisitSourceSelected:any
+  CustomerVisitSourceDD: DropDownValue = this.getBlankObject();
+  CustomerVisitSourceSelected: any
 
-  CustomerSourceNameDD:DropDownValue = this.getBlankObject();
-  CustomerSourceNameSelected:any
+  CustomerSourceNameDD: DropDownValue = this.getBlankObject();
+  CustomerSourceNameSelected: any
 
 
   ButtonValidate() {
@@ -134,14 +134,14 @@ export class CreateCustomerComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
     // this.OnCustomerSourceName({ term: "", item: [] });
-     this.OnCustomerVisitSource({ term: "", items: [] });
+    this.OnCustomerVisitSource({ term: "", items: [] });
     //  this.onReferredBy({ term: "", items: [] });
-    this.params = this.activatedRoute.snapshot.queryParams;  
-    if( this.params.mb && this.params.mb != '' ) {
+    this.params = this.activatedRoute.snapshot.queryParams;
+    if (this.params.mb && this.params.mb != '') {
       this.mobilenumber = this.params.mb;
-      if( this.params.rc && this.params.rc != '' ){
+      if (this.params.rc && this.params.rc != '') {
         this.ReservationCode = this.params.rc
         this.getReservationObject()
       }
@@ -165,7 +165,7 @@ export class CreateCustomerComponent implements OnInit {
     this.onVisitPurpose({ term: "", items: [] });
   }
 
-     onVisitPurpose($event: { term: ""; items: [] }) {
+  onVisitPurpose($event: { term: ""; items: [] }) {
     this.dropdownDataService
       .fetchDropDownData(DropDownType.VisitPurpose, $event.term)
       .subscribe({
@@ -216,8 +216,8 @@ export class CreateCustomerComponent implements OnInit {
           if (response.ReturnCode == '0') {
             let data = JSON.parse(response.ExtraData)
             if (data.Totalrecords != "0") {
-              console.log("Reservation Object" , data)
-              this.reservationData = data.Reservation       
+              console.log("Reservation Object", data)
+              this.reservationData = data.Reservation
             }
             else {
               this.toastmeassge.error("No Reservation Data found")
@@ -346,11 +346,11 @@ export class CreateCustomerComponent implements OnInit {
     //   this.toastmeassge.error("Please Select Referred By");
     //   return
     // }
-      if(this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == ''){
+    if (this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == '') {
       this.toastmeassge.error("Please Select Customer Visit Source");
       return
     }
-      if(this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == ''){
+    if (this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == '') {
       this.toastmeassge.error("Please Select Customer Source Name ");
       return
     }
@@ -359,17 +359,17 @@ export class CreateCustomerComponent implements OnInit {
     for (let item of this.CustomerObject) {
       customercode = item.CustomerCode
     }
-    this.route.navigate(['/auth/' + glob.getCompanyCode() + '/accessory-sales'], { queryParams: { doctype: "DSALES", locationcode: this.selectedLocationCode, customercode: customercode,CVS:this.CustomerVisitSourceSelected,CSN:this.CustomerSourceNameSelected } })
+    this.route.navigate(['/auth/' + glob.getCompanyCode() + '/accessory-sales'], { queryParams: { doctype: "DSALES", locationcode: this.selectedLocationCode, customercode: customercode, CVS: this.CustomerVisitSourceSelected, CSN: this.CustomerSourceNameSelected } })
   }
 
   // AMC SALES
   navigatetoAMCSales() {
-    
-      if(this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == ''){
+
+    if (this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == '') {
       this.toastmeassge.error("Please Select Customer Visit Source");
       return
     }
-      if(this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == ''){
+    if (this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == '') {
       this.toastmeassge.error("Please Select Customer Source Name ");
       return
     }
@@ -378,40 +378,40 @@ export class CreateCustomerComponent implements OnInit {
     for (let item of this.CustomerObject) {
       customercode = item.CustomerCode
     }
-    this.route.navigate(['/auth/' + glob.getCompanyCode() + '/accessory-sales'], { queryParams: { doctype: "AMCSALES", locationcode: this.selectedLocationCode, customercode: customercode,CVS:this.CustomerVisitSourceSelected,CSN:this.CustomerSourceNameSelected } })
+    this.route.navigate(['/auth/' + glob.getCompanyCode() + '/accessory-sales'], { queryParams: { doctype: "AMCSALES", locationcode: this.selectedLocationCode, customercode: customercode, CVS: this.CustomerVisitSourceSelected, CSN: this.CustomerSourceNameSelected } })
   }
 
 
 
   createServiceNonRepairJob() {
-   if(this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == ''){
+    if (this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == '') {
       this.toastmeassge.error("Please Select Customer Visit Source");
       return
     }
-      if(this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == ''){
+    if (this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == '') {
       this.toastmeassge.error("Please Select Customer Source Name ");
       return
     }
     this.UpdateReferredByInToken()
-    this.route.navigate(['/auth/' + glob.getCompanyCode() + '/create-job-customer'], { queryParams: { doctype: 'snr' , cc: glob.getCompanyCode(), nc: this.CustomerCode, tc: this.TokenNumber, td: this.TokenCreatedDate, cn: this.CounterNumber, lc: this.selectedLocationCode,CVS:this.CustomerVisitSourceSelected,CSN:this.CustomerSourceNameSelected} })
+    this.route.navigate(['/auth/' + glob.getCompanyCode() + '/create-job-customer'], { queryParams: { doctype: 'snr', cc: glob.getCompanyCode(), nc: this.CustomerCode, tc: this.TokenNumber, td: this.TokenCreatedDate, cn: this.CounterNumber, lc: this.selectedLocationCode, CVS: this.CustomerVisitSourceSelected, CSN: this.CustomerSourceNameSelected } })
   }
-  
+
 
   createNewJobWithout() {
-    if(this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == ''){
+    if (this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == '') {
       this.toastmeassge.error("Please Select Customer Visit Source");
       return
     }
-      if(this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == ''){
+    if (this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == '') {
       this.toastmeassge.error("Please Select Customer Source Name ");
       return
     }
     this.UpdateReferredByInToken()
-    if (!this.params.mb){
-      this.route.navigate(['/auth/' + glob.getCompanyCode() + '/create-job-customer'], { queryParams: {  doctype: 'oth' ,  rc :this.params.rc, cc: glob.getCompanyCode(), nc: this.CustomerCode, tc: this.TokenNumber, td: this.TokenCreatedDate, cn: this.CounterNumber, lc: this.selectedLocationCode,CVS:this.CustomerVisitSourceSelected,CSN:this.CustomerSourceNameSelected } })
+    if (!this.params.mb) {
+      this.route.navigate(['/auth/' + glob.getCompanyCode() + '/create-job-customer'], { queryParams: { doctype: 'oth', rc: this.params.rc, cc: glob.getCompanyCode(), nc: this.CustomerCode, tc: this.TokenNumber, td: this.TokenCreatedDate, cn: this.CounterNumber, lc: this.selectedLocationCode, CVS: this.CustomerVisitSourceSelected, CSN: this.CustomerSourceNameSelected } })
     }
-    else{
-      this.route.navigate(['/auth/' + glob.getCompanyCode() + '/create-job-customer'], { queryParams: {  doctype: 'oth' , cc: glob.getCompanyCode(), nc: this.CustomerCode, rc :this.params.rc, lc: this.params.locationcode,CVS:this.CustomerVisitSourceSelected,CSN:this.CustomerSourceNameSelected } })
+    else {
+      this.route.navigate(['/auth/' + glob.getCompanyCode() + '/create-job-customer'], { queryParams: { doctype: 'oth', cc: glob.getCompanyCode(), nc: this.CustomerCode, rc: this.params.rc, lc: this.params.locationcode, CVS: this.CustomerVisitSourceSelected, CSN: this.CustomerSourceNameSelected } })
     }
 
     // this.route.navigate(['/auth/' + glob.getCompanyCode() + '/create-job-customer'], { queryParams: {  doctype: 'oth' ,  rc :this.params.rc, cc: glob.getCompanyCode(), nc: this.CustomerCode, tc: this.TokenNumber, td: this.TokenCreatedDate, cn: this.CounterNumber, lc: this.selectedLocationCode } })
@@ -481,7 +481,7 @@ export class CreateCustomerComponent implements OnInit {
       }
     );
   }
-  
+
 
   SelectedTokenData() {
     let requestData = [];
@@ -516,7 +516,7 @@ export class CreateCustomerComponent implements OnInit {
           let response = JSON.parse(Value.toString());
           if (response.ReturnCode == '0') {
             let data = JSON.parse(response?.ExtraData);
-            
+
             this.tokendata = data.Token;
             console.log("TOk", this.tokendata)
             this.mobilenumber = this.tokendata.MobileNo;
@@ -583,7 +583,7 @@ export class CreateCustomerComponent implements OnInit {
     this.isCustomerView = true
   }
 
-    TokenStatusChange(tokenstatus:string) {
+  TokenStatusChange(tokenstatus: string) {
     if (this.selectedLocationCode == '' || this.selectedLocationCode == null || this.selectedLocationCode == undefined) {
       this.toastmeassge.error("Location not Selected")
       return;
@@ -609,7 +609,7 @@ export class CreateCustomerComponent implements OnInit {
       "Key": "LocationCode",
       "Value": this.selectedLocationCode
     });
-    let requestdataObj = JSON.stringify(RequestStatus); 
+    let requestdataObj = JSON.stringify(RequestStatus);
     let requstDataStringfy =
     {
       "content": requestdataObj
@@ -752,29 +752,29 @@ export class CreateCustomerComponent implements OnInit {
 
   ClosePopUp() {
     this.isAddCustomerShow = true;
-    
+
   }
 
 
   Open() {
-    
-      console.log('this.TokenNumber',  this.TokenNumber)
 
-      if(this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == ''){
+    console.log('this.TokenNumber', this.TokenNumber)
+
+    if (this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == '') {
       this.toastmeassge.error("Please Select Customer Visit Source");
       return
     }
-      if(this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == ''){
+    if (this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == '') {
       this.toastmeassge.error("Please Select Customer Source Name ");
       return
     }
-        this.CustomerObject.push({ReferredBy : ''})
-        this.CustomerObject.push({CustomerVisitSourceSelected :this.CustomerVisitSourceSelected})
-        this.CustomerObject.push({CustomerSourceNameSelected :this.CustomerSourceNameSelected})
-        this.CustomerObject.push({LocationCode :this.selectedLocationCode})
-        this.CustomerObject.push({TokenCode : this.TokenNumber})
-      this.UpdateReferredByInToken();
-    console.log('CustomerObject' , this.CustomerObject );
+    this.CustomerObject.push({ ReferredBy: '' })
+    this.CustomerObject.push({ CustomerVisitSourceSelected: this.CustomerVisitSourceSelected })
+    this.CustomerObject.push({ CustomerSourceNameSelected: this.CustomerSourceNameSelected })
+    this.CustomerObject.push({ LocationCode: this.selectedLocationCode })
+    this.CustomerObject.push({ TokenCode: this.TokenNumber })
+    this.UpdateReferredByInToken();
+    console.log('CustomerObject', this.CustomerObject);
     this.isEnquiryForm = true;
   }
 
@@ -790,7 +790,7 @@ export class CreateCustomerComponent implements OnInit {
     this.JobColumns.push(this.dynamicService.getColumn("STRING", "Fault Description", "ComplainDesc"));
     this.JobColumns.push(this.dynamicService.getColumn("STRING", "Job Status", "JobStatus"));
     this.JobColumns.push(this.dynamicService.getColumn("STRING", "Job Type", "JobType"));
-    this.actionDetails.push({ code: 'Repair', icon: 'build_circle' , title : 'Repair' });
+    this.actionDetails.push({ code: 'Repair', icon: 'build_circle', title: 'Repair' });
   }
 
 
@@ -880,7 +880,7 @@ export class CreateCustomerComponent implements OnInit {
         next: (Value) => {
           try {
             let response = JSON.parse(Value.toString());
-            
+
             if (response.ReturnCode == '0') {
               response['ExtraDataJSON'] = JSON.parse(response.ExtraData);
               let EnquiryListData = response?.ExtraDataJSON?.EnquiryList?.Enquiry
@@ -964,7 +964,7 @@ export class CreateCustomerComponent implements OnInit {
     });
     requestData.push({
       "Key": "PageSize",
-      "Value": "5"
+      "Value": "10"
     });
     let strRequestData = JSON.stringify(requestData);
     let contentRequest =
@@ -975,8 +975,9 @@ export class CreateCustomerComponent implements OnInit {
       {
         next: (Value) => {
           try {
+
             let response = JSON.parse(Value.toString());
-            
+
             if (response.ReturnCode == '0') {
               response['ExtraDataJSON'] = JSON.parse(response.ExtraData);
               let jobListData = response['ExtraDataJSON']['JobList']['JobData']
@@ -987,7 +988,7 @@ export class CreateCustomerComponent implements OnInit {
               else {
                 JobFindData.push(jobListData)
               }
-              this.JobDetail.next({ totalRecord: jobListData.length, Data: JobFindData });
+              this.JobDetail.next({ totalRecord: response['ExtraDataJSON']?.Totalrecords, Data: JobFindData });
             }
             else {
               this.toastmeassge.error(response)
@@ -1008,6 +1009,105 @@ export class CreateCustomerComponent implements OnInit {
     );
   }
 
+
+  // 
+  JobListloadPageData(event) {
+
+    console.log('event', event)
+    switch (event.eventType) {
+      case "PageChange":
+        this.jobPagination.PageNumber = event.eventDetail.pageIndex + 1;
+        let requestData = [];
+
+        requestData.push({
+          "Key": "APIType",
+          "Value": "GetJobDetails"
+        });
+        requestData.push({
+          "Key": "CaseId",
+          "Value": this.caseid ? this.caseid.trim() : ''
+        });
+        requestData.push({
+          "Key": "SerialNo",
+          "Value": ''
+        });
+        requestData.push({
+          "Key": "FirstName",
+          "Value": ''
+        });
+        requestData.push({
+          "Key": "MobileNo",
+          "Value": this.phonenumber ?? ''
+        });
+        requestData.push({
+          "Key": "EmailId",
+          "Value": this.Emailid ?? ''
+        });
+        requestData.push({
+          "Key": "JobStatus",
+          "Value": ''
+        });
+        requestData.push({
+          "Key": "JobType",
+          "Value": ''
+        });
+        requestData.push({
+          "Key": "CompanyCode",
+          "Value": glob.getCompanyCode()
+        });
+        requestData.push({
+          "Key": "PageNo",
+          "Value": event.eventDetail.pageIndex + 1
+        });
+        requestData.push({
+          "Key": "PageSize",
+          "Value": event.eventDetail.pageSize
+        });
+
+        let strRequestData = JSON.stringify(requestData);
+        let contentRequest =
+        {
+          "content": strRequestData
+        };
+        this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
+          {
+            next: (Value) => {
+              try {
+                let response = JSON.parse(Value.toString());
+
+                if (response.ReturnCode == '0') {
+                  response['ExtraDataJSON'] = JSON.parse(response.ExtraData);
+                  let jobListData = response['ExtraDataJSON']['JobList']['JobData']
+                  var JobFindData: any = [];
+                  if (Array.isArray(jobListData)) {
+                    JobFindData = jobListData;
+                  }
+                  else {
+                    JobFindData.push(jobListData)
+                  }
+                  this.JobDetail.next({ totalRecord: response['ExtraDataJSON']?.Totalrecords, Data: JobFindData });
+                }
+                else {
+                  this.toastmeassge.error(response)
+                }
+              } catch (ext) {
+                console.log(ext);
+                this.JobList = [];
+                this.JobDetail.next({ totalRecord: this.JobList.length, Data: this.JobList });
+              }
+            },
+            error: err => {
+              console.log(err);
+              this.JobList = [];
+              this.JobDetail.next({ totalRecord: this.JobList.length, Data: this.JobList });
+            }
+          }
+        );
+        break;
+    }
+    setTimeout(() => { this.hideSpinnerEvent.next(); }, 1);
+  }
+  // 
 
   createNewJob() {
     this.isOtpVerification = true;
@@ -1032,8 +1132,8 @@ export class CreateCustomerComponent implements OnInit {
       case "Delete":
         break;
       case "Repair":
-         this.UpdateReferredByInToken()
-        this.route.navigate(['/auth/' + glob.getCompanyCode() + '/repair-process'], { queryParams: { guid: event.row.CaseGUID,tc: this.TokenNumber,vp:this.VisitPurpose} });
+        this.UpdateReferredByInToken()
+        this.route.navigate(['/auth/' + glob.getCompanyCode() + '/repair-process'], { queryParams: { guid: event.row.CaseGUID, tc: this.TokenNumber, vp: this.VisitPurpose } });
         break;
     }
   }
@@ -1045,8 +1145,8 @@ export class CreateCustomerComponent implements OnInit {
 
 
   CloseEvent($event) {
-     this.isEnquiryForm = false
-     window.location.reload()
+    this.isEnquiryForm = false
+    window.location.reload()
     this.isEnquiryForm = $event
   }
 
@@ -1061,7 +1161,7 @@ export class CreateCustomerComponent implements OnInit {
     }
   }
 
-  
+
   // referred By 
   //   onReferredBy($event: { term: string; items: any[] }) {
   //   
@@ -1073,42 +1173,42 @@ export class CreateCustomerComponent implements OnInit {
   //         if (value != null) {
   //           this.ReferredByDD = value;
   //         }
-          
+
   //         console.log('this.ReferredByDD',this.ReferredByDD);
   //       },
-        
+
   //       error: (err) => {
   //         this.ReferredByDD = this.getBlankObject();
   //       },
-        
+
   //     });
-      
+
   // }  
-  
+
   getBlankObject(): DropDownValue {
     const ddv = new DropDownValue();
     ddv.TotalRecord = 0;
     ddv.Data = [];
     return ddv;
   }
-   
+
 
   // update referred By in Token 
 
-   UpdateReferredByInToken(){
-     if(this.selectedLocationCode == null || this.selectedLocationCode == undefined || this.selectedLocationCode == ''){
-      this.toastmeassge.error("Location Code cannot be Empty" , "Select Location");
+  UpdateReferredByInToken() {
+    if (this.selectedLocationCode == null || this.selectedLocationCode == undefined || this.selectedLocationCode == '') {
+      this.toastmeassge.error("Location Code cannot be Empty", "Select Location");
       return
-     }
-    if(this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == ''){
+    }
+    if (this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined || this.CustomerVisitSourceSelected == '') {
       this.toastmeassge.error("Please Select Customer Visit Source");
       return
     }
-      if(this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == ''){
+    if (this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined || this.CustomerSourceNameSelected == '') {
       this.toastmeassge.error("Please Select Customer Source Name ");
       return
     }
-      if(this.VisitPurpose == null || this.VisitPurpose == undefined || this.VisitPurpose == ''){
+    if (this.VisitPurpose == null || this.VisitPurpose == undefined || this.VisitPurpose == '') {
       this.toastmeassge.error("Please Select visit Purpose");
       return
     }
@@ -1139,44 +1239,44 @@ export class CreateCustomerComponent implements OnInit {
     });
     RequestStatus.push({
       "Key": "CustomerVisitSource",
-      "Value": this.CustomerVisitSourceSelected==null || this.CustomerVisitSourceSelected == undefined ?'':this.CustomerVisitSourceSelected
+      "Value": this.CustomerVisitSourceSelected == null || this.CustomerVisitSourceSelected == undefined ? '' : this.CustomerVisitSourceSelected
     });
     RequestStatus.push({
       "Key": "CustomerSourceName",
-      "Value": this.CustomerSourceNameSelected==null || this.CustomerSourceNameSelected == undefined ?'':this.CustomerSourceNameSelected
+      "Value": this.CustomerSourceNameSelected == null || this.CustomerSourceNameSelected == undefined ? '' : this.CustomerSourceNameSelected
     });
     RequestStatus.push({
       "Key": "VisitPurpose",
-      "Value": this.VisitPurpose==null || this.VisitPurpose == undefined ?'':this.VisitPurpose
+      "Value": this.VisitPurpose == null || this.VisitPurpose == undefined ? '' : this.VisitPurpose
     });
-  
+
     let requestdataObj = JSON.stringify(RequestStatus);
     let requstDataStringfy =
     {
       "content": requestdataObj
     }
-    console.log('request data from UpdateReferredByInToken' , requstDataStringfy)
- 
+    console.log('request data from UpdateReferredByInToken', requstDataStringfy)
+
     this.dynamicService.getDynamicDetaildata(requstDataStringfy).subscribe(
       {
         next: (Value) => {
           let response = JSON.parse(Value.toString());
-           if (response.ReturnCode == '0'){
+          if (response.ReturnCode == '0') {
             this.toastmeassge.success("Token Updated Successfully!");
-           }
+          }
         },
         error: (err) => {
           console.log(err)
           this.toastmeassge.error(err)
         }
       })
-  
-
-   }
 
 
-      OnCustomerVisitSource($event: { term: string; items: any[] }) {
-    
+  }
+
+
+  OnCustomerVisitSource($event: { term: string; items: any[] }) {
+
     this.dropdownDataService
       .fetchDropDownData(DropDownType.CUSTVISITSRC, $event.term, {})
       .subscribe({
@@ -1185,39 +1285,39 @@ export class CreateCustomerComponent implements OnInit {
           if (value != null) {
             this.CustomerVisitSourceDD = value;
           }
-          
-          console.log('this.CustomerVisitSourceDD',this.CustomerVisitSourceDD);
+
+          console.log('this.CustomerVisitSourceDD', this.CustomerVisitSourceDD);
         },
-        
+
         error: (err) => {
           this.CustomerVisitSourceDD = this.getBlankObject();
         },
-        
-      });
-      
-  } 
 
-  custVistSrcChange(){
-    this.CustomerSourceNameSelected=null;
-   this.OnCustomerSourceName({ term: "", item: [] });
+      });
+
   }
 
-    OnCustomerSourceName($event: { term: string; item: any[] }) {
-          this.dropdownDataService.fetchDropDownData(DropDownType.CustomerSourceName, $event.term, {
-            CustVisitSourceCode: this.CustomerVisitSourceSelected,
-            CompanyCode: glob.getCompanyCode().toString()
-          }).subscribe({
-            next: (value) => {
-             console.log(value)
-              if (value != null) {
-                console.log("CustomerSourceName", value);
-                this.CustomerSourceNameDD = value;
-              }
-            },
-            error: (err) => {
-              this.CustomerSourceNameDD = DropDownValue.getBlankObject();
-            }
-          });
+  custVistSrcChange() {
+    this.CustomerSourceNameSelected = null;
+    this.OnCustomerSourceName({ term: "", item: [] });
+  }
+
+  OnCustomerSourceName($event: { term: string; item: any[] }) {
+    this.dropdownDataService.fetchDropDownData(DropDownType.CustomerSourceName, $event.term, {
+      CustVisitSourceCode: this.CustomerVisitSourceSelected,
+      CompanyCode: glob.getCompanyCode().toString()
+    }).subscribe({
+      next: (value) => {
+        console.log(value)
+        if (value != null) {
+          console.log("CustomerSourceName", value);
+          this.CustomerSourceNameDD = value;
         }
+      },
+      error: (err) => {
+        this.CustomerSourceNameDD = DropDownValue.getBlankObject();
+      }
+    });
+  }
 
 }

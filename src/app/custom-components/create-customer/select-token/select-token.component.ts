@@ -1,5 +1,6 @@
 import { Component, OnInit,Input, Output, EventEmitter } from '@angular/core';
 import { DynamicService } from 'src/app/common/Services/dynamicService/dynamic.service';
+import * as glob from "src/app/config/global";
 
 @Component({
   selector: 'app-select-token',
@@ -32,6 +33,11 @@ export class SelectTokenComponent implements OnInit {
           "Key":"LocationCode",
           "Value": this.LocationCode == null || this.LocationCode == undefined?'':this.LocationCode
         });
+            requestData.push({
+         "Key": "CompanyCode",
+         "Value": glob.getCompanyCode()
+        });
+
 
         let strRequestData = JSON.stringify(requestData);
         let contentRequest =

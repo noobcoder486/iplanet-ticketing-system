@@ -173,6 +173,7 @@ import { TicketingSystemComponent } from "src/app/ticketing-system/ticketing-sys
 import { TicketingBulkQuotationComponent } from "src/app/ticketing-system/ticketing-system/ticketing-bulk-quotation/ticketing-bulk-quotation.component";
 import { TestingComponent } from "src/app/inventory/testing/testing.component";
 import { EnquiryListReportComponent } from "src/app/reports/enquiry-list-report/enquiry-list-report.component";
+import { TicketDashboardComponent } from "src/app/ticketing-system/ticketing-system/ticket-dashboard/ticket-dashboard.component";
 
 @Injectable({
   providedIn: 'root'
@@ -688,6 +689,11 @@ export class AppInitService {
         path: 'add-salesperson-master',
         component: AddSalespersonMasterComponent,
         data: {ScreenCode: 'add-salesperson-master', routeDetail:'', ModuleId:0}
+      },
+         {
+        path: 'ticketing-dashboard',
+        component: TicketDashboardComponent,
+        data: {ScreenCode: 'ticketing-dashboard', routeDetail:'', ModuleId:0}
       },
       {
         path: 'payment-report',

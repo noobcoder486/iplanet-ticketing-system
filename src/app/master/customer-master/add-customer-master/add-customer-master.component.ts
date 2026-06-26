@@ -41,6 +41,7 @@ export class AddCustomerMasterComponent implements OnInit {
   GSTRegistration: DropDownValue = this.getBlankObject();
   ReferredByDD: DropDownValue = this.getBlankObject();
   InsuranceTypeDD: DropDownValue = this.getBlankObject();
+  CustomerTypeDD: DropDownValue = this.getBlankObject();
   @Output() AddCustomerData = new EventEmitter<any>();
   @Output() closeAddCustomer = new EventEmitter<any>();
   @Output("search") search: EventEmitter<any> = new EventEmitter();
@@ -48,8 +49,20 @@ export class AddCustomerMasterComponent implements OnInit {
   /** True when opened via MatDialog.open(), false when navigated to via router */
   isDialogMode = false
 
-   InsuranceApplicableList:any[]=[
-    {Id : '1' ,TEXT : 'YES' },{Id : '0' ,TEXT : 'NO'}]
+  PricingOptionMasterList: any[] = [];
+  FinalSelectedPricingOption: any[] = [];
+  IsShowMargin: boolean = false;
+  IsDisableInsuranceType: boolean = false;
+  IsDisableCustomerType: boolean = false;
+  CustomerPricingOptionList: any[] = [];
+
+
+
+  InsuranceApplicableList: any[] = [
+    { Id: '1', TEXT: 'YES' }, { Id: '0', TEXT: 'NO' }]
+
+  SpecialMarginApplicableList: any[] = [
+    { Id: '1', TEXT: 'YES' }, { Id: '0', TEXT: 'NO' }]
 
   constructor(
     @Optional() private dialogRef: MatDialogRef<AddCustomerMasterComponent>,
@@ -140,19 +153,28 @@ export class AddCustomerMasterComponent implements OnInit {
       CustAccGroup: [null, Validators.required],
       GSTRegistrationType: ["GSTU"],
       ReferredBy: [null],
-      IsInsuranceApplicable:[null,Validators.required],
-      InsuranceType:[null],
+      IsInsuranceApplicable: [null, Validators.required],
+      InsuranceType: [null],
+      CustomerType: [null, Validators.required],
+      IsSpecialMarginApplicable: [null, Validators.required],
     });
     this.onCountrySearch({ term: "", items: [] });
     this.onCustAccountGroupSearch({ term: "", items: [] });
     this.onGSTRegistrationSearch({ term: "", items: [] });
     this.onReferredBy({ term: "", items: [] });
     this.onInsuranceType({ term: "", items: [] });
+    this.onCustomerType({ term: "", items: [] });
+
 
     if (this.popUpData != null && this.popUpData != undefined) {
       this.customerForm.get('EmailId').setValue(this.popUpData.CustomerEmail);
       this.customerForm.get('PhoneNo').setValue(this.popUpData.CustomerPhone);
     }
+
+    if (this.params.customercode == null || this.params.customercode == undefined) {
+      this.GetPricingOptionMasterList()
+    }
+
   }
 
   getData() {
@@ -185,6 +207,7 @@ export class AddCustomerMasterComponent implements OnInit {
           if (data?.SapInvoiceCount > 0) {
             this.toastr.error("Cant change Mobile No and State as more than 1 Invoices posted to SAP")
           }
+
           this.customerForm.patchValue({
             FirstName: data.FirstName,
             LastName: data.LastName,
@@ -204,9 +227,26 @@ export class AddCustomerMasterComponent implements OnInit {
             CustAccGroup: data.CustAccGroupCode,
             GSTRegistrationType: data.GSTRegistrationType,
             ReferredBy: data.ReferredBy,
-            IsInsuranceApplicable : data.IsInsuranceApplicable,
-            InsuranceType : data?.InsuranceType ?? null,
+            IsInsuranceApplicable: data.IsInsuranceApplicable,
+            InsuranceType: data?.InsuranceType ?? null,
+            CustomerType: data?.CustomerType ?? 'NA',
+            IsSpecialMarginApplicable: data?.IsSpecialMarginApplicable ?? 0
           });
+
+          this.IsShowMargin = this.customerForm.get("IsSpecialMarginApplicable").value == 1 ? true : false
+
+
+          if (data?.CustomerPricingOptionList?.CustomerPricingOption) {
+            this.CustomerPricingOptionList = [];
+            this.FinalSelectedPricingOption = Array.isArray(data?.CustomerPricingOptionList?.CustomerPricingOption) ? data?.CustomerPricingOptionList?.CustomerPricingOption : [data?.CustomerPricingOptionList?.CustomerPricingOption]
+
+
+          }
+          else {
+            this.GetPricingOptionMasterList()
+          }
+
+
         } else {
           console.log("error");
         }
@@ -222,7 +262,7 @@ export class AddCustomerMasterComponent implements OnInit {
   }
 
   onSubmit() {
-    debugger
+
     const pattern = /^[^\\+\\=@\\-]/;
     const htmlpattern = /<(\"[^\"]\"|'[^']'|[^'\">])*>/
     const formValue = this.customerForm.value
@@ -289,13 +329,12 @@ export class AddCustomerMasterComponent implements OnInit {
         this.isEdit = true;
       }
 
-     
-       if(this.customerForm.get("IsInsuranceApplicable").value == 1 ||  this.customerForm.get("IsInsuranceApplicable").value == '1' )
-      {
-         if(this.customerForm.get("InsuranceType").value == null || this.customerForm.get("InsuranceType").value == undefined || this.customerForm.get("InsuranceType").value == ''){
-           this.toastr.error('Please select Insurance Type')
-           return
-         }
+
+      if (this.customerForm.get("IsInsuranceApplicable").value == 1 || this.customerForm.get("IsInsuranceApplicable").value == '1') {
+        if (this.customerForm.get("InsuranceType").value == null || this.customerForm.get("InsuranceType").value == undefined || this.customerForm.get("InsuranceType").value == '') {
+          this.toastr.error('Please select Insurance Type')
+          return
+        }
 
       }
 
@@ -339,10 +378,12 @@ export class AddCustomerMasterComponent implements OnInit {
 
       requestData.push({ Key: "IsInsuranceApplicable", Value: this.customerForm.controls["IsInsuranceApplicable"].value });
       requestData.push({ Key: "InsuranceType", Value: this.customerForm.controls["InsuranceType"].value });
+      requestData.push({ Key: "CustomerType", Value: this.customerForm.controls["CustomerType"].value ?? 'NA' });
+      requestData.push({ Key: "IsSpecialMarginApplicable", Value: this.customerForm.controls["IsSpecialMarginApplicable"].value });
+      requestData.push({ Key: "CustomerPricingOption", Value: (this.customerForm.controls["IsSpecialMarginApplicable"].value == 1 || this.customerForm.controls["IsSpecialMarginApplicable"].value == '1') ? this.CustomerPricingOptionIntoXml() : '<rows/>' });
 
-     
 
-      console.log('requestData',requestData) 
+      console.log('requestData', requestData)
       let strRequestData = JSON.stringify(requestData);
       let contentRequest = { content: strRequestData };
 
@@ -598,11 +639,23 @@ export class AddCustomerMasterComponent implements OnInit {
   onInsuranceType($event: { term: string; items: any[] }) {
     this.dropdownDataService.fetchDropDownData(DropDownType.InsuranceType, $event.term, {}).subscribe({
       next: (value) => {
-        if (value != null) { this.InsuranceTypeDD = value;
-          console.log('this.InsuranceTypeDD ',this.InsuranceTypeDD )
-         }
+        if (value != null) {
+          this.InsuranceTypeDD = value;
+          console.log('this.InsuranceTypeDD ', this.InsuranceTypeDD)
+        }
       },
       error: (err) => { this.InsuranceTypeDD = this.getBlankObject(); },
+    });
+  }
+  onCustomerType($event: { term: string; items: any[] }) {
+    this.dropdownDataService.fetchDropDownData(DropDownType.CUSTOMERTYPE, $event.term, {}).subscribe({
+      next: (value) => {
+        if (value != null) {
+          this.CustomerTypeDD = value;
+          console.log('this.CustomerTypeDD ', this.CustomerTypeDD)
+        }
+      },
+      error: (err) => { this.CustomerTypeDD = this.getBlankObject(); },
     });
   }
 
@@ -692,12 +745,134 @@ export class AddCustomerMasterComponent implements OnInit {
     });
   }
 
-  onInsuranceFlagChange($event){
-    debugger
-    console.log('$event', $event)
+  // onInsuranceFlagChange($event) {
+  //   
+  //   console.log('$event', $event)
 
-   this.customerForm.get('InsuranceType').setValue(null);
-      
-    
+  //   if ($event.Id == "1" || $event.Id == 1) {
+
+
+  //     this.FinalSelectedPricingOption.forEach(item => {
+  //       item.MarginPercentage = 0.00
+  //     })
+  //   }
+
+
+
+  // }
+
+
+
+  GetPricingOptionMasterList() {
+
+    let requestData = []
+    requestData.push({
+      "Key": "APIType",
+      "Value": "GetPricingOptionMasterList"
+    })
+
+    let strRequestData = JSON.stringify(requestData);
+    let contentRequest =
+    {
+      "content": strRequestData
+    };
+
+    this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
+      {
+        next: (Value) => {
+
+          try {
+            let response = JSON.parse(Value.toString());
+            if (response.ReturnCode == '0') {
+              let data = JSON.parse(response?.ExtraData);
+
+              if (Array.isArray(data?.PricingOptionMasterList?.PricingOptionMaster)) {
+                this.PricingOptionMasterList = data?.PricingOptionMasterList?.PricingOptionMaster
+              }
+              else {
+                this.PricingOptionMasterList.push(data?.PricingOptionMasterList?.PricingOptionMaster)
+              }
+            }
+            console.log('this.PricingOptionMasterList', this.PricingOptionMasterList)
+            this.FinalSelectedPricingOption = [];
+
+
+            this.PricingOptionMasterList.forEach(item => {
+              this.FinalSelectedPricingOption.push(
+                {
+                  "PricingOption": item?.PricingOption,
+                  "MarginPercentage": item?.MarginPercentage
+
+                }
+              )
+            })
+
+
+
+            console.log('this.FinalSelectedPricingOption', this.FinalSelectedPricingOption)
+
+          } catch (ext) {
+            console.log(ext);
+          }
+        },
+        error: err => {
+          console.log(err);
+        }
+      }
+    );
+
   }
+
+  // onCustomerTypeChange($event) {
+  //   
+  //   //  this.IsShowMargin = (this.customerForm.get("CustomerType").value != 'NA' && this.customerForm.get("IsInsuranceApplicable").value == "1" ) ? true : false
+
+
+  //   //  this.FinalSelectedPricingOption.forEach(x =>{
+  //   //   x.MarginPercentage= 0.00
+  //   //  })
+
+
+  // }
+
+  SpecialMarginApplicableChange($event) {
+
+    this.IsShowMargin = this.customerForm.get("IsSpecialMarginApplicable").value == 1 ? true : false;
+
+    this.FinalSelectedPricingOption.forEach(x => {
+      x.MarginPercentage = 0.00
+    })
+
+  }
+
+
+
+  CustomerPricingOptionIntoXml() {
+
+    let rawData = {
+      rows: [],
+    };
+    for (let item of this.FinalSelectedPricingOption) {
+
+      rawData.rows.push({
+        row: {
+          "MarginPercentage": item?.MarginPercentage ?? 0.00,
+          "PricingOption": item?.PricingOption,
+        },
+      });
+    }
+    var builder = new xml2js.Builder();
+    var xml = builder.buildObject(rawData);
+    xml = xml
+      .toString()
+      .replace('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>', "");
+    xml = xml.toString().replace(/(\r\n|\n|\r|\t)/gm, "");
+    //xml = xml.split(' ').join('')
+    xml = xml.replace(/>\s+</g, '><');
+
+    console.log("xml", xml);
+
+    return xml;
+  }
+
 }

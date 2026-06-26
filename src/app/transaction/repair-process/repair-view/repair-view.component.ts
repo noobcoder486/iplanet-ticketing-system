@@ -381,60 +381,60 @@ export class RepairViewComponent implements OnInit {
           "RepairStatusCode": this.GSXRepairStatus,
           "RepairStatusDescription": this.GSXRepairStatusDescription
         }
-        if(this.repa?.REPAIR){
+        if (this.repa?.REPAIR) {
 
-        
-        this.UpdateRepairStatusList();
-        var order = Math.max(...this.selectedpartlist.map(o => o.order), 0);
-        var rowno = Math.max(...this.selectedpartlist.map(o => o.rowno, 0));
-        order = order == Infinity ? 1 : order
-        rowno = rowno == -Infinity ? 1 : rowno + 1
-        var lstRepairList = [];
-        if (Array.isArray(this.repa?.REPAIR?.REPAIRLIST?.REPAIRDETAIL)) {
-          for (let item of this.repa?.REPAIR?.REPAIRLIST?.REPAIRDETAIL) {
-            lstRepairList.push(item)
+
+          this.UpdateRepairStatusList();
+          var order = Math.max(...this.selectedpartlist.map(o => o.order), 0);
+          var rowno = Math.max(...this.selectedpartlist.map(o => o.rowno, 0));
+          order = order == Infinity ? 1 : order
+          rowno = rowno == -Infinity ? 1 : rowno + 1
+          var lstRepairList = [];
+          if (Array.isArray(this.repa?.REPAIR?.REPAIRLIST?.REPAIRDETAIL)) {
+            for (let item of this.repa?.REPAIR?.REPAIRLIST?.REPAIRDETAIL) {
+              lstRepairList.push(item)
+            }
+          }
+          else {
+            lstRepairList.push(this.repa?.REPAIR?.REPAIRLIST?.REPAIRDETAIL);
+          }
+          this.CreateFormGroupObject();
+          this.selectedpartlist = []
+          for (let item of lstRepairList) {
+
+            var objPart = this.getPartObject(item, "DB");
+            objPart.rowno = rowno
+            objPart.order = order + 1
+            objPart.order = order + 1
+            objPart.priority = order + 1
+            this.selectedpartlist.push(objPart);
+
+
+            var formcontrolname = 'component' + rowno.toString()
+            this.compIssueForm.addControl(formcontrolname, new FormControl(objPart.ComponenyCode, Validators.required));
+            formcontrolname = 'issues' + rowno.toString()
+            this.compIssueForm.addControl(formcontrolname, new FormControl(objPart.IssueCode, Validators.required));
+            formcontrolname = 'reproducibility' + rowno.toString()
+            this.compIssueForm.addControl(formcontrolname, new FormControl(objPart.ReproducibilityCode, Validators.required));
+            formcontrolname = 'coverageOption' + rowno.toString()
+            this.compIssueForm.addControl(formcontrolname, new FormControl(objPart.CoverageOption, Validators.required));
+            formcontrolname = 'IsConsignmentStockUsed' + rowno.toString()
+            this.compIssueForm.addControl(formcontrolname, new FormControl(objPart.ConsignmentStockUsed));
+            /*if(objPart.PartSerialized==true)
+            {
+              formcontrolname = 'KGB' + rowno.toString()
+              this.compIssueForm.addControl(formcontrolname ,new FormControl(objPart.KGB) );
+  
+              formcontrolname = 'KBB' + rowno.toString()
+              this.compIssueForm.addControl(formcontrolname ,new FormControl(objPart.KBB) );
+            }*/
+            //formcontrolname = 'ConsignmentStockUsed' + rowno.toString()
+            //this.compIssueForm.addControl(formcontrolname ,new FormControl(null) );
+
+            order = order + 1;
+            rowno = rowno + 1
           }
         }
-        else {
-          lstRepairList.push(this.repa?.REPAIR?.REPAIRLIST?.REPAIRDETAIL);
-        }
-        this.CreateFormGroupObject();
-        this.selectedpartlist = []
-        for (let item of lstRepairList) {
-
-          var objPart = this.getPartObject(item, "DB");
-          objPart.rowno = rowno
-          objPart.order = order + 1
-          objPart.order = order + 1
-          objPart.priority = order + 1
-          this.selectedpartlist.push(objPart);
-
-
-          var formcontrolname = 'component' + rowno.toString()
-          this.compIssueForm.addControl(formcontrolname, new FormControl(objPart.ComponenyCode, Validators.required));
-          formcontrolname = 'issues' + rowno.toString()
-          this.compIssueForm.addControl(formcontrolname, new FormControl(objPart.IssueCode, Validators.required));
-          formcontrolname = 'reproducibility' + rowno.toString()
-          this.compIssueForm.addControl(formcontrolname, new FormControl(objPart.ReproducibilityCode, Validators.required));
-          formcontrolname = 'coverageOption' + rowno.toString()
-          this.compIssueForm.addControl(formcontrolname, new FormControl(objPart.CoverageOption, Validators.required));
-          formcontrolname = 'IsConsignmentStockUsed' + rowno.toString()
-          this.compIssueForm.addControl(formcontrolname, new FormControl(objPart.ConsignmentStockUsed));
-          /*if(objPart.PartSerialized==true)
-          {
-            formcontrolname = 'KGB' + rowno.toString()
-            this.compIssueForm.addControl(formcontrolname ,new FormControl(objPart.KGB) );
-
-            formcontrolname = 'KBB' + rowno.toString()
-            this.compIssueForm.addControl(formcontrolname ,new FormControl(objPart.KBB) );
-          }*/
-          //formcontrolname = 'ConsignmentStockUsed' + rowno.toString()
-          //this.compIssueForm.addControl(formcontrolname ,new FormControl(null) );
-
-          order = order + 1;
-          rowno = rowno + 1
-        }
-      }
 
         // Check if Unclaimed 
         if (this.repa.RepairFlag == '1' && this.repa.RFPFlag == '0') {
@@ -453,11 +453,11 @@ export class RepairViewComponent implements OnInit {
     }
 
     if (changes['repairpartlist']) {
-      debugger
 
-       this.selectedpartlist = (this.selectedpartlist ?? []).filter(p =>
-          p?.PartCode != null && String(p.PartCode).trim() !== ''
-        );
+
+      this.selectedpartlist = (this.selectedpartlist ?? []).filter(p =>
+        p?.PartCode != null && String(p.PartCode).trim() !== ''
+      );
 
       let repairpartlist = {
         "rows": []
@@ -537,7 +537,7 @@ export class RepairViewComponent implements OnInit {
   }
 
   consignmentValidate(parts) {
-    debugger
+
     var consignmentValidateObj = [];
     for (let item of parts) {
 
@@ -558,7 +558,7 @@ export class RepairViewComponent implements OnInit {
     this.gsxService.getConsignmentStatus(ShipTo, contentRequest).subscribe(
       {
         next: (value) => {
-          debugger
+
           let response = JSON.parse(value.toString());
 
 
@@ -1503,7 +1503,7 @@ export class RepairViewComponent implements OnInit {
   }
 
   PostTOGSX() {
-    debugger
+
     /*if(this.repa?.HandoverFlag == '1'){
       this.toastr.error("Cannot Proceed As the Job is Already Closed...")
       return
@@ -1581,7 +1581,7 @@ export class RepairViewComponent implements OnInit {
     this.gsxService.CreateUpdateRepair(contentRequest).subscribe(
       {
         next: (value) => {
-           debugger
+
 
           // console.log("My Values:", value);
           let response = JSON.parse(value.toString());
@@ -1634,7 +1634,7 @@ export class RepairViewComponent implements OnInit {
 
 
   onSave(GsxCode) {
-    debugger
+
     let requestData = [];
     requestData.push({
       "Key": "ApiType",
@@ -2299,7 +2299,7 @@ export class RepairViewComponent implements OnInit {
       {
         next: (value) => {
           ;
-          debugger
+
           this.spinner.hide()
           let response = JSON.parse(value.toString());
           console.log("feedback", response);
@@ -2385,8 +2385,8 @@ export class RepairViewComponent implements OnInit {
   }
 
 
-  UpdateRepairStatusLogs(Status:any){
-    debugger
+  UpdateRepairStatusLogs(Status: any) {
+
     let requestData = [];
     requestData.push({
       "Key": "ApiType",
@@ -2399,11 +2399,11 @@ export class RepairViewComponent implements OnInit {
 
     requestData.push({
       "Key": "RepairHeaderGUID",
-      "Value":  this.repa?.RepairGUID ?? "00000000-0000-0000-0000-000000000000" 
+      "Value": this.repa?.RepairGUID ?? "00000000-0000-0000-0000-000000000000"
     });
     requestData.push({
       "Key": "CaseGUID",
-      "Value": this.repa?.CaseGUID ?? "00000000-0000-0000-0000-000000000000" 
+      "Value": this.repa?.CaseGUID ?? "00000000-0000-0000-0000-000000000000"
     });
     requestData.push({
       "Key": "Status",
@@ -2423,7 +2423,7 @@ export class RepairViewComponent implements OnInit {
           if (response.ReturnCode == '0') {
             this.toastr.success("Updated Successfully")
             var data = JSON.parse(response.ExtraData)
-            
+
           }
           else {
             this.spinner.hide();

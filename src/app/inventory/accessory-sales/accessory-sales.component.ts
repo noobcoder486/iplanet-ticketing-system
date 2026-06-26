@@ -182,20 +182,20 @@ export class AccessorySalesComponent implements OnInit {
 
   AmcContractDetailsList: any[] = [];
 
-  SavedRepairItems : any[]=[];
-  SavedQuoteItems : any[]=[];
+  SavedRepairItems: any[] = [];
+  SavedQuoteItems: any[] = [];
 
   DiscountTypeSearchDD: DropDownValue = DropDownValue.getBlankObject();
-  DiscountType:any;
+  DiscountType: any;
 
   AutoApproveDiscountDetailsList: any[] = [];
-  PartTypeApplicableForAutoApprove:any[]=[];
-  IsAutoDiscountApplicable:boolean=false;
-  Discount_Add_Amount:any;
+  PartTypeApplicableForAutoApprove: any[] = [];
+  IsAutoDiscountApplicable: boolean = false;
+  Discount_Add_Amount: any;
 
-  IsCustUnitPriceEditAllwoed:boolean=false;
+  IsCustUnitPriceEditAllwoed: boolean = false;
 
-  CustomerAllowedtoChangeUnitPriceList:any[]=[];
+  CustomerAllowedtoChangeUnitPriceList: any[] = [];
 
   getBlankObject(): DropDownValue {
     const ddv = new DropDownValue();
@@ -223,7 +223,7 @@ export class AccessorySalesComponent implements OnInit {
 
 
   ngOnInit(): void {
-   
+
 
     this.onDiscountTypeSearch({ term: "", items: [] });
     this.submitClicked = false;
@@ -253,14 +253,14 @@ export class AccessorySalesComponent implements OnInit {
     }
 
     if (this.params.customercode != null && this.params.customercode != undefined) {
-         this.getCustomerObject()
+      this.getCustomerObject()
     }
     else {
       this.toastMessage.error("Customer Details not found")
     }
     this.InvoiceGuid = uuidv4()
     if (this.params.doctype == "RSALES") {
-      
+
       if (this.params.headerguid != null && this.params.headerguid != undefined) {
         this.isEdit = true;
         this.InvoiceGuid = this.params.headerguid;
@@ -277,7 +277,7 @@ export class AccessorySalesComponent implements OnInit {
         this.getRepair()
         this.getCustomerModeOfPaymentLink()
       }
-      
+
     }
     else {
       if (this.params.headerguid != null && this.params.headerguid != undefined) {
@@ -658,7 +658,7 @@ export class AccessorySalesComponent implements OnInit {
       {
         next: (Value) => {
           this.ngxSpinnerService.hide()
-          debugger
+
           try {
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {
@@ -757,7 +757,7 @@ export class AccessorySalesComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-          
+
           let response = JSON.parse(Value.toString());
           if (response.ReturnCode == '0') {
             response['ExtraDataJSON'] = JSON.parse(response.ExtraData);
@@ -783,7 +783,7 @@ export class AccessorySalesComponent implements OnInit {
     );
   }
 
- async getRepairSalesDetails() {
+  async getRepairSalesDetails() {
     let requestdata = []
     requestdata.push({
       "Key": "ApiType",
@@ -805,18 +805,18 @@ export class AccessorySalesComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-          debugger
+
           this.ngxSpinnerService.hide()
           try {
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {
               let data = JSON.parse(response?.ExtraData);
-              
+
               if (data.Totalrecords == "0") {
                 this.toastMessage.error("No parts found")
               }
               else {
-                
+
                 if (Array.isArray(data.RepairDetail.Repair)) {
                   // this.finalSelectedElements = data?.RepairDetail?.Repair
                   this.SavedRepairItems = data?.RepairDetail?.Repair
@@ -829,8 +829,8 @@ export class AccessorySalesComponent implements OnInit {
                 else {
                   // this.finalSelectedElements.push(data?.RepairDetail?.Repair)
 
-                   this.SavedRepairItems.push(data?.RepairDetail?.Repair)
-                   this.SavedQuoteItems.push(data?.RepairDetail?.Repair)
+                  this.SavedRepairItems.push(data?.RepairDetail?.Repair)
+                  this.SavedQuoteItems.push(data?.RepairDetail?.Repair)
                   //this.getRepairPaymentObject()
                   //this.getStockPrice()
 
@@ -839,76 +839,91 @@ export class AccessorySalesComponent implements OnInit {
                 }
 
 
-                 // from quote parts 
-                   for(let item of this.SavedQuoteItems){
-                       this.finalSelectedElements.push({
-                          "InvoiceDetailGUID": uuidv4(),
-                          "ItemType": item.ItemType,
-                          "SerialNo": item.SerialNo ?? '',
-                          "MaterialCode": item.MaterialCode,
-                          "PricingOption": item.PriceType,
-                          "DivisionCode": item.DivisionCode ?? '',
-                          "MaterialName": item.MaterialName,
-                          "GSTGroupCode": item.GSTGroupCode == null || item.GSTGroupCode == undefined ? "" : item.GSTGroupCode,
-                          "SAC_HSNCode": item.SAC_HSNCode == null || item.SAC_HSNCode == undefined ? "" : item.SAC_HSNCode,
-                          "Quantity": item.Quantity,
-                          "UnitPrice": item.UnitPrice,
-                          "CostPrice": item.CostPrice == null || item.CostPrice == undefined ? "0" : item.CostPrice,
-                          "Batch": item.Batch ?? '',
-                          "BaseAmount": item.BaseAmount,
-                          "DiscountCoupon": item.DiscountCouponCode == null || item.DiscountCouponCode == undefined ? "0" : item.DiscountCouponCode,
-                          "DiscountAmount": item.DiscountAmount,
-                          "TaxableAmount": item.TaxableAmount,
-                          "TaxPercentage": item.TaxPercentage,
-                          "CGSTPercentage": item.CGSTPercentage,
-                          "SGSTPercentage": item.SGSTPercentage,
-                          "IGSTPercentage": item.IGSTPercentage,
-                          "LavyPercentage": item.LavyPercentage == null || item.LavyPercentage == undefined ? 0 : item.LavyPercentage,
-                          "CGSTAmount": item.CGSTAmount,
-                          "SGSTAmount": item.SGSTAmount,
-                          "IGSTAmount": item.IGSTAmount,
-                          "LavyAmount": item.LavyAmount == null || item.LavyAmount == undefined ? 0.00 : item.LavyAmount,
-                          "NetAmount": item.NetAmount,
-                          "TaxAmount": item.TaxAmount,
-                          "isDeleted": 0,
-                          "PriceRangeApplicable": item?.PriceRangeApplicable == null || item?.PriceRangeApplicable == undefined ? 0 : item?.PriceRangeApplicable,
-                          "PriceRangeStart": item?.PriceRangeStart == null || item?.PriceRangeStart == undefined ? 0 : item?.PriceRangeStart,
-                          "PriceRangeEnd": item?.PriceRangeEnd == null || item?.PriceRangeEnd == undefined ? 0 : item?.PriceRangeEnd,
-                          "CoverageStartDate": item?.CoverageStartDate == null || item?.CoverageStartDate == undefined ? '1900-01-01' : item?.CoverageStartDate,
-                          "CoverageEndDate": item?.CoverageEndDate == null || item?.CoverageEndDate == undefined ? '1900-01-01' : item?.CoverageEndDate,
-                          "ItemSource" : item?.ItemSource ?? '',
-                          "PriceType" : item?.PriceType ?? '' ,
-                          "InventoryStockType" : item?.PartType ?? '',
-                          "PriceSource" : item?.PriceSource,
-                          "GSTPercentage" : item?.GSTPercentage,
-                          "RevenueType" : item?.RevenueType ?? ''
-                       })
-                   }
+                // from quote parts 
+                for (let item of this.SavedQuoteItems) {
 
-                
-
-                 
-                 // from quote parts 
+                  if (this.CustomerObject[0].GSTRegistrationType == "GSEZ") {
+                    item.CGSTPercentage = 0
+                    item.GSTPercentage = 0
+                    item.SGSTPercentage = 0
+                    item.IGSTPercentage = 0
+                  }
+                  else {
+                    item.CGSTPercentage = item.CGSTPercentage
+                    item.GSTPercentage = item.GSTPercentage
+                    item.SGSTPercentage = item.SGSTPercentage
+                    item.IGSTPercentage = item.IGSTPercentage
+                  }
 
 
+                  this.finalSelectedElements.push({
+                    "InvoiceDetailGUID": uuidv4(),
+                    "ItemType": item.ItemType,
+                    "SerialNo": item.SerialNo ?? '',
+                    "MaterialCode": item.MaterialCode,
+                    "PricingOption": item.PriceType,
+                    "DivisionCode": item.DivisionCode ?? '',
+                    "MaterialName": item.MaterialName,
+                    "GSTGroupCode": item.GSTGroupCode == null || item.GSTGroupCode == undefined ? "" : item.GSTGroupCode,
+                    "SAC_HSNCode": item.SAC_HSNCode == null || item.SAC_HSNCode == undefined ? "" : item.SAC_HSNCode,
+                    "Quantity": item.Quantity,
+                    "UnitPrice": item.UnitPrice,
+                    "CostPrice": item.CostPrice == null || item.CostPrice == undefined ? "0" : item.CostPrice,
+                    "Batch": item.Batch ?? '',
+                    "BaseAmount": item.BaseAmount,
+                    "DiscountCoupon": item.DiscountCouponCode == null || item.DiscountCouponCode == undefined ? "0" : item.DiscountCouponCode,
+                    "DiscountAmount": item.DiscountAmount,
+                    "TaxableAmount": item.TaxableAmount,
+                    "TaxPercentage": item.TaxPercentage,
+                    "CGSTPercentage": item.CGSTPercentage,
+                    "SGSTPercentage": item.SGSTPercentage,
+                    "IGSTPercentage": item.IGSTPercentage,
+                    "LavyPercentage": item.LavyPercentage == null || item.LavyPercentage == undefined ? 0 : item.LavyPercentage,
+                    "CGSTAmount": item.CGSTAmount,
+                    "SGSTAmount": item.SGSTAmount,
+                    "IGSTAmount": item.IGSTAmount,
+                    "LavyAmount": item.LavyAmount == null || item.LavyAmount == undefined ? 0.00 : item.LavyAmount,
+                    "NetAmount": item.NetAmount,
+                    "TaxAmount": item.TaxAmount,
+                    "isDeleted": 0,
+                    "PriceRangeApplicable": item?.PriceRangeApplicable == null || item?.PriceRangeApplicable == undefined ? 0 : item?.PriceRangeApplicable,
+                    "PriceRangeStart": item?.PriceRangeStart == null || item?.PriceRangeStart == undefined ? 0 : item?.PriceRangeStart,
+                    "PriceRangeEnd": item?.PriceRangeEnd == null || item?.PriceRangeEnd == undefined ? 0 : item?.PriceRangeEnd,
+                    "CoverageStartDate": item?.CoverageStartDate == null || item?.CoverageStartDate == undefined ? '1900-01-01' : item?.CoverageStartDate,
+                    "CoverageEndDate": item?.CoverageEndDate == null || item?.CoverageEndDate == undefined ? '1900-01-01' : item?.CoverageEndDate,
+                    "ItemSource": item?.ItemSource ?? '',
+                    "PriceType": item?.PriceType ?? '',
+                    "InventoryStockType": item?.PartType ?? '',
+                    "PriceSource": item?.PriceSource,
+                    "GSTPercentage": item?.GSTPercentage,
+                    "RevenueType": item?.RevenueType ?? ''
+                  })
+                }
 
 
-                 (async () => {
+
+
+                // from quote parts 
+
+
+
+
+                (async () => {
 
                   // await this.getStockPrice();  
-                  
+
                   // this.getInvoiceStockPrice()
-                 
-                this.TotalNetAmount()
-                   
+
+                  this.TotalNetAmount()
+
 
 
                 })()
 
-                
-               
-             
-               
+
+
+
+
               }
             }
           } catch (ext) {
@@ -952,7 +967,7 @@ export class AccessorySalesComponent implements OnInit {
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {
               let data = JSON.parse(response?.ExtraData);
-              
+
               if (data.Totalrecords == "0") {
                 this.toastMessage.error("Payment Records Not Found, kindly complete the payment");
               }
@@ -994,7 +1009,7 @@ export class AccessorySalesComponent implements OnInit {
       }
     );
   }
-   getCustomerObject() {
+  getCustomerObject() {
     let requestData = [];
     requestData.push({
       "Key": "APIType",
@@ -1019,7 +1034,7 @@ export class AccessorySalesComponent implements OnInit {
           try {
             this.CustomerObject = []
             let response = JSON.parse(Value.toString());
-            
+
             if (response.ReturnCode == '0') {
               let data = JSON.parse(response?.ExtraData);
               console.log("Customer Object ", data)
@@ -1036,7 +1051,7 @@ export class AccessorySalesComponent implements OnInit {
 
               if (this.params.doctype == "RSALES") {
                 if ((this.params.headerguid == null || this.params.headerguid == undefined) && this.params.caseguid) {
-                    this.getRepairSalesDetails()
+                  this.getRepairSalesDetails()
                 }
               }
 
@@ -1056,7 +1071,7 @@ export class AccessorySalesComponent implements OnInit {
   }
 
   GetDirectDiscountList() {
-    
+
     let requestData = [];
     requestData.push({
       "Key": "ApiType",
@@ -1174,32 +1189,32 @@ export class AccessorySalesComponent implements OnInit {
         if (result) {
 
           for (let item of result) {
-             debugger
-            if( (item?.RevenueType == 'Service Revenue' || item?.RevenueType == 'Repair Revenue' ) &&  this.params.doctype == 'RSALES' ){
-               this.toastMessage.error( 'Please Add Service Revenue Parts in Quotation and then proceed for billing !!')
+
+            if ((item?.RevenueType == 'Service Revenue' || item?.RevenueType == 'Repair Revenue') && this.params.doctype == 'RSALES') {
+              this.toastMessage.error('Please Add Service Revenue Parts in Quotation and then proceed for billing !!')
             }
-            else{
-            this.finalSelectedElements.push({
-              "Batch": item.Batch == null || item.Batch == undefined ? "" : item.Batch,
-              "MaterialCode": item.Material,
-              "MaterialName": item.MaterialName,
-              "SerialNo": item.SerialNumber,
-              "ItemType": item.ItemType,
-              "SerializedModule": item?.SerializedModule,
-              "Billable": 1,
-              "PriceType": "StockPrice",
-              "InventoryStockType": item?.InventoryStockType == null || item?.InventoryStockType == undefined ? '' : item?.InventoryStockType,
-              "PriceSource": item?.PriceSource ?? 'PRICELIST',
-              "UnitPrice": 0,
-              "ItemSource" : 'NEW',
-              "RevenueType" : item?.RevenueType ?? ''
-              
+            else {
+              this.finalSelectedElements.push({
+                "Batch": item.Batch == null || item.Batch == undefined ? "" : item.Batch,
+                "MaterialCode": item.Material,
+                "MaterialName": item.MaterialName,
+                "SerialNo": item.SerialNumber,
+                "ItemType": item.ItemType,
+                "SerializedModule": item?.SerializedModule,
+                "Billable": 1,
+                "PriceType": "StockPrice",
+                "InventoryStockType": item?.InventoryStockType == null || item?.InventoryStockType == undefined ? '' : item?.InventoryStockType,
+                "PriceSource": item?.PriceSource ?? 'PRICELIST',
+                "UnitPrice": 0,
+                "ItemSource": 'NEW',
+                "RevenueType": item?.RevenueType ?? ''
 
 
-            })
+
+              })
+            }
           }
-          }
-            
+
           for (let item1 of this.finalSelectedElements) {
 
             console.log("item ", item1)
@@ -1210,23 +1225,23 @@ export class AccessorySalesComponent implements OnInit {
 
 
 
-       
-         
-
-              let TempList = this.finalSelectedElements.filter(f =>
-                f.ItemSource != 'QUOTATION' && f.PriceSource === 'GSX'
-              )
-
-            console.log('TempList' , TempList)
 
 
-           if(TempList.length > 0){
-          await this.getStockPrice(TempList);
-             
-           }
+
+          let TempList = this.finalSelectedElements.filter(f =>
+            f.ItemSource != 'QUOTATION' && f.PriceSource === 'GSX'
+          )
+
+          console.log('TempList', TempList)
+
+
+          if (TempList.length > 0) {
+            await this.getStockPrice(TempList);
+
+          }
 
           this.getInvoiceStockPrice()
-          
+
           this.SetSchemeCode()
 
         }
@@ -1239,9 +1254,9 @@ export class AccessorySalesComponent implements OnInit {
 
 
   async getStockPrice(TempList): Promise<void> {
-    
 
-     console.log('finalSelectedElements filtered' ,this.finalSelectedElements)
+
+    console.log('finalSelectedElements filtered', this.finalSelectedElements)
     let tempSelectedElements = [...TempList];
     let apiCalls: Promise<void>[] = [];
 
@@ -1275,7 +1290,7 @@ export class AccessorySalesComponent implements OnInit {
                 for (let object of response) {
                   for (let item of this.finalSelectedElements) {
                     if (item.MaterialCode === object.number) {
-                       
+
                       // item.UnitPrice =  item.PriceType === 'ExchangePrice'
                       //     ? this.dynamicService.removeCommas(object.exchangePrice ?? 0)
                       //     : this.dynamicService.removeCommas(object.stockPrice ?? 0);
@@ -1302,7 +1317,7 @@ export class AccessorySalesComponent implements OnInit {
               reject(err);
             },
             complete: () => {
-              
+
               resolve();
             }
           });
@@ -1322,14 +1337,14 @@ export class AccessorySalesComponent implements OnInit {
 
 
   validateSerialNo(item) {
-    
+
     if (item.SerialNo != null && item.SerialNo != undefined && item.SerialNo != '') {
       if (item.MaterialCode != null && item.MaterialCode != undefined && item.MaterialCode != '') {
         this.ngxSpinnerService.show()
         this.gsxService.getSAPSerialNoData(item.MaterialCode, item.SerialNo).subscribe({
           next: (value: any) => {
             ;
-            
+
             this.ngxSpinnerService.hide()
             if (value.error != null || value.error != undefined) {
               this.toastMessage.error(value.error.errorMessage)
@@ -1367,7 +1382,7 @@ export class AccessorySalesComponent implements OnInit {
   }
 
   fetchCostPrice(item) {
-    
+
 
     if (item.Batch != null && item.Batch != undefined && item.Batch != '') {
       if (item.MaterialCode != null && item.MaterialCode != undefined && item.MaterialCode != '') {
@@ -1377,7 +1392,7 @@ export class AccessorySalesComponent implements OnInit {
         this.gsxService.getCostPrice(item.MaterialCode, this.LocationObject[0].SAPPlantCode, item.Batch).subscribe({
           next: (value: any) => {
             console.log(value)
-           
+
 
             this.ngxSpinnerService.hide()
             if (value.error != null || value.error != undefined) {
@@ -1482,57 +1497,55 @@ export class AccessorySalesComponent implements OnInit {
     }
     if (this.InvoiceDocTypeData === "DSALES") {
       for (let item of this.finalSelectedElements) {
-        if(item.ItemSource == 'NEW')
-        {
-        rawData.rows.push({
-          "row": {
-            "ItemType": item.ItemType,
-            "InvoiceDetailGUID": uuidv4(),
-            "ItemCode": item.MaterialCode,
-            "ItemDescription": item.MaterialName,
-            "Type": '',
-            "ImageUrl": item.ImageUrl,
-            "ProductCategory": '',
-            "Quantity": item.Quantity == null || item.Quantity == undefined ? 1 : item.Quantity,
-            "Billable": 1,
-            "UnitPrice": this.dynamicService.removeCommas(item.UnitPrice == null || item.UnitPrice == undefined ? "0" : item.UnitPrice.toString()),
-            "StockPrice": this.dynamicService.removeCommas(item.StockPrice == null || item.StockPrice == undefined ? "0" : item.StockPrice.toString()),
-            "PricingOptions": "STOCKPRICE",
-            "PriceSource": item.PriceSource == null || item.PriceSource == undefined ? '' : item.PriceSource
-          }
-        })
-      }
+        if (item.ItemSource == 'NEW') {
+          rawData.rows.push({
+            "row": {
+              "ItemType": item.ItemType,
+              "InvoiceDetailGUID": uuidv4(),
+              "ItemCode": item.MaterialCode,
+              "ItemDescription": item.MaterialName,
+              "Type": '',
+              "ImageUrl": item.ImageUrl,
+              "ProductCategory": '',
+              "Quantity": item.Quantity == null || item.Quantity == undefined ? 1 : item.Quantity,
+              "Billable": 1,
+              "UnitPrice": this.dynamicService.removeCommas(item.UnitPrice == null || item.UnitPrice == undefined ? "0" : item.UnitPrice.toString()),
+              "StockPrice": this.dynamicService.removeCommas(item.StockPrice == null || item.StockPrice == undefined ? "0" : item.StockPrice.toString()),
+              "PricingOptions": "STOCKPRICE",
+              "PriceSource": item.PriceSource == null || item.PriceSource == undefined ? '' : item.PriceSource
+            }
+          })
+        }
 
       }
     }
     else if (this.InvoiceDocTypeData === "RSALES") {
       for (let item of this.finalSelectedElements) {
-        if(item.ItemSource == 'NEW')
-        {
-        rawData.rows.push({
-          "row": {
-            "ItemType": item?.ItemType,
-            "InvoiceDetailGUID": uuidv4(),
-            "ItemCode": item.MaterialCode,
-            "ItemDescription": item.MaterialName,
-            "Type": '',
-            "ImageUrl": item.ImageUrl,
-            "ProductCategory": '',
-            "Quantity": item.Quantity,
-            "Billable": 1,
-            "UnitPrice": this.dynamicService.removeCommas(item.UnitPrice == null || item.UnitPrice == undefined ? "0" : item.UnitPrice.toString()),
-            "PricingOptions": item.PriceType,
-            "PriceSource": item.PriceSource == null || item.PriceSource == undefined ? '' : item.PriceSource
+        if (item.ItemSource == 'NEW') {
+          rawData.rows.push({
+            "row": {
+              "ItemType": item?.ItemType,
+              "InvoiceDetailGUID": uuidv4(),
+              "ItemCode": item.MaterialCode,
+              "ItemDescription": item.MaterialName,
+              "Type": '',
+              "ImageUrl": item.ImageUrl,
+              "ProductCategory": '',
+              "Quantity": item.Quantity,
+              "Billable": 1,
+              "UnitPrice": this.dynamicService.removeCommas(item.UnitPrice == null || item.UnitPrice == undefined ? "0" : item.UnitPrice.toString()),
+              "PricingOptions": item.PriceType,
+              "PriceSource": item.PriceSource == null || item.PriceSource == undefined ? '' : item.PriceSource
 
-          }
-        })
-      }
-        
+            }
+          })
+        }
+
       }
     }
     else if (this.InvoiceDocTypeData === "AMCSALES") {
       for (let item of this.finalSelectedElements) {
-       
+
         rawData.rows.push({
           "row": {
             "ItemType": "Resource",
@@ -1550,7 +1563,7 @@ export class AccessorySalesComponent implements OnInit {
 
           }
         })
-        
+
       }
     }
     var builder = new xml2js.Builder();
@@ -1562,7 +1575,7 @@ export class AccessorySalesComponent implements OnInit {
   }
   fetchGSTDetails() {
     ;
-    
+
     let requestdata = []
     requestdata.push({
       "Key": "ApiType",
@@ -1599,7 +1612,7 @@ export class AccessorySalesComponent implements OnInit {
     this.ngxSpinnerService.show();
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
       next: (response: any) => {
-        debugger
+
         this.ngxSpinnerService.hide();
         let data = JSON.parse(response)
           ;
@@ -1685,9 +1698,9 @@ export class AccessorySalesComponent implements OnInit {
                 }
                 obj.SerializedModule = extraData?.QuoteItem?.SerializedModule;
                 obj.MarginPercentage = 0; // extraData?.QuoteItem.Margin
-                 
+
                 obj.UnitPrice = extraData?.QuoteItem?.UnitPrice == undefined || extraData?.QuoteItem?.UnitPrice == null ? 0 : extraData?.QuoteItem?.UnitPrice;
-               
+
                 obj.MinimumUnitPrice = extraData?.QuoteItem?.UnitPrice == undefined || extraData?.QuoteItem?.UnitPrice == null ? 0 : extraData?.QuoteItem?.UnitPrice;
                 obj.MarginAmount = 0;
                 obj.SAC_HSNCode = extraData?.QuoteItem.SAC_HSNCode
@@ -1711,7 +1724,7 @@ export class AccessorySalesComponent implements OnInit {
                 obj.PriceRangeEnd = extraData?.QuoteItem?.PriceRangeEnd;
                 // obj.InventoryStockType =obj?.Type ?? '';
                 obj.InventoryStockType = extraData?.QuoteItem?.Type ?? '';
-                obj.RevenueType =  extraData?.QuoteItem?.RevenueType ?? '';
+                obj.RevenueType = extraData?.QuoteItem?.RevenueType ?? '';
 
 
 
@@ -1733,17 +1746,17 @@ export class AccessorySalesComponent implements OnInit {
 
 
   calculatePrices(item) {
-    
 
-      this.ngxSpinnerService.show()
-      if(item.Quantity <=0 ){
-        this.toastMessage.error('Quantity Cannot be 0 OR Negative')
-        this.ngxSpinnerService.hide()
-        item.Quantity = 1 
-        return
-      }
 
-    
+    this.ngxSpinnerService.show()
+    if (item.Quantity <= 0) {
+      this.toastMessage.error('Quantity Cannot be 0 OR Negative')
+      this.ngxSpinnerService.hide()
+      item.Quantity = 1
+      return
+    }
+
+
     item.BaseAmount = (parseFloat(item.UnitPrice) * item.Quantity)
     item.TaxableAmount = parseFloat(item.BaseAmount) - item.DiscountAmount
     item.SGSTAmount = item.TaxableAmount * (item.SGSTPercentage / 100)
@@ -1752,14 +1765,14 @@ export class AccessorySalesComponent implements OnInit {
     item.GSTAmount = item.TaxableAmount * (item.GSTPercentage / 100)
     item.TaxAmount = item.GSTAmount
     item.NetAmount = item.TaxableAmount + item.TaxAmount
- 
+
 
     this.TotalNetAmount()
   }
 
   TotalNetAmount() {
 
-    
+
     this.totalBaseAmount = 0;
     this.totalDiscountAmount = 0;
     this.totalNetAmount = 0;
@@ -1767,7 +1780,7 @@ export class AccessorySalesComponent implements OnInit {
     this.totalTaxableAmount = 0;
 
     this.finalSelectedElements.forEach((item) => {
-      
+
       const matchingDiscount = this.DirectDiscountList.find(disc =>
         disc.Discount_PartCode === item.MaterialCode &&
         this.finalSelectedElements.some(x => x.MaterialCode == disc.PartCode)
@@ -1799,7 +1812,7 @@ export class AccessorySalesComponent implements OnInit {
         }
       }
 
-   
+
 
       item.TaxableAmount = parseFloat(item.BaseAmount) - item.DiscountAmount
       item.SGSTAmount = item.TaxableAmount * (item.SGSTPercentage / 100)
@@ -1809,7 +1822,7 @@ export class AccessorySalesComponent implements OnInit {
       item.TaxAmount = item.GSTAmount
       item.NetAmount = item.TaxableAmount + item.TaxAmount
 
-     
+
 
 
       this.totalTaxableAmount += parseFloat(item.TaxableAmount);
@@ -1942,7 +1955,7 @@ export class AccessorySalesComponent implements OnInit {
     let contentRequest = {
       "content": strContentRequest
     };
-    
+
     this.gsxService.generateEInvoice(contentRequest).subscribe({
       next: (value) => {
         console.log(value)
@@ -1967,7 +1980,7 @@ export class AccessorySalesComponent implements OnInit {
   }
 
   onGSTRegistrationSearch($event: { term: string; items: any[] }) {
-    
+
     this.dropdownDataService
       .fetchDropDownData(DropDownType.GSTRegistration, $event.term, {})
       .subscribe({
@@ -2192,7 +2205,7 @@ export class AccessorySalesComponent implements OnInit {
 
 
   onSubmit() {
-    
+
     var hasLesserUnitPrice = false
     for (let item of this.finalSelectedElements) {
 
@@ -2248,7 +2261,7 @@ export class AccessorySalesComponent implements OnInit {
       this.toastMessage.error("Paid Amount does not match with Total Net Amount")
       return;
     }
-  
+
     const hasBlankBatch = this.finalSelectedElements.some(item => (item?.Batch == null || item?.Batch === '' || item?.Batch == undefined) && (item?.ItemType == "Material"));
     if (hasBlankBatch) {
       this.toastMessage.error("Cannot insert null or empty value in Batch Number")
@@ -2426,13 +2439,13 @@ export class AccessorySalesComponent implements OnInit {
     console.log("Request Data ", requestData)
 
     // alert("UAT Testing, contact Admin!")
-     
+
 
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (value) => {
 
-          
+
           let response = JSON.parse(value.toString());
           ;
           if (response.ReturnCode == '0') {
@@ -2493,7 +2506,7 @@ export class AccessorySalesComponent implements OnInit {
             this.saveSAPBillingDocument()
           }
           else {
-            
+
             this.errorMessage = response.ReturnMessage;
             this.toastMessage.error("Error While Saving Invoice")
             let errorMessage = response.ErrorMessage;
@@ -2507,7 +2520,7 @@ export class AccessorySalesComponent implements OnInit {
           }
         },
         error: err => {
-          
+
           this.submitClicked = false;
           this.ngxSpinnerService.hide()
           console.log(err);
@@ -2572,8 +2585,8 @@ export class AccessorySalesComponent implements OnInit {
     }
   }
   showAddParts(item) {
-       debugger
-    if(this.params.doctype == 'RSALES' && item?.ItemSource != 'NEW' ){
+
+    if (this.params.doctype == 'RSALES' && item?.ItemSource != 'NEW') {
       this.toastMessage.error('Cannot Apply Discount while billing for RSALES')
       return
     }
@@ -2586,7 +2599,7 @@ export class AccessorySalesComponent implements OnInit {
     this.discountInvoiceDetailGUID = item.InvoiceDetailGUID
     this.availableServices(item)
     this.IsApplicable4AutoDiscountApprove(item);
-    
+
     let requestData = []
     requestData.push({
       "Key": "APIType",
@@ -2666,12 +2679,11 @@ export class AccessorySalesComponent implements OnInit {
       discountExists = this.finalSelectedElements.findIndex(part => part.DiscountCoupon == item.CouponCode)
       if (discountExists == -1) {
         if (item.MaterialCode == obj.MaterialCode && obj.InvoiceDetailGUID == this.discountInvoiceDetailGUID) {
-          if(item.DiscountType == 'ADD')
-          {
-          obj.DiscountAmount = - parseFloat(item.DiscountAmount).toFixed(2)
+          if (item.DiscountType == 'ADD') {
+            obj.DiscountAmount = - parseFloat(item.DiscountAmount).toFixed(2)
           }
-          else{
-          obj.DiscountAmount = parseFloat(item.DiscountAmount).toFixed(2)
+          else {
+            obj.DiscountAmount = parseFloat(item.DiscountAmount).toFixed(2)
           }
           obj.DiscountCoupon = item.CouponCode
           this.calculatePrices(obj)
@@ -2682,12 +2694,12 @@ export class AccessorySalesComponent implements OnInit {
     this.hideAddParts()
   }
 
-  
-  RemoveDiscount(item){
-   
-     item.DiscountAmount = 0.00,
-     item.DiscountCoupon = '',
-     this.calculatePrices(item)
+
+  RemoveDiscount(item) {
+
+    item.DiscountAmount = 0.00,
+      item.DiscountCoupon = '',
+      this.calculatePrices(item)
   }
 
 
@@ -2719,7 +2731,7 @@ export class AccessorySalesComponent implements OnInit {
     this.TotalNetAmount()
   }
   saveDiscount() {
-    
+
     if (this.discountMaterialCode == null || this.discountMaterialCode == undefined || this.discountMaterialCode == '') {
       this.toastMessage.error("Material Code not found for discount")
       return
@@ -2736,7 +2748,7 @@ export class AccessorySalesComponent implements OnInit {
       this.toastMessage.error("Discount Amount cannot be greater than Unit Price")
       return
     }
-    if (this.DiscountType == null   || this.DiscountType  == undefined ||  this.DiscountType  == '') {
+    if (this.DiscountType == null || this.DiscountType == undefined || this.DiscountType == '') {
       this.toastMessage.error("Discount Type not found for discount")
       return
     }
@@ -2792,23 +2804,23 @@ export class AccessorySalesComponent implements OnInit {
     })
     requestData.push({
       "Key": "DiscountType",
-      "Value":  this.DiscountType
+      "Value": this.DiscountType
     })
     requestData.push({
       "Key": "IsAutoApprove",
-      "Value":  (this.discountAmountRequested <= this.Discount_Add_Amount && this.IsAutoDiscountApplicable == true ) ? 1 : 0
+      "Value": (this.discountAmountRequested <= this.Discount_Add_Amount && this.IsAutoDiscountApplicable == true) ? 1 : 0
     })
-    console.log('requestData' , requestData)
+    console.log('requestData', requestData)
     let strRequestData = JSON.stringify(requestData);
     let contentRequest =
     {
       "content": strRequestData
     };
-     
+
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-          
+
           this.ngxSpinnerService.hide()
           try {
 
@@ -2943,7 +2955,7 @@ export class AccessorySalesComponent implements OnInit {
 
     //if (this.InvoiceDocTypeData == "DSALES") {
     for (let item of this.finalSelectedElements) {
-      
+
       count += 1
       rawData.rows.push({
         "row": {
@@ -3002,10 +3014,10 @@ export class AccessorySalesComponent implements OnInit {
 
 
   deleteitem(item) {
-    debugger
-    if(this.params.doctype == 'RSALES' && item.RevenueType == 'Service Revenue'){
-        this.toastMessage.error('Cannot Delete ,As it is present in quotation !!')
-        return
+
+    if (this.params.doctype == 'RSALES' && item.RevenueType == 'Service Revenue') {
+      this.toastMessage.error('Cannot Delete ,As it is present in quotation !!')
+      return
     }
 
     let index = this.finalSelectedElements.indexOf(item)
@@ -3031,30 +3043,29 @@ export class AccessorySalesComponent implements OnInit {
     this.ngxSpinnerService.show()
     var partlist = []
     let i = 0;
-    
+
     for (let item of this.finalSelectedElements) {
-      if(item?.ItemSource == 'NEW' )
-      {
-           item.StockPrice = "0"
-           item.Quantity = 1
+      if (item?.ItemSource == 'NEW') {
+        item.StockPrice = "0"
+        item.Quantity = 1
       }
-     
+
     }
     var tempSelectedElements = this.finalSelectedElements.slice()
     this.fetchGSTDetails()
   }
-  
 
-     async onPriceOptionChange(item){
-          
-          item.ItemSource = 'NEW';
-          let tempList = [item]
-            console.log('tempList' , tempList)
-            if(item.PriceSource === 'GSX'){
-             await this.getStockPrice(tempList);
-            }
-          this.fetchGSTDetails()
-     }
+
+  async onPriceOptionChange(item) {
+
+    item.ItemSource = 'NEW';
+    let tempList = [item]
+    console.log('tempList', tempList)
+    if (item.PriceSource === 'GSX') {
+      await this.getStockPrice(tempList);
+    }
+    this.fetchGSTDetails()
+  }
 
 
 
@@ -4685,7 +4696,7 @@ export class AccessorySalesComponent implements OnInit {
   }
 
   SetSchemeCode() {
-   
+
     let count3PP = 0;
 
     this.finalSelectedElements.forEach(item => {
@@ -4694,11 +4705,11 @@ export class AccessorySalesComponent implements OnInit {
       if (item.InventoryStockType == "3PP") {
         count3PP = count3PP + 1;
       }
-      if(item.ItemSource !== 'QUOTATION'){
-           item.DiscountCoupon = 0;
-           item.DiscountAmount = 0;
+      if (item.ItemSource !== 'QUOTATION') {
+        item.DiscountCoupon = 0;
+        item.DiscountAmount = 0;
       }
-    
+
     });
 
 
@@ -4882,7 +4893,7 @@ export class AccessorySalesComponent implements OnInit {
       return
     }
 
-    
+
     console.log('this.finalSelectedElements', this.finalSelectedElements);
     this.finalSelectedElements.push({
 
@@ -4900,8 +4911,8 @@ export class AccessorySalesComponent implements OnInit {
       "ProductType": this.ProductType == null || this.ProductType == undefined ? '' : this.ProductType,
       "ProductName": this.ProductName == null || this.ProductName == undefined ? '' : this.ProductName,
       "AmcTypeCode": this.AmcTypeCode == null || this.AmcTypeCode == undefined ? '' : this.AmcTypeCode,
-      "Quantity" : 1,
-      "PriceSource" : 'PRICELIST'
+      "Quantity": 1,
+      "PriceSource": 'PRICELIST'
     })
     console.log(' this.finalSelectedElements from addAmcPart', this.finalSelectedElements)
 
@@ -4919,7 +4930,7 @@ export class AccessorySalesComponent implements OnInit {
   // download contract report
 
   downloadContractReport(reportType: String) {
-    
+
     this.ngxSpinnerService.show()
     let PdfData = [];
     PdfData.push({
@@ -4960,11 +4971,11 @@ export class AccessorySalesComponent implements OnInit {
 
 
 
-   onDiscountTypeSearch($event: { term: string; items: any[] }) {
+  onDiscountTypeSearch($event: { term: string; items: any[] }) {
     this.dropdownDataService.fetchDropDownData(DropDownType.DISCOUNTTYPE, $event.term).subscribe({
       next: (value) => {
         if (value != null) {
-          
+
           this.DiscountTypeSearchDD = value;
           console.log("DiscountTypeSearchDD ", this.DiscountTypeSearchDD)
         }
@@ -4977,42 +4988,42 @@ export class AccessorySalesComponent implements OnInit {
 
 
 
-   GetAutoApproveDiscountDetails() {
-    
+  GetAutoApproveDiscountDetails() {
+
     let requestData = []
     requestData.push({
       "Key": "APIType",
       "Value": "GetAutoApproveDiscountDetails"
     })
-    
+
     let strRequestData = JSON.stringify(requestData);
     let contentRequest =
     {
       "content": strRequestData
     };
-    
+
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-          
+
           try {
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {
               let data = JSON.parse(response?.ExtraData);
-              
+
               if (Array.isArray(data?.AutoApproveDiscountDetailsList?.AutoApproveDiscountDetails)) {
                 this.AutoApproveDiscountDetailsList = data?.AutoApproveDiscountDetailsList?.AutoApproveDiscountDetails
               }
               else {
                 this.AutoApproveDiscountDetailsList.push(data?.AutoApproveDiscountDetailsList?.AutoApproveDiscountDetails)
               }
-             
-               this.AutoApproveDiscountDetailsList.forEach(x =>{
-                   this.PartTypeApplicableForAutoApprove.push(x.PartType)
-               })
 
-               console.log('this.PartTypeApplicableForAutoApprove' , this.PartTypeApplicableForAutoApprove)
-              
+              this.AutoApproveDiscountDetailsList.forEach(x => {
+                this.PartTypeApplicableForAutoApprove.push(x.PartType)
+              })
+
+              console.log('this.PartTypeApplicableForAutoApprove', this.PartTypeApplicableForAutoApprove)
+
             }
             console.log('this.AutoApproveDiscountDetailsList', this.AutoApproveDiscountDetailsList)
           } catch (ext) {
@@ -5027,45 +5038,45 @@ export class AccessorySalesComponent implements OnInit {
 
   }
 
-  IsApplicable4AutoDiscountApprove(item){ 
-      const safeRound = (value) => isNaN(value) ? 0 : Math.round(value * 100) / 100;
-      
-     if(this.PartTypeApplicableForAutoApprove.includes(item.InventoryStockType?.toLowerCase()) ){
-      this.IsAutoDiscountApplicable=true;
-       const PartTypeApplicableForAutoDisc = this.AutoApproveDiscountDetailsList.find(a => a.PartType?.toLowerCase() == item.InventoryStockType?.toLowerCase() )
-       this.Discount_Add_Amount = safeRound(((PartTypeApplicableForAutoDisc?.DiscountPercentage)/100) * item.UnitPrice)
-     }
-     else{
-      this.IsAutoDiscountApplicable=false;
-     }
+  IsApplicable4AutoDiscountApprove(item) {
+    const safeRound = (value) => isNaN(value) ? 0 : Math.round(value * 100) / 100;
+
+    if (this.PartTypeApplicableForAutoApprove.includes(item.InventoryStockType?.toLowerCase())) {
+      this.IsAutoDiscountApplicable = true;
+      const PartTypeApplicableForAutoDisc = this.AutoApproveDiscountDetailsList.find(a => a.PartType?.toLowerCase() == item.InventoryStockType?.toLowerCase())
+      this.Discount_Add_Amount = safeRound(((PartTypeApplicableForAutoDisc?.DiscountPercentage) / 100) * item.UnitPrice)
+    }
+    else {
+      this.IsAutoDiscountApplicable = false;
+    }
   }
 
 
-  
 
-   GetCustomerAllowedtoChangeUnitPriceList() {
-    debugger
+
+  GetCustomerAllowedtoChangeUnitPriceList() {
+
     let requestData = []
     requestData.push({
       "Key": "APIType",
       "Value": "GetCustomerAllowedtoChangeUnitPriceList"
     })
-    
+
     let strRequestData = JSON.stringify(requestData);
     let contentRequest =
     {
       "content": strRequestData
     };
-    
+
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-           debugger
+
           try {
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {
               let data = JSON.parse(response?.ExtraData);
-              
+
               if (Array.isArray(data?.CustomerAllowedtoChangeUnitPriceList?.CustomerAllowedtoChangeUnitPrice)) {
                 this.CustomerAllowedtoChangeUnitPriceList = data?.CustomerAllowedtoChangeUnitPriceList?.CustomerAllowedtoChangeUnitPrice
               }
@@ -5075,12 +5086,12 @@ export class AccessorySalesComponent implements OnInit {
             }
             console.log('this.CustomerAllowedtoChangeUnitPriceList', this.CustomerAllowedtoChangeUnitPriceList)
 
-           this.IsCustUnitPriceEditAllwoed = this.CustomerAllowedtoChangeUnitPriceList.some( x => x.CustomerCode === this.params.customercode && x.IsAllowed === "1" );
-            
+            this.IsCustUnitPriceEditAllwoed = this.CustomerAllowedtoChangeUnitPriceList.some(x => x.CustomerCode === this.params.customercode && x.IsAllowed === "1");
 
-     
 
-            
+
+
+
           } catch (ext) {
             console.log(ext);
           }

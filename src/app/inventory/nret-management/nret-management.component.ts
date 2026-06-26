@@ -27,11 +27,11 @@ export class NretManagementComponent implements OnInit {
     private reportService: ReportService,
     private dynamicService: DynamicService,
     private dropdownDataService: DropdownDataService,
-    private datePipe:DatePipe
+    private datePipe: DatePipe
   ) { }
   NRETId: string;
   NRETStatus: string;
-  isDeliveryChallanType:boolean = false;
+  isDeliveryChallanType: boolean = false;
   partList: any[] = [];
   readData: boolean = true;
   transportationCarrierData: string;
@@ -69,11 +69,11 @@ export class NretManagementComponent implements OnInit {
   DeliveryChallanType: String;
   returnRemark: string;
   printTypeData: string;
-  isLocationDDshow:boolean=true;
+  isLocationDDshow: boolean = true;
   OverPackBoxDataObj: DropDownValue;
-  totalUnitPrice:number=0;
-  IsShipmentDisabled:boolean=true;
-  isReceivedButton:boolean  = false;
+  totalUnitPrice: number = 0;
+  IsShipmentDisabled: boolean = true;
+  isReceivedButton: boolean = false;
   fileType: string;
   trackingUrl: string;
   TransportationCarrier: DropDownValue = this.getBlankObject();
@@ -107,13 +107,13 @@ export class NretManagementComponent implements OnInit {
     this.DeliveryChallanType = 'NRET'
     this.params = this.activatedRoute.snapshot.queryParams;
     if (this.params.headerguid != null || this.params.headerguid != undefined) {
-     this.getData()
+      this.getData()
       this.isReturnAddress = true
-      this.isLocationDDshow=false;
+      this.isLocationDDshow = false;
 
     }
     else if (Object.keys(this.params).length == 0) {
-      this.deliveryChallanGUID = uuidv4() 
+      this.deliveryChallanGUID = uuidv4()
       this.ApprovalStatus = 'NEW'
       this.isShipmentDone = '0'
       this.IsShipmentDisabled = false
@@ -175,10 +175,10 @@ export class NretManagementComponent implements OnInit {
   //     });
   // }
 
-  
+
 
   getData() {
-    debugger
+
     let requestData = [];
     requestData.push({
       "Key": "ApiType",
@@ -195,11 +195,11 @@ export class NretManagementComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (value) => {
-          debugger
+
           let response = JSON.parse(value.toString());
           let data = JSON.parse(response.ExtraData.toString())
           if (response.ReturnCode == '0') {
-            console.log("Get DeliveryChallanHeader List",data)
+            console.log("Get DeliveryChallanHeader List", data)
             this.ApprovalStatus = data?.DeliveryChallanStatus;
             this.DeliveryChallanStatusDesc = data?.DeliveryChallanStatusDesc
             this.CreatedDate = data?.CreatedDate
@@ -219,27 +219,27 @@ export class NretManagementComponent implements OnInit {
             this.getToLocationData()
             this.getFromLocationData()
             var result = []
-            Array.isArray(data.DeliveryChallanDetailList.DeliveryChallanDetail) ? 
+            Array.isArray(data.DeliveryChallanDetailList.DeliveryChallanDetail) ?
               result = data.DeliveryChallanDetailList.DeliveryChallanDetail :
-                result = [data.DeliveryChallanDetailList.DeliveryChallanDetail]
+              result = [data.DeliveryChallanDetailList.DeliveryChallanDetail]
 
             for (let item of result) {
-             this.totalUnitPrice = item.NetAmount
-              if(item.PartDescription == null || item.PartDescription == undefined || item.PartDescription ==  ""  && item.ProductDescription == null || item.ProductDescription == undefined || item.ProductDescription == "" ){
+              this.totalUnitPrice = item.NetAmount
+              if (item.PartDescription == null || item.PartDescription == undefined || item.PartDescription == "" && item.ProductDescription == null || item.ProductDescription == undefined || item.ProductDescription == "") {
                 this.finalSelectedParts.push({
                   "DeliveryChallanDetailGUID": item.DeliveryChallanDetailGUID,
-                  "DeliveryChallanGUID":item.DeliveryChallanGUID,
+                  "DeliveryChallanGUID": item.DeliveryChallanGUID,
                   "PartCode": item.PartCode,
-                  "SerialNo": item.SerialNo ,
-                  "CaseId":item.CaseId,
-                  "CaseGUID":item.CaseGuid,
-                  "PartDescription":item.PartDescription,
-                  "ReceivedStatus":item.ReceivedStatus ,   
-                  "UnitPrice":item.UnitPrice ,               
+                  "SerialNo": item.SerialNo,
+                  "CaseId": item.CaseId,
+                  "CaseGUID": item.CaseGuid,
+                  "PartDescription": item.PartDescription,
+                  "ReceivedStatus": item.ReceivedStatus,
+                  "UnitPrice": item.UnitPrice,
                   "IsDeleted": item.IsDeleted,
                 })
               }
-              else{
+              else {
               }
             }
             this.CalculateUnitPrice()
@@ -302,12 +302,12 @@ export class NretManagementComponent implements OnInit {
       });
   }
 
-  CalculateTotalUnitPrice(){
+  CalculateTotalUnitPrice() {
     this.totalUnitPrice = 0
-    this.finalSelectedParts.forEach( currentItem =>{
+    this.finalSelectedParts.forEach(currentItem => {
       // console.log("Current Item ", currentItem)
       if (currentItem.UnitPrice != null && currentItem.UnitPrice != undefined && currentItem.UnitPrice != '') {
-        if(currentItem.IsDeleted == "0" ){
+        if (currentItem.IsDeleted == "0") {
           this.totalUnitPrice += parseFloat(currentItem.UnitPrice.toString())
         }
       }
@@ -320,7 +320,7 @@ export class NretManagementComponent implements OnInit {
     this.IsShipmentDisabled = true
     console.log("Approver  : ", isApproverPermission)
     if (isApproverPermission == true) {
-      
+
       if (this.ApprovalStatus == 'INTR') {
         this.isReceivedButton = true
       }
@@ -331,7 +331,7 @@ export class NretManagementComponent implements OnInit {
     else if (this.ApprovalStatus == 'NEW') {
       this.IsShipmentDisabled = false
     }
-    else  if (this.ApprovalStatus == 'INTR') {
+    else if (this.ApprovalStatus == 'INTR') {
     }
     else if (this.ApprovalStatus == 'SHPCF') {
     }
@@ -408,7 +408,7 @@ export class NretManagementComponent implements OnInit {
   //   }
   // }
 
-  ValidateDeliveryChallan(){
+  ValidateDeliveryChallan() {
 
     // ***********************************************  Validation for Parts ***********************************************  
     console.log("Final Selected Parts  ", this.finalSelectedParts)
@@ -423,7 +423,7 @@ export class NretManagementComponent implements OnInit {
       { condition: part => isNullOrUndefinedOrEmpty(part.UnitPrice), errorMessage: "Unit Price can't be empty for any Part" },
       // { condition: part => isNullOrUndefinedOrEmpty(part.HSNSACCode), errorMessage: "HSNSACCode can't be empty for any Part" }
     ];
-  
+
     for (const error of somePartErrors) {
       if (this.finalSelectedParts.some(error.condition)) {
         this.toastMessage.error(error.errorMessage);
@@ -441,29 +441,29 @@ export class NretManagementComponent implements OnInit {
     };
 
     for (const field in requiredFields) {
-        if (!this[field]) {
-            this.toastMessage.error(`${requiredFields[field]} can't be empty`);
-            return false; 
-        }
+      if (!this[field]) {
+        this.toastMessage.error(`${requiredFields[field]} can't be empty`);
+        return false;
+      }
     }
- 
-  
-    if (this.finalSelectedParts.length < 1 ) {
+
+
+    if (this.finalSelectedParts.length < 1) {
       this.toastMessage.error("No Parts Selected");
-      return false; 
+      return false;
     }
-    else{
-      return true; 
+    else {
+      return true;
     }
   }
 
   onSubmit() {
-    debugger
+
     const today = new Date();
     let ShipmentTodayDate = this.datePipe.transform(today, 'yyyy-MM-dd');
     let validateDeliveryChallan: boolean = this.ValidateDeliveryChallan()
-    if (validateDeliveryChallan){
-    
+    if (validateDeliveryChallan) {
+
       this.ngxSpinnerService.show();
       let requestData = [];
       requestData.push({
@@ -474,13 +474,13 @@ export class NretManagementComponent implements OnInit {
         "Key": "DeliveryChallanNo",
         "Value": this.deliveryChallanNo == null || this.deliveryChallanNo == undefined ? '' : this.deliveryChallanNo
       });
-      requestData.push({  
+      requestData.push({
         "Key": "DeliveryChallanGUID",
         "Value": this.deliveryChallanGUID
       });
       requestData.push({
         "Key": "DeliveryChallanStatus",
-        "Value": this.ApprovalStatus  
+        "Value": this.ApprovalStatus
       });
       requestData.push({
         "Key": "DeliveryChallanType",
@@ -508,24 +508,24 @@ export class NretManagementComponent implements OnInit {
       });
       requestData.push({
         "Key": "LocationCode",
-        "Value": this.LocationCode 
+        "Value": this.LocationCode
       });
       requestData.push({
         "Key": "ToLocationCode",
-        "Value": this.ToLocationCode 
+        "Value": this.ToLocationCode
       });
       requestData.push({
         "Key": "SealNumber",
-        "Value": this.SealNo 
+        "Value": this.SealNo
       });
       requestData.push({
         "Key": "NoOfBoxes",
         "Value": this.noOfBoxes == null || this.noOfBoxes == undefined ? "" : this.noOfBoxes
       });
-        requestData.push({
-      "Key": "DocType",
-      "Value": ''
-    });
+      requestData.push({
+        "Key": "DocType",
+        "Value": ''
+      });
       requestData.push({
         "Key": "DeliveryChallanDetail",
         "Value": this.saveDeliveryChallanXml()
@@ -559,36 +559,36 @@ export class NretManagementComponent implements OnInit {
             alert("Error from Database:- " + err.message[0]);
           }
         });
-    
+
     }
 
   }
 
-  CalculateUnitPrice(){
+  CalculateUnitPrice() {
     this.totalUnitPrice = 0;
-    this.finalSelectedParts.forEach( item =>{
-      this.totalUnitPrice  += parseFloat(item.UnitPrice.toString());
+    this.finalSelectedParts.forEach(item => {
+      this.totalUnitPrice += parseFloat(item.UnitPrice.toString());
     })
   }
 
   saveDeliveryChallanXml() {
-    
+
     let rawData = { "rows": [] }
     for (let item of this.finalSelectedParts) {
       rawData.rows.push({
         "row": {
           "DeliveryChallanDetailGUID": item.DeliveryChallanDetailGUID == null || item.DeliveryChallanDetailGUID == undefined ? uuidv4() : item.DeliveryChallanDetailGUID,
           "DeliveryChallanGUID": this.deliveryChallanGUID,
-          "PartCode":item.PartCode == null || item.PartCode == undefined ?"" : item.PartCode,
+          "PartCode": item.PartCode == null || item.PartCode == undefined ? "" : item.PartCode,
           "SerialNo": item.SerialNo,
           "PartDescription": item.PartDescription,
           "CaseId": item.CaseId,
-          "CaseGuid":item.CaseGUID,
-          "UnitPrice":item.UnitPrice,
-          "HSNSACCode":item.HSNSACCode == null || item.HSNSACCode == undefined ? "" : item.HSNSACCode,
+          "CaseGuid": item.CaseGUID,
+          "UnitPrice": item.UnitPrice,
+          "HSNSACCode": item.HSNSACCode == null || item.HSNSACCode == undefined ? "" : item.HSNSACCode,
           "GSTGroupCode": item.GSTGroupCode == null || item.GSTGroupCode ? "" : item.GSTGroupCode,
-          "ReceivedStatus": item.ReceivedStatus == null || item.ReceivedStatus == undefined ? "" : item.ReceivedStatus, 
-          "IsDeleted": item.IsDeleted ,
+          "ReceivedStatus": item.ReceivedStatus == null || item.ReceivedStatus == undefined ? "" : item.ReceivedStatus,
+          "IsDeleted": item.IsDeleted,
           // "ReceivedFlag":"0",
         }
       })
@@ -651,7 +651,7 @@ export class NretManagementComponent implements OnInit {
 
         if (value != null) {
           this.LocationForJob = value;
-          console.log('this.LocationForJob',this.LocationForJob)
+          console.log('this.LocationForJob', this.LocationForJob)
 
         }
       },
@@ -662,20 +662,20 @@ export class NretManagementComponent implements OnInit {
   }
 
   onToLocationSearch($event: { term: string; item: any[] }) {
-    debugger
+
     this.dropdownDataService.fetchDropDownData(DropDownType.BindNretToLocation, $event.term, {
       CompanyCode: glob.getCompanyCode().toString(),
       LocationCode: this.LocationCode
 
     }).subscribe({
       next: (value) => {
-          debugger
+
         if (value != null) {
-          
+
           this.LocationToJob = value;
-           this.ToLocationCode = this.LocationToJob.Data[0].Id
-           this.getToLocationData()
-          
+          this.ToLocationCode = this.LocationToJob.Data[0].Id
+          this.getToLocationData()
+
         }
       },
       error: (err) => {
@@ -690,12 +690,12 @@ export class NretManagementComponent implements OnInit {
       return
     }
 
-    if (this.params?.headerguid == null || this.params?.headerguid == undefined){
-     this.onToLocationSearch ( { term: "", item: []})
-         
+    if (this.params?.headerguid == null || this.params?.headerguid == undefined) {
+      this.onToLocationSearch({ term: "", item: [] })
+
     }
 
-    this.LocationObject =[]
+    this.LocationObject = []
     let requestData = [];
     requestData.push({
       "Key": "ApiType",
@@ -734,9 +734,9 @@ export class NretManagementComponent implements OnInit {
       });
   }
 
-  locationDetails:any[]=[]
+  locationDetails: any[] = []
   getToLocationData() {
-    debugger
+
     if (this.ToLocationCode == null || this.ToLocationCode == undefined) {
       this.ToLocationObject = []
       return
@@ -766,9 +766,9 @@ export class NretManagementComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (value) => {
-          debugger
+
           let response = JSON.parse(value.toString());
-          if (response.ReturnCode == '0') { 
+          if (response.ReturnCode == '0') {
             this.ToLocationObject = []
             let data = JSON.parse(response.ExtraData)?.Location;
             this.ToLocationObject.push(data);
@@ -806,21 +806,21 @@ export class NretManagementComponent implements OnInit {
       {
         next: (value) => {
           let response = JSON.parse(value.toString());
-          if (response.ReturnCode == '0') { 
+          if (response.ReturnCode == '0') {
             let data = JSON.parse(response.ExtraData);
-            
-            this.popUpArray =[]
-            if ( data.Totalrecords > 0 ){
-                Array.isArray(data.NretManagementList.NretManagement) ?
-                  this.popUpArray = data.NretManagementList.NretManagement :
-                      this.popUpArray = [data.NretManagementList.NretManagement]
+
+            this.popUpArray = []
+            if (data.Totalrecords > 0) {
+              Array.isArray(data.NretManagementList.NretManagement) ?
+                this.popUpArray = data.NretManagementList.NretManagement :
+                this.popUpArray = [data.NretManagementList.NretManagement]
             }
-            else{
+            else {
               this.toastMessage.error("No Record Found!")
               return
             }
 
-            this.popUpArray.forEach( item => {
+            this.popUpArray.forEach(item => {
               item.selected = false
               item.IsDeleted = false
             })
@@ -841,10 +841,10 @@ export class NretManagementComponent implements OnInit {
 
 
   removeItem(item) {
-    
+
     item.isDeleted = item.isDeleted == 1 ? 0 : 1;
     let index = this.finalSelectedParts.indexOf(item)
-   
+
     if (item?.DeliveryChallanDetailGUID != null || item?.DeliveryChallanDetailGUID != undefined) {
       this.finalSelectedParts[index].IsDeleted = "1"
     }
@@ -866,29 +866,27 @@ export class NretManagementComponent implements OnInit {
       this.finalSelectedParts[index].IsDeleted = "0";
     }
     this.UpdateSelectedCount();
-     this.CalculateUnitPrice();
+    this.CalculateUnitPrice();
   }
 
   printDocument() {
-  
+
     var documentType = ""
 
-    if(this.printTypeData==undefined || this.printTypeData=="")
-    {
-      this.toastMessage.error("Select Print Type","Error",{closeButton:true,disableTimeOut:true})
+    if (this.printTypeData == undefined || this.printTypeData == "") {
+      this.toastMessage.error("Select Print Type", "Error", { closeButton: true, disableTimeOut: true })
       return;
     }
 
-    else if(this.printTypeData=="Delivery Challan")
-    {
-      documentType="downloadDeliveryChallan"
+    else if (this.printTypeData == "Delivery Challan") {
+      documentType = "downloadDeliveryChallan"
       this.downloadServiceReport(documentType)
       return
     }
-   
-    }
 
-  downloadServiceReport(reportType: String="") {
+  }
+
+  downloadServiceReport(reportType: String = "") {
     let PdfData = [];
     PdfData.push({
       "Key": "ApiType",
@@ -951,7 +949,7 @@ export class NretManagementComponent implements OnInit {
     console.log("Permissions ", allPermision)
     let resp = allPermision.find(x => x.ProfileId == 14); // 14 is Local Approver
     console.log("Data Local Approver Permissions ", resp)
-    
+
     if (resp?.View == true) {
       this.isApproverPermission = true;
     }
@@ -960,15 +958,15 @@ export class NretManagementComponent implements OnInit {
 
   }
 
-  ConfirmShipment(){
-    if(this.transportationCarrierData == null || this.transportationCarrierData == undefined ){
+  ConfirmShipment() {
+    if (this.transportationCarrierData == null || this.transportationCarrierData == undefined) {
       this.toastMessage.error('Kindly select a Transportation Carrier')
-        return
-      }
+      return
+    }
 
-    if(this.noOfBoxes == null || this.noOfBoxes == undefined || this.noOfBoxes ==""){
+    if (this.noOfBoxes == null || this.noOfBoxes == undefined || this.noOfBoxes == "") {
       this.toastMessage.error('Kindly Enter No Of Boxes')
-        return
+      return
     }
     this.ApprovalStatus = 'INTR'
     this.isShipmentDone = '1'
@@ -976,14 +974,14 @@ export class NretManagementComponent implements OnInit {
   }
 
   shipmentReceived() {
-    if(this.transportationCarrierData == null || this.transportationCarrierData == undefined ){
+    if (this.transportationCarrierData == null || this.transportationCarrierData == undefined) {
       this.toastMessage.error('Kindly select a Transportation Carrier')
-        return
-      }
+      return
+    }
 
-    if(this.noOfBoxes == null || this.noOfBoxes == undefined || this.noOfBoxes ==""){
+    if (this.noOfBoxes == null || this.noOfBoxes == undefined || this.noOfBoxes == "") {
       this.toastMessage.error('Kindly Enter No Of Boxes')
-        return
+      return
     }
 
     const somePartReceivedStatus = this.finalSelectedParts.some(part => part.ReceivedStatus == null || part.ReceivedStatus == undefined || part.ReceivedStatus == '')
@@ -992,7 +990,7 @@ export class NretManagementComponent implements OnInit {
     const somePartErrors = [
       // { condition: part => isNullOrUndefinedOrEmpty(part.ReceivedStatus), errorMessage: "Received Status can't be empty for any Part" },
     ];
-  
+
     for (const error of somePartErrors) {
       if (this.finalSelectedParts.some(error.condition)) {
         this.toastMessage.error(error.errorMessage);
@@ -1014,8 +1012,8 @@ export class NretManagementComponent implements OnInit {
         "row": {
           "DeliveryChallanGUID": this.deliveryChallanGUID,
           "DeliveryChallanDetailGUID": item.DeliveryChallanDetailGUID,
-          "RepairDetailGuid":item.RepairDetailGUID,
-          "ReceivedStatus":"SHIPMET COMPLATED"
+          "RepairDetailGuid": item.RepairDetailGUID,
+          "ReceivedStatus": "SHIPMET COMPLATED"
         }
       })
     }
@@ -1026,27 +1024,27 @@ export class NretManagementComponent implements OnInit {
     return xml;
   }
 
-  UpdateTrackingNumbet(){
-    let ReqStatus=[];
+  UpdateTrackingNumbet() {
+    let ReqStatus = [];
     ReqStatus.push({
-      "Key":"APITYPE",
-      "Value":"UpdateDeliveryChallanHeader"
+      "Key": "APITYPE",
+      "Value": "UpdateDeliveryChallanHeader"
     })
     ReqStatus.push({
-      "Key":"DeliveryChallanGUID",
+      "Key": "DeliveryChallanGUID",
       "Value": this.params.headerguid
     })
     ReqStatus.push({
-      "Key":"TrackingNumber",
-      "Value":this.noOfBoxes
+      "Key": "TrackingNumber",
+      "Value": this.noOfBoxes
     })
-    console.log("Update ReturnOrder:",ReqStatus)
+    console.log("Update ReturnOrder:", ReqStatus)
     let RequestJson = JSON.stringify(ReqStatus)
     let RequestContent = {
-      "content":RequestJson
+      "content": RequestJson
     }
     this.dynamicService.getDynamicDetaildata(RequestContent).subscribe({
-      next:(value)=>{ 
+      next: (value) => {
         this.toastMessage.success("Updated SuccessFully");
         window.location.reload();
       }
@@ -1056,79 +1054,78 @@ export class NretManagementComponent implements OnInit {
   // Pop Up Selector :- 
   showOnlySelected = false
   hidePopup = true
-  SelectedList: any[] =[]
-  popUpArray: any[] =[]
+  SelectedList: any[] = []
+  popUpArray: any[] = []
 
-  onPopUpSubmit(){
-    
-      if (this.popUpArray.length  > 0 ) {
-        console.log("Partlist from PopUp", this.popUpArray)
-        this.ngxSpinnerService.show()
-        this.popUpArray.forEach( item => {
-          if( !(this.finalSelectedParts.find(caseItem => item.CaseId == caseItem.CaseId)) && item.selected)
-          {
-            this.finalSelectedParts.push({
+  onPopUpSubmit() {
 
-              "PartCode": item.PartCode,
-              "SerialNo": item.SerialNo1,
-              "UnitPrice": 50,
-              "PartDescription": item.PartDescription,
-              "CaseId": item.CaseId,
-              "IsDeleted": "0",
-              "vendorAddress": item.vendorAddress,
-              "CaseGUID":item.CaseGUID,
-              "ReceivedStatus": '', 
-            })
-          }
-        })
-        this.CalculateTotalUnitPrice()
-        this.ngxSpinnerService.hide()
-      }
-      this.hidePopup = true  
+    if (this.popUpArray.length > 0) {
+      console.log("Partlist from PopUp", this.popUpArray)
+      this.ngxSpinnerService.show()
+      this.popUpArray.forEach(item => {
+        if (!(this.finalSelectedParts.find(caseItem => item.CaseId == caseItem.CaseId)) && item.selected) {
+          this.finalSelectedParts.push({
+
+            "PartCode": item.PartCode,
+            "SerialNo": item.SerialNo1,
+            "UnitPrice": 50,
+            "PartDescription": item.PartDescription,
+            "CaseId": item.CaseId,
+            "IsDeleted": "0",
+            "vendorAddress": item.vendorAddress,
+            "CaseGUID": item.CaseGUID,
+            "ReceivedStatus": '',
+          })
+        }
+      })
+      this.CalculateTotalUnitPrice()
+      this.ngxSpinnerService.hide()
+    }
+    this.hidePopup = true
   }
 
-  showItem(item): Boolean{
-    if(this.showOnlySelected == false){
-      if(item.isSelected == true){
+  showItem(item): Boolean {
+    if (this.showOnlySelected == false) {
+      if (item.isSelected == true) {
         return true
       }
-      else{
+      else {
         return false
       }
     }
-    else{
-      if(item.isSelected == true){
+    else {
+      if (item.isSelected == true) {
         return true
       }
-      else{
+      else {
         return false
       }
     }
   }
 
-  showAddParts(){
+  showAddParts() {
     if (this.DeliveryChallanType == null || this.DeliveryChallanType == undefined) {
       this.toastMessage.error("Please Select Return Type to add parts")
     }
     else if (this.LocationCode == null || this.LocationCode == undefined) {
-        this.toastMessage.error("Please select From Location to add parts")
-      }
+      this.toastMessage.error("Please select From Location to add parts")
+    }
     else {
       this.hidePopup = false;
-      this.GetNretManagementList() 
+      this.GetNretManagementList()
       // if (this.finalSelectedParts.length != 0){
       //   this.popUpArray.forEach((item) => item.isSelected = false);
       // }
     }
   }
 
-  hideAddParts(){
+  hideAddParts() {
     this.hidePopup = !this.hidePopup;
     this.SelectedList.forEach((item) => {
       item.isSelected = false;
       this.popUpArray.push(item);
     });
-    
+
     this.SelectedList = [];
   }
 
@@ -1140,7 +1137,7 @@ export class NretManagementComponent implements OnInit {
 
     for (let item of this.popUpArray) {
       if (text.length > 1) {
-        if(item.SerialNo1 && item.PartDescription && item.CaseId){
+        if (item.SerialNo1 && item.PartDescription && item.CaseId) {
           item.inSearch = (item.SerialNo1.toLowerCase().includes(text.toLowerCase()) || item.PartDescription.toLowerCase().includes(text.toLowerCase()) || item.CaseId.toLowerCase().includes(text.toLowerCase()));
         }
       } else {

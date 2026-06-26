@@ -186,7 +186,7 @@
             </div>
           </div>
 
-          <div class="job-status-grid" *ngIf="countArray && countArray.length > 0">
+          <div class="job-status-grid" *ngIf="countArray.length > 0">
             <!-- Iterate over the statuses -->
             <div class="status-card" *ngFor="let status of countArray">
               <div class="status-count">{{ status?.Count }}</div>

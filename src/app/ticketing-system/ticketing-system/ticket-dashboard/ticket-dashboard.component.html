@@ -1,0 +1,53 @@
+<section class="content">
+
+    <div class="td-topbar">
+        <div class="td-topbar-left">
+            <div class="td-topbar-icon">
+                  <i class="fa fa-ticket-alt"></i>
+            </div>
+            <div>
+                <h1 class="td-topbar-title">Ticketing Dashboard</h1>
+                <span class="td-topbar-sub">Live overview of all ticket statuses</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="td-body">
+
+        <div class="td-total-card">
+            <div class="td-total-left">
+                <span class="td-total-label">Total Tickets</span>
+                <span class="td-total-count">{{ totalTickets }}</span>
+            </div>
+           
+        </div>
+
+        <div class="td-cards-grid">
+            <div
+                class="td-status-card"
+                *ngFor="let card of statusCards"
+                [style.borderColor]="card.color"
+                [style.background]="card.color + '12'"
+                (click)="navigateToTickets(card.status)">
+
+                <div class="td-card-top">
+                    <span class="td-card-status" [style.color]="card.color">
+                        {{ card.status }}
+                    </span>
+                    <div class="td-card-icon" [style.background]="card.color + '25'">
+                        <i class="fa fa-circle" [style.color]="card.color"></i>
+                    </div>
+                </div>
+
+                <span class="td-card-count" [style.color]="card.color">
+                    {{ card.count }}
+                </span>
+
+                <span class="td-card-label">Tickets</span>
+
+            </div>
+        </div>
+
+    </div>
+
+</section>

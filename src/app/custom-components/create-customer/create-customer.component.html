@@ -340,10 +340,19 @@
     <div>
         <div>
             <mat-card *ngIf="isGridShow">
+                <div class="row m-2">
+                    <div  class="col-sm-2">
+
+                        <input type="text"  placeholder="Search By Case Id " [(ngModel)]="caseid">
+                    </div>
+                    <div  class="col-sm-4">
+                        <button class="btn btn-success"  (click)="SearchCallLogin()">Search</button>
+                    </div>
+                </div>
                 <div class="col-sm-12">
                     <nitc-grid [gridcolumns]="JobColumns" [dataSource]="JobDetail" [actions]="actionDetails"
                         (actionEvent)="actionEmit($event)" [hideSpinnerEvents]="jobListHideSpinnerEvent"
-                        (changeEvent)="jobLoadPageData($event)"></nitc-grid>
+                        (changeEvent)="JobListloadPageData($event)" ></nitc-grid>
                 </div>
             </mat-card>
         </div>

@@ -8,7 +8,7 @@ import * as glob from "src/app/config/global"
 import { Columns } from 'src/app/models/column.metadata';
 import { PaginationMetaData } from 'src/app/models/pagination.metadata';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Filter } from 'src/app/custom-components/call-login-dashboard/filter.meta' 
+import { Filter } from 'src/app/custom-components/call-login-dashboard/filter.meta'
 import { Observable } from 'rxjs/internal/Observable';
 import { DatePipe } from '@angular/common';
 import { ReportService } from 'src/app/common/Services/gsxService/report.service';
@@ -50,19 +50,23 @@ export class CustomerMasterComponent implements OnInit {
       { datatype: "STRING", field: "MobileNo", title: "MobileNo" },
       { datatype: "STRING", field: "OPENCalls", title: "OPENCalls" },
       { datatype: "STRING", field: "CloseCalls", title: "CloseCalls" },
+      { datatype: "STRING", field: "CustomerType", title: "CustomerType" },
+      { datatype: "STRING", field: "IsInsuranceApplicable", title: "IsInsuranceApplicable" },
+      { datatype: "STRING", field: "InsuranceType", title: "InsuranceType" },
+      { datatype: "STRING", field: "IsSpecialMarginApplicable", title: "IsSpecialMarginApplicable" },
     ];
-  
 
-  constructor (
-      private dynamicService: DynamicService,
-      private activatedRoute: ActivatedRoute,
-      private route: Router,
-      private ngxservice: NgxSpinnerService,
-      private datePipe: DatePipe,
-      private reportService: ReportService,
-       private toaster: ToastrService,
-          private spinner: NgxSpinnerService,
-    ) {
+
+  constructor(
+    private dynamicService: DynamicService,
+    private activatedRoute: ActivatedRoute,
+    private route: Router,
+    private ngxservice: NgxSpinnerService,
+    private datePipe: DatePipe,
+    private reportService: ReportService,
+    private toaster: ToastrService,
+    private spinner: NgxSpinnerService,
+  ) {
     this.pagination = new PaginationMetaData();
     this.activatedRoute.data.subscribe((data: any) => {
       this.jobPagination = new PaginationMetaData();
@@ -71,12 +75,12 @@ export class CustomerMasterComponent implements OnInit {
   }
 
 
-  actionDetails: any[]=[
-    {"code": "EDIT","icon": "edit","title": "Edit"}
+  actionDetails: any[] = [
+    { "code": "EDIT", "icon": "edit", "title": "Edit" }
   ];
 
   ngOnInit() {
- this.GetCustomerList('', '', '', '');
+    this.GetCustomerList('', '', '', '');
   }
 
   actionEvent = (act: any) => {
@@ -87,63 +91,60 @@ export class CustomerMasterComponent implements OnInit {
     }
   }
 
-  add(){
-    this.route.navigate(['/auth/'+glob.getCompanyCode()+'/add-customer-master']);
+  add() {
+    this.route.navigate(['/auth/' + glob.getCompanyCode() + '/add-customer-master']);
   }
- 
 
-  loadPageData(event){
-    switch(event.eventType){
+
+  loadPageData(event) {
+    switch (event.eventType) {
       case "PageChange":
-        this.jobPagination.PageNumber  = event.eventDetail.pageIndex + 1;
-        let requestData =[];
+        this.jobPagination.PageNumber = event.eventDetail.pageIndex + 1;
+        let requestData = [];
 
         requestData.push({
-          "Key":"APIType",
+          "Key": "APIType",
           "Value": "GetCustomerList"
         });
         requestData.push({
-          "Key":"CompanyCode",
+          "Key": "CompanyCode",
           "Value": glob.getCompanyCode()
         });
         requestData.push({
-          "Key":"PageNo",
-          "Value": event.eventDetail.pageIndex + 1 
+          "Key": "PageNo",
+          "Value": event.eventDetail.pageIndex + 1
         });
         requestData.push({
-          "Key":"PageSize",
+          "Key": "PageSize",
           "Value": event.eventDetail.pageSize
         });
 
         let strRequestData = JSON.stringify(requestData);
         let contentRequest =
         {
-          "content" : strRequestData
-        };    
+          "content": strRequestData
+        };
         this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
           {
-            next : (Value) =>
-            {
-              try{
+            next: (Value) => {
+              try {
                 let response = JSON.parse(Value.toString());
-                if(response.ReturnCode =='0')
-                {
+                if (response.ReturnCode == '0') {
                   let data = JSON.parse(response?.ExtraData);
-                  this.detail.next({totalRecord:data?.Totalrecords , Data: data?.CustomerList?.Customer });
+                  this.detail.next({ totalRecord: data?.Totalrecords, Data: data?.CustomerList?.Customer });
                 }
-              }catch(ext){
+              } catch (ext) {
                 console.log(ext);
               }
             },
-            error : err =>
-            {
+            error: err => {
               console.log(err);
             }
           }
         );
         break;
-    }  
-    setTimeout(()=>{  this.hideSpinnerEvent.next(); }, 1);
+    }
+    setTimeout(() => { this.hideSpinnerEvent.next(); }, 1);
   }
 
   search() {
@@ -198,7 +199,7 @@ export class CustomerMasterComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
 
-       next: (Value) => {
+        next: (Value) => {
           try {
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {
@@ -210,7 +211,7 @@ export class CustomerMasterComponent implements OnInit {
               else {
                 custlist.push(data?.CustomerList?.Customer);
               }
-             this.detail.next({ totalRecord: data?.Totalrecords, Data: custlist });
+              this.detail.next({ totalRecord: data?.Totalrecords, Data: custlist });
               this.ngxservice.hide()
             }
           } catch (ext) {
@@ -223,19 +224,19 @@ export class CustomerMasterComponent implements OnInit {
     );
   }
 
-  
 
 
-actionEmit(event){
-  console.log("action Emit", event);
-  if(event.action == 'EDIT'){
-    this.route.navigate(['/auth/'+glob.getCompanyCode()+'/add-customer-master'], { queryParams: { cc: event.row.CompanyCode, customercode:event.row.CustomerCode } })
+
+  actionEmit(event) {
+    console.log("action Emit", event);
+    if (event.action == 'EDIT') {
+      this.route.navigate(['/auth/' + glob.getCompanyCode() + '/add-customer-master'], { queryParams: { cc: event.row.CompanyCode, customercode: event.row.CustomerCode } })
+    }
   }
-}
 
 
- ExportCustomerReport() {
-     debugger
+  ExportCustomerReport() {
+
     const startformattedDate = this.datePipe.transform(this.StartDate, 'yyyy-MM-dd');
     const endformattedDate = this.datePipe.transform(this.EndDate, 'yyyy-MM-dd');
 
@@ -253,9 +254,9 @@ actionEmit(event){
       this.toaster.error('End Date Cannot Be Less Than Start Date')
       return
     }
-      this.spinner.show()
+    this.spinner.show()
 
-       this.ngxservice.show()
+    this.ngxservice.show()
     let requestData = [];
     requestData.push({
       "Key": "APIType",
@@ -267,12 +268,12 @@ actionEmit(event){
     });
     requestData.push({
       "Key": "CustomerName",
-      "Value": this.customername ?  this.customername.trim() : ''
+      "Value": this.customername ? this.customername.trim() : ''
     });
 
     requestData.push({
       "Key": "MobileNo",
-      "Value": this.phonenumber ?  this.phonenumber.trim() : ''
+      "Value": this.phonenumber ? this.phonenumber.trim() : ''
     });
     requestData.push({
       "Key": "EmailId",
@@ -298,12 +299,12 @@ actionEmit(event){
     let contentRequest =
     {
       "content": strRequestData
-    }    
+    }
     this.reportService.downloadServiceReport('UNIVERSAL', contentRequest).subscribe(
       {
         next: (Value) => {
           try {
-               
+
             const startformattedDate = this.datePipe.transform(this.StartDate, 'dd-MM-yyyy');
             const endformattedDate = this.datePipe.transform(this.EndDate, 'dd-MM-yyyy');
             let response = JSON.parse(Value.toString());
@@ -325,7 +326,7 @@ actionEmit(event){
         error: err => {
           console.log(err);
           this.spinner.hide()
-          
+
 
         }
       }

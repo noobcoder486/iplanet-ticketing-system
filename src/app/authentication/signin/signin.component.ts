@@ -8,6 +8,8 @@ import { forkJoin } from 'rxjs';
 import { AppInitService } from 'src/app/core/service/app.init.service';
 import { EncryptDecryptService } from 'src/app/core/service/encrypt-decrypt.service';
 import { ToastrService } from 'ngx-toastr';
+import * as glob from "src/app/config/global"
+
 import { DynamicService } from 'src/app/common/Services/dynamicService/dynamic.service';
 @Component({
   selector: 'app-signin',
@@ -57,8 +59,8 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
 
   onSubmit() {
     this.error = '';
-    if (this.dynamicService.validateAllFormFields(this.loginForm)){
-        
+    if (this.dynamicService.validateAllFormFields(this.loginForm)) {
+
       if (this.loginForm.invalid) {
         this.error = 'Username and Password not valid !';
         return;
@@ -67,8 +69,8 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
         //let password = this.encryptDecryptService.encrypt(this.f.password.value);
         this.subs.sink = this.authService.login(this.f.email.value, this.f.password.value)
           .subscribe((data: any) => {
-            
-           this.UserObject = data.UserDetails
+
+            this.UserObject = data.UserDetails
 
             if (data.isValid == true) {
               sessionStorage.setItem(GLOBALVARIABLE.USERNAME, this.f.email.value);
@@ -78,12 +80,12 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
 
             }
             else {
-              
+
               this.submitted = false;
-              if ( data?.UserDetails?.AuthenticationResponse){
+              if (data?.UserDetails?.AuthenticationResponse) {
                 this.error = data?.UserDetails?.AuthenticationResponse
               }
-              else{
+              else {
                 this.error = "User Name or Password is not correct!"
               }
             }
@@ -108,8 +110,6 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
       Actions: this.authService.getModulections(),
       UserPermission: this.authService.getUserPermission(userName)
     }).subscribe((data: any) => {
-      console.log("Menu Data");
-      console.log(data.MenuDetail);
       data.MenuDetail[0].push({
         HeadingId: 1,
         HeadingLogo: "fas fa-tachometer-alt",
@@ -125,7 +125,6 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
         Url: "/repair-process",
       });
       sessionStorage.setItem('MenuDetail', JSON.stringify(data.MenuDetail));
-      //sessionStorage.setItem('ModuleEntityField', JSON.stringify(data.ProfileDetail));
       sessionStorage.setItem('FieldDetail', JSON.stringify(data.FieldDetails));
       sessionStorage.setItem('GridModuleDetail', JSON.stringify(data.GridDetails));
       sessionStorage.setItem('AllRouting', JSON.stringify(data.AllRouting));

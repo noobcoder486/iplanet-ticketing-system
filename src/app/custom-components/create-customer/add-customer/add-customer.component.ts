@@ -3,7 +3,7 @@ import { DynamicService } from 'src/app/common/Services/dynamicService/dynamic.s
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DropDownType } from '../../call-login/metadata/request.metadata';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Component, OnInit,Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { Customer } from './CUSTOMER.metadata';
 import * as glob from 'src/app/config/global';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -25,9 +25,9 @@ export class AddCustomerComponent implements OnInit {
   customer: Customer;
   errorMessage: String;
   PopUp_Event: boolean = false;
-  RetailData:any=[];
-  UploadedImageList:any = []
-  RetailsCustomerData:any=[];
+  RetailData: any = [];
+  UploadedImageList: any = []
+  RetailsCustomerData: any = [];
   Countries: DropDownValue = this.getBlankObject();
   States: DropDownValue = this.getBlankObject();
   CustAccountGroup: DropDownValue = this.getBlankObject();
@@ -35,14 +35,16 @@ export class AddCustomerComponent implements OnInit {
   @Output() AddCustomerData = new EventEmitter<any>();
   @Output() closeAddCustomer = new EventEmitter<any>();
   @Output("search") search: EventEmitter<any> = new EventEmitter();
-  ReferredByDD:DropDownValue = this.getBlankObject();
-  submitClicked= false 
+  ReferredByDD: DropDownValue = this.getBlankObject();
+  submitClicked = false
   @Input() TokenAllDetails
   @Input() ReservationDetails
   InsuranceTypeDD: DropDownValue = this.getBlankObject();
-     InsuranceApplicableList:any[]=[
-    {Id : '1' ,TEXT : 'YES' },{Id : '0' ,TEXT : 'NO'}]
-  
+  InsuranceApplicableList: any[] = [
+    { Id: '1', TEXT: 'YES' }, { Id: '0', TEXT: 'NO' }]
+  CustomerTypeDD: DropDownValue = this.getBlankObject();
+
+
   constructor(
     private formBuilder: FormBuilder,
     private dropdownDataService: DropdownDataService,
@@ -53,14 +55,14 @@ export class AddCustomerComponent implements OnInit {
   ) { }
 
 
-  SpninnerChecker() { this.spinner.show(); }  
-   gstConditionallyRequiredValidator(formControl: AbstractControl) {
+  SpninnerChecker() { this.spinner.show(); }
+  gstConditionallyRequiredValidator(formControl: AbstractControl) {
     if (!formControl.parent) {
       return null;
     }
-     ;
+    ;
     if (formControl.parent.get('DoGST').value) {
-      return Validators.required(formControl); 
+      return Validators.required(formControl);
     }
     return null;
   }
@@ -69,16 +71,19 @@ export class AddCustomerComponent implements OnInit {
     Validators.maxLength(15),
     Validators.minLength(14),
     Validators.required
-];
+  ];
 
 
-private gstnoValidatornotRequired = [
-  Validators.maxLength(15),
-  Validators.minLength(0)
+  private gstnoValidatornotRequired = [
+    Validators.maxLength(15),
+    Validators.minLength(0)
 
-];
+  ];
 
   ngOnInit(): void {
+    this.onCustomerType({ term: "", items: [] });
+
+
     this.customer = new Customer();
     this.customerForm = this.formBuilder.group({
       FirstName: [null, Validators.required],
@@ -93,55 +98,55 @@ private gstnoValidatornotRequired = [
       City: [null, Validators.required],
       Pincode: [null, [Validators.required, Validators.minLength(6), Validators.maxLength(6), Validators.pattern("^[0-9]*$"),]],
       DoGST: [false],
-      gstNo: [null,[ Validators.minLength(0), Validators.maxLength(15)]],
-      CustAccGroup: [null,Validators.required],
+      gstNo: [null, [Validators.minLength(0), Validators.maxLength(15)]],
+      CustAccGroup: [null, Validators.required],
       GSTRegistrationType: ["GSTU"],
-      ReferredBy:[null],
-      IsInsuranceApplicable:[null,Validators.required],
-      InsuranceType:[null],
-
+      ReferredBy: [null],
+      IsInsuranceApplicable: [null, Validators.required],
+      InsuranceType: [null],
+      CustomerType: [null],
     });
 
-     this.customerForm.get('CustAccGroup')?.setValue('RETAIL');
-      this.customerForm.get('CustAccGroup')?.disable();
+    this.customerForm.get('CustAccGroup')?.setValue('RETAIL');
+    this.customerForm.get('CustAccGroup')?.disable();
 
-      
+
     this.onCountrySearch({ term: "", items: [] });
     this.onCustAccountGroupSearch({ term: "", items: [] });
     this.onGSTRegistrationSearch({ term: "", items: [] });
     this.onReferredBy({ term: "", items: [] });
     this.onInsuranceType({ term: "", items: [] });
-    
+
 
     this.customerForm.patchValue({
       FirstName: this.TokenAllDetails.FirstName,
       LastName: this.TokenAllDetails.LastName,
       PhoneNo: this.TokenAllDetails.MobileNo,
-      EmailId:this.TokenAllDetails.EmailId,
+      EmailId: this.TokenAllDetails.EmailId,
     })
     console.log("Reservation ", this.ReservationDetails)
-    if ( this.ReservationDetails ){
+    if (this.ReservationDetails) {
       this.customerForm.patchValue({
         FirstName: this.ReservationDetails.CustomerFirstName,
         LastName: this.ReservationDetails.CustomerLastName,
         Address1: this.ReservationDetails.CustomerAddressLine1,
         Address2: this.ReservationDetails.CustomerAddressLine2,
         PhoneNo: this.ReservationDetails.CustomerMobileNo,
-        AlternateNo: null, 
+        AlternateNo: null,
         EmailId: this.ReservationDetails.CustomerEmailId,
         Country: this.ReservationDetails.CustomerCountry,
         // State: data.Reservation.CustomerState,
         City: this.ReservationDetails.CustomerCity,
         Pincode: this.ReservationDetails.CustomerPincode,
-      })   
+      })
     }
 
   }
 
 
 
-  TokenDataSet(){
-    console.log("Data" , this.TokenAllDetails)
+  TokenDataSet() {
+    console.log("Data", this.TokenAllDetails)
   }
 
   // onKeyPress(event: KeyboardEvent, validationType: string, maxLength: number) {
@@ -166,49 +171,49 @@ private gstnoValidatornotRequired = [
   //   }
   // }
 
-     onKeyPress(event: KeyboardEvent, validationType: string, maxLength: number) {
-  const input = event.target as HTMLInputElement;
-  const key = event.key;
-  const inputFieldName = input.getAttribute('formControlName');
+  onKeyPress(event: KeyboardEvent, validationType: string, maxLength: number) {
+    const input = event.target as HTMLInputElement;
+    const key = event.key;
+    const inputFieldName = input.getAttribute('formControlName');
 
-  const allowedKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight','Comma'];
+    const allowedKeys = ['Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Comma'];
 
-  if (allowedKeys.includes(key)) {
-    return;
-  }
+    if (allowedKeys.includes(key)) {
+      return;
+    }
 
-  if (['FirstName', 'LastName'].includes(inputFieldName || '')) {
-    if (!/^[a-zA-Z0-9 ]$/.test(key)) {
+    if (['FirstName', 'LastName'].includes(inputFieldName || '')) {
+      if (!/^[a-zA-Z0-9 ]$/.test(key)) {
+        event.preventDefault();
+        this.toastr.error('Special Characters Not Allowed!');
+        return;
+      }
+    }
+
+    if (['Address1', 'Address2', 'Address3'].includes(inputFieldName || '')) {
+      if (!/^[a-zA-Z0-9 ,.]+$/.test(key)) {
+        event.preventDefault();
+        this.toastr.error('Special Characters Not Allowed!');
+        return;
+      }
+    }
+
+
+    if (validationType === 'int' && !/^[0-9]$/.test(key)) {
       event.preventDefault();
-      this.toastr.error('Special Characters Not Allowed!');
+      return;
+    }
+
+    if (validationType === 'alpha' && !/^[a-zA-Z]$/.test(key)) {
+      event.preventDefault();
+      return;
+    }
+
+    if (input.value.length >= maxLength) {
+      event.preventDefault();
       return;
     }
   }
-  
-  if (['Address1', 'Address2', 'Address3'].includes(inputFieldName || '')) {
-  if (!/^[a-zA-Z0-9 ,.]+$/.test(key)) {
-    event.preventDefault();
-    this.toastr.error('Special Characters Not Allowed!');
-    return;
-  }
-}
-
-
-  if (validationType === 'int' && !/^[0-9]$/.test(key)) {
-    event.preventDefault();
-    return;
-  }
-
-  if (validationType === 'alpha' && !/^[a-zA-Z]$/.test(key)) {
-    event.preventDefault();
-    return;
-  }
-
-  if (input.value.length >= maxLength) {
-    event.preventDefault();
-    return;
-  }
-}
   onPinCodeChange() {
     this.spinner.show();
     let pinCodeFieldValue = this.customerForm.get("Pincode").value;
@@ -278,7 +283,7 @@ private gstnoValidatornotRequired = [
     }
   }
   onReferredBy($event: { term: string; items: any[] }) {
-    
+
     this.dropdownDataService
       .fetchDropDownData(DropDownType.ReferredBy, $event.term, {})
       .subscribe({
@@ -288,27 +293,26 @@ private gstnoValidatornotRequired = [
             this.ReferredByDD = value;
           }
         },
-        
+
         error: (err) => {
           this.ReferredByDD = this.getBlankObject();
         },
-        
+
       });
-      
+
   }
 
   onSubmit() {
-     debugger
-    let image  = this.UploadedImageList[0]?.AttachmentFile
-    if (this.dynamicService.validateAllFormFields(this.customerForm)){
+
+    let image = this.UploadedImageList[0]?.AttachmentFile
+    if (this.dynamicService.validateAllFormFields(this.customerForm)) {
 
 
-       if(this.customerForm.get("IsInsuranceApplicable").value == 1 ||  this.customerForm.get("IsInsuranceApplicable").value == '1' )
-      {
-         if(this.customerForm.get("InsuranceType").value == null || this.customerForm.get("InsuranceType").value == undefined || this.customerForm.get("InsuranceType").value == ''){
-           this.toastr.error('Please select Insurance Type')
-           return
-         }
+      if (this.customerForm.get("IsInsuranceApplicable").value == 1 || this.customerForm.get("IsInsuranceApplicable").value == '1') {
+        if (this.customerForm.get("InsuranceType").value == null || this.customerForm.get("InsuranceType").value == undefined || this.customerForm.get("InsuranceType").value == '') {
+          this.toastr.error('Please select Insurance Type')
+          return
+        }
 
       }
 
@@ -330,13 +334,13 @@ private gstnoValidatornotRequired = [
         "Key": "CustomerCode",
         "Value": ""
       });
-      requestData.push({      
+      requestData.push({
         "Key": "FirstName",
-        "Value":this.customerForm.controls["FirstName"].value
+        "Value": this.customerForm.controls["FirstName"].value
       });
       requestData.push({
         "Key": "LastName",
-        "Value":this.customerForm.controls["LastName"].value
+        "Value": this.customerForm.controls["LastName"].value
       });
       requestData.push({
         "Key": "Blocked",
@@ -344,19 +348,19 @@ private gstnoValidatornotRequired = [
       });
       requestData.push({
         "Key": "Address1",
-        "Value":this.customerForm.controls["Address1"].value
+        "Value": this.customerForm.controls["Address1"].value
       });
       requestData.push({
         "Key": "Address2",
-        "Value":this.customerForm.controls["Address2"].value
+        "Value": this.customerForm.controls["Address2"].value
       });
       requestData.push({
         "Key": "CountryCode",
-        "Value":this.customerForm.controls["Country"].value
+        "Value": this.customerForm.controls["Country"].value
       });
       requestData.push({
         "Key": "StateCode",
-        "Value":this.customerForm.controls["State"].value
+        "Value": this.customerForm.controls["State"].value
       });
       requestData.push({
         "Key": "City",
@@ -372,7 +376,7 @@ private gstnoValidatornotRequired = [
       });
       requestData.push({
         "Key": "PhoneNo",
-        "Value": this.customerForm.controls["AlternateNo"].value == null || this.customerForm.controls["AlternateNo"].value==undefined ? "" : this.customerForm.controls["AlternateNo"].value
+        "Value": this.customerForm.controls["AlternateNo"].value == null || this.customerForm.controls["AlternateNo"].value == undefined ? "" : this.customerForm.controls["AlternateNo"].value
       });
       requestData.push({
         "Key": "EmailId",
@@ -384,13 +388,13 @@ private gstnoValidatornotRequired = [
       });
       requestData.push({
         "Key": "GSTRegistrationNo",
-        "Value": this.customerForm.controls["gstNo"].value == null || this.customerForm.controls["gstNo"].value==undefined ? "" : this.customerForm.controls["gstNo"].value
-        
+        "Value": this.customerForm.controls["gstNo"].value == null || this.customerForm.controls["gstNo"].value == undefined ? "" : this.customerForm.controls["gstNo"].value
+
       });
       requestData.push({
         "Key": "GSTRegistrationType",
         "Value": this.customerForm.controls["GSTRegistrationType"].value
-      
+
       });
       requestData.push({
         "Key": "DefaultPartnerCode",
@@ -402,7 +406,7 @@ private gstnoValidatornotRequired = [
       });
       requestData.push({
         "Key": "IdentificationDocument",
-        "Value": image == null || image == undefined?"":image
+        "Value": image == null || image == undefined ? "" : image
       });
       requestData.push({
         "Key": "PriceGroup",
@@ -421,6 +425,10 @@ private gstnoValidatornotRequired = [
         Value: this.customerForm.controls["InsuranceType"].value ?? ''
       });
       requestData.push({
+        Key: "CustomerType",
+        Value: this.customerForm.controls["CustomerType"].value ?? 'NA'
+      });
+      requestData.push({
         "Key": "PageNo",
         "Value": "1"
       });
@@ -428,10 +436,10 @@ private gstnoValidatornotRequired = [
         "Key": "PageSize",
         "Value": "10"
       });
-      console.log("data checking:",requestData)
+      console.log("data checking:", requestData)
 
-      ;
-      
+        ;
+
       let strRequestData = JSON.stringify(requestData);
       console.log(strRequestData);
       let contentRequest = {
@@ -440,22 +448,21 @@ private gstnoValidatornotRequired = [
       ;
 
       const ShouldContinue = confirm("Are you sure? Do you want to continue")
-      if (ShouldContinue == false ){
+      if (ShouldContinue == false) {
         return
       }
-      if(this.submitClicked == true)
-      {
+      if (this.submitClicked == true) {
         return;
       }
-      this.submitClicked=true 
+      this.submitClicked = true
 
       this.spinner.show();
       this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
         {
           next: (value) => {
-            this.submitClicked= false 
+            this.submitClicked = false
             this.spinner.hide();
-            console.log("CustomerValue:",value);
+            console.log("CustomerValue:", value);
 
             let response = JSON.parse(value.toString());
             if (response.ReturnCode == '0') {
@@ -467,7 +474,7 @@ private gstnoValidatornotRequired = [
 
             }
             else {
-            
+
               this.spinner.hide();
               this.errorMessage = response.ReturnMessage;
               const parser = new xml2js.Parser({ strict: false, trim: true });
@@ -479,7 +486,7 @@ private gstnoValidatornotRequired = [
 
           },
           error: err => {
-            this.submitClicked= false 
+            this.submitClicked = false
             this.spinner.hide();
             console.log(err);
           }
@@ -515,13 +522,13 @@ private gstnoValidatornotRequired = [
           break;
       }
       this.customerForm.controls[controlName].setErrors({ "Invalid": true, "Message": error.ERRORMESSAGE[0] });
-      this.toastr.error(error.ERRORMESSAGE[0],"Error",{closeButton:true,disableTimeOut:true});
+      this.toastr.error(error.ERRORMESSAGE[0], "Error", { closeButton: true, disableTimeOut: true });
     }
   }
 
-  canclefunction(){
+  canclefunction() {
     this.closeAddCustomer.emit(this.RetailData);
-  } 
+  }
 
 
   getPriceGroup(): String {
@@ -545,7 +552,7 @@ private gstnoValidatornotRequired = [
     } else {
       this.customerForm.controls['gstNo'].enable();
       this.customerForm.controls['GSTRegistrationType'].enable();
-      var data =  {Id:"GRR",TEXT:"GST registered- Regular"}
+      var data = { Id: "GRR", TEXT: "GST registered- Regular" }
       this.customerForm.controls["GSTRegistrationType"].setValue("GRR");
       this.customerForm.get('gstNo').setValidators(this.gstnoValidatorRequired);
     }
@@ -581,29 +588,29 @@ private gstnoValidatornotRequired = [
   async OnFileUploadClick(event: any) {
     for (var i = 0; i <= event.target.files.length - 1; i++) {
       let fileToUpload = <File>event.target.files[0];
-      var ext =  fileToUpload.name.split('.').pop();
-      var filename = uuidv4() +"." +  ext;
-      try{
-        const value = await this.dynamicService.uploadFileToS3Local(fileToUpload, filename) 
+      var ext = fileToUpload.name.split('.').pop();
+      var filename = uuidv4() + "." + ext;
+      try {
+        const value = await this.dynamicService.uploadFileToS3Local(fileToUpload, filename)
 
         // this.dynamicService.uploadFileToS3Local(fileToUpload, filename).subscribe(
         //   {
         //     next: (value) => {
-              let uploadedimage: any;
-              uploadedimage = value;
-              this.UploadedImageList.push({
-                "AttachmentFile": uploadedimage?.dbPath,
-                "src": uploadedimage?.dbPath,//  glob.GLOBALVARIABLE.SERVER_LINK + uploadedimage?.dbPath,
-                "filename": fileToUpload.name
-              })
-              console.log("Img", this.UploadedImageList)
-          //   },
-          //   error: (err) => {
-          //     this.spinner.hide()
-          //     this.toastr.error(err)
-          //   },
-          // });
-      } 
+        let uploadedimage: any;
+        uploadedimage = value;
+        this.UploadedImageList.push({
+          "AttachmentFile": uploadedimage?.dbPath,
+          "src": uploadedimage?.dbPath,//  glob.GLOBALVARIABLE.SERVER_LINK + uploadedimage?.dbPath,
+          "filename": fileToUpload.name
+        })
+        console.log("Img", this.UploadedImageList)
+        //   },
+        //   error: (err) => {
+        //     this.spinner.hide()
+        //     this.toastr.error(err)
+        //   },
+        // });
+      }
       catch (err) {
         this.spinner.hide()
         this.toastr.error(err.message || err);
@@ -629,7 +636,7 @@ private gstnoValidatornotRequired = [
   }
 
   onCustAccountGroupSearch($event: { term: string; items: any[] }) {
-    
+
     this.dropdownDataService.fetchDropDownData(DropDownType.CustAccountGroup, $event.term, {
       CompanyCode: glob.getCompanyCode().toString()
     }).subscribe({
@@ -646,7 +653,7 @@ private gstnoValidatornotRequired = [
   }
 
   onGSTRegistrationSearch($event: { term: string; items: any[] }) {
-    
+
     this.dropdownDataService.fetchDropDownData(DropDownType.GSTRegistration, $event.term, {
 
     }).subscribe({
@@ -670,47 +677,59 @@ private gstnoValidatornotRequired = [
   }
 
 
-validateemail(){
-  this.spinner.show()
-  var emailid=this.customerForm.controls["EmailId"].value
-  this.emailValidator.validateEmail(emailid).subscribe(
-    {
-      next: (value:any) => {
-        if(value.ReturnValue==true)
-        {
-          this.toastr.success("Valid Email Id");
+  validateemail() {
+    this.spinner.show()
+    var emailid = this.customerForm.controls["EmailId"].value
+    this.emailValidator.validateEmail(emailid).subscribe(
+      {
+        next: (value: any) => {
+          if (value.ReturnValue == true) {
+            this.toastr.success("Valid Email Id");
 
+          }
+          else {
+            this.customerForm.controls["EmailId"].setErrors({ "Invalid": true, "Message": "Invalid Email Id" });
+            this.toastr.error("In-valid Email Id");
+
+          }
+
+          this.spinner.hide();
         }
-        else{
-          this.customerForm.controls["EmailId"].setErrors({ "Invalid": true, "Message": "Invalid Email Id" });
-          this.toastr.error("In-valid Email Id");
+      });
 
-        }
-        
-        this.spinner.hide();
-      }
-    });
+  }
 
-}
-
- onInsuranceType($event: { term: string; items: any[] }) {
+  onInsuranceType($event: { term: string; items: any[] }) {
     this.dropdownDataService.fetchDropDownData(DropDownType.InsuranceType, $event.term, {}).subscribe({
       next: (value) => {
-        if (value != null) { this.InsuranceTypeDD = value;
-          console.log('this.InsuranceTypeDD ',this.InsuranceTypeDD )
-         }
+        if (value != null) {
+          this.InsuranceTypeDD = value;
+          console.log('this.InsuranceTypeDD ', this.InsuranceTypeDD)
+        }
       },
       error: (err) => { this.InsuranceTypeDD = this.getBlankObject(); },
     });
   }
 
-   onInsuranceFlagChange($event){
-    debugger
+  onInsuranceFlagChange($event) {
+
     console.log('$event', $event)
 
-   this.customerForm.get('InsuranceType').setValue(null);
-      
-    
+    this.customerForm.get('InsuranceType').setValue(null);
+
+
+  }
+
+  onCustomerType($event: { term: string; items: any[] }) {
+    this.dropdownDataService.fetchDropDownData(DropDownType.CUSTOMERTYPE, $event.term, {}).subscribe({
+      next: (value) => {
+        if (value != null) {
+          this.CustomerTypeDD = value;
+          console.log('this.CustomerTypeDD ', this.CustomerTypeDD)
+        }
+      },
+      error: (err) => { this.CustomerTypeDD = this.getBlankObject(); },
+    });
   }
 
 }

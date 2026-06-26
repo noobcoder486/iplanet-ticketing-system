@@ -23,6 +23,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   providers: [DatePipe]
 })
 export class TicketingSystemComponent implements OnInit {
+  countArray: any[] = [];
   constructor(
     private route: Router,
     private toaster: ToastrService,
@@ -39,7 +40,6 @@ export class TicketingSystemComponent implements OnInit {
   tickets: any = [];
   pageNo: number = 1;
   typeSelected = 'ball-clip-rotate';
-  countArray: any[] = [];
   pageSize: number = 10;
   totalRecords: number = 0;
   selectedTicket: any;
@@ -56,6 +56,14 @@ export class TicketingSystemComponent implements OnInit {
   BillingOptionDD: DropDownValue = this.getBlankObject();
 
   ngOnInit(): void {
+
+
+    const savedStatus = sessionStorage.getItem('ticketStatusFilter');
+    if (savedStatus) {
+      this.selectedStatus = savedStatus;
+      sessionStorage.removeItem('ticketStatusFilter');
+    }
+
     this.fetchTicketStatusDropdown({ term: '', items: [] });
     this.onELSStatusSearch({ term: '', items: [] });
     this.GetTicketList();
@@ -234,17 +242,13 @@ export class TicketingSystemComponent implements OnInit {
                   fetchedTicket.parsedTicketBody = fetchedTicket.TicketBody;
                 }
                 this.countArray = [];
-                if (fetchedTicket?.JobStatusCounts?.Status != null && fetchedTicket?.JobStatusCounts?.Status != undefined) {
-                  if (Array.isArray(fetchedTicket?.JobStatusCounts?.Status)) {
-                    this.countArray = fetchedTicket?.JobStatusCounts?.Status
+                if (Array.isArray(fetchedTicket?.JobStatusCounts?.Status)) {
+                  this.countArray = fetchedTicket?.JobStatusCounts?.Status
 
-                  }
-                  else {
-                    this.countArray.push(fetchedTicket?.JobStatusCounts?.Status)
-                  }
                 }
-
-
+                else {
+                  this.countArray.push(fetchedTicket?.JobStatusCounts?.Status)
+                }
               } catch (e) {
                 fetchedTicket.parsedTicketBody = null;
               }

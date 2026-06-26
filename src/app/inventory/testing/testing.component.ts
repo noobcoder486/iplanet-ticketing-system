@@ -11,7 +11,7 @@ import * as glob from "../../config/global";
 export class TestingComponent implements OnInit {
 
 
-  MyValue:any
+  MyValue: any
   constructor(
     private gsxService: GsxService
   ) { }
@@ -20,33 +20,33 @@ export class TestingComponent implements OnInit {
   }
 
 
-    getRepairDetails() {
-      debugger
-      let searchData = { "repairId": this.MyValue };
-      let strRequestData = JSON.stringify(searchData);
-      let contentRequest = {
-        "content": strRequestData
-      };
-      var LocationCode = 'OMR2'
-      var CompanyCode = glob.getCompanyCode()
-      this.gsxService.getRepairDetails(LocationCode, CompanyCode, contentRequest).subscribe(
-        {
-          next: (value) => {
-             debugger
-            let response = JSON.parse(value.toString());
-            console.log("Repair Object GSX")
-  
-            if ((response.errors == undefined || response.errors == null)) {
-                 console.log('Response from test',response)
-            }
-            else {
-              console.log('err' , response.error)
-            }
-  
+  getRepairDetails() {
+
+    let searchData = { "repairId": this.MyValue };
+    let strRequestData = JSON.stringify(searchData);
+    let contentRequest = {
+      "content": strRequestData
+    };
+    var LocationCode = 'OMR2'
+    var CompanyCode = glob.getCompanyCode()
+    this.gsxService.getRepairDetails(LocationCode, CompanyCode, contentRequest).subscribe(
+      {
+        next: (value) => {
+
+          let response = JSON.parse(value.toString());
+          console.log("Repair Object GSX")
+
+          if ((response.errors == undefined || response.errors == null)) {
+            console.log('Response from test', response)
           }
-        });
-  
-    }
+          else {
+            console.log('err', response.error)
+          }
+
+        }
+      });
+
+  }
 
 
 }

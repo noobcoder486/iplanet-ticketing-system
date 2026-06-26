@@ -37,7 +37,7 @@ export class TradeinListComponent implements OnInit {
 
   QuotationNumber: any;
   TradeinPartner: any;
-  MobileNo:any
+  MobileNo: any
 
   actionDetails: any[] = [
     { "code": "EDIT", "icon": "edit", "title": "Edit" }
@@ -74,7 +74,7 @@ export class TradeinListComponent implements OnInit {
   CaseId: any;
   TransactionCategory: any;
   LocationCode: any;
-  CustomerCode:any;
+  CustomerCode: any;
 
 
   constructor(
@@ -127,7 +127,7 @@ export class TradeinListComponent implements OnInit {
     this.dropdownDataService.fetchDropDownData(DropDownType.TRADEINCATEGORY, $event.term).subscribe({
       next: (value) => {
         if (value != null) {
-          debugger
+
           this.TradeinCategoryDD = value;
           console.log("TradeinCategoryDD ", this.TradeinCategoryDD)
         }
@@ -142,7 +142,7 @@ export class TradeinListComponent implements OnInit {
   }
 
   GetTradeinList(eventDetail) {
-    debugger
+
     const startformattedDate = this.datePipe.transform(this.StartDate, 'yyyy-MM-dd');
     const endformattedDate = this.datePipe.transform(this.EndDate, 'yyyy-MM-dd');
 
@@ -199,7 +199,7 @@ export class TradeinListComponent implements OnInit {
       "Key": "PageSize",
       "Value": eventDetail.pageSize == null || eventDetail.pageSize == undefined ? "10" : eventDetail.pageSize
     });
-     requestdata.push({
+    requestdata.push({
       "Key": "StartDate",
       "Value": startformattedDate == null || startformattedDate == undefined ? '' : startformattedDate
     })
@@ -216,7 +216,7 @@ export class TradeinListComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-          debugger
+
 
           try {
             let response = JSON.parse(Value.toString());
@@ -253,7 +253,7 @@ export class TradeinListComponent implements OnInit {
 
 
   ExportTradeinList() {
-  
+
     const startformattedDate = this.datePipe.transform(this.StartDate, 'yyyy-MM-dd');
     const endformattedDate = this.datePipe.transform(this.EndDate, 'yyyy-MM-dd');
 
@@ -271,7 +271,7 @@ export class TradeinListComponent implements OnInit {
       this.toaster.error('End Date Cannot Be Less Than Start Date')
       return
     }
-      this.spinner.show()
+    this.spinner.show()
     this.spinnerValue = 'Converting Data into Excel,Please wait '
 
     let requestData = []
@@ -299,15 +299,15 @@ export class TradeinListComponent implements OnInit {
       "Key": "TransactionCategory",
       "Value": this.TransactionCategory ?? '',
     })
-     requestData.push({
+    requestData.push({
       "Key": "TransactionNo",
       "Value": this.TransactionNo ? this.TransactionNo.trim() : ''
     })
-     requestData.push({
+    requestData.push({
       "Key": "CustomerCode",
       "Value": this.CustomerCode ? this.CustomerCode.trim() : ''
     })
-     requestData.push({
+    requestData.push({
       "Key": "MobileNo",
       "Value": this.MobileNo ? this.MobileNo.trim() : ''
     })
@@ -360,11 +360,11 @@ export class TradeinListComponent implements OnInit {
     );
   }
 
-    OnTradeinPartnerSearch($event: { term: string; items: any[] }) {
+  OnTradeinPartnerSearch($event: { term: string; items: any[] }) {
     this.dropdownDataService.fetchDropDownData(DropDownType.TRADEINPARTNER, $event.term).subscribe({
       next: (value) => {
         if (value != null) {
-          debugger
+
           this.TradeinPartnerDD = value;
           console.log("TradeinSubCategoryDD ", this.TradeinPartnerDD)
         }
@@ -375,9 +375,9 @@ export class TradeinListComponent implements OnInit {
     });
   }
 
-// calling this function to autoclose the case older than 7 days
-   UpdateTradeinToAutoClose() {
-    debugger
+  // calling this function to autoclose the case older than 7 days
+  UpdateTradeinToAutoClose() {
+
     this.spinner.show()
 
     let requestdata = []
@@ -394,11 +394,11 @@ export class TradeinListComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-          debugger
+
 
           try {
             let response = JSON.parse(Value.toString());
-            if (response.ReturnCode == '0') { 
+            if (response.ReturnCode == '0') {
               this.toaster.success('updated successfully!')
               this.GetTradeinList('')
             }

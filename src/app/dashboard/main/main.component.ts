@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AppInitService } from 'src/app/core/service/app.init.service';
 import { CommonService } from 'src/app/core/service/common.service';
 import { CompanyDetailComponent } from '../company-detail/company-detail.component';
-import * as glob from  "../../config/global";
+import * as glob from "../../config/global";
 import { ChangePasswordComponent } from '../change-password/change-password.component';
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,7 +18,7 @@ export class MainComponent implements OnInit {
   UserObject: any;
   constructor(
     public dialog: MatDialog,
-    private toaster : ToastrService,
+    private toaster: ToastrService,
     private router: Router,
     private appInitService: AppInitService,
     public commonService: CommonService,
@@ -56,7 +56,7 @@ export class MainComponent implements OnInit {
   //         else
   //         {
 
-          
+
   //         this.router.navigate(['auth/' + companyCode + "/dashboard"]);
   //         }
   //       }
@@ -66,16 +66,14 @@ export class MainComponent implements OnInit {
   //     this.router.navigate(['authentication/nopermission']);
   //   }
   // }
-  
+
   openDialog(): void {
     if (this.commonService.checkCompanyPermission()) {
-
-      console.log("UserObject ", this.UserObject)
-      if (this.UserObject?.ChangePasswordRequire == '1' ){
-        this.toaster.warning(this.UserObject?.ReasonForChangePassword , "Login Error", { closeButton: true, disableTimeOut: true });
+      if (this.UserObject?.ChangePasswordRequire == '1') {
+        this.toaster.warning(this.UserObject?.ReasonForChangePassword, "Login Error", { closeButton: true, disableTimeOut: true });
         this.routeToChangePassword()
       }
-      else{
+      else {
         this.routeToCompany()
       }
 
@@ -85,7 +83,7 @@ export class MainComponent implements OnInit {
     }
   }
 
-  routeToChangePassword(){
+  routeToChangePassword() {
     let dialogRefChangePassword = this.dialog.open(ChangePasswordComponent, {
       width: '30%',
       height: '70%',
@@ -96,12 +94,11 @@ export class MainComponent implements OnInit {
     });
 
     dialogRefChangePassword.afterClosed().subscribe(result => {
-      console.log("Result Change Password ", result)
       this.routeToCompany()
     });
   }
 
-  routeToCompany(){
+  routeToCompany() {
     let dialogRef = this.dialog.open(CompanyDetailComponent, {
       width: '80%',
       disableClose: true,
@@ -114,18 +111,17 @@ export class MainComponent implements OnInit {
         let companyCode = result.trim();
         glob.setCompanyCode(companyCode);
         this.appInitService.initNotFound(companyCode);
-        
-        if(glob.getLogedInUser().UserDetails.MenuGroupId==2)
-        {
+        if (glob.getLogedInUser().UserDetails.UserName == "ticket@iplanet.one") {
+          this.router.navigate(['auth/' + companyCode + "/ticketing-dashboard"]);
+        }
+        else if (glob.getLogedInUser().UserDetails.MenuGroupId == 2) {
           this.router.navigate(['auth/' + companyCode + "/token-create"]);
         }
-        else if(glob.getLogedInUser().UserDetails.MenuGroupId==5)
-        {
+        else if (glob.getLogedInUser().UserDetails.MenuGroupId == 5) {
           this.router.navigate(['auth/' + companyCode + "/token-display"]);
         }
-        else
-        {
-        this.router.navigate(['auth/' + companyCode + "/dashboard"]);
+        else {
+          this.router.navigate(['auth/' + companyCode + "/dashboard"]);
         }
       }
     });
