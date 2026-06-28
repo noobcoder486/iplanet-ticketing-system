@@ -676,50 +676,76 @@ export class AddCustomerMasterComponent implements OnInit {
     }
   }
 
-  onPinCodeChange() {
-    this.spinner.show();
-    let pinCodeFieldValue = this.customerForm.get("PinCode").value;
-    if (!pinCodeFieldValue) {
-      this.customerForm.patchValue({ Country: null, City: null, State: null });
-    } else if (this.customerForm.get("PinCode").value.toString().length == "6") {
-      let requestData = [];
-      requestData.push({ key: "APIType", Value: "GetPinCodeValidation" });
-      requestData.push({ key: "PinCode", Value: this.customerForm.value.PinCode });
-
-      let strRequestData = JSON.stringify(requestData);
-      let contentRequest = { content: strRequestData };
-
-      this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
-        next: (value) => {
-          try {
-            let response = JSON.parse(value.toString());
-            if (response.ReturnCode == "0") {
-              let data = JSON.parse(response?.ExtraData);
-              if (data?.Totalrecords == "1") {
-                let results = [];
-                this.toastr.success("Pincode Found");
-                results.push(data?.PinCodeRow);
-                results = data?.PinCodeRow;
-                this.customerForm.patchValue({
-                  Country: results["CountryCode"],
-                  City: results["City"],
-                  State: results['StateCode'],
-                  LandMark: results['OfficeName']
-                });
-                this.onStatesSearch({ term: "", items: [] });
-                this.customerForm.get("State").patchValue(results["StateCode"]);
-              } else {
-                this.toastr.warning("No such pincode found! Add details manually");
-              }
-              this.spinner.hide();
-            }
-          } catch (ext) {
-            console.log(ext);
-          }
-        },
-        error: (err) => { console.log(err); },
+  onPinCodeChange(): void {
+    const pinCode = this.customerForm.get('PinCode')?.value;
+    if (!pinCode) {
+      this.customerForm.patchValue({
+        Country: null,
+        City: null,
+        State: null,
+        LandMark: null
       });
+      return;
     }
+
+    // Validate pincode length
+    if (pinCode.toString().length !== 6) {
+      return;
+    }
+
+    this.spinner.show();
+
+    const requestData = [
+      { key: 'APIType', Value: 'GetPinCodeValidation' },
+      { key: 'PinCode', Value: pinCode }
+    ];
+
+    const contentRequest = {
+      content: JSON.stringify(requestData)
+    };
+
+    this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
+      next: (value: any) => {
+        try {
+          const response = JSON.parse(value.toString());
+
+          if (response?.ReturnCode !== '0') {
+            return;
+          }
+
+          const data = JSON.parse(response?.ExtraData ?? '{}');
+
+          if (data?.Totalrecords === '1') {
+            const pinCodeDetails = data.PinCodeRow;
+
+            this.customerForm.patchValue({
+              Country: pinCodeDetails.CountryCode,
+              City: pinCodeDetails.City,
+              State: pinCodeDetails.StateCode,
+              LandMark: pinCodeDetails.OfficeName
+            });
+
+            this.onStatesSearch({ term: '', items: [] });
+
+            this.toastr.success('Pincode Found');
+          } else {
+            this.toastr.warning(
+              'No such pincode found! Please add the details manually.'
+            );
+          }
+        } catch (error) {
+          console.error('Error parsing response:', error);
+          this.toastr.error('Something went wrong while validating the pincode.');
+        } finally {
+          this.spinner.hide();
+        }
+      },
+      error: (error) => {
+        console.error(error);
+        this.spinner.hide();
+        this.toastr.error('Unable to validate pincode. Please try again.');
+      }
+    });
   }
 
   DateT() {
