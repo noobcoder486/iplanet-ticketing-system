@@ -38,7 +38,21 @@ export class RejectNoteComponent implements OnInit {
   {
     '';
 
+
     var RejectionReason = this.Rejection.controls["notes"].value
+
+     if(this.DeclareRepair == '' || this.DeclareRepair == null || this.DeclareRepair == undefined)
+     {
+         this.toaster.error('Cannot Proceed Without Reason For Rejection,Please Select');
+         return
+     }
+
+      if(RejectionReason == '' || RejectionReason == null || RejectionReason == undefined)
+     {
+         this.toaster.error('Cannot Proceed Without Reason Notes');
+         return
+     }
+     
     let index = this.DeclineRepairListDD.Data.findIndex(d => d.Id == this.DeclareRepair)
     let text = this.DeclineRepairListDD.Data[index].TEXT
     RejectionReason += '\nReason: ' + text;

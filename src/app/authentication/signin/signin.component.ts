@@ -8,8 +8,6 @@ import { forkJoin } from 'rxjs';
 import { AppInitService } from 'src/app/core/service/app.init.service';
 import { EncryptDecryptService } from 'src/app/core/service/encrypt-decrypt.service';
 import { ToastrService } from 'ngx-toastr';
-import * as glob from "src/app/config/global"
-
 import { DynamicService } from 'src/app/common/Services/dynamicService/dynamic.service';
 @Component({
   selector: 'app-signin',
@@ -125,6 +123,7 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
         Url: "/repair-process",
       });
       sessionStorage.setItem('MenuDetail', JSON.stringify(data.MenuDetail));
+      //sessionStorage.setItem('ModuleEntityField', JSON.stringify(data.ProfileDetail));
       sessionStorage.setItem('FieldDetail', JSON.stringify(data.FieldDetails));
       sessionStorage.setItem('GridModuleDetail', JSON.stringify(data.GridDetails));
       sessionStorage.setItem('AllRouting', JSON.stringify(data.AllRouting));

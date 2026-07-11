@@ -51,7 +51,7 @@ export class BulkReturnGridComponent implements OnInit {
   results:any[] = []
   columns: Columns[] = [
     {datatype:"STRING",field:"BulkReturnId",title:"Bulk Return Id"},
-    {datatype:"DATE",field:"CreatedDate",title:"Bulk Return Date"},
+    {datatype:"STRING",field:"CreatedDate",title:"Bulk Return Date"},
     {datatype:"STRING",field:"TransportationCarrier",title:"Transportation Carrier"},
     {datatype:"STRING",field:"Length",title:"Length"},
     {datatype:"STRING",field:"Breadth",title:"Breadth"},

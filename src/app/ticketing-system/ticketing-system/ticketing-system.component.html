@@ -81,10 +81,9 @@
             <div class="ts-detail-header-left">
               <div class="ts-detail-ticketno">{{ selectedTicket.TicketNo }}</div>
 
-              <!-- ── VIEW MODE: status badge + pen icon ───────────────────────── -->
               <ng-container *ngIf="!isEditingStatus">
                 <span class="ts-detail-status-badge" [ngClass]="{
-                  'ts-dsb--new':            selectedTicket.TicketStatus === 'NEW',
+                  'ts-dsb--new':            selectedTicket.TicketStatus === 'OPEN',
                   'ts-dsb--inprogress':     selectedTicket.TicketStatus === 'IN-PROGRESS',
                   'ts-dsb--closed':         selectedTicket.TicketStatus === 'CLOSED',
                   'ts-dsb--partiallyclosed':selectedTicket.TicketStatus === 'PARTIALLY-COMPLETED',
@@ -131,7 +130,7 @@
               <button class="ts-workflow-btn ts-workflow-btn--assign" *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') &&
                      (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
                      (selectedTicket?.TechIds == null || selectedTicket?.TechIds == '') &&
-                     selectedTicket?.TicketStatus === 'NEW'" (click)="openTechPopup(selectedTicket)">
+                     selectedTicket?.TicketStatus === 'OPEN'" (click)="openTechPopup(selectedTicket)">
                 <i class="fa fa-hard-hat"></i> Assign Technician
               </button>
 
@@ -186,7 +185,7 @@
             </div>
           </div>
 
-          <div class="job-status-grid" *ngIf="countArray.length > 0">
+          <div class="job-status-grid" *ngIf="countArray && countArray.length > 0">
             <!-- Iterate over the statuses -->
             <div class="status-card" *ngFor="let status of countArray">
               <div class="status-count">{{ status?.Count }}</div>

@@ -45,7 +45,7 @@ export class AddTicketComponent implements OnInit {
       ticketSubject: ['', [Validators.required, Validators.minLength(5)]],
       ticketDescription: ['', [Validators.required, Validators.minLength(10)]],
 
-      ticketStatus: ['NEW'],
+      ticketStatus: ['OPEN'],
     });
 
   }
@@ -62,7 +62,7 @@ export class AddTicketComponent implements OnInit {
   onCancel() {
     this.dialogRef.close();
   }
-  
+
   onSubmit() {
     if (this.addTicketForm.invalid) {
       this.addTicketForm.markAllAsTouched();
@@ -71,7 +71,7 @@ export class AddTicketComponent implements OnInit {
     }
 
     const formValue = this.addTicketForm.value;
-    
+
     const requestData = [
       { Key: 'APIType', Value: 'CreateTicket' },
       { Key: 'CustomerName', Value: formValue.customerName },

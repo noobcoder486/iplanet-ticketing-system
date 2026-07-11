@@ -174,6 +174,8 @@ import { TicketingBulkQuotationComponent } from "src/app/ticketing-system/ticket
 import { TestingComponent } from "src/app/inventory/testing/testing.component";
 import { EnquiryListReportComponent } from "src/app/reports/enquiry-list-report/enquiry-list-report.component";
 import { TicketDashboardComponent } from "src/app/ticketing-system/ticketing-system/ticket-dashboard/ticket-dashboard.component";
+import { TableReplacementDetailReportComponent } from "src/app/reports/table-replacement-detail-report/table-replacement-detail-report.component";
+import { TicketingReportComponent } from "src/app/reports/ticketing-report/ticketing-report.component";
 
 @Injectable({
   providedIn: 'root'
@@ -429,6 +431,11 @@ export class AppInitService {
         path: 'stock-order',
         component: StockOrderComponent,
         data: {ScreenCode: 'stock-order', routeDetail:'', ModuleId:0}
+      },
+      {
+        path: 'ticketing-report',
+        component: TicketingReportComponent,
+        data: {ScreenCode: 'ticketing-report', routeDetail:'', ModuleId:0}
       },
       {
         path: 'bulk-return-order',
@@ -1230,6 +1237,11 @@ export class AppInitService {
         path: 'enquiry-list-report',
         component: EnquiryListReportComponent,
         data: { ScreenCode: 'enquiry-list-report', routeDetail: '', ModuleId: 227 }
+      },
+       {
+        path: 'table-replacement-detail-report',
+        component: TableReplacementDetailReportComponent,
+        data: { ScreenCode: 'table-replacement-detail-report', routeDetail: '', ModuleId: 228 }
       },
 
     ]

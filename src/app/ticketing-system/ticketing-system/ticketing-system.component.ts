@@ -145,7 +145,7 @@ export class TicketingSystemComponent implements OnInit {
 
   getStatusClass(status: string): string {
     switch (status?.toUpperCase()) {
-      case 'NEW': return 'new';
+      case 'OPEN': return 'new';
       case 'IN-PROGRESS': return 'in-progress';
       case 'CLOSED': return 'closed';
       case 'PARTIALLY-COMPLETED': return 'partially-closed';
@@ -242,13 +242,16 @@ export class TicketingSystemComponent implements OnInit {
                   fetchedTicket.parsedTicketBody = fetchedTicket.TicketBody;
                 }
                 this.countArray = [];
-                if (Array.isArray(fetchedTicket?.JobStatusCounts?.Status)) {
-                  this.countArray = fetchedTicket?.JobStatusCounts?.Status
+                if (fetchedTicket?.JobStatusCounts?.Status != null && fetchedTicket?.JobStatusCounts?.Status != undefined) {
+                  if (Array.isArray(fetchedTicket?.JobStatusCounts?.Status)) {
+                    this.countArray = fetchedTicket?.JobStatusCounts?.Status
 
+                  }
+                  else {
+                    this.countArray.push(fetchedTicket?.JobStatusCounts?.Status)
+                  }
                 }
-                else {
-                  this.countArray.push(fetchedTicket?.JobStatusCounts?.Status)
-                }
+
               } catch (e) {
                 fetchedTicket.parsedTicketBody = null;
               }

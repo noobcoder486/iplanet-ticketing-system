@@ -40,6 +40,8 @@ import { InterCompanyAmountTransferReportComponent } from './inter-company-amoun
 import { InboundCallManagementReportComponent } from './inbound-call-management-report/inbound-call-management-report.component';
 import { QuotationReportComponent } from './quotation-report/quotation-report.component';
 import { EnquiryListReportComponent } from './enquiry-list-report/enquiry-list-report.component';
+import { TableReplacementDetailReportComponent } from './table-replacement-detail-report/table-replacement-detail-report.component';
+import { TicketingReportComponent } from './ticketing-report/ticketing-report.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,8 @@ import { EnquiryListReportComponent } from './enquiry-list-report/enquiry-list-r
        InboundCallManagementReportComponent,
        QuotationReportComponent,
        EnquiryListReportComponent,
+       TableReplacementDetailReportComponent,
+       TicketingReportComponent,
   ],
   imports: [
     CommonModule,

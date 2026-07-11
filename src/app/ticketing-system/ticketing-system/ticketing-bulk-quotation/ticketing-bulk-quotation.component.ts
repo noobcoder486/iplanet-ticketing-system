@@ -172,7 +172,7 @@ export class TicketingBulkQuotationComponent implements OnInit {
     if (!q?.QuoteCode) return;
     const quote = {
       quoteGuid: q.QuoteGuid ?? uuidv4(),
-      quoteCode: q.QuoteCode ?? 'NEW',
+      quoteCode: q.QuoteCode ?? 'OPEN',
       quoteDate: q.QuoteDate ?? new Date(),
       quoteStatus: q.QuoteStatus ?? 'OPEN',
       baseAmount: parseFloat(q.TotalBaseAmount ?? 0),
@@ -630,7 +630,7 @@ export class TicketingBulkQuotationComponent implements OnInit {
 
   getTicketStatusClass(status: string): string {
     switch (status?.toUpperCase()) {
-      case 'NEW': return 'bq-ts--new';
+      case 'OPEN': return 'bq-ts--new';
       case 'IN-PROGRESS': return 'bq-ts--inprogress';
       case 'CLOSED': return 'bq-ts--closed';
       default: return 'bq-ts--new';
