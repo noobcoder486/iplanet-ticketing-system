@@ -26,13 +26,13 @@
 
         <div class="ts-ticket-list">
           <div class="ts-ticket-card" *ngFor="let ticket of tickets"
-            [ngClass]="[getStatusClass(ticket?.TicketStatus), selectedTicket?.TicketGuid === ticket?.TicketGuid ? 'ts-ticket-active' : '']"
+            [ngClass]="[getTicketStatusClass(ticket?.TicketStatus), selectedTicket?.TicketGuid === ticket?.TicketGuid ? 'ts-ticket-active' : '']"
             (click)="selectTicket(ticket)">
             <div class="ts-ticket-stripe"></div>
             <div class="ts-ticket-body">
               <div class="ts-ticket-top">
                 <span class="ts-ticket-no">{{ ticket?.TicketNo }}</span>
-                <span class="ts-status-pill ts-status-pill--{{ getStatusClass(ticket?.TicketStatus) }}">
+                <span class="ts-status-pill ts-status-pill--{{ getTicketStatusClass(ticket?.TicketStatus) }}">
                   {{ ticket?.TicketStatus }}
                 </span>
               </div>
