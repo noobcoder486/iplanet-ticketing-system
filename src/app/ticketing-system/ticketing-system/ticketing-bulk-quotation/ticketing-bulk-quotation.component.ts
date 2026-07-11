@@ -11,6 +11,7 @@ import { DropDownType } from 'src/app/custom-components/call-login/metadata/requ
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as glob from 'src/app/config/global';
+import { ReportService } from 'src/app/common/Services/gsxService/report.service';
 
 @Component({
   selector: 'app-ticketing-bulk-quotation',
@@ -26,6 +27,7 @@ export class TicketingBulkQuotationComponent implements OnInit {
     private gsxService: GsxService,
     private dropdownDataService: DropdownDataService,
     private fb: FormBuilder,
+    private reportService: ReportService,
     private toast: ToastrService,
     private spinner: NgxSpinnerService
   ) { }
@@ -53,6 +55,19 @@ export class TicketingBulkQuotationComponent implements OnInit {
   PricingOptionDD: DropDownValue = DropDownValue.getBlankObject();
   Math = Math;
 
+  readonly STATUS_LABELS: { [key: string]: string } = {
+    OPEN: 'Quote Preparation',
+    RELEASED: 'Quote Submit To Customer',
+    APPROVED: 'Quote Approved By Customer',
+    REJECTED: 'Quote Rejected By Customer'
+  };
+
+  bulkStatusDropdownOpen = false;
+  selectedBulkStatus: string | null = null;
+
+  productStatusDropdownOpen: { [caseId: string]: boolean } = {};
+  selectedProductStatus: { [caseId: string]: string | null } = {};
+
   ngOnInit(): void {
     this.ticketGuid = sessionStorage.getItem('bq_ticketGuid') || '';
     if (!this.ticketGuid) {
@@ -79,7 +94,7 @@ export class TicketingBulkQuotationComponent implements OnInit {
       { Key: 'TicketGuid', Value: this.ticketGuid }
     ];
     this.dynamicService.getDynamicDetaildata({ content: JSON.stringify(req) }).subscribe({
-      next: (value) => {
+      next: (value: any) => {
         try {
           const response = JSON.parse(value.toString());
           if (response.ReturnCode === '0' || response.ReturnCode === 0) {
@@ -336,7 +351,7 @@ export class TicketingBulkQuotationComponent implements OnInit {
     ];
     this.spinner.show();
     this.dynamicService.getDynamicDetaildata({ content: JSON.stringify(req) }).subscribe({
-      next: (value) => {
+      next: (value: any) => {
         this.spinner.hide();
         const response = JSON.parse(value.toString());
         if (response.ReturnCode === '0') {
@@ -552,7 +567,7 @@ export class TicketingBulkQuotationComponent implements OnInit {
     ];
     this.spinner.show();
     this.dynamicService.getDynamicDetaildata({ content: JSON.stringify(req) }).subscribe({
-      next: (value) => {
+      next: (value: any) => {
         this.spinner.hide();
         const response = JSON.parse(value.toString());
         if (response.ReturnCode === '0') {
@@ -631,8 +646,17 @@ export class TicketingBulkQuotationComponent implements OnInit {
   getTicketStatusClass(status: string): string {
     switch (status?.toUpperCase()) {
       case 'OPEN': return 'bq-ts--new';
+      case 'FIRSTRESPONSE': return 'bq-ts--first';
       case 'IN-PROGRESS': return 'bq-ts--inprogress';
       case 'CLOSED': return 'bq-ts--closed';
+      case 'PARTIALLY-COMPLETED': return 'bq-ts--partiallyclosed';
+      case 'COMPLETED': return 'bq-ts--completed';
+      case 'QTESUB': return 'bq-ts--qtesub';
+      case 'QTEAPPR': return 'bq-ts--qteappr';
+      case 'QTEREJ': return 'bq-ts--qterej';
+      case 'QTEPSUB': return 'bq-ts--qtepsub';
+      case 'QTEPAPPR': return 'bq-ts--qtepappr';
+      case 'QTEPREJ': return 'bq-ts--qteprej';
       default: return 'bq-ts--new';
     }
   }
@@ -643,5 +667,174 @@ export class TicketingBulkQuotationComponent implements OnInit {
 
   openJobDetail(caseGuid: string): void {
     this.router.navigate(['/auth/' + glob.getCompanyCode() + '/repair-process'], { queryParams: { guid: caseGuid } });
+  }
+
+  downloadBulkQuotePdf() {
+    let companyCode = glob.getCompanyCode().toString()
+
+    this.spinner.show()
+    let PdfData = [];
+    PdfData.push({
+      "Key": "ApiType",
+      "Value": "GetTicketObject4Print",
+    });
+    PdfData.push({
+      "Key": "TicketGuid",
+      "Value": this.ticketGuid
+    });
+
+
+    let pdfRequestData = JSON.stringify(PdfData);
+    let contentRequest =
+    {
+      "content": pdfRequestData
+    };
+    let storepdf = contentRequest;
+    this.reportService.downloadServiceReport('QUOTE', contentRequest).subscribe(
+      {
+        next: (value: any) => {
+          let response = JSON.parse(value.toString());
+          const byteArray = new Uint8Array(atob(response.FileContents).split('').map(char => char.charCodeAt(0)));
+          var blob = new Blob([byteArray], { type: 'application/pdf' });
+          var url = URL.createObjectURL(blob);
+          window.open(url);
+          this.spinner.hide()
+
+
+        },
+        error: err => {
+          console.log(err);
+          this.spinner.hide()
+
+        }
+      });
+  }
+
+
+  get canUpdateBulkStatus(): boolean {
+    return this.products.length > 0 &&
+      this.products.every(p => this.getVisibleItems(p.caseId).length > 0);
+  }
+
+  canUpdateProductStatus(caseId: string): boolean {
+    return this.getVisibleItems(caseId).length > 0;
+  }
+
+  private get bulkCurrentStatus(): string {
+    if (this.products.length === 0) return 'OPEN';
+    const statuses = this.products.map(p => this.getQuote(p.caseId)?.quoteStatus ?? 'OPEN');
+    const distinct = Array.from(new Set(statuses));
+    return distinct.length === 1 ? distinct[0] : 'OPEN';
+  }
+
+  private buildOptionsFor(currentStatus: string): { id: string; label: string }[] {
+    if (currentStatus === 'OPEN') {
+      return [{ id: 'RELEASED', label: this.STATUS_LABELS['RELEASED'] }];
+    }
+    if (currentStatus === 'RELEASED') {
+      return [
+        { id: 'APPROVED', label: this.STATUS_LABELS['APPROVED'] },
+        { id: 'REJECTED', label: this.STATUS_LABELS['REJECTED'] }
+      ];
+    }
+    return [];
+  }
+
+  get bulkStatusOptions(): { id: string; label: string }[] {
+    return this.buildOptionsFor(this.bulkCurrentStatus);
+  }
+
+  getProductStatusOptions(caseId: string): { id: string; label: string }[] {
+    const status = this.getQuote(caseId)?.quoteStatus ?? 'OPEN';
+    return this.buildOptionsFor(status);
+  }
+
+  onBulkStatusSelected(newStatus: any): void {
+    const statusId = typeof newStatus === 'object' ? newStatus?.id : newStatus;
+    if (!statusId) return;
+    this._updateQuoteStatus('BULK', statusId, null);
+  }
+  onProductStatusSelected(caseId: string, newStatus: any): void {
+    const statusId = typeof newStatus === 'object' ? newStatus?.id : newStatus;
+    if (!statusId) return;
+    const product = this.products.find(p => p.caseId === caseId);
+    if (!product) return;
+    this._updateQuoteStatus('SINGLE', statusId, product.caseGuid);
+  }
+
+  private _updateQuoteStatus(type: 'BULK' | 'SINGLE', status: string, caseGuid: string | null): void {
+    let data = [];
+    data.push({
+      "Key": "ApiType",
+      "Value": "UpdateQuoteStatus4Ticket",
+    });
+    data.push({
+      "Key": "TicketGuid",
+      "Value": this.ticketGuid
+    });
+
+    data.push({
+      "Key": "QuoteStatus",
+      "Value": status
+    });
+
+    data.push({
+      "Key": "Type",
+      "Value": type
+    });
+    if (type === 'SINGLE' && caseGuid)
+      data.push({
+        "Key": "CaseGuid",
+        "Value": caseGuid
+      });
+    let RequestData = JSON.stringify(data);
+    let contentRequest =
+    {
+      "content": RequestData
+    };
+    this.spinner.show();
+    this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
+      next: (value: any) => {
+        this.spinner.hide();
+        try {
+          const response = JSON.parse(value.toString());
+          if (response.ReturnCode === '0' || response.ReturnCode === 0) {
+            this.toast.success('Quote status updated successfully.', '', { timeOut: 3000 });
+            this.bulkStatusDropdownOpen = false;
+            this.productStatusDropdownOpen = {};
+            this.fetchTicketDetail(); // re-pulls ticket + all jobs/quotes so every status reflects the update
+          } else {
+            this.toast.error(response.ErrorMessage || 'Failed to update quote status.', 'Error');
+          }
+        } catch {
+          this.toast.error('Unexpected error updating status.');
+        }
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.spinner.hide();
+        this.toast.error('Server error updating quote status.');
+      }
+    });
+  }
+
+  selectedProductStatusOptions: { [caseId: string]: { id: string; label: string }[] } = {};
+
+  openProductStatusDropdown(caseId: string): void {
+    if (!this.canUpdateProductStatus(caseId)) return;
+    this.selectedProductStatus[caseId] = this.getQuote(caseId)?.quoteStatus ?? 'OPEN';
+    this.selectedProductStatusOptions[caseId] = this.buildOptionsFor(this.selectedProductStatus[caseId]!);
+    this.productStatusDropdownOpen[caseId] = true;
+    this.cdr.detectChanges();
+  }
+
+  bulkStatusOptionsSnapshot: { id: string; label: string }[] = [];
+
+  openBulkStatusDropdown(): void {
+    if (!this.canUpdateBulkStatus) return;
+    this.selectedBulkStatus = this.bulkCurrentStatus;
+    this.bulkStatusOptionsSnapshot = this.buildOptionsFor(this.bulkCurrentStatus);
+    this.bulkStatusDropdownOpen = true;
+    this.cdr.detectChanges();
   }
 }

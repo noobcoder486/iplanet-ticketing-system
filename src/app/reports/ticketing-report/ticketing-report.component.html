@@ -6,23 +6,23 @@
   <mat-card style="z-index: 9;">
     <div class="row" style="display: flex; justify-content: space-between;">
       <div class="col-sm-4 col-lg-12 col-md-4">
-        <p class="HeaderText">Ticketing Report</p>
+        <p class="tr-title">Ticketing Report</p>
       </div>
     </div>
 
-    <div class="row" style="border: 1px solid #dddddd; padding: 10px;">
-      <div class="col-sm-4 col-md-4 col-lg-3 col-12">
-        <label style="font-weight: 600; padding-bottom: 2px;">Ticket No</label><br>
-        <input type="text" style="border-radius: 0px; height: 34px; width: 100%; border: 1px solid rgb(211, 211, 211);" placeholder="Enter Ticket No" [(ngModel)]="TicketNo" />
+    <div class="tr-filter-row">
+      <div class="tr-field">
+        <label>Ticket No</label>
+        <input type="text" class="tr-input" placeholder="Enter Ticket No" [(ngModel)]="TicketNo" />
       </div>
 
-      <div class="col-sm-4 col-md-4 col-lg-3 col-12">
-        <label style="font-weight: 600; padding-bottom: 2px;">Case Id</label><br>
-        <input type="text" style="border-radius: 0px; height: 34px; width: 100%; border: 1px solid rgb(211, 211, 211);" placeholder="Enter Case ID" [(ngModel)]="CaseId" />
+      <div class="tr-field">
+        <label>Case Id</label>
+        <input type="text" class="tr-input" placeholder="Enter Case ID" [(ngModel)]="CaseId" />
       </div>
 
-      <div class="col-sm-4 col-md-4 col-lg-3">
-        <mat-form-field appearance="fill" style="border-radius: 0px !important; height: 32.5px !important; width: 100%;">
+      <div class="tr-field tr-daterange">
+        <mat-form-field appearance="fill" style="width: 100%;">
           <mat-label style="padding-top: 3px; font-weight: 600;">Enter a date range</mat-label>
           <div style="display: flex; align-items: center; justify-content: space-between;">
             <div>
@@ -40,13 +40,9 @@
       </div>
     </div>
 
-    <div style="padding-top: 10px; display: flex; justify-content: flex-end;">
-      <div style="padding-right: 40px;">
-        <button style="float: right;" type="button" (click)="exportReportData()" class="btn btnClass">Export Report</button>
-      </div>
-      <div>
-        <button style="float: right;" type="button" (click)="getReportData({})" class="btn btnClass">Generate Report</button>
-      </div>
+    <div class="tr-actions">
+      <button type="button" (click)="exportReportData()" class="btn tr-export-btn">Export Report</button>
+      <button type="button" (click)="getReportData({})" class="btn btnClass">Generate Report</button>
     </div>
   </mat-card>
 

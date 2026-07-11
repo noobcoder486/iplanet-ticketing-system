@@ -143,16 +143,24 @@ export class TicketingSystemComponent implements OnInit {
     });
   }
 
-  getStatusClass(status: string): string {
+  getTicketStatusClass(status: string): string {
     switch (status?.toUpperCase()) {
-      case 'OPEN': return 'new';
-      case 'IN-PROGRESS': return 'in-progress';
-      case 'CLOSED': return 'closed';
-      case 'PARTIALLY-COMPLETED': return 'partially-closed';
-      case 'COMPLETED': return 'completed';
-      default: return '';
+      case 'OPEN': return 'ts-status-pill--new';
+      case 'FIRSTRESPONSE': return 'ts-status-pill--first';
+      case 'IN-PROGRESS': return 'ts-status-pill--in-progress';
+      case 'CLOSED': return 'ts-status-pill--closed';
+      case 'PARTIALLY-COMPLETED': return 'ts-status-pill--partially-closed';
+      case 'COMPLETED': return 'ts-status-pill--completed';
+      case 'QTESUB': return 'ts-status-pill--qtesub';
+      case 'QTEAPPR': return 'ts-status-pill--qteappr';
+      case 'QTEREJ': return 'ts-status-pill--qterej';
+      case 'QTEPSUB': return 'ts-status-pill--qtepsub';
+      case 'QTEPAPPR': return 'ts-status-pill--qtepappr';
+      case 'QTEPREJ': return 'ts-status-pill--qteprej';
+      default: return 'ts-status-pill--new';
     }
   }
+
 
   getBlankObject(): DropDownValue {
     const ddv = new DropDownValue();
@@ -899,6 +907,39 @@ export class TicketingSystemComponent implements OnInit {
       },
       error: err => {
         this.spinner.hide()
+        console.log(err);
+      }
+    });
+  }
+
+  UpdateFirstResponse(ticketObj: any) {
+    if (!ticketObj) {
+      this.toaster.error('Update Failed'); return;
+    }
+    let requestData = [];
+    requestData.push({ Key: 'APIType', Value: 'UpdateFirstResponse' });
+    requestData.push({ Key: 'TicketGuid', Value: ticketObj?.TicketGuid });
+    requestData.push({ Key: 'CompanyCode', Value: glob.getCompanyCode() });
+    this.spinner.show();
+    this.dynamicService.getDynamicDetaildata({ content: JSON.stringify(requestData) }).subscribe({
+      next: (Value: any) => {
+        this.spinner.hide();
+        try {
+          let response = JSON.parse(Value.toString());
+          if (response.ReturnCode == '0') {
+            this.toaster.success("First Response Captured");
+            for (let item of this.tickets) {
+              if (item.TicketGuid == ticketObj?.TicketGuid) {
+                item.TicketStatus = 'FIRSTRESPONSE';
+                return;
+              }
+            }
+            this.cdr.detectChanges();
+          }
+        } catch (ext) { console.log(ext); }
+      },
+      error: err => {
+        this.spinner.hide();
         console.log(err);
       }
     });

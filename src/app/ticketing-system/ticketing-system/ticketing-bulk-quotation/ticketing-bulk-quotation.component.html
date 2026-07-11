@@ -15,6 +15,9 @@
                 </span>
             </div>
         </div>
+        <div class="bq-topbar-right" *ngIf="canUpdateBulkStatus">
+            <i class="fa fa-download" aria-hidden="true" style="cursor:pointer" (click)="downloadBulkQuotePdf()"></i>
+        </div>
         <div class="bq-topbar-right" *ngIf="ticket">
             <span class="bq-ticket-status-pill" [ngClass]="getTicketStatusClass(ticket.TicketStatus)">
                 <span class="bq-tsp-dot"></span>{{ ticket.TicketStatus }}
@@ -58,9 +61,17 @@
                     <span class="bq-meta-label"><i class="fa fa-envelope"></i> Email</span>
                     <span class="bq-meta-value">{{ ticket.parsedTicketBody.mails[0].from }}</span>
                 </div>
-                <div class="bq-meta-item">
-                    <span class="bq-meta-label"><i class="fa fa-calendar-alt"></i> Created</span>
-                    <span class="bq-meta-value">{{ ticket.CreatedDate | date:'medium' }}</span>
+                <div class="bq-meta-item" *ngIf="canUpdateBulkStatus">
+                    <span class="bq-meta-label"><i class="fa fa-check-circle"></i> Quote Status</span>
+                    <button *ngIf="!bulkStatusDropdownOpen" class="bq-update-status-btn"
+                        (click)="openBulkStatusDropdown()"
+                        matTooltip="Click to update the quote status for all products within this ticket">
+                        <i class="fa fa-sync-alt"></i> Update Bulk Status
+                    </button>
+                    <ng-select [appendTo]="'body'" *ngIf="bulkStatusDropdownOpen" [items]="bulkStatusOptionsSnapshot"
+                        bindLabel="label" bindValue="id" [clearable]="false" [(ngModel)]="selectedBulkStatus"
+                        (change)="onBulkStatusSelected($event)">
+                    </ng-select>
                 </div>
             </div>
         </div>
@@ -152,6 +163,22 @@
                                 [disabled]="lockedProductCaseId !== null && lockedProductCaseId !== selectedProduct.caseId">
                                 <i class="fa fa-plus-circle"></i> Add Parts
                             </button>
+                            <ng-container *ngIf="canUpdateProductStatus(selectedProduct.caseId)">
+                                <a class="bq-update-status-link" style="cursor:pointer"
+                                    *ngIf="!productStatusDropdownOpen[selectedProduct.caseId]"
+                                    (click)="openProductStatusDropdown(selectedProduct.caseId)"
+                                    matTooltip="Click to update the quote status for this product">
+                                    <i class="fa fa-sync-alt"></i> Update Status
+                                </a>
+                                <ng-select [appendTo]="'body'" style="width:100px !important"
+                                    [items]="selectedProductStatusOptions[selectedProduct.caseId]" bindLabel="label"
+                                    bindValue="id" [clearable]="false"
+                                    *ngIf="productStatusDropdownOpen[selectedProduct.caseId]"
+                                    [(ngModel)]="selectedProductStatus[selectedProduct.caseId]"
+                                    (change)="onProductStatusSelected(selectedProduct.caseId, $event)">
+                                </ng-select>
+                            </ng-container>
+
                         </div>
                     </div>
 

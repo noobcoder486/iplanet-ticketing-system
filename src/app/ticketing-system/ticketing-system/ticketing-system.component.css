@@ -241,6 +241,22 @@ section.content .ts-ticket-card.new:hover {
   transform: translateX(3px);
 }
 
+section.content .ts-ticket-card.first {
+  background: #f7e6dc;
+  border-color: #db2100e3;
+}
+
+section.content .ts-ticket-card.first .ts-ticket-stripe {
+  background: #fd7825;
+}
+
+section.content .ts-ticket-card.first:hover {
+  border-color: #fafebf;
+  box-shadow: 0 3px 12px rgba(26, 115, 232, 0.2);
+  transform: translateX(3px);
+}
+
+
 section.content .ts-ticket-card.in-progress {
   background: #fffbeb;
   border-color: #fcd34d;
@@ -353,6 +369,11 @@ section.content .ts-status-pill {
 section.content .ts-status-pill--new {
   background: #bfdbfe;
   color: #1d4ed8;
+}
+
+section.content .ts-status-pill--first {
+  background: #fd914e;
+  color: rgb(255, 255, 255);
 }
 
 section.content .ts-status-pill--in-progress {
@@ -548,6 +569,17 @@ section.content .ts-dsb--new .ts-dsb-dot {
   background: #1d4ed8;
 }
 
+
+section.content .ts-dsb--first {
+  background: #ffffff;
+  color: #f56b2b;
+}
+
+section.content .ts-dsb--first .ts-dsb-dot {
+  background: #000000;
+}
+
+
 section.content .ts-dsb--inprogress {
   background: #fef9c3;
   color: #92400e;
@@ -706,6 +738,10 @@ section.content .ts-workflow-btn {
 
 section.content .ts-workflow-btn--assign {
   background: linear-gradient(135deg, #059669, #047857);
+}
+
+section.content .ts-workflow-btn--first {
+  background: linear-gradient(135deg, #fd914e, #ec752b);
 }
 
 section.content .ts-workflow-btn--assign:hover {
@@ -2084,4 +2120,58 @@ section.content .ts-workflow-btn--quotation:hover {
   &:hover {
     color: #8b0000;
   }
+}
+
+section.content .ts-dsb--qtesub {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+section.content .ts-dsb--qtesub .ts-dsb-dot {
+  background: #9a3412;
+}
+
+section.content .ts-dsb--qteappr {
+  background: #dcfce7;
+  color: #166534;
+}
+
+section.content .ts-dsb--qteappr .ts-dsb-dot {
+  background: #166534;
+}
+
+section.content .ts-dsb--qterej {
+  background: #fecaca;
+  color: #991b1b;
+}
+
+section.content .ts-dsb--qterej .ts-dsb-dot {
+  background: #991b1b;
+}
+
+section.content .ts-dsb--qtepsub {
+  background: #fef08a;
+  color: #854d0e;
+}
+
+section.content .ts-dsb--qtepsub .ts-dsb-dot {
+  background: #854d0e;
+}
+
+section.content .ts-dsb--qtepappr {
+  background: #bbf7d0;
+  color: #15803d;
+}
+
+section.content .ts-dsb--qtepappr .ts-dsb-dot {
+  background: #15803d;
+}
+
+section.content .ts-dsb--qteprej {
+  background: #fecdd3;
+  color: #9f1239;
+}
+
+section.content .ts-dsb--qteprej .ts-dsb-dot {
+  background: #9f1239;
 }

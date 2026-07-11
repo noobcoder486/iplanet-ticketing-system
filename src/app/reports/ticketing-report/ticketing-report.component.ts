@@ -6,7 +6,10 @@ import { BehaviorSubject } from 'rxjs';
 import { DynamicService } from 'src/app/common/Services/dynamicService/dynamic.service';
 import { Columns } from 'src/app/models/column.metadata';
 import { PaginationMetaData } from 'src/app/models/pagination.metadata';
-import { ReportService } from 'src/app/common/Services/gsxService/report.service';
+import { ChangeDetectorRef } from '@angular/core';
+import { NgZone } from '@angular/core';
+import * as glob from 'src/app/config/global';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-ticketing-report',
@@ -20,7 +23,9 @@ export class TicketingReportComponent implements OnInit {
     private ngxSpinnerService: NgxSpinnerService,
     private dynamicService: DynamicService,
     private toast: ToastrService,
-    private reportService: ReportService
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
+
   ) { this.jobPagination = new PaginationMetaData() }
 
   typeSelected = 'ball-clip-rotate';
@@ -55,131 +60,67 @@ export class TicketingReportComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  buildExportXml(): string {
-    let rows = '<rows>';
-    this.results.forEach(item => {
-      rows += '<row>';
-      rows += `<TicketId>${this.escapeXml(item.TicketId)}</TicketId>`;
-      rows += `<CaseId>${this.escapeXml(item.CaseId)}</CaseId>`;
-      rows += `<CustomerName>${this.escapeXml(item.CustomerName)}</CustomerName>`;
-      rows += `<ContactNo>${this.escapeXml(item.ContactNo)}</ContactNo>`;
-      rows += `<SerialNo>${this.escapeXml(item.SerialNo)}</SerialNo>`;
-      rows += `<Issue>${this.escapeXml(item.Issue)}</Issue>`;
-      rows += `<Location>${this.escapeXml(item.Location)}</Location>`;
-      rows += `<EngineerName>${this.escapeXml(item.EngineerName)}</EngineerName>`;
-      rows += `<Status>${this.escapeXml(item.Status)}</Status>`;
-      rows += `<RepairType>${this.escapeXml(item.RepairType)}</RepairType>`;
-      rows += `<WarrantyStatus>${this.escapeXml(item.WarrantyStatus)}</WarrantyStatus>`;
-      rows += `<FirstResponseTime>${this.escapeXml(item.FirstResponseTime)}</FirstResponseTime>`;
-      rows += `<DiagnosticsTime>${this.escapeXml(item.DiagnosticsTime)}</DiagnosticsTime>`;
-      rows += `<PartFixingTime>${this.escapeXml(item.PartFixingTime)}</PartFixingTime>`;
-      rows += `<ClosureDate>${this.escapeXml(item.ClosureDate)}</ClosureDate>`;
-      rows += '</row>';
-    });
-    rows += '</rows>';
-    return rows;
-  }
-
-  escapeXml(value: any): string {
-    if (value == null || value == undefined) {
-      return '';
-    }
-    return value.toString()
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&apos;');
-  }
-
-  exportReportData() {
-    if (this.results.length == 0) {
-      this.toast.error("No Data To Export")
-      return;
-    }
+  buildReportRequestData(pageNo: number, pageSize: number) {
     const startformattedDate = this.datePipe.transform(this.StartDate, 'dd-MM-yyyy');
     const endformattedDate = this.datePipe.transform(this.EndDate, 'dd-MM-yyyy');
-    let requestData = []
-    this.ngxSpinnerService.show();
-    requestData.push({
-      "Key": "APIType",
-      "Value": "ExportTicketCaseReportList"
-    })
-    requestData.push({
-      "Key": "Data",
-      "Value": this.buildExportXml()
-    })
+
+    let requestData = [];
+    requestData.push({ "Key": "APIType", "Value": "GenerateTicketReportList" });
+    requestData.push({ "Key": "TicketNo", "Value": this.TicketNo || "" });
+    requestData.push({ "Key": "CaseId", "Value": this.CaseId || "" });
+    requestData.push({ "Key": "StartDate", "Value": startformattedDate || "" });
+    requestData.push({ "Key": "EndDate", "Value": endformattedDate || "" });
+    requestData.push({ "Key": "PageNo", "Value": pageNo.toString() });
+    requestData.push({ "Key": "PageSize", "Value": pageSize.toString() });
+    requestData.push({ "Key": "CompanyCode", "Value": glob.getCompanyCode() });
 
     let strRequestData = JSON.stringify(requestData);
-    let contentRequest = { "content": strRequestData };
-
-    this.reportService.downloadServiceReport('UNIVERSAL', contentRequest).subscribe({
-      next: (Value) => {
-        try {
-          let response = JSON.parse(Value.toString());
-          const byteArray = new Uint8Array(atob(response.FileContents).split('').map(char => char.charCodeAt(0)));
-          var blob = new Blob([byteArray], { type: 'application/vnd.ms-excel' });
-          const link = document.createElement('a');
-          const url = URL.createObjectURL(blob);
-          link.href = url;
-          const fileName = `Ticketing_Report_${startformattedDate}_to_${endformattedDate}.xls`;
-          link.download = fileName;
-          link.click();
-          URL.revokeObjectURL(url);
-          this.ngxSpinnerService.hide();
-        } catch (ext) {
-          this.ngxSpinnerService.hide();
-        }
-      },
-      error: err => {
-        this.ngxSpinnerService.hide()
-      }
-    });
+    return { "content": strRequestData };
   }
 
- getReportData(eventDetail) {
-    this.results = [];
-    const startformattedDate = this.datePipe.transform(this.StartDate, 'yyyy-MM-dd');
-    const endformattedDate = this.datePipe.transform(this.EndDate, 'yyyy-MM-dd');
-    let requestData = [];
-    this.ngxSpinnerService.show();
-    
-    requestData.push({ "Key": "APIType", "Value": "GenerateTicketReportList" });
-    requestData.push({ "Key": "TicketNo", "Value": this.TicketNo ? this.TicketNo.trim() : "" });
-    requestData.push({ "Key": "CaseId", "Value": this.CaseId ? this.CaseId.trim() : "" });
-    requestData.push({ "Key": "StartDate", "Value": startformattedDate ? startformattedDate : "" });
-    requestData.push({ "Key": "EndDate", "Value": endformattedDate ? endformattedDate : "" });
-    requestData.push({ "Key": "PageNo", "Value": eventDetail.pageIndex == null ? "1" : (eventDetail.pageIndex + 1).toString() });
-    requestData.push({ "Key": "PageSize", "Value": eventDetail.pageSize == null ? "10" : eventDetail.pageSize.toString() });
+  extractTicketDetailList(rawData: string) {
+    let tempResults = [];
+    if (rawData) {
+      let data = JSON.parse(rawData);
+      if (data && data.TicketReportList) {
+        let ticketReportList = data.TicketReportList;
+        if (ticketReportList && ticketReportList.TicketDetail) {
+          if (Array.isArray(ticketReportList.TicketDetail)) {
+            tempResults = ticketReportList.TicketDetail;
+          } else {
+            tempResults.push(ticketReportList.TicketDetail);
+          }
+        }
+      }
+    }
+    return tempResults;
+  }
 
-    let strRequestData = JSON.stringify(requestData);
-    let contentRequest = { "content": strRequestData };
+  getReportData(eventDetail) {
+    this.results = [];
+
+    const pageNo = eventDetail?.PageNo || eventDetail?.PageIndex || 1;
+    const pageSize = eventDetail?.PageSize || 10;
+
+    let contentRequest = this.buildReportRequestData(pageNo, pageSize);
+
+    this.ngxSpinnerService.show();
 
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
       next: (Value) => {
         try {
           let response = JSON.parse(Value.toString());
-          let rawData = response?.ExtraData || response?.extraData;
-          
-          if (rawData) {
-            let data = JSON.parse(rawData);
-            if (data && data.Data) {
-              let ticketReportList = data.Data.TicketReportList;
-              let tempResults = [];
+          if (response.ReturnCode == '0') {
+            let rawData = response?.ExtraData || response?.extraData;
+            let data = rawData ? JSON.parse(rawData) : null;
+            let tempResults = this.extractTicketDetailList(rawData);
 
-              if (ticketReportList && ticketReportList.TicketDetail) {
-                if (Array.isArray(ticketReportList.TicketDetail)) {
-                  tempResults = ticketReportList.TicketDetail;
-                } else {
-                  tempResults.push(ticketReportList.TicketDetail);
-                }
-              }
-
+            this.ngZone.run(() => {
               this.results = tempResults;
-              let recordCount = data.Data.TotalRecords !== undefined ? Number(data.Data.TotalRecords) : this.results.length;
-              
+              let recordCount = data?.TotalRecords !== undefined ? Number(data.TotalRecords) : this.results.length;
               this.detail.next({ totalRecord: recordCount, Data: this.results });
-            }
+              this.cdr.detectChanges();
+            });
           }
           this.ngxSpinnerService.hide();
           setTimeout(() => { this.hideSpinnerEvent.next(); }, 200);
@@ -187,10 +128,70 @@ export class TicketingReportComponent implements OnInit {
           this.ngxSpinnerService.hide();
           this.hideSpinnerEvent.next();
         }
+      }
+    });
+  }
+
+  exportReportData() {
+    const startformattedDate = this.datePipe.transform(this.StartDate, 'dd-MM-yyyy');
+    const endformattedDate = this.datePipe.transform(this.EndDate, 'dd-MM-yyyy');
+
+    let contentRequest = this.buildReportRequestData(1, 100000);
+
+    this.ngxSpinnerService.show();
+
+    this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
+      next: (Value) => {
+        try {
+          let response = JSON.parse(Value.toString());
+          if (response.ReturnCode == '0') {
+            let rawData = response?.ExtraData || response?.extraData;
+            let allResults = this.extractTicketDetailList(rawData);
+
+            if (allResults.length == 0) {
+              this.toast.error("No Data To Export");
+              this.ngxSpinnerService.hide();
+              return;
+            }
+
+            const exportRows = allResults.map(item => ({
+              "Ticket Id": item.TicketId || "",
+              "Case Id": item.CaseId || "",
+              "Customer Name": item.CustomerName || "",
+              "Contact No": item.ContactNo || "",
+              "Serial No": item.SerialNo || "",
+              "Issue": item.Issue || "",
+              "Location": item.Location || "",
+              "Engineer Name": item.EngineerName || "",
+              "Status": item.Status || "",
+              "Repair Type": item.RepairType || "",
+              "Warranty Status": item.WarrantyStatus || "",
+              "First Response Time": item.FirstResponseTime || "",
+              "Diagnostics Time": item.DiagnosticsTime || "",
+              "Part Fixing Time": item.PartFixingTime || "",
+              "Closure Date": item.ClosureDate || ""
+            }));
+
+            const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportRows);
+            const wb: XLSX.WorkBook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "TicketingReport");
+
+            const fileName = `Ticketing_Report_${startformattedDate}_to_${endformattedDate}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+
+            this.toast.success("Report Exported Successfully");
+          } else {
+            this.toast.error("No Data To Export");
+          }
+          this.ngxSpinnerService.hide();
+        } catch (ext) {
+          this.ngxSpinnerService.hide();
+          this.toast.error("Export Failed");
+        }
       },
       error: err => {
         this.ngxSpinnerService.hide();
-        this.hideSpinnerEvent.next();
+        this.toast.error("Export Failed");
       }
     });
   }

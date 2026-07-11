@@ -84,10 +84,17 @@
               <ng-container *ngIf="!isEditingStatus">
                 <span class="ts-detail-status-badge" [ngClass]="{
                   'ts-dsb--new':            selectedTicket.TicketStatus === 'OPEN',
+                  'ts-dsb--first':            selectedTicket.TicketStatus === 'FIRSTRESPONSE',
                   'ts-dsb--inprogress':     selectedTicket.TicketStatus === 'IN-PROGRESS',
                   'ts-dsb--closed':         selectedTicket.TicketStatus === 'CLOSED',
                   'ts-dsb--partiallyclosed':selectedTicket.TicketStatus === 'PARTIALLY-COMPLETED',
-                  'ts-dsb--completed':      selectedTicket.TicketStatus === 'COMPLETED'
+                  'ts-dsb--completed':      selectedTicket.TicketStatus === 'COMPLETED',
+                  'ts-dsb--qtesub':         selectedTicket.TicketStatus === 'QTESUB',
+                  'ts-dsb--qteappr':        selectedTicket.TicketStatus === 'QTEAPPR',
+                  'ts-dsb--qterej':         selectedTicket.TicketStatus === 'QTEREJ',
+                  'ts-dsb--qtepsub':        selectedTicket.TicketStatus === 'QTEPSUB',
+                  'ts-dsb--qtepappr':       selectedTicket.TicketStatus === 'QTEPAPPR',
+                  'ts-dsb--qteprej':        selectedTicket.TicketStatus === 'QTEPREJ'
                 }">
                   <span class="ts-dsb-dot"></span>
                   {{ selectedTicket.TicketStatus }}
@@ -134,16 +141,23 @@
                 <i class="fa fa-hard-hat"></i> Assign Technician
               </button>
 
+              <button class="ts-workflow-btn ts-workflow-btn--first" *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') &&
+                     (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
+                     (selectedTicket?.TechIds != null || selectedTicket?.TechIds != '') &&
+                     selectedTicket?.TicketStatus === 'IN-PROGRESS'" (click)="UpdateFirstResponse(selectedTicket)">
+                <i class="fa fa-hard-hat"></i> Capture First Response
+              </button>
+
               <button class="ts-workflow-btn ts-workflow-btn--product" *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') &&
                      (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
-                     selectedTicket?.TicketStatus === 'IN-PROGRESS' &&
+                     selectedTicket?.TicketStatus === 'FIRSTRESPONSE' &&
                      (selectedTicket?.TechIds != null && selectedTicket?.TechIds != undefined)"
                 (click)="addProduct(selectedTicket)">
                 <i class="fa fa-box-open"></i> Add Product
               </button>
               <button class="ts-workflow-btn ts-workflow-btn--quotation" *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') &&
        (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
-       selectedTicket?.TicketStatus === 'IN-PROGRESS' &&
+       selectedTicket?.TicketStatus === 'FIRSTRESPONSE' &&
        (selectedTicket?.TechIds != null && selectedTicket?.TechIds != undefined) &&
        selectedTicket?._jobHeaderGuid" (click)="openBulkQuotation(selectedTicket)">
                 <i class="fa fa-file-invoice-dollar"></i> Add Quotation
