@@ -63,8 +63,9 @@
                 </div>
                 <div class="bq-meta-item" *ngIf="canUpdateBulkStatus">
                     <span class="bq-meta-label"><i class="fa fa-check-circle"></i> Quote Status</span>
-                    <button *ngIf="!bulkStatusDropdownOpen" class="bq-update-status-btn"
-                        (click)="openBulkStatusDropdown()"
+                    <button
+                        *ngIf="!bulkStatusDropdownOpen && ticket?.TicketStatus != 'QTEAPPR' && ticket?.TicketStatus != 'QTEREJ'"
+                        class="bq-update-status-btn" (click)="openBulkStatusDropdown()"
                         matTooltip="Click to update the quote status for all products within this ticket">
                         <i class="fa fa-sync-alt"></i> Update Bulk Status
                     </button>
@@ -163,22 +164,6 @@
                                 [disabled]="lockedProductCaseId !== null && lockedProductCaseId !== selectedProduct.caseId">
                                 <i class="fa fa-plus-circle"></i> Add Parts
                             </button>
-                            <ng-container *ngIf="canUpdateProductStatus(selectedProduct.caseId)">
-                                <a class="bq-update-status-link" style="cursor:pointer"
-                                    *ngIf="!productStatusDropdownOpen[selectedProduct.caseId]"
-                                    (click)="openProductStatusDropdown(selectedProduct.caseId)"
-                                    matTooltip="Click to update the quote status for this product">
-                                    <i class="fa fa-sync-alt"></i> Update Status
-                                </a>
-                                <ng-select [appendTo]="'body'" style="width:100px !important"
-                                    [items]="selectedProductStatusOptions[selectedProduct.caseId]" bindLabel="label"
-                                    bindValue="id" [clearable]="false"
-                                    *ngIf="productStatusDropdownOpen[selectedProduct.caseId]"
-                                    [(ngModel)]="selectedProductStatus[selectedProduct.caseId]"
-                                    (change)="onProductStatusSelected(selectedProduct.caseId, $event)">
-                                </ng-select>
-                            </ng-container>
-
                         </div>
                     </div>
 
