@@ -60,6 +60,9 @@ export class TicketingBulkQuotationComponent implements OnInit {
   bulkStatusDropdownOpen = false;
   selectedBulkStatus: string | null = null;
 
+  // ---- PO Upload (visible only when TicketStatus === 'QTEAPPR') ----
+  isPOUploading = false;
+
   ngOnInit(): void {
     this.ticketGuid = sessionStorage.getItem('bq_ticketGuid') || '';
     if (!this.ticketGuid) {
@@ -689,7 +692,6 @@ export class TicketingBulkQuotationComponent implements OnInit {
     {
       "content": pdfRequestData
     };
-    let storepdf = contentRequest;
     this.reportService.downloadServiceReport('QUOTE', contentRequest).subscribe(
       {
         next: (value: any) => {
@@ -710,6 +712,75 @@ export class TicketingBulkQuotationComponent implements OnInit {
       });
   }
 
+  async uploadPOPdf(event: any): Promise<void> {
+    const fileToUpload = <File>event.target.files[0];
+    if (!fileToUpload) return;
+
+    if (fileToUpload.type.match(/\/pdf/) == null) {
+      this.toast.error('Please select a PDF file only.');
+      return;
+    }
+
+    const ext = fileToUpload.name.split('.').pop();
+    const filename = uuidv4() + '.' + ext;
+
+    this.isPOUploading = true;
+    this.spinner.show();
+    try {
+      const value = await this.dynamicService.uploadFileToS3Local(fileToUpload, filename);
+      const uploaded: any = value;
+      const poPath = uploaded?.dbPath;
+      if (!poPath) {
+        this.spinner.hide();
+        this.isPOUploading = false;
+        this.toast.error('Upload failed. Please try again.');
+        return;
+      }
+      this._savePOPath(poPath, fileToUpload.name);
+    } catch (err: any) {
+      this.spinner.hide();
+      this.isPOUploading = false;
+      this.toast.error(err?.message || err);
+    }
+  }
+
+  private _savePOPath(poPath: string, filename: string): void {
+    const req = [
+      { Key: 'APIType', Value: 'UpdateTicketPOPath' },
+      { Key: 'TicketGuid', Value: this.ticketGuid },
+      { Key: 'POPath', Value: poPath }
+    ];
+    this.dynamicService.getDynamicDetaildata({ content: JSON.stringify(req) }).subscribe({
+      next: (value: any) => {
+        this.spinner.hide();
+        this.isPOUploading = false;
+        try {
+          const response = JSON.parse(value.toString());
+          if (response.ReturnCode === '0' || response.ReturnCode === 0) {
+            this.ticket.POPath = poPath;
+            this.ticket.POFileName = filename;
+            this.toast.success('PO uploaded successfully.', '', { timeOut: 3000 });
+          } else {
+            this.toast.error(response.ReturnMessage || response.ErrorMessage || 'Failed to save PO path.', 'Error');
+          }
+        } catch {
+          this.toast.error('Unexpected error saving PO path.');
+        }
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.spinner.hide();
+        this.isPOUploading = false;
+        this.toast.error('Server error uploading PO.', err);
+      }
+    });
+  }
+
+  removePOFile(): void {
+    this.ticket.POPath = null;
+    this.ticket.POFileName = null;
+    this.cdr.detectChanges();
+  }
 
   get canUpdateBulkStatus(): boolean {
     return this.products.length > 0 &&

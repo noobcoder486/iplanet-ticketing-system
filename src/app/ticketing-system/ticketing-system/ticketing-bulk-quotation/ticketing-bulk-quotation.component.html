@@ -15,10 +15,10 @@
                 </span>
             </div>
         </div>
-        <div class="bq-topbar-right" *ngIf="canUpdateBulkStatus">
-            <i class="fa fa-download" aria-hidden="true" style="cursor:pointer" (click)="downloadBulkQuotePdf()"></i>
-        </div>
+
         <div class="bq-topbar-right" *ngIf="ticket">
+            <i class="fa fa-download" aria-hidden="true" style="cursor:pointer" *ngIf="canUpdateBulkStatus"
+                (click)="downloadBulkQuotePdf()" matTooltip="Download Quote PDF"></i>
             <span class="bq-ticket-status-pill" [ngClass]="getTicketStatusClass(ticket.TicketStatus)">
                 <span class="bq-tsp-dot"></span>{{ ticket.TicketStatus }}
             </span>
@@ -61,10 +61,11 @@
                     <span class="bq-meta-label"><i class="fa fa-envelope"></i> Email</span>
                     <span class="bq-meta-value">{{ ticket.parsedTicketBody.mails[0].from }}</span>
                 </div>
-                <div class="bq-meta-item" *ngIf="canUpdateBulkStatus">
+                <div class="bq-meta-item"
+                    *ngIf="canUpdateBulkStatus  && ticket?.TicketStatus != 'Quote Approved' && ticket?.TicketStatus != 'Quote Rejected'">
                     <span class="bq-meta-label"><i class="fa fa-check-circle"></i> Quote Status</span>
                     <button
-                        *ngIf="!bulkStatusDropdownOpen && ticket?.TicketStatus != 'QTEAPPR' && ticket?.TicketStatus != 'QTEREJ'"
+                        *ngIf="!bulkStatusDropdownOpen && ticket?.TicketStatus != 'Quote Approved' && ticket?.TicketStatus != 'Quote Rejected'"
                         class="bq-update-status-btn" (click)="openBulkStatusDropdown()"
                         matTooltip="Click to update the quote status for all products within this ticket">
                         <i class="fa fa-sync-alt"></i> Update Bulk Status
@@ -73,6 +74,29 @@
                         bindLabel="label" bindValue="id" [clearable]="false" [(ngModel)]="selectedBulkStatus"
                         (change)="onBulkStatusSelected($event)">
                     </ng-select>
+                </div>
+
+                <div class="bq-meta-item" *ngIf="ticket?.TicketStatus === 'Quote Approved'">
+                    <span class="bq-meta-label"><i class="fa fa-file-invoice"></i> Purchase Order</span>
+
+                    <ng-container *ngIf="!ticket?.POPath">
+                        <input #poFileInput type="file" (click)="poFileInput.value = null"
+                            (change)="uploadPOPdf($event)" style="display:none" accept="application/pdf">
+                        <button class="bq-update-status-btn" (click)="poFileInput.click()" [disabled]="isPOUploading"
+                            matTooltip="Upload the customer's PO as a PDF">
+                            <i class="fa fa-upload"></i> {{ isPOUploading ? 'Uploading…' : 'Upload PO PDF' }}
+                        </button>
+                    </ng-container>
+
+                    <ng-container *ngIf="ticket?.POPath">
+                        <span class="bq-meta-value" style="display:flex;align-items:center;gap:8px;">
+                            <a [href]="ticket.POPath" target="_blank" rel="noopener">
+                                <i class="fa fa-file-pdf"></i> {{ ticket.POFileName || 'View PO' }}
+                            </a>
+                            <i class="fa fa-trash-alt" style="cursor:pointer" (click)="removePOFile()"
+                                matTooltip="Remove uploaded PO"></i>
+                        </span>
+                    </ng-container>
                 </div>
             </div>
         </div>

@@ -1,0 +1,297 @@
+// =============================================================================
+// TICKETING REPORT — scoped to the component root
+// =============================================================================
+
+:host
+  display: block
+  font-family: 'Segoe UI', Tahoma, Geneva, sans-serif
+  background: #eef2f7
+  padding: 18px
+
+  *
+    box-sizing: border-box
+
+// =============================================================================
+// FILTER CARD
+// =============================================================================
+
+:host ::ng-deep mat-card
+  background: #fff
+  border-radius: 12px
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07)
+  border: 1px solid #e2e8f0
+  padding: 18px 20px
+  margin-bottom: 16px
+
+:host .tr-title
+  font-size: 15px
+  font-weight: 700
+  color: #0f172a
+  margin: 0 0 14px
+
+:host .tr-filter-row
+  display: flex
+  align-items: flex-end
+  gap: 20px
+  flex-wrap: wrap
+
+:host .tr-field
+  display: flex
+  flex-direction: column
+  gap: 6px
+  min-width: 220px
+
+:host .tr-field label
+  font-size: 10.5px
+  font-weight: 700
+  text-transform: uppercase
+  letter-spacing: 0.5px
+  color: #94a3b8
+
+:host .tr-field input,
+:host .tr-field .mat-form-field,
+:host .tr-field ::ng-deep .mat-form-field-wrapper
+  font-size: 13px
+
+:host .tr-input
+  border: 1.5px solid #e2e8f0
+  border-radius: 8px
+  padding: 8px 12px
+  font-size: 13px
+  color: #0f172a
+  background: #f8fafc
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s
+  outline: none
+
+  &:hover
+    border-color: #cbd5e1
+
+  &:focus
+    border-color: #1a73e8
+    background: #fff
+    box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.12)
+
+  &::placeholder
+    color: #b0b8c4
+
+:host .tr-daterange
+  position: relative
+
+  .mat-datepicker-toggle
+    color: #94a3b8
+
+// =============================================================================
+// ACTION BUTTONS
+// =============================================================================
+
+:host .tr-actions
+  display: flex
+  justify-content: flex-end
+  gap: 10px
+  padding-top: 12px
+
+:host .btn
+  display: inline-flex
+  align-items: center
+  gap: 7px
+  border: none
+  padding: 9px 20px
+  border-radius: 8px
+  font-size: 13px
+  font-weight: 700
+  cursor: pointer
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s
+  letter-spacing: 0.2px
+
+  &:active
+    transform: scale(0.97)
+
+:host .btnClass
+  background: linear-gradient(135deg, #1a73e8, #1558b0)
+  color: #fff
+  box-shadow: 0 3px 10px rgba(26, 115, 232, 0.3)
+
+  &:hover
+    background: linear-gradient(135deg, #1558b0, #0d47a1)
+    box-shadow: 0 4px 14px rgba(26, 115, 232, 0.4)
+    transform: translateY(-1px)
+
+:host .tr-export-btn
+  background: linear-gradient(135deg, #059669, #047857)
+  color: #fff
+  box-shadow: 0 3px 10px rgba(5, 150, 105, 0.3)
+
+  &:hover
+    background: linear-gradient(135deg, #047857, #065f46)
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4)
+    transform: translateY(-1px)
+
+// =============================================================================
+// GRID CARD WRAPPER
+// =============================================================================
+
+:host .table-responsive
+  background: #fff
+  border-radius: 12px
+  border: 1px solid #e2e8f0
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07)
+  overflow: hidden
+
+// =============================================================================
+// NITC-GRID DEEP OVERRIDES
+// =============================================================================
+
+:host ::ng-deep nitc-grid
+
+  table
+    width: 100%
+    border-collapse: collapse
+    font-size: 12.5px
+
+  thead tr
+    background: #1e293b
+
+  thead th
+    color: #f1f5f9 !important
+    font-size: 10.5px
+    font-weight: 700
+    text-transform: uppercase
+    letter-spacing: 0.5px
+    padding: 12px 14px !important
+    white-space: nowrap
+    border-bottom: 2px solid #1a73e8
+
+  tbody tr
+    transition: background 0.12s
+    border-bottom: 1px solid #f1f5f9
+
+    &:hover
+      background: #f0f7ff
+
+    &:nth-child(even)
+      background: #f8fafc
+
+      &:hover
+        background: #f0f7ff
+
+  tbody td
+    padding: 10px 14px !important
+    color: #1e293b
+    vertical-align: middle
+    white-space: nowrap
+
+  // Status-style cell — matches iPlanet ticketing pill look
+  td:has([data-status])
+    text-align: center
+
+  .mat-paginator,
+  .mat-paginator-container
+    background: #fff
+    border-top: 1px solid #e2e8f0
+    min-height: 48px
+    font-size: 12.5px
+
+  .mat-paginator-page-size,
+  .mat-paginator-range-label
+    color: #64748b
+    font-size: 12px
+
+  // Scrollbar polish
+  .table-responsive::-webkit-scrollbar,
+  ::-webkit-scrollbar
+    height: 6px
+    width: 6px
+
+  ::-webkit-scrollbar-track
+    background: transparent
+
+  ::-webkit-scrollbar-thumb
+    background: #cbd5e1
+    border-radius: 3px
+
+// =============================================================================
+// STATUS PILLS — apply via [ngClass] on a cell wrapper span if template supports it
+// =============================================================================
+
+:host .tr-status-pill
+  display: inline-flex
+  align-items: center
+  gap: 5px
+  font-size: 10px
+  font-weight: 800
+  padding: 3px 10px
+  border-radius: 20px
+  text-transform: uppercase
+  letter-spacing: 0.4px
+  white-space: nowrap
+
+  &--new
+    background: #bfdbfe
+    color: #1d4ed8
+
+  &--in-progress
+    background: #fde68a
+    color: #92400e
+
+  &--closed
+    background: #e2e8f0
+    color: #475569
+
+  &--partially-closed
+    background: #ede9fe
+    color: #31951d
+
+  &--completed
+    background: #dcfce7
+    color: #166534
+
+// =============================================================================
+// EMPTY STATE
+// =============================================================================
+
+:host .tr-empty
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  padding: 60px 20px
+  text-align: center
+  background: #fff
+  border-radius: 12px
+  border: 1px solid #e2e8f0
+
+  i
+    width: 60px
+    height: 60px
+    border-radius: 50%
+    background: #dbeafe
+    display: flex
+    align-items: center
+    justify-content: center
+    font-size: 24px
+    color: #1a73e8
+    margin-bottom: 14px
+
+  p
+    font-size: 13px
+    color: #94a3b8
+    margin: 0
+
+// =============================================================================
+// RESPONSIVE
+// =============================================================================
+
+@media (max-width: 768px)
+  :host .tr-filter-row
+    flex-direction: column
+    align-items: stretch
+
+  :host .tr-field
+    min-width: unset
+
+  :host .tr-actions
+    justify-content: stretch
+
+    .btn
+      flex: 1
+      justify-content: center
