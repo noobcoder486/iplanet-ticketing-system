@@ -1678,6 +1678,8 @@ export class AdvancePaymentComponent implements OnInit {
   }
 
   onSubmit() {
+    this.ngxSpinnerService.show()
+
     if (this.advancePaymentAmount == 0.00) {
       this.toastMessage.error("There is no advance payment for this transaction!")
       return;
@@ -1767,7 +1769,6 @@ export class AdvancePaymentComponent implements OnInit {
     }
     this.submitClicked=true 
 
-    this.ngxSpinnerService.show()
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (value) => {

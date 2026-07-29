@@ -56,6 +56,20 @@
       </div>
     </div>
 
+    <mat-card class="mt-2">
+      <div class="row">
+         <div class="col-sm-1 col-md-1 col-lg-1">
+          <span style="font-size: 14px !important;">Nret Type </span><i style="color: red;">*</i> </div>
+         <div class="col-sm-3 col-md-3 col-lg-3">
+          <ng-select [disabled]="this.params.headerguid" style="margin-top: -24px; margin-bottom: -14px;" [items]="NretTypeDD.Data" bindValue="Id" bindLabel="TEXT" [(ngModel)]="NretType">
+
+          </ng-select>
+         </div>
+         <div class="col-sm-7 col-md-7 col-lg-7"></div>
+
+      </div>
+    </mat-card>
+
 
     <div class="row" style="padding:10px;padding-bottom: 15px;">
       <div class="col-lg-12"
@@ -319,7 +333,7 @@
               <div>
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                   <div>
-                    <b style="font-size: 17px !important;">NRET Devices List</b>
+                    <b style="font-size: 17px !important;">NRET Devices List </b>
                   </div>
     
                   <div>
@@ -345,17 +359,19 @@
                       <thead >
                         <tr style="height: auto !important;">
                           <th style="width: 1%;" scope="col"></th>
-                          <th style="width: 15%;"scope="col">Case Id</th>
+                          <th style="width: 10%;"scope="col">Case Id</th>
                           <th style="width: 15%;"scope="col">Serial</th>
                           <th style="width: 37%;"scope="col">Description</th>
+                          <th style="width: 37%;"scope="col">NretType</th>
                         </tr>
                       </thead>
                       <tbody >
                         <tr *ngFor="let item of popUpArray" [ngClass]="{ 'selectedTr': item.selected == true, 'hide': isToShowTr(item) != true}">
                           <td style="width: 1%; "><input type="checkbox" [(ngModel)]="item.selected" (change)="UpdateSelectedCount()"/></td>
-                          <td style="width: 10%; "> <span>{{ item.CaseId}} </span></td>
-                          <td style="width: 15%; "> <span>{{ item.SerialNo1}} </span></td>
-                          <td style="width: 37%; "> <span>{{ item.productDescription}} </span></td>
+                          <td style="width: 10%; "> <span>{{ item?.CaseId}} </span></td>
+                          <td style="width: 15%; "> <span>{{ item?.SerialNo1}} </span></td>
+                          <td style="width: 37%; "> <span>{{ item?.productDescription}} </span></td>
+                          <td style="width: 37%; "> <span>{{ item?.NretType}} </span></td>
                         </tr>
                       </tbody>
                       </table>            

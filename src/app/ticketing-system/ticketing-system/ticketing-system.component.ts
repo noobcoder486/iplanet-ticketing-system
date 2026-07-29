@@ -47,9 +47,7 @@ export class TicketingSystemComponent implements OnInit {
   productsSubmitted: boolean = false;
   customerData: any = null;
   locationData: any = null;
-  customerVoice: string = '';
   creVoice: string = '';
-  customerVoiceTouched: boolean = false;
   creVoiceTouched: boolean = false;
   ELSStatusType: DropDownValue = this.getBlankObject();
   RepairTypeDD: DropDownValue = this.getBlankObject();
@@ -99,10 +97,11 @@ export class TicketingSystemComponent implements OnInit {
     return !this.noSpecialCharsPattern.test(value);
   }
 
-  isCustomerVoiceInvalid(): boolean {
-    if (!this.hasNewProducts()) return false;
-    return this.customerVoiceTouched && (!this.customerVoice?.trim() || this.hasSpecialChars(this.customerVoice));
+  isCustomerVoiceInvalid(product: any): boolean {
+    if (product._fromJob) return false;
+    return product._customerVoiceTouched && (!product.customerVoice?.trim() || this.hasSpecialChars(product.customerVoice));
   }
+
 
   isCreVoiceInvalid(): boolean {
     if (!this.hasNewProducts()) return false;
@@ -122,9 +121,7 @@ export class TicketingSystemComponent implements OnInit {
     this.submittedProducts = [];
     this.customerData = null;
     this.locationData = null;
-    this.customerVoice = '';
     this.creVoice = '';
-    this.customerVoiceTouched = false;
     this.creVoiceTouched = false;
     this.GetTicketDetail(ticket);
   }
@@ -157,6 +154,7 @@ export class TicketingSystemComponent implements OnInit {
       case 'QTEPSUB': return 'ts-status-pill--qtepsub';
       case 'QTEPAPPR': return 'ts-status-pill--qtepappr';
       case 'QTEPREJ': return 'ts-status-pill--qteprej';
+      case 'JOBCREATE': return 'ts-status-pill--create';
       default: return 'ts-status-pill--new';
     }
   }
@@ -178,9 +176,7 @@ export class TicketingSystemComponent implements OnInit {
     this.locationData = null;
     this.productsSubmitted = false;
     this.submittedProducts = [];
-    this.customerVoice = '';
     this.creVoice = '';
-    this.customerVoiceTouched = false;
     this.creVoiceTouched = false;
     this.GetTicketList();
   }
@@ -242,9 +238,7 @@ export class TicketingSystemComponent implements OnInit {
             if (fetchedTicket) {
               try {
                 if (typeof fetchedTicket.TicketBody === 'string') {
-                  const cleanedJson = fetchedTicket.TicketBody
-                    .replace(/\u00A0/g, ' ')
-                    .replace(/[\u200B-\u200D\uFEFF]/g, '');
+                  const cleanedJson = this.sanitizeTicketBodyJson(fetchedTicket.TicketBody);
                   fetchedTicket.parsedTicketBody = JSON.parse(cleanedJson);
                 } else {
                   fetchedTicket.parsedTicketBody = fetchedTicket.TicketBody;
@@ -253,13 +247,11 @@ export class TicketingSystemComponent implements OnInit {
                 if (fetchedTicket?.JobStatusCounts?.Status != null && fetchedTicket?.JobStatusCounts?.Status != undefined) {
                   if (Array.isArray(fetchedTicket?.JobStatusCounts?.Status)) {
                     this.countArray = fetchedTicket?.JobStatusCounts?.Status
-
                   }
                   else {
                     this.countArray.push(fetchedTicket?.JobStatusCounts?.Status)
                   }
                 }
-
               } catch (e) {
                 fetchedTicket.parsedTicketBody = null;
               }
@@ -296,9 +288,7 @@ export class TicketingSystemComponent implements OnInit {
     for (let item of tickets) {
       try {
         if (typeof item.TicketBody === 'string') {
-          const cleanedJson = item.TicketBody
-            .replace(/\u00A0/g, ' ')
-            .replace(/[\u200B-\u200D\uFEFF]/g, '');
+          const cleanedJson = this.sanitizeTicketBodyJson(item.TicketBody);
           item.parsedTicketBody = JSON.parse(cleanedJson);
         } else {
           item.parsedTicketBody = item.TicketBody;
@@ -421,7 +411,7 @@ export class TicketingSystemComponent implements OnInit {
         for (let item of this.tickets) {
           if (item.TicketGuid == ticket?.TicketGuid) {
             item.TechIds = techId;
-            item.TicketStatus = 'IN-PROGRESS';
+            item.TicketStatus = 'FIRSTRESPONSE';
             break;
           }
         }
@@ -460,9 +450,7 @@ export class TicketingSystemComponent implements OnInit {
         if (added > 0) {
           this.productsSubmitted = true;
           this.drawerOpen = false;
-          if (!this.customerVoice) this.customerVoice = '';
           if (!this.creVoice) this.creVoice = '';
-          this.customerVoiceTouched = false;
           this.creVoiceTouched = false;
         }
         this.cdr.detectChanges();
@@ -478,12 +466,14 @@ export class TicketingSystemComponent implements OnInit {
     const jobHeader = ticket?.JobInfo?.JobHeader;
     if (!jobHeader) return;
     let details = jobHeader?.JobDetails?.JobDetail ?? null;
-    let diagnosis = jobHeader?.JobDetails?.JobDetail?.DiagnosisObject?.Diagnosis ?? null;
     if (!details) return;
     if (!Array.isArray(details)) details = [details];
     if (details.length === 0) return;
 
     for (const jd of details) {
+      // Diagnosis is per job-detail row, not per ticket — pull it fresh for each product
+      const diagnosis = jd?.DiagnosisObject?.Diagnosis ?? null;
+
       const product: any = {
         serial: jd.SerialNo1 ?? '',
         SerialNo1: jd.SerialNo1 ?? '',
@@ -514,7 +504,7 @@ export class TicketingSystemComponent implements OnInit {
         _contractDD: { TotalRecord: 0, Data: [] },
         _elsTouched: false,
         customerVoice: jd.customerVoice ?? '',
-        creVoice: jd.creVoice ?? '',
+        _customerVoiceTouched: false,
         _fromJob: true,
         _caseId: jd.CaseId ?? '',
         _caseGuid: jd.CaseGUID ?? '',
@@ -533,7 +523,6 @@ export class TicketingSystemComponent implements OnInit {
     }
 
     if (details.length > 0) {
-      this.customerVoice = details[0]?.customerVoice ?? '';
       this.creVoice = details[0]?.creVoice ?? '';
     }
 
@@ -548,7 +537,6 @@ export class TicketingSystemComponent implements OnInit {
     this.drawerOpen = false;
     this.cdr.detectChanges();
   }
-
 
   private _enrichProduct(product: any): any {
     const p = { ...product };
@@ -576,6 +564,8 @@ export class TicketingSystemComponent implements OnInit {
     p._billingOption = null;
     p._repairTypeTouched = false;
     p._billingOptionTouched = false;
+    p.customerVoice = '';
+    p._customerVoiceTouched = false;
     return p;
   }
 
@@ -659,7 +649,8 @@ export class TicketingSystemComponent implements OnInit {
           IsContractApplicable: (p._contractCode != null && p._contractCode !== '') ? '1' : '0',
           ContractCode: p._contractCode || '',
           ContractStartDate: p._contractStartDate || '',
-          ContractEndDate: p._contractEndDate || ''
+          ContractEndDate: p._contractEndDate || '',
+          CustomerVoice: p.customerVoice || '',
         }
       });
     }
@@ -689,6 +680,18 @@ export class TicketingSystemComponent implements OnInit {
         return false;
       }
 
+      p._customerVoiceTouched = true;
+      if (!p.customerVoice?.trim()) {
+        this.toaster.error(`Customer Voice cannot be blank for Serial: ${p.serial}`);
+        this.cdr.detectChanges();
+        return false;
+      }
+      if (this.hasSpecialChars(p.customerVoice)) {
+        this.toaster.error(`Customer Voice has invalid characters for Serial: ${p.serial}`);
+        this.cdr.detectChanges();
+        return false;
+      }
+
       if (!p._repairType || p._repairType === '') {
         this.toaster.error(`Please select Repair Type for Serial: ${p.serial}`);
         p._repairTypeTouched = true;
@@ -704,17 +707,7 @@ export class TicketingSystemComponent implements OnInit {
       }
     }
 
-    this.customerVoiceTouched = true;
     this.creVoiceTouched = true;
-
-    if (!this.customerVoice?.trim()) {
-      this.toaster.error('Customer Voice cannot be blank');
-      return false;
-    }
-    if (this.hasSpecialChars(this.customerVoice)) {
-      this.toaster.error('Customer Voice contains invalid special characters');
-      return false;
-    }
     if (!this.creVoice?.trim()) {
       this.toaster.error('CRE Voice cannot be blank');
       return false;
@@ -739,7 +732,7 @@ export class TicketingSystemComponent implements OnInit {
     if (!this._validateSubmission()) return;
 
     const productXml = this._buildProductXml();
-    const isAppend = !!this.selectedTicket?._jobHeaderGuid;   // true = append to existing job
+    const isAppend = !!this.selectedTicket?._jobHeaderGuid;
 
     let requestData = [];
     requestData.push({ Key: 'ApiType', Value: 'SaveTicketJobDetails' });
@@ -748,20 +741,18 @@ export class TicketingSystemComponent implements OnInit {
     requestData.push({ Key: 'CompanyCode', Value: glob.getCompanyCode() });
     requestData.push({ Key: 'RetailCustomerCode', Value: this.selectedTicket?.CustomerCode });
     requestData.push({ Key: 'LocationCode', Value: this.selectedTicket?.LocationCode });
-    requestData.push({ Key: 'ComplainDesc', Value: this.customerVoice.trim() });
     requestData.push({ Key: 'Remark', Value: this.creVoice.trim() });
     requestData.push({ Key: 'ProductDetails', Value: productXml });
     requestData.push({ Key: 'JobHeaderGuid', Value: this.selectedTicket?._jobHeaderGuid || '' });
     const contentRequest = { content: JSON.stringify(requestData) };
+
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
       next: (value: any) => {
         try {
           let response = JSON.parse(value.toString());
           if (response.ReturnCode == '0') {
             this.toaster.success(isAppend ? 'Products appended to job successfully' : 'Products submitted successfully');
-            this.customerVoice = '';
             this.creVoice = '';
-            this.customerVoiceTouched = false;
             this.creVoiceTouched = false;
             this.submittedProducts = [];
             this.productsSubmitted = false;
@@ -772,7 +763,6 @@ export class TicketingSystemComponent implements OnInit {
               try {
                 const parser = new xml2js.Parser({ strict: false, trim: true });
                 parser.parseString(response.ErrorMessage, (err: any, result: any) => {
-                  var error = err;
                   const errorMessages = result?.ERRORLIST?.ERRORMESSAGE;
                   if (Array.isArray(errorMessages)) {
                     errorMessages.forEach((em) => this.toaster.error(em.ERRORMESSAGE));
@@ -849,9 +839,7 @@ export class TicketingSystemComponent implements OnInit {
     this.submittedProducts = [];
     this.customerData = null;
     this.locationData = null;
-    this.customerVoice = '';
     this.creVoice = '';
-    this.customerVoiceTouched = false;
     this.creVoiceTouched = false;
     this.GetTicketList();
   }
@@ -931,6 +919,7 @@ export class TicketingSystemComponent implements OnInit {
             for (let item of this.tickets) {
               if (item.TicketGuid == ticketObj?.TicketGuid) {
                 item.TicketStatus = 'FIRSTRESPONSE';
+                this.selectTicket(ticketObj);
                 return;
               }
             }
@@ -943,5 +932,60 @@ export class TicketingSystemComponent implements OnInit {
         console.log(err);
       }
     });
+  }
+
+  private sanitizeTicketBodyJson(raw: string): string {
+    if (!raw) return raw;
+
+    const cleaned = raw
+      .replace(/\u00A0/g, ' ')
+      .replace(/[\u200B-\u200D\uFEFF]/g, '');
+
+    return this._escapeRawControlCharsInStrings(cleaned);
+  }
+
+  private _escapeRawControlCharsInStrings(raw: string): string {
+    let out = '';
+    let inString = false;
+    let escapeNext = false;
+
+    for (let i = 0; i < raw.length; i++) {
+      const ch = raw[i];
+      const code = raw.charCodeAt(i);
+
+      if (inString) {
+        if (escapeNext) {
+          out += ch;
+          escapeNext = false;
+          continue;
+        }
+        if (ch === '\\') {
+          out += ch;
+          escapeNext = true;
+          continue;
+        }
+        if (ch === '"') {
+          inString = false;
+          out += ch;
+          continue;
+        }
+        if (ch === '\n') { out += '\\n'; continue; }
+        if (ch === '\r') { out += '\\r'; continue; }
+        if (ch === '\t') { out += '\\t'; continue; }
+        if (code < 0x20) {
+          out += '\\u' + code.toString(16).padStart(4, '0');
+          continue;
+        }
+        out += ch;
+        continue;
+      }
+
+      if (ch === '"') {
+        inString = true;
+      }
+      out += ch;
+    }
+
+    return out;
   }
 }

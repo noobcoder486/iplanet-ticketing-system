@@ -397,6 +397,11 @@ section.content .ts-status-pill--completed {
   color: #166534;
 }
 
+section.content .ts-status-pill--create {
+  background: #2cf1ff;
+  color: #000000;
+}
+
 section.content .ts-ticket-customer {
   display: flex;
   align-items: center;
@@ -2129,6 +2134,15 @@ section.content .ts-dsb--qtesub {
 
 section.content .ts-dsb--qtesub .ts-dsb-dot {
   background: #9a3412;
+}
+
+section.content .ts-dsb--jobcreate {
+  background: #2cf1ff;
+  color: #000000;
+}
+
+section.content .ts-dsb--jobcreate .ts-dsb-dot {
+  background: #000000;
 }
 
 section.content .ts-dsb--qteappr {

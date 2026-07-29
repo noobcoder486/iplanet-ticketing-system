@@ -658,7 +658,7 @@ export class AccessorySalesComponent implements OnInit {
       {
         next: (Value) => {
           this.ngxSpinnerService.hide()
-
+          debugger
           try {
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {
@@ -805,7 +805,7 @@ export class AccessorySalesComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-
+          debugger
           this.ngxSpinnerService.hide()
           try {
             let response = JSON.parse(Value.toString());
@@ -1189,7 +1189,7 @@ export class AccessorySalesComponent implements OnInit {
         if (result) {
 
           for (let item of result) {
-
+            debugger
             if ((item?.RevenueType == 'Service Revenue' || item?.RevenueType == 'Repair Revenue') && this.params.doctype == 'RSALES') {
               this.toastMessage.error('Please Add Service Revenue Parts in Quotation and then proceed for billing !!')
             }
@@ -1612,7 +1612,7 @@ export class AccessorySalesComponent implements OnInit {
     this.ngxSpinnerService.show();
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
       next: (response: any) => {
-
+        debugger
         this.ngxSpinnerService.hide();
         let data = JSON.parse(response)
           ;
@@ -2585,7 +2585,7 @@ export class AccessorySalesComponent implements OnInit {
     }
   }
   showAddParts(item) {
-
+    debugger
     if (this.params.doctype == 'RSALES' && item?.ItemSource != 'NEW') {
       this.toastMessage.error('Cannot Apply Discount while billing for RSALES')
       return
@@ -3014,7 +3014,7 @@ export class AccessorySalesComponent implements OnInit {
 
 
   deleteitem(item) {
-
+    debugger
     if (this.params.doctype == 'RSALES' && item.RevenueType == 'Service Revenue') {
       this.toastMessage.error('Cannot Delete ,As it is present in quotation !!')
       return
@@ -5055,7 +5055,7 @@ export class AccessorySalesComponent implements OnInit {
 
 
   GetCustomerAllowedtoChangeUnitPriceList() {
-
+    debugger
     let requestData = []
     requestData.push({
       "Key": "APIType",
@@ -5071,7 +5071,7 @@ export class AccessorySalesComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-
+          debugger
           try {
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {

@@ -320,7 +320,7 @@
           <!-- Paid Amount : <b>{{totalPaidAmount | number: '1.2-2'}}</b> -->
         </div>
         <div class="col-sm-3 col-lg-3 col-md-3">
-          <button appDebounceClick [debounceTime]="1000"  
+          <button appDebounceClick [debounceTime]="2000"  
           [disabled]="submitClicked" class="btnClass" *ngIf="isEdit" style="float: right;" (debounceClick)="onSubmit()" > Save  </button>
 
           <!-- <button  class="btnClass" *ngIf="isEdit == false && PaymentSuccess == false" style="float: right;" (click)="saveSapAdvancePayment()" > Save to SAP  </button> -->

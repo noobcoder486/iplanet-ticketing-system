@@ -37,21 +37,16 @@ export class TicketingBulkQuotationComponent implements OnInit {
   ticket: any = null;
   products: any[] = [];
   selectedProduct: any = null;
-
   isLoading = false;
   hasError = false;
   errorMessage = '';
-
   showAddPartsPopup = false;
   popupProduct: any = null;
-
   lockedProductCaseId: string | null = null;
   productPartsMap: { [caseId: string]: any[] } = {};
   quoteMap: { [caseId: string]: any } = {};
   quoteFormMap: { [caseId: string]: FormGroup } = {};
-
   saveCooldownMap: { [caseId: string]: boolean } = {};
-
   PricingOptionDD: DropDownValue = DropDownValue.getBlankObject();
   Math = Math;
 
@@ -148,6 +143,10 @@ export class TicketingBulkQuotationComponent implements OnInit {
 
   private _mapJobDetail(jd: any, jobHeader: any): any {
     let diagnosis = jd?.DiagnosisObject?.Diagnosis ?? null;
+    const quoteObj = jd.QuotationObject?.Quotation ?? null;
+    const quoteFlagRaw = jd.QuoteFlag;
+    const quoteFlagIsOne = quoteFlagRaw === 1 || quoteFlagRaw === '1' || quoteFlagRaw === true;
+
     return {
       caseId: jd.CaseId ?? '',
       caseGuid: jd.CaseGUID ?? '',
@@ -173,12 +172,14 @@ export class TicketingBulkQuotationComponent implements OnInit {
       partCovered: jd.partCovered === 'true' || jd.partCovered === '1',
       locationCode: jd.LocationCode ?? '',
       quoteFlag: jd.QuoteFlag ?? 0,
-      QUOTE: jd.QuotationObject?.Quotation ?? null,
+      QUOTE: quoteObj,
       headerCaseId: jobHeader.HeaderCaseId ?? '',
       jobHeaderGuid: jobHeader.JOBHeaderGUID ?? '',
       jobDocStatus: jobHeader.JobDocStatus ?? '',
       jobDocDate: jobHeader.JobDocDate ?? null,
-      _isBillable: diagnosis?.BillableRepair || null
+      _isBillable: diagnosis?.BillableRepair || null,
+      // NEW: true once a quote genuinely exists for this product server-side
+      _quoteCreated: !!quoteObj?.QuoteGuid || quoteFlagIsOne
     };
   }
 
@@ -572,6 +573,7 @@ export class TicketingBulkQuotationComponent implements OnInit {
         const response = JSON.parse(value.toString());
         if (response.ReturnCode === '0') {
           quote.saved = true;
+          product._quoteCreated = true;   // NEW — quote now exists server-side
           this.toast.success('Quote saved successfully.', '', { timeOut: 3000 });
         } else {
           this.toast.error(response.ErrorMessage || 'Save failed.', 'Error');
@@ -657,6 +659,7 @@ export class TicketingBulkQuotationComponent implements OnInit {
       case 'QTEPSUB': return 'bq-ts--qtepsub';
       case 'QTEPAPPR': return 'bq-ts--qtepappr';
       case 'QTEPREJ': return 'bq-ts--qteprej';
+      case 'JOBCREATE': return 'bq-ts--jobcreate';
       default: return 'bq-ts--new';
     }
   }
@@ -713,11 +716,12 @@ export class TicketingBulkQuotationComponent implements OnInit {
 
   get canUpdateBulkStatus(): boolean {
     return this.products.length > 0 &&
-      this.products.every(p => this.getVisibleItems(p.caseId).length > 0);
+      this.products.every(p => this.getVisibleItems(p.caseId).length > 0 && p._quoteCreated);
   }
 
   canUpdateProductStatus(caseId: string): boolean {
-    return this.getVisibleItems(caseId).length > 0;
+    const product = this.products.find(p => p.caseId === caseId);
+    return this.getVisibleItems(caseId).length > 0 && !!product?._quoteCreated;
   }
 
   private get bulkCurrentStatus(): string {

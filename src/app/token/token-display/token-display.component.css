@@ -3,3 +3,35 @@
     font-weight: 600;
     font-size: 19px !important;
 }
+
+/* .delayed-card {
+  background-color: #ffe5e5;
+  border: 4px solid red !important;
+  animation: blinkBorder 1s infinite;
+}
+
+@keyframes blinkBorder {
+  50% {
+    border-color: darkred;
+  }
+} */
+
+.delayed-card {
+  background: #eed6d6f3;
+  border: 3px solid #e53935;
+  border-radius: 8px;
+  animation: pulseBorder 2s ease-in-out infinite;
+  transition: all 0.3s ease;
+}
+
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 0 2px rgba(243, 10, 10, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(241, 7, 7, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(241, 7, 7, 0.6);
+  }
+}

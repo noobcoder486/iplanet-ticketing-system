@@ -41,7 +41,6 @@ import { InboundCallManagementReportComponent } from './inbound-call-management-
 import { QuotationReportComponent } from './quotation-report/quotation-report.component';
 import { EnquiryListReportComponent } from './enquiry-list-report/enquiry-list-report.component';
 import { TableReplacementDetailReportComponent } from './table-replacement-detail-report/table-replacement-detail-report.component';
-import { TicketingReportComponent } from './ticketing-report/ticketing-report.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +78,6 @@ import { TicketingReportComponent } from './ticketing-report/ticketing-report.co
        QuotationReportComponent,
        EnquiryListReportComponent,
        TableReplacementDetailReportComponent,
-       TicketingReportComponent,
   ],
   imports: [
     CommonModule,

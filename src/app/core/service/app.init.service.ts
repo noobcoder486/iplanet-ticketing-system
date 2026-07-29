@@ -175,7 +175,6 @@ import { TestingComponent } from "src/app/inventory/testing/testing.component";
 import { EnquiryListReportComponent } from "src/app/reports/enquiry-list-report/enquiry-list-report.component";
 import { TicketDashboardComponent } from "src/app/ticketing-system/ticketing-system/ticket-dashboard/ticket-dashboard.component";
 import { TableReplacementDetailReportComponent } from "src/app/reports/table-replacement-detail-report/table-replacement-detail-report.component";
-import { TicketingReportComponent } from "src/app/reports/ticketing-report/ticketing-report.component";
 
 @Injectable({
   providedIn: 'root'
@@ -184,18 +183,18 @@ import { TicketingReportComponent } from "src/app/reports/ticketing-report/ticke
 export class AppInitService {
   TYPE_MAP = new Map<string, any>();
 
-  constructor(private Router: Router) {}
+  constructor(private Router: Router) { }
 
   userDetails: any[] = []
-  setUp(){
+  setUp() {
     console.log("this.userDetails", this.userDetails)
   }
-  
+
 
   init() {
-    
+
     return new Promise<void>((resolve, reject) => {
-       
+
       let allRoutes = JSON.parse(sessionStorage.getItem("AllRouting"))
       let formDetail = JSON.parse(sessionStorage.getItem("FieldDetail"));
 
@@ -211,7 +210,7 @@ export class AppInitService {
         let routes = staticRoutes;
         let childRoutes = [];
         var logedinuser = glob.getLogedInUser()
-         ;
+          ;
         /*if(logedinuser == null || logedinuser==undefined)
         {
           childRoutes.push({
@@ -243,18 +242,18 @@ export class AppInitService {
   
         }
       }*/
-      childRoutes.push({
-        path: "token-create", component: CreateTokenComponent,
-        data: { ScreenCode: "TokenCreate", routeDetail: "", ModuleId: 0 },
-        canActivate: [AuthGuard],
-      });
+        childRoutes.push({
+          path: "token-create", component: CreateTokenComponent,
+          data: { ScreenCode: "TokenCreate", routeDetail: "", ModuleId: 0 },
+          canActivate: [AuthGuard],
+        });
 
-      
-      childRoutes.push({
-        path: "dashboard", component: CallLoginDashboardComponent,
-        data: { ScreenCode: "Dashbord", routeDetail: "", ModuleId: 0 },
-        canActivate: [AuthGuard]
-      });
+
+        childRoutes.push({
+          path: "dashboard", component: CallLoginDashboardComponent,
+          data: { ScreenCode: "Dashbord", routeDetail: "", ModuleId: 0 },
+          canActivate: [AuthGuard]
+        });
 
         /*dynamicRoutes.forEach(route => {
           let moduleId = 0;
@@ -336,7 +335,7 @@ export class AppInitService {
         data: { ScreenCode: 'UserManagement', routeDetail: '', ModuleId: 0 },
         canActivate: [AuthGuard],
       },
-     {
+      {
         path: AppRouter.SystemAdministrator + '/' + AppRouter.UserManagement + '/add',
         component: UserFormComponent,
         data: { ScreenCode: 'UserManagement', routeDetail: '', ModuleId: 22 },
@@ -380,25 +379,29 @@ export class AppInitService {
         data: { ScreenCode: 'customer-list', routeDetail: '', ModuleId: 0 },
         canActivate: [AuthGuard],
       },
-      { path: 'stock-order-list', 
-      component: OrderSummaryListComponent, 
-      data: { ScreenCode: 'stock-order-list', routeDetail: '', ModuleId: 38 },
-      canActivate: [AuthGuard],
+      {
+        path: 'stock-order-list',
+        component: OrderSummaryListComponent,
+        data: { ScreenCode: 'stock-order-list', routeDetail: '', ModuleId: 38 },
+        canActivate: [AuthGuard],
       },
-      { path: 'bulk-return-list', 
-      component: BulkReturnListComponent, 
-      data: { ScreenCode: 'bulk-return-list', routeDetail: '', ModuleId: 37 },
-      canActivate: [AuthGuard],
+      {
+        path: 'bulk-return-list',
+        component: BulkReturnListComponent,
+        data: { ScreenCode: 'bulk-return-list', routeDetail: '', ModuleId: 37 },
+        canActivate: [AuthGuard],
       },
-      { path: 'consignment-delivery', 
-      component: ConsignmentDeliveryComponent, 
-      data: { ScreenCode: 'consignment-delivery', routeDetail: '', ModuleId: 0 },
-      canActivate: [AuthGuard],
+      {
+        path: 'consignment-delivery',
+        component: ConsignmentDeliveryComponent,
+        data: { ScreenCode: 'consignment-delivery', routeDetail: '', ModuleId: 0 },
+        canActivate: [AuthGuard],
       },
-      { path: 'pending-acknowledge', 
-      component: PendingAcknowledgeComponent, 
-      data: { ScreenCode: 'pending-acknowledge', routeDetail: '', ModuleId: 98 },
-      canActivate: [AuthGuard],
+      {
+        path: 'pending-acknowledge',
+        component: PendingAcknowledgeComponent,
+        data: { ScreenCode: 'pending-acknowledge', routeDetail: '', ModuleId: 98 },
+        canActivate: [AuthGuard],
       },
       {
         path: 'create-job-customer',
@@ -415,751 +418,746 @@ export class AppInitService {
       {
         path: 'token-generate',
         component: TokenGenerationComponent,
-        data: {ScreenCode: 'token-generate', routeDetail:'', ModuleId:146}
+        data: { ScreenCode: 'token-generate', routeDetail: '', ModuleId: 146 }
       },
       {
         path: 'token',
         component: CreateTokenComponent,
-        data: {ScreenCode: 'token', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'token', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'token-display',
         component: TokenDisplayComponent,
-        data: {ScreenCode: 'token-display', routeDetail:'', ModuleId: 111}
+        data: { ScreenCode: 'token-display', routeDetail: '', ModuleId: 111 }
       },
       {
         path: 'stock-order',
         component: StockOrderComponent,
-        data: {ScreenCode: 'stock-order', routeDetail:'', ModuleId:0}
-      },
-      {
-        path: 'ticketing-report',
-        component: TicketingReportComponent,
-        data: {ScreenCode: 'ticketing-report', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'stock-order', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'bulk-return-order',
         component: BulkReturnOrderComponent,
-        data: {ScreenCode: 'bulk-return-order', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'bulk-return-order', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'consignment-delivery',
         component: ConsignmentDeliveryComponent,
-        data: {ScreenCode: 'consignment-delivery', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'consignment-delivery', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'user-master',
         component: UserMasterComponent,
-        data: {ScreenCode: 'user-master', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'user-master', routeDetail: '', ModuleId: 0 }
 
       },
       {
         path: 'add-user-master',
         component: AddUserMasterComponent,
-        data: {ScreenCode: 'add-user-master', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'add-user-master', routeDetail: '', ModuleId: 0 }
       },
       {
-        path : 'material',
-        component : CompanyMaterialResourceMapping,
-        data: {ScreenCode: 'material', routeDetail:'', ModuleId:0}
+        path: 'material',
+        component: CompanyMaterialResourceMapping,
+        data: { ScreenCode: 'material', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'material-master',
         component: MaterialMasterComponent,
-        data: {ScreenCode: 'material-master', routeDetail:'', ModuleId:6}
+        data: { ScreenCode: 'material-master', routeDetail: '', ModuleId: 6 }
       },
       {
         path: 'add-material-master',
         component: AddMaterialMasterComponent,
-        data: {ScreenCode: 'add-material-master', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'add-material-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'resource-master',
         component: ResourceMasterComponent,
-        data: {ScreenCode: 'resource-master', routeDetail:'', ModuleId:9}
+        data: { ScreenCode: 'resource-master', routeDetail: '', ModuleId: 9 }
       },
       {
         path: 'add-resource-master',
         component: AddResourceMasterComponent,
-        data: {ScreenCode: 'add-resource-master', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'add-resource-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'location-master',
         component: LocationMasterComponent,
-        data: {ScreenCode: 'location-master', routeDetail:'', ModuleId:125}
-        
-      },  
+        data: { ScreenCode: 'location-master', routeDetail: '', ModuleId: 125 }
+
+      },
       {
         path: 'add-location-master',
         component: AddLocationMasterComponent,
-        data: {ScreenCode: 'add-location-master', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'add-location-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'gst-component',
         component: GstComponentComponent,
-        data: {ScreenCode: 'gst-component', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'gst-component', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'add-gst-component',
         component: AddGstComponentComponent,
-        data: {ScreenCode: 'add-gst-component', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'add-gst-component', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'gst-group',
         component: GstGroupComponent,
-        data: {ScreenCode: 'gst-group', routeDetail:'', ModuleId:70}
+        data: { ScreenCode: 'gst-group', routeDetail: '', ModuleId: 70 }
       },
       {
         path: 'add-gst-group',
         component: AddGstGroupComponent,
-        data: {ScreenCode: 'add-gst-group', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'add-gst-group', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'gst-setup',
         component: GstSetupComponent,
-        data: {ScreenCode: 'gst-setup', routeDetail:'', ModuleId:71}
+        data: { ScreenCode: 'gst-setup', routeDetail: '', ModuleId: 71 }
       },
       {
         path: 'add-gst-setup',
         component: AddGstSetupComponent,
-        data: {ScreenCode: 'add-gst-setup', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'add-gst-setup', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'company-mapping',
         component: CompanyMaterialResourceMapping,
-        data: {ScreenCode: 'company-mapping', routeDetail:'', ModuleId:43}
+        data: { ScreenCode: 'company-mapping', routeDetail: '', ModuleId: 43 }
       },
       {
         path: 'add-company-mapping',
         component: AddCompanyMaterialResourceMappingComponent,
-        data: {ScreenCode: 'add-company-mapping', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'add-company-mapping', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'master-content',
         component: MasterContentComponent,
-        data: {ScreenCode: 'master-content', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'master-content', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'customer-master',
         component: CustomerMasterComponent,
-        data: {ScreenCode: 'customer-master', routeDetail:'', ModuleId:5}
+        data: { ScreenCode: 'customer-master', routeDetail: '', ModuleId: 5 }
       },
       {
         path: 'add-customer-master',
         component: AddCustomerMasterComponent,
-        data: {ScreenCode: 'add-customer-master', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'add-customer-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'user-location-mapping',
         component: UserLocationMappingComponent,
-        data: {ScreenCode: 'user-location-mapping', routeDetail:'',ModuleId:147}
+        data: { ScreenCode: 'user-location-mapping', routeDetail: '', ModuleId: 147 }
       },
       {
         path: 'add-user-location-mapping',
         component: AddUserLocationMappingComponent,
-        data: {ScreenCode: 'add-user-location-mapping', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'add-user-location-mapping', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'consignment-order-list',
         component: ConsignmentOrderListComponent,
-        data: {ScreenCode: 'consignment-order-list', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'consignment-order-list', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'opening-stock-list',
         component: OpeningStockListComponent,
-        data: {ScreenCode: 'opening-stock-list', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'opening-stock-list', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'opening-stock',
         component: OpeningStockComponent,
-        data: {ScreenCode: 'opening-stock', routeDetail:'',ModuleId: 112}
+        data: { ScreenCode: 'opening-stock', routeDetail: '', ModuleId: 112 }
       },
-      
+
       {
         path: 'goods-movement-list',
         component: GoodsMovementListComponent,
-        data: {ScreenCode: 'goods-movement-list', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'goods-movement-list', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'goods-movement',
         component: GoodsMovementComponent,
-        data: {ScreenCode: 'goods-movement-list', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'goods-movement-list', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'transfer-order',
         component: StockTransferOrderComponent,
-        data: {ScreenCode: 'transfer-order', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'transfer-order', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'transfer-order-list',
         component: StockTransferOrderListComponent,
-        data: {ScreenCode: 'transfer-order-list', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'transfer-order-list', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'token-report',
         component: TokenReportComponent,
-        data: {ScreenCode: 'token-report', routeDetail:'',ModuleId:148}
+        data: { ScreenCode: 'token-report', routeDetail: '', ModuleId: 148 }
       },
       {
         path: 'job-report',
         component: JobReportComponent,
-        data: {ScreenCode: 'job-report', routeDetail:'',ModuleId:149}
+        data: { ScreenCode: 'job-report', routeDetail: '', ModuleId: 149 }
       },
       {
         path: 'accessory-sales',
         component: AccessorySalesComponent,
-        data: {ScreenCode: 'accessory-sales', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'accessory-sales', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'accessory-sales-list',
         component: AccessorySalesListComponent,
-        data: {ScreenCode: 'accessory-sales-list', routeDetail:'',ModuleId: 114}
+        data: { ScreenCode: 'accessory-sales-list', routeDetail: '', ModuleId: 114 }
       },
       {
         path: 'sales-report',
         component: SalesReportComponent,
-        data: {ScreenCode: 'sales-report', routeDetail:'',ModuleId:159}
+        data: { ScreenCode: 'sales-report', routeDetail: '', ModuleId: 159 }
       },
       {
         path: 'sales-return-list',
         component: SalesReturnListComponent,
-        data: {ScreenCode: 'sales-return-list', routeDetail:'',ModuleId:156}
+        data: { ScreenCode: 'sales-return-list', routeDetail: '', ModuleId: 156 }
       },
       {
         path: 'sales-return',
         component: SalesReturnComponent,
-        data: {ScreenCode: 'sales-return', routeDetail:'',ModuleId:163}
+        data: { ScreenCode: 'sales-return', routeDetail: '', ModuleId: 163 }
       },
       {
         path: 'sales-return-request',
         component: SalesReturnRequestComponent,
-        data: {ScreenCode: 'sales-return-request', routeDetail:'',ModuleId:162}
+        data: { ScreenCode: 'sales-return-request', routeDetail: '', ModuleId: 162 }
       },
       {
         path: 'org-role-master',
         component: OrgRoleMasterComponent,
-        data: {ScreenCode: 'org-role-master', routeDetail:'',ModuleId:23}
+        data: { ScreenCode: 'org-role-master', routeDetail: '', ModuleId: 23 }
       },
       {
         path: 'add-org-role-master',
         component: AddOrgRoleMasterComponent,
-        data: {ScreenCode: 'add-org-role-master', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'add-org-role-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'jobrole-master',
         component: JobroleMasterComponent,
-        data: {ScreenCode: 'jobrole-master', routeDetail:'',ModuleId:24}
+        data: { ScreenCode: 'jobrole-master', routeDetail: '', ModuleId: 24 }
       },
       {
         path: 'add-jobrole-master',
         component: AddJobroleMasterComponent,
-        data: {ScreenCode: 'add-jobrole-master', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'add-jobrole-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'profile-master',
         component: ProfileMasterComponent,
-        data: {ScreenCode: 'profile-master', routeDetail:'',ModuleId: 42}
+        data: { ScreenCode: 'profile-master', routeDetail: '', ModuleId: 42 }
       },
       {
         path: 'add-profile-master',
         component: AddProfileMasterComponent,
-        data: {ScreenCode: 'add-profile-master', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'add-profile-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'profile-module-master',
         component: ProfileModuleMasterComponent,
-        data: {ScreenCode: 'profile-module-master', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'profile-module-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'add-profile-module-master',
         component: AddProfileModuleMasterComponent,
-        data: {ScreenCode: 'add-profile-module-master', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'add-profile-module-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'salesperson-master',
         component: SalespersonMasterComponent,
-        data: {ScreenCode: 'salesperson-master', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'salesperson-master', routeDetail: '', ModuleId: 0 }
       },
 
       {
         path: 'add-salesperson-master',
         component: AddSalespersonMasterComponent,
-        data: {ScreenCode: 'add-salesperson-master', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'add-salesperson-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'payment-report',
         component: PaymentReportComponent,
-        data: {ScreenCode: 'payment-report', routeDetail:'', ModuleId: 160}
+        data: { ScreenCode: 'payment-report', routeDetail: '', ModuleId: 160 }
       },
 
       {
         path: 'add-salesperson-master',
         component: AddSalespersonMasterComponent,
-        data: {ScreenCode: 'add-salesperson-master', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'add-salesperson-master', routeDetail: '', ModuleId: 0 }
       },
-         {
+      {
         path: 'ticketing-dashboard',
         component: TicketDashboardComponent,
-        data: {ScreenCode: 'ticketing-dashboard', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'ticketing-dashboard', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'payment-report',
         component: PaymentReportComponent,
-        data: {ScreenCode: 'payment-report', routeDetail:'', ModuleId:0}
+        data: { ScreenCode: 'payment-report', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'refund-list',
         component: RefundListComponent,
-        data: {ScreenCode: 'refund-list', routeDetail:'',ModuleId:157}
+        data: { ScreenCode: 'refund-list', routeDetail: '', ModuleId: 157 }
       },
       {
         path: 'refund-order',
         component: RefundOrderComponent,
-        data: {ScreenCode: 'refund-order', routeDetail:'',ModuleId:166}
+        data: { ScreenCode: 'refund-order', routeDetail: '', ModuleId: 166 }
       },
       {
         path: 'refund-order-created',
         component: RefundOrderCreatedComponent,
-        data: {ScreenCode: 'refund-order-created', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'refund-order-created', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'refund-order-request',
         component: RefundOrderRequestComponent,
-        data: {ScreenCode: 'refund-order-request', routeDetail:'',ModuleId:165}
+        data: { ScreenCode: 'refund-order-request', routeDetail: '', ModuleId: 165 }
       },
-      
+
       {
         path: 'discount-coupon-list',
         component: DiscountCouponListComponent,
-        data: {ScreenCode: 'discount-coupon-list', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'discount-coupon-list', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'discount-coupon',
         component: DiscountCouponComponent,
-        data: {ScreenCode: 'discount-coupon', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'discount-coupon', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'sales-return-created',
         component: SalesReturnCreatedComponent,
-        data: {ScreenCode: 'sales-return-created', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'sales-return-created', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'advance-payment',
         component: AdvancePaymentComponent,
-        data: {ScreenCode: 'advance-payment', routeDetail:'',ModuleId:173}
+        data: { ScreenCode: 'advance-payment', routeDetail: '', ModuleId: 173 }
       },
       {
         path: 'advance-payment-list',
         component: AdvancePaymentListComponent,
-        data: {ScreenCode: 'advance-payment-list', routeDetail:'',ModuleId:174}
+        data: { ScreenCode: 'advance-payment-list', routeDetail: '', ModuleId: 174 }
       },
       {
         path: 'cash-deposit',
         component: CashDepositComponent,
-        data: {ScreenCode: 'cash-deposit', routeDetail:'',ModuleId:171}
+        data: { ScreenCode: 'cash-deposit', routeDetail: '', ModuleId: 171 }
       },
       {
         path: 'cash-deposit-list',
         component: CashDepositListComponent,
-        data: {ScreenCode: 'cash-deposit-list', routeDetail:'',ModuleId:172}
+        data: { ScreenCode: 'cash-deposit-list', routeDetail: '', ModuleId: 172 }
       },
       {
         path: 'communication-details-report',
         component: CommunicationDetailsReportComponent,
-        data: {ScreenCode: 'communication-details-report', routeDetail:'',ModuleId:175}
+        data: { ScreenCode: 'communication-details-report', routeDetail: '', ModuleId: 175 }
       },
       {
         path: 'advance-payment-report',
         component: AdvancePaymentReportComponent,
-        data: {ScreenCode: 'advance-payment-report', routeDetail:'',ModuleId:176}
+        data: { ScreenCode: 'advance-payment-report', routeDetail: '', ModuleId: 176 }
       },
       {
         path: 'cash-deposit-report',
         component: CashDepositReportComponent,
-        data: {ScreenCode: 'cash-deposit-report', routeDetail:'',ModuleId:177}
+        data: { ScreenCode: 'cash-deposit-report', routeDetail: '', ModuleId: 177 }
       },
       {
         path: 'incoming-invoice-list',
         component: IncomingInvoiceListComponent,
-        data: {ScreenCode: 'incoming-invoice-list', routeDetail:'',ModuleId:183}
+        data: { ScreenCode: 'incoming-invoice-list', routeDetail: '', ModuleId: 183 }
       },
       {
         path: 'incoming-invoice',
         component: IncomingInvoiceComponent,
-        data: {ScreenCode: 'incoming-invoice', routeDetail:'',ModuleId:184}
+        data: { ScreenCode: 'incoming-invoice', routeDetail: '', ModuleId: 184 }
       },
       {
         path: 'stock-report',
         component: StockReportComponent,
-        data: {ScreenCode: 'stock-report', routeDetail:'',ModuleId: 178}
+        data: { ScreenCode: 'stock-report', routeDetail: '', ModuleId: 178 }
       },
       {
         path: 'bulk-return-report',
         component: BulkReturnReportComponent,
-        data: {ScreenCode: 'bulk-return-report', routeDetail:'',ModuleId:179}
+        data: { ScreenCode: 'bulk-return-report', routeDetail: '', ModuleId: 179 }
       },
       {
         path: 'material-price-details',
         component: MaterialPriceDetailsComponent,
-        data: {ScreenCode: 'material-price-details', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'material-price-details', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'customer-journey-report',
         component: CustomerJourneyReportComponent,
-        data: {ScreenCode: 'customer-journey-report', routeDetail:'',ModuleId: 180}
+        data: { ScreenCode: 'customer-journey-report', routeDetail: '', ModuleId: 180 }
       },
       {
         path: 'daily-summary-report',
         component: DailySummaryReportComponent,
-        data: {ScreenCode: 'daily-summary-report', routeDetail:'',ModuleId: 181}
+        data: { ScreenCode: 'daily-summary-report', routeDetail: '', ModuleId: 181 }
       },
       {
         path: 'direct-accessory',
         component: DirectSalesComponent,
-        data: {ScreenCode: 'direct-accessory', routeDetail:'',ModuleId: 182}
+        data: { ScreenCode: 'direct-accessory', routeDetail: '', ModuleId: 182 }
       },
       {
         path: 'pinelabs-report',
         component: PinelabReportComponent,
-        data: {ScreenCode: 'pinelabs-report', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'pinelabs-report', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'cancel-invoice',
         component: CancellationComponent,
-        data: {ScreenCode: 'cancel-invoice', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'cancel-invoice', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'cancel-advance',
         component: CancelAdvanceComponent,
-        data: {ScreenCode: 'cancel-advance', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'cancel-advance', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'incoming-invoice-report',
         component: IncomingInvoiceReportComponent,
-        data: {ScreenCode: 'incoming-invoice-report', routeDetail:'',ModuleId:185}
+        data: { ScreenCode: 'incoming-invoice-report', routeDetail: '', ModuleId: 185 }
       },
       {
         path: 'open-job-report',
         component: OpenJobReportComponent,
-        data: {ScreenCode: 'open-job-report', routeDetail:'',ModuleId:186}
+        data: { ScreenCode: 'open-job-report', routeDetail: '', ModuleId: 186 }
       },
       {
         path: 'unclaimed-device',
         component: UnclaimedDeviceComponent,
-        data: {ScreenCode: 'unclaimed-device', routeDetail:'',ModuleId:188}
+        data: { ScreenCode: 'unclaimed-device', routeDetail: '', ModuleId: 188 }
       },
       {
         path: 'unclaimed-device-list',
         component: UnclaimedDeviceListComponent,
-        data: {ScreenCode: 'unclaimed-device-list', routeDetail:'',ModuleId: 187}
+        data: { ScreenCode: 'unclaimed-device-list', routeDetail: '', ModuleId: 187 }
       },
       {
         path: 'credit-request-master',
         component: CreditRequestMasterComponent,
-        data: {ScreenCode: 'credit-request-master', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'credit-request-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'add-credit-request-master',
         component: AddCreditRequestMasterComponent,
-        data: {ScreenCode: 'add-credit-request-master', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'add-credit-request-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'invoice-payment-change',
         component: InvoicePaymentChangeComponent,
-        data: {ScreenCode: 'invoice-payment-change', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'invoice-payment-change', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'price-list',
         component: PriceListComponent,
-        data: {ScreenCode: 'price-list', routeDetail:'',ModuleId:189}
+        data: { ScreenCode: 'price-list', routeDetail: '', ModuleId: 189 }
       },
       {
         path: 'add-price-list',
         component: AddPriceListComponent,
-        data: {ScreenCode: 'add-price-list', routeDetail:'',ModuleId:0}
-      },      
+        data: { ScreenCode: 'add-price-list', routeDetail: '', ModuleId: 0 }
+      },
       {
         path: 'bulletin-board',
         component: BulletinBoardComponent,
-        data: {ScreenCode: 'bulletin-board', routeDetail:'',ModuleId:190}
-      },    
+        data: { ScreenCode: 'bulletin-board', routeDetail: '', ModuleId: 190 }
+      },
       {
         path: 'add-bulletin-board',
         component: AddBulletinBoardComponent,
-        data: {ScreenCode: 'add-bulletin-board', routeDetail:'',ModuleId:0}
-      },  
+        data: { ScreenCode: 'add-bulletin-board', routeDetail: '', ModuleId: 0 }
+      },
       {
         path: 'lead-management-list',
         component: LeadManagementListComponent,
-        data: {ScreenCode: 'lead-management-list', routeDetail:'',ModuleId:191}
-      }, 
+        data: { ScreenCode: 'lead-management-list', routeDetail: '', ModuleId: 191 }
+      },
       {
         path: 'lead-management',
         component: LeadManagementComponent,
-        data: {ScreenCode: 'lead-management', routeDetail:'',ModuleId:0}
-      }, 
+        data: { ScreenCode: 'lead-management', routeDetail: '', ModuleId: 0 }
+      },
       {
         path: 'lead-management-report',
         component: LeadManagementReportComponent,
-        data: {ScreenCode: 'lead-management-report', routeDetail:'',ModuleId:205}
-      }, 
+        data: { ScreenCode: 'lead-management-report', routeDetail: '', ModuleId: 205 }
+      },
       {
         path: 'discount-kitty-list',
         component: DiscountKittyComponent,
-        data: {ScreenCode: 'discount-kitty-list', routeDetail:'',ModuleId:192}
-      }, 
+        data: { ScreenCode: 'discount-kitty-list', routeDetail: '', ModuleId: 192 }
+      },
       {
         path: 'add-discount-kitty',
         component: AddDiscountKittyComponent,
-        data: {ScreenCode: 'add-discount-kitty', routeDetail:'',ModuleId:0}
-      }, 
+        data: { ScreenCode: 'add-discount-kitty', routeDetail: '', ModuleId: 0 }
+      },
       {
         path: 'add-discount-kitty',
         component: AddDiscountKittyComponent,
-        data: {ScreenCode: 'add-discount-kitty', routeDetail:'',ModuleId:0}
-      }, 
+        data: { ScreenCode: 'add-discount-kitty', routeDetail: '', ModuleId: 0 }
+      },
       {
         path: 'dropoff-management-list',
         component: DropoffManagementListComponent,
-        data: {ScreenCode: 'dropoff-management-list', routeDetail:'',ModuleId:193}
+        data: { ScreenCode: 'dropoff-management-list', routeDetail: '', ModuleId: 193 }
       },
       {
         path: 'dropoff-management',
         component: DropoffManagementComponent,
-        data: {ScreenCode: 'dropoff-management', routeDetail:'',ModuleId:0}
-      }, 
+        data: { ScreenCode: 'dropoff-management', routeDetail: '', ModuleId: 0 }
+      },
       {
         path: 'dropoff-management-parts',
         component: DropoffManagementPartsComponent,
-        data: {ScreenCode: 'dropoff-management-parts', routeDetail:'',ModuleId:0}
-      },   
+        data: { ScreenCode: 'dropoff-management-parts', routeDetail: '', ModuleId: 0 }
+      },
       {
         path: 'token-casa',
         component: TokenCasaComponent,
-        data: {ScreenCode: 'token-casa', routeDetail:'',ModuleId:0}
-      },  
+        data: { ScreenCode: 'token-casa', routeDetail: '', ModuleId: 0 }
+      },
       {
         path: 'consignment-scan',
         component: ConsignmentScanComponent,
-        data: {ScreenCode: 'consignment-scan', routeDetail:'',ModuleId:194}
-      },  
+        data: { ScreenCode: 'consignment-scan', routeDetail: '', ModuleId: 194 }
+      },
       {
         path: 'reservation-dashboard',
         component: ReservationDashboardComponent,
-        data: {ScreenCode: 'reservation-dashboard', routeDetail:'',ModuleId:195}
+        data: { ScreenCode: 'reservation-dashboard', routeDetail: '', ModuleId: 195 }
       },
       {
         path: 'reservation',
         component: AddReservationComponent,
-        data: {ScreenCode: 'add-reservation', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'add-reservation', routeDetail: '', ModuleId: 0 }
       },
-        {
+      {
         path: 'reservation-report',
         component: ReservationReportComponent,
-        data: {ScreenCode: 'reservation-report', routeDetail:'',ModuleId:206}
+        data: { ScreenCode: 'reservation-report', routeDetail: '', ModuleId: 206 }
       },
       {
         path: 'escalation-tracker-list',
         component: EscalationTrackerListComponent,
-        data: {ScreenCode: 'escalation-tracker-list', routeDetail:'',ModuleId:195}
+        data: { ScreenCode: 'escalation-tracker-list', routeDetail: '', ModuleId: 195 }
       },
       {
         path: 'escalation-tracker',
         component: EscalationTrackerComponent,
-        data: {ScreenCode: 'escalation-tracker', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'escalation-tracker', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'nret-management-list',
         component: NretManagementListComponent,
-        data: {ScreenCode: 'nret-management-list', routeDetail:'',ModuleId:196}
+        data: { ScreenCode: 'nret-management-list', routeDetail: '', ModuleId: 196 }
       },
       {
         path: 'nret-management',
         component: NretManagementComponent,
-        data: {ScreenCode: 'nret-management', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'nret-management', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'apple-registry-list',
         component: AppleRegistryListComponent,
-        data: {ScreenCode: 'apple-registry-list', routeDetail:'',ModuleId:197}
+        data: { ScreenCode: 'apple-registry-list', routeDetail: '', ModuleId: 197 }
       },
       {
         path: 'apple-registry',
         component: AppleRegistryComponent,
-        data: {ScreenCode: 'apple-registry', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'apple-registry', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'reservation-list',
         component: ReservationDashboardComponent,
-        data: {ScreenCode: 'reservation-list', routeDetail:'',ModuleId:198}
+        data: { ScreenCode: 'reservation-list', routeDetail: '', ModuleId: 198 }
       },
-      
+
       {
         path: 'cash-register-report',
         component: CashRegisterReportComponent,
-        data: {ScreenCode: 'cash-register-report', routeDetail:'',ModuleId:199}
+        data: { ScreenCode: 'cash-register-report', routeDetail: '', ModuleId: 199 }
       },
       {
         path: 'customer-ledger-report',
         component: CustomerLedgerReportComponent,
-        data: {ScreenCode: 'customer-ledger-report', routeDetail:'',ModuleId:200}
+        data: { ScreenCode: 'customer-ledger-report', routeDetail: '', ModuleId: 200 }
       },
       {
         path: 'credit-request-master',
         component: CreditRequestMasterComponent,
-        data: {ScreenCode: 'credit-request-master', routeDetail:'', ModuleId: 201 }
+        data: { ScreenCode: 'credit-request-master', routeDetail: '', ModuleId: 201 }
       },
       {
         path: 'add-credit-request',
         component: AddCreditRequestMasterComponent,
-        data: {ScreenCode: 'add-credit-request', routeDetail:'', ModuleId: 0 }
+        data: { ScreenCode: 'add-credit-request', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'contract-master',
         component: ContractMasterComponent,
-        data: {ScreenCode: 'contract-master', routeDetail:'', ModuleId: 202 }
+        data: { ScreenCode: 'contract-master', routeDetail: '', ModuleId: 202 }
       },
       {
         path: 'add-contract-master',
         component: AddContractMasterComponent,
-        data: {ScreenCode: 'add-contract-master', routeDetail:'', ModuleId: 0 }
+        data: { ScreenCode: 'add-contract-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'cancellation-view',
         component: CancellationViewComponent,
-        data: {ScreenCode: 'cancellation-view', routeDetail:'', ModuleId: 0 }
+        data: { ScreenCode: 'cancellation-view', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'approval-setting-master',
         component: ApproverSettingMasterComponent,
-        data: {ScreenCode: 'approval-setting-master', routeDetail:'', ModuleId: 203 }
+        data: { ScreenCode: 'approval-setting-master', routeDetail: '', ModuleId: 203 }
       },
       {
         path: 'add-approval-setting-master',
         component: AddApproverSettingMasterComponent,
-        data: {ScreenCode: 'add-approval-setting-master', routeDetail:'', ModuleId: 0 }
+        data: { ScreenCode: 'add-approval-setting-master', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'happy-calling-list',
         component: HappyCallingListComponent,
-        data: {ScreenCode: 'happy-calling-list', routeDetail:'',ModuleId:204}
-      }, 
+        data: { ScreenCode: 'happy-calling-list', routeDetail: '', ModuleId: 204 }
+      },
       {
         path: 'happy-calling',
         component: HappyCallingComponent,
-        data: {ScreenCode: 'happy-calling', routeDetail:'',ModuleId:0}
-      }, 
+        data: { ScreenCode: 'happy-calling', routeDetail: '', ModuleId: 0 }
+      },
       {
         path: 'partial-advance-report',
         component: PartialAdvanceReportComponent,
-        data: {ScreenCode: 'partial-advance-report', routeDetail:'',ModuleId:207}
-      }, 
+        data: { ScreenCode: 'partial-advance-report', routeDetail: '', ModuleId: 207 }
+      },
       {
         path: 'onsite-list',
         component: OnsiteProcessListComponent,
-        data: {ScreenCode: 'onsite-list', routeDetail:'',ModuleId: 208 }
-      }, 
+        data: { ScreenCode: 'onsite-list', routeDetail: '', ModuleId: 208 }
+      },
       {
         path: 'onsite-process',
         component: OnsiteProcessComponent,
-        data: {ScreenCode: 'onsite-process', routeDetail:'',ModuleId:0}
-      }, 
+        data: { ScreenCode: 'onsite-process', routeDetail: '', ModuleId: 0 }
+      },
       {
         path: 'discount-kitty-approval-list',
         component: DiscountKittyApprovalComponent,
-        data: {ScreenCode: 'discount-kitty-approval-list', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'discount-kitty-approval-list', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'discount-kitty-approval',
         component: AddDiscountKittyApprovalComponent,
-        data: {ScreenCode: 'discount-kitty-approval', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'discount-kitty-approval', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'refund-report',
         component: RefundReportComponent,
-        data: {ScreenCode: 'refund-report', routeDetail:'',ModuleId:209}
+        data: { ScreenCode: 'refund-report', routeDetail: '', ModuleId: 209 }
       },
 
 
       {
         path: 'assign-to-me',
         component: AssignToMeComponent,
-        data: {ScreenCode: 'assign-to-me', routeDetail:'',ModuleId:209}
+        data: { ScreenCode: 'assign-to-me', routeDetail: '', ModuleId: 209 }
       },
       {
         path: 'referral-details-report',
         component: ReferralDetailsReportComponent,
-        data: {ScreenCode: 'referral-details-report', routeDetail:'',ModuleId:210}
+        data: { ScreenCode: 'referral-details-report', routeDetail: '', ModuleId: 210 }
       },
       {
         path: 'mode-of-payment-permission',
         component: ModeOfPaymentPermissionComponent,
-        data: {ScreenCode: 'mode-of-payment-permission', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'mode-of-payment-permission', routeDetail: '', ModuleId: 0 }
       },
-        {
+      {
         path: 'consignment-pending-list',
         component: ConsignmentPendingListComponent,
-        data: {ScreenCode: 'consignment-pending-list', routeDetail:'',ModuleId:211}
+        data: { ScreenCode: 'consignment-pending-list', routeDetail: '', ModuleId: 211 }
       },
       {
         path: 'add-consignment-pending-list',
         component: AddConsignmentPendingListComponent,
-        data: {ScreenCode: 'add-consignment-pending-list', routeDetail:'',ModuleId:211}
+        data: { ScreenCode: 'add-consignment-pending-list', routeDetail: '', ModuleId: 211 }
       },
       {
         path: 'check-in-check-out-details',
         component: CheckInCheckOutDetailsComponent,
-        data: {ScreenCode: 'check-in-check-out-details', routeDetail:'',ModuleId:211}
+        data: { ScreenCode: 'check-in-check-out-details', routeDetail: '', ModuleId: 211 }
       },
       {
         path: 'check-in-check-out-report',
         component: CheckInCheckOutReportComponent,
-        data: {ScreenCode: 'check-in-check-out-report', routeDetail:'',ModuleId:211}
+        data: { ScreenCode: 'check-in-check-out-report', routeDetail: '', ModuleId: 211 }
       },
       {
         path: 'unclaimed-device-report',
         component: UnclaimedDeviceReportComponent,
-        data: {ScreenCode: 'unclaimed-device-report', routeDetail:'',ModuleId:214}
+        data: { ScreenCode: 'unclaimed-device-report', routeDetail: '', ModuleId: 214 }
       },
       {
         path: 'return-unclaimed-device',
         component: ReturnUnclaimedDeviceComponent,
-        data: {ScreenCode: 'return-unclaimed-device', routeDetail:'',ModuleId:214}
+        data: { ScreenCode: 'return-unclaimed-device', routeDetail: '', ModuleId: 214 }
       },
       {
         path: 'create-bulk-return-dc',
         component: CreateBulkReturnDcComponent,
-        data: {ScreenCode: 'create-bulk-return-dc', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'create-bulk-return-dc', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'bulk-return-order-dc-grid',
         component: BulkReturnOrderDcGridComponent,
-        data: {ScreenCode: 'bulk-return-order-dc-grid', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'bulk-return-order-dc-grid', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'bulk-return-order-dc-list',
         component: BulkReturnOrderDcListComponent,
-        data: {ScreenCode: 'bulk-return-order-dc-list', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'bulk-return-order-dc-list', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'add-tote-management',
         component: AddToteManagementComponent,
-        data: {ScreenCode: 'add-tote-management', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'add-tote-management', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'tote-management',
         component: ToteManagementComponent,
-        data: {ScreenCode: 'tote-management', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'tote-management', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'tote-report',
         component: ToteReportComponent,
-        data: {ScreenCode: 'tote-report', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'tote-report', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'gsxkbbpart-list',
         component: GsxkbbpartListComponent,
-        data: {ScreenCode: 'gsxkbbpart-list', routeDetail:'',ModuleId:0}
+        data: { ScreenCode: 'gsxkbbpart-list', routeDetail: '', ModuleId: 0 }
       },
 
       {
@@ -1179,43 +1177,43 @@ export class AppInitService {
       },
       {
         path: 'call-management',
-        component: CallManagementComponent ,
+        component: CallManagementComponent,
         data: { ScreenCode: 'call-management', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'inter-company-amount-transfer-report',
-        component: InterCompanyAmountTransferReportComponent ,
+        component: InterCompanyAmountTransferReportComponent,
         data: { ScreenCode: 'inter-company-amount-transfer-report', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'inbound-call-management-report',
-        component: InboundCallManagementReportComponent ,
+        component: InboundCallManagementReportComponent,
         data: { ScreenCode: 'inbound-call-management-report', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'amc-contract-management-list',
-        component: AmcContractManagementListComponent ,
+        component: AmcContractManagementListComponent,
         data: { ScreenCode: 'amc-contract-management-list', routeDetail: '', ModuleId: 0 }
       },
       {
         path: 'company-stock-management',
-        component: CompanyStockManagementComponent ,
+        component: CompanyStockManagementComponent,
         data: { ScreenCode: 'company-stock-management', routeDetail: '', ModuleId: 0 }
       },
-         {
+      {
         path: 'quotation-report',
-        component: QuotationReportComponent ,
+        component: QuotationReportComponent,
         data: { ScreenCode: 'quotation-report', routeDetail: '', ModuleId: 225 }
       },
 
-           {
+      {
         path: 'tradein-list',
-        component: TradeinListComponent ,
-        data: { ScreenCode: 'tradein-list', routeDetail: '', ModuleId: 0  }
+        component: TradeinListComponent,
+        data: { ScreenCode: 'tradein-list', routeDetail: '', ModuleId: 0 }
       },
-         {
+      {
         path: 'tradein',
-        component: TradeinComponent ,
+        component: TradeinComponent,
         data: { ScreenCode: 'tradein', routeDetail: '', ModuleId: 0 }
       },
       {
@@ -1229,16 +1227,11 @@ export class AppInitService {
         data: { ScreenCode: 'ticketing-bulk-quotation', routeDetail: '', ModuleId: 225 }
       },
       {
-        path: 'testing',
-        component: TestingComponent,
-        data: { ScreenCode: 'testing', routeDetail: '', ModuleId: 0 }
-      },
-        {
         path: 'enquiry-list-report',
         component: EnquiryListReportComponent,
         data: { ScreenCode: 'enquiry-list-report', routeDetail: '', ModuleId: 227 }
       },
-       {
+      {
         path: 'table-replacement-detail-report',
         component: TableReplacementDetailReportComponent,
         data: { ScreenCode: 'table-replacement-detail-report', routeDetail: '', ModuleId: 228 }

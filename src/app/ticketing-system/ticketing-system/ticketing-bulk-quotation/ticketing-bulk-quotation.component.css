@@ -1409,3 +1409,12 @@ section.content .bq-ts--qteprej {
 section.content .bq-ts--qteprej .bq-tsp-dot {
     background: #9f1239;
 }
+
+section.content .bq-ts--jobcreate {
+    background: #2cf1ff;
+    color: #050505;
+}
+
+section.content .bq-ts--jobcreate .bq-tsp-dot {
+    background: #000000;
+}

@@ -54,7 +54,7 @@ export class DropdownDataService {
         break;
       case DropDownType.TransportationCarrier:
         strType = "MasterContent";
-        break;
+        break;  
       case DropDownType.Customer:
         strType = "BindRTLCustomer";
         break;
@@ -94,7 +94,7 @@ export class DropdownDataService {
       case DropDownType.LocationDropoff:
         strType = "BindLocationDropoff";
         break;
-
+        
       case DropDownType.Technician:
         strType = "BindTechnician";
         break;
@@ -159,8 +159,8 @@ export class DropdownDataService {
         strType = "BindResource"
         break;
       case DropDownType.PaymentTerm:
-        strType = "BindPaymentTerm"
-        break;
+      strType = "BindPaymentTerm"
+      break;
       case DropDownType.GSTGroupCode:
         strType = "BindGSTGroup"
         break;
@@ -199,14 +199,14 @@ export class DropdownDataService {
         break;
       case DropDownType.ProductName:
         strType = "BindProductName"
-        break;
+        break;  
       case DropDownType.QuoteStatus:
         strType = "MasterContent"
-        break;
-      case DropDownType.MenuGroup:
+        break; 
+        case DropDownType.MenuGroup:
         strType = "BindMenuGroup"
         break;
-      case DropDownType.DocumentType:
+        case DropDownType.DocumentType:
         strType = "BindDocumentType"
         break;
       case DropDownType.StoDocType:
@@ -219,14 +219,14 @@ export class DropdownDataService {
         strType = "BindModeofPayment"
         break;
       case DropDownType.SalesPerson:
-        strType = "BindSalesPerson"
+        strType="BindSalesPerson"
         break;
       case DropDownType.BindProfileId:
         strType = "BindProfileId";
         break;
-      case DropDownType.BindModuleId:
-        strType = "BindModuleId";
-        break;
+        case DropDownType.BindModuleId:
+          strType = "BindModuleId";
+          break;
       case DropDownType.RefundDocType:
         strType = "MasterContent"
         break;
@@ -236,19 +236,19 @@ export class DropdownDataService {
       case DropDownType.RefundStatus:
         strType = "MasterContent"
         break;
-
+        
       case DropDownType.BindCompany4OrgRole:
-        strType = "BindCompany4OrgRole"
-        break;
+      strType = "BindCompany4OrgRole"
+      break;
       case DropDownType.RefundType:
         strType = "BindRefundRequest";
-        break;
+        break;  
       case DropDownType.PricingOption:
         strType = "BindPricingOption";
         break;
       case DropDownType.Bank:
         strType = "BindBank";
-        break;
+        break;  
       case DropDownType.Disposition:
         strType = "MasterContent";
         break
@@ -256,8 +256,8 @@ export class DropdownDataService {
         strType = "MasterContent"
         break
       case DropDownType.AdvanceModeofPayment:
-        strType = "BindAdvanceModeofPayment"
-        break
+      strType = "BindAdvanceModeofPayment"
+      break
       case DropDownType.RefundModeofPayment:
         strType = "BindRefundModeofPayment"
         break
@@ -270,34 +270,34 @@ export class DropdownDataService {
       // Bulk Return
       case DropDownType.Vendor4Bulk:
         strType = "BindVendor4Bulk";
-        break;
+        break; 
       case DropDownType.BulkReturnType:
         strType = "MasterContent";
-        break;
+        break; 
       case DropDownType.BulkReturnStatus:
         strType = "MasterContent";
-        break;
+        break;  
       case DropDownType.ModeOfTransport:
         strType = "MasterContent";
-        break;
+        break;  
       case DropDownType.VehicleType:
         strType = "MasterContent";
-        break;
+        break;  
       case DropDownType.BindCompany4Username:
-        strType = "BindCompany4Username";
-        break;
+      strType = "BindCompany4Username";
+      break;  
       case DropDownType.DeclineRepair:
         strType = "MasterContent";
-        break;
+        break; 
       case DropDownType.HoldRepair:
         strType = "MasterContent";
-        break;
+        break; 
       case DropDownType.ReferredBy:
         strType = "MasterContent";
-        break;
+        break; 
       case DropDownType.AllowedPaymentMode:
         strType = "MasterContent";
-        break;
+        break; 
       case DropDownType.UnclaimDeviceReason:
         strType = "MasterContent";
         break;
@@ -321,134 +321,137 @@ export class DropdownDataService {
         break;
       case DropDownType.MaterialPriceGroup:
         strType = "MasterContent";
-        break;
+        break;           
       case DropDownType.DropoffStatus:
         strType = "MasterContent";
-        break;
+        break; 
       case DropDownType.ReservationStatus:
         strType = "MasterContent";
-        break;
+        break;  
       case DropDownType.LeadDisposition:
         strType = "MasterContent";
-        break;
+        break; 
       case DropDownType.HappyCallingDisposition:
         strType = "MasterContent";
-        break;
+        break;  
       case DropDownType.RegistryType:
         strType = "MasterContent";
-        break;
+        break; 
       case DropDownType.RegistryFrom:
         strType = "MasterContent";
-        break;
+        break; 
       case DropDownType.ApplePartsType:
         strType = "MasterContent";
-        break;
+        break;   
       case DropDownType.RefundDocCode:
         strType = "BindRefundDocCode";
-        break;
+        break;      
       case DropDownType.PartnerList:
         strType = "MasterContent";
-        break;
+        break;  
       case DropDownType.BindApprover:
         strType = "BindApprover";
-        break;
-      case DropDownType.UnclaimedDocType:
+        break; 
+        case DropDownType.UnclaimedDocType:
+        strType = "MasterContent";
+        break;  
+        case DropDownType.BULKRTNORDERDCSTATUS:
+        strType = "MasterContent";
+        break;  
+        case DropDownType.BOXTYPE:
+        strType = "MasterContent";
+        break;  
+        case DropDownType.CUSTVISITSRC:
         strType = "MasterContent";
         break;
-      case DropDownType.BULKRTNORDERDCSTATUS:
+        case DropDownType.SecondRepairReason:
         strType = "MasterContent";
         break;
-      case DropDownType.BOXTYPE:
-        strType = "MasterContent";
-        break;
-      case DropDownType.CUSTVISITSRC:
-        strType = "MasterContent";
-        break;
-      case DropDownType.SecondRepairReason:
-        strType = "MasterContent";
-        break;
-      case DropDownType.CustomerSourceName:
+        case DropDownType.CustomerSourceName:
         strType = "CustomerSourceName";
         break;
-      case DropDownType.AdvancePaymentCode:
+        case DropDownType.AdvancePaymentCode:
         strType = "AdvancePaymentCode";
         break;
-      case DropDownType.BindSchemeMaster:
+        case DropDownType.BindSchemeMaster:
         strType = "BindSchemeMaster";
         break;
-      case DropDownType.CallDisposition:
+        case DropDownType.CallDisposition:
         strType = "MasterContent";
         break;
-      case DropDownType.CONVERTTOLEAD:
+        case DropDownType.CONVERTTOLEAD:
         strType = "MasterContent";
         break;
-      case DropDownType.LeadParentDetails:
+        case DropDownType.LeadParentDetails:
         strType = "MasterContent";
         break;
-      case DropDownType.BindAmcTypeMaster:
+        case DropDownType.BindAmcTypeMaster:
         strType = "BindAmcTypeMaster";
         break;
-      case DropDownType.BindAmcContractDetails:
+        case DropDownType.BindAmcContractDetails:
         strType = "BindAmcContractDetails";
         break;
-      case DropDownType.BindCompanyStock:
+         case DropDownType.BindCompanyStock:
         strType = "BindCompanyStock";
         break;
-      case DropDownType.MATGROUP1:
+          case DropDownType.MATGROUP1:
         strType = "MasterContent";
         break;
-      case DropDownType.MATGROUP2:
+         case DropDownType.MATGROUP2:
         strType = "MasterContent";
         break;
-      case DropDownType.MATGROUP3:
+         case DropDownType.MATGROUP3:
         strType = "MasterContent";
         break;
-      case DropDownType.MATGROUP4:
+         case DropDownType.MATGROUP4:
         strType = "MasterContent";
         break;
-      case DropDownType.BRAND:
+         case DropDownType.BRAND:
         strType = "MasterContent";
         break;
-      case DropDownType.MATCATEGORY:
+         case DropDownType.MATCATEGORY:
         strType = "MasterContent";
         break;
-      case DropDownType.MATPRICESOURCE:
+         case DropDownType.MATPRICESOURCE:
         strType = "MasterContent";
         break;
-      case DropDownType.DISCOUNTTYPE:
+         case DropDownType.DISCOUNTTYPE:
         strType = "MasterContent";
         break;
-      case DropDownType.QUOTERESETREASON:
+         case DropDownType.QUOTERESETREASON:
         strType = "QUOTERESETREASON";
         break;
-      case DropDownType.QUOTEREJECTREASON:
+         case DropDownType.QUOTEREJECTREASON:
         strType = "MasterContent";
         break;
-      case DropDownType.TRADEIN:
+         case DropDownType.TRADEIN:
         strType = "TRADEIN";
         break;
-      case DropDownType.TRADEINCATEGORY:
+         case DropDownType.TRADEINCATEGORY:
         strType = "MasterContent";
         break;
-      case DropDownType.Disposition4Communication:
+         case DropDownType.Disposition4Communication:
         strType = "Disposition4Communication";
         break;
-      case DropDownType.RFUSTATUS:
+         case DropDownType.RFUSTATUS:
         strType = "MasterContent";
         break;
-      case DropDownType.DataBackup:
+          case DropDownType.DataBackup:
         strType = "MasterContent";
         break;
-      case DropDownType.TRADEINPARTNER:
+        case DropDownType.TRADEINPARTNER:
         strType = "MasterContent";
         break;
-      case DropDownType.InsuranceType:
+         case DropDownType.InsuranceType:
         strType = "MasterContent";
         break;
-      case DropDownType.BindNretToLocation:
+        case DropDownType.BindNretToLocation:
         strType = "BindNretToLocation";
         break;
-      case DropDownType.CUSTOMERTYPE:
+         case DropDownType.CUSTOMERTYPE:
+        strType = "MasterContent";
+        break;
+           case DropDownType.NRETTYPES:
         strType = "MasterContent";
         break;
 
@@ -564,7 +567,7 @@ export class DropdownDataService {
       case DropDownType.RefundStatus:
         strType = "REFUNDSTATUS"
         break;
-
+        
       case DropDownType.Disposition:
         strType = "DISPOSITION";
         break;
@@ -574,32 +577,32 @@ export class DropdownDataService {
       case DropDownType.EnqDisposition:
         strType = "ENQDISPOSITION";
         break;
-
+      
       // Bulk Return
       case DropDownType.BulkReturnType:
         strType = "BULKRETURNTYPE";
-        break;
+        break; 
       case DropDownType.BulkReturnStatus:
         strType = "BULKRETURNSTATUS";
-        break;
+        break;  
       case DropDownType.ModeOfTransport:
         strType = "MODEOFTRANSPORT";
-        break;
+        break;  
       case DropDownType.VehicleType:
         strType = "VEHICLETYPE";
-        break;
+        break; 
       case DropDownType.TicketStatus:
         strType = "TICKETSTATUS";
-        break;
+        break;  
       case DropDownType.DeclineRepair:
         strType = "DECLINEREPAIR";
-        break;
+        break; 
       case DropDownType.HoldRepair:
         strType = "HOLDREPAIR";
         break;
       case DropDownType.ReferredBy:
         strType = "REFERREDBY";
-        break;
+        break;  
       case DropDownType.AllowedPaymentMode:
         strType = "ALLOWEDPAYMENTMODE";
         break;
@@ -614,7 +617,7 @@ export class DropdownDataService {
         break;
       case DropDownType.DeliveryChallanStatus:
         strType = "DLVCHALLANSTATUS";
-        break;
+        break; 
       case DropDownType.GSXRepairStatus:
         strType = "GSXREPAIRSTATUS";
         break;
@@ -629,54 +632,54 @@ export class DropdownDataService {
         break;
       case DropDownType.DropoffStatus:
         strType = "DROPOFFSTATUS";
-        break;
+        break;  
       case DropDownType.ReservationStatus:
         strType = "RESVSTATUS";
-        break;
+        break;      
       case DropDownType.LeadDisposition:
         strType = "LEADDISPOSITION";
-        break;
+        break;  
       case DropDownType.HappyCallingDisposition:
         strType = "HAPPYCALLINGDISPO";
-        break;
+        break;  
       case DropDownType.RegistryType:
         strType = "REGISTRYTYPE";
-        break;
+        break; 
       case DropDownType.RegistryFrom:
         strType = "REGISTRYFROM";
-        break;
+        break; 
       case DropDownType.ApplePartsType:
         strType = "APPLEPARTSTYPE";
-        break;
+        break;   
       case DropDownType.PartnerList:
         strType = "PARTNERLIST";
-        break;
-      case DropDownType.UnclaimedDocType:
+        break;  
+         case DropDownType.UnclaimedDocType:
         strType = "UNCLAIMEDDOCTYPE";
-        break;
-      case DropDownType.BULKRTNORDERDCSTATUS:
+        break;  
+         case DropDownType.BULKRTNORDERDCSTATUS:
         strType = "BULKRTNORDERDCSTATUS";
-        break;
-      case DropDownType.BOXTYPE:
+        break;  
+         case DropDownType.BOXTYPE:
         strType = "BOXTYPE";
-        break;
-      case DropDownType.CUSTVISITSRC:
+        break;  
+         case DropDownType.CUSTVISITSRC:
         strType = "CUSTVISITSRC";
-        break;
-      case DropDownType.SecondRepairReason:
+        break;  
+         case DropDownType.SecondRepairReason:
         strType = "SecondRepairReason";
-        break;
-      case DropDownType.CallDisposition:
+        break;  
+         case DropDownType.CallDisposition:
         strType = "CallDisposition";
-        break;
-      case DropDownType.CONVERTTOLEAD:
+        break;  
+        case DropDownType.CONVERTTOLEAD:
         strType = "CONVERTTOLEAD";
-        break;
-      case DropDownType.LeadParentDetails:
+        break;  
+        case DropDownType.LeadParentDetails:
         strType = "LeadParentDetails";
-        break;
+        break;  
 
-      case DropDownType.MATGROUP1:
+          case DropDownType.MATGROUP1:
         strType = "MATGROUP1";
 
         break; case DropDownType.MATGROUP2:
@@ -693,38 +696,41 @@ export class DropdownDataService {
 
         break; case DropDownType.MATCATEGORY:
         strType = "MATCATEGORY";
-        break;
+        break; 
         break; case DropDownType.MATPRICESOURCE:
         strType = "MATPRICESOURCE";
-        break;
-        break;
-      case DropDownType.DISCOUNTTYPE:
+        break; 
+         break;
+          case DropDownType.DISCOUNTTYPE:
         strType = "DISCOUNTTYPE";
-        break;
-
-
-      case DropDownType.QUOTEREJECTREASON:
+        break; 
+          
+        
+          case DropDownType.QUOTEREJECTREASON:
         strType = "QUOTEREJECTREASON";
-        break;
-
-      case DropDownType.TRADEINCATEGORY:
+        break; 
+       
+          case DropDownType.TRADEINCATEGORY:
         strType = "TRADEINCATEGORY";
-        break;
-      case DropDownType.RFUSTATUS:
+        break; 
+         case DropDownType.RFUSTATUS:
         strType = "RFUSTATUS";
-        break;
-      case DropDownType.TRADEINPARTNER:
+        break; 
+         case DropDownType.TRADEINPARTNER:
         strType = "TRADEINPARTNER";
-        break;
-      case DropDownType.DataBackup:
+        break; 
+         case DropDownType.DataBackup:
         strType = "DataBackup";
-        break;
-      case DropDownType.InsuranceType:
+        break; 
+        case DropDownType.InsuranceType:
         strType = "InsuranceType";
-        break;
-      case DropDownType.CUSTOMERTYPE:
+        break; 
+         case DropDownType.CUSTOMERTYPE:
         strType = "CUSTOMERTYPE";
-        break;
+        break; 
+         case DropDownType.NRETTYPES:
+        strType = "NRETTYPES";
+        break; 
     }
     return strType;
   }
@@ -742,9 +748,9 @@ export class DropdownDataService {
     DocType?: string,
     RefundReason?: string,
     BulkReturnType?: string,
-    CustVisitSourceCode?: string
-    SerialNo?: string,
-    Parameter?: string,
+    CustVisitSourceCode?:string
+    SerialNo?:string,
+    Parameter?:string,
 
 
   }): Observable<DropDownValue> {
@@ -761,7 +767,7 @@ export class DropdownDataService {
     if (options?.OrgRoleId != null) {
       mainRequest.push(new RequestValue("OrgRoleId", options.OrgRoleId));
     }
-    if (options?.ProductCategory != null) {
+    if(options?.ProductCategory != null){
       mainRequest.push(new RequestValue("ProductCategory", options.ProductCategory))
     }
     if (options?.MasterMaterialCode != null) {
@@ -781,22 +787,23 @@ export class DropdownDataService {
     if (options?.DocType != null) {
       mainRequest.push(new RequestValue("DocType", options.DocType));
     }
-    if (options?.RefundReason != null) {
+    if (options?.RefundReason != null) {  
       mainRequest.push(new RequestValue("RefundReason", options.RefundReason));
     }
     // Bulk Return
-    if (options?.BulkReturnType != null) {
+    if (options?.BulkReturnType != null) {  
       mainRequest.push(new RequestValue("BulkReturnType", options.BulkReturnType));
     }
-    if (options?.CustVisitSourceCode != null) {
+    if (options?.CustVisitSourceCode != null) {  
       mainRequest.push(new RequestValue("CustVisitSourceCode", options.CustVisitSourceCode));
     }
-    if (options?.SerialNo != null) {
+    if (options?.SerialNo != null) {  
       mainRequest.push(new RequestValue("SerialNo", options.SerialNo));
     }
-    if (options?.Parameter != null) {
+    if (options?.Parameter != null) {  
       mainRequest.push(new RequestValue("Parameter", options.Parameter));
     }
+    console.log("DROPOFF " , options?.DocType )
     let subject = new BehaviorSubject<DropDownValue>(null);
     this.dynamicService.getDropdownExtraData({
       Content: JSON.stringify(mainRequest)

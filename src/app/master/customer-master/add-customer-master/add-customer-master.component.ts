@@ -54,14 +54,14 @@ export class AddCustomerMasterComponent implements OnInit {
   IsShowMargin: boolean = false;
   IsDisableInsuranceType: boolean = false;
   IsDisableCustomerType: boolean = false;
-  CustomerPricingOptionList: any[] = [];
+  CustomerPricingOptionList:any[]=[];
 
 
 
   InsuranceApplicableList: any[] = [
     { Id: '1', TEXT: 'YES' }, { Id: '0', TEXT: 'NO' }]
 
-  SpecialMarginApplicableList: any[] = [
+     SpecialMarginApplicableList: any[] = [
     { Id: '1', TEXT: 'YES' }, { Id: '0', TEXT: 'NO' }]
 
   constructor(
@@ -155,8 +155,8 @@ export class AddCustomerMasterComponent implements OnInit {
       ReferredBy: [null],
       IsInsuranceApplicable: [null, Validators.required],
       InsuranceType: [null],
-      CustomerType: [null, Validators.required],
-      IsSpecialMarginApplicable: [null, Validators.required],
+      CustomerType: [null,Validators.required],
+      IsSpecialMarginApplicable: [null,Validators.required],
     });
     this.onCountrySearch({ term: "", items: [] });
     this.onCustAccountGroupSearch({ term: "", items: [] });
@@ -170,9 +170,9 @@ export class AddCustomerMasterComponent implements OnInit {
       this.customerForm.get('EmailId').setValue(this.popUpData.CustomerEmail);
       this.customerForm.get('PhoneNo').setValue(this.popUpData.CustomerPhone);
     }
-
-    if (this.params.customercode == null || this.params.customercode == undefined) {
-      this.GetPricingOptionMasterList()
+   
+    if ( this.params.customercode == null || this.params.customercode == undefined ){
+       this.GetPricingOptionMasterList()
     }
 
   }
@@ -198,7 +198,7 @@ export class AddCustomerMasterComponent implements OnInit {
 
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
       next: (Value) => {
-
+           debugger
         let response = JSON.parse(Value.toString());
         if (response.ReturnCode == "0") {
           let data = JSON.parse(response.ExtraData)?.Customer;
@@ -207,7 +207,7 @@ export class AddCustomerMasterComponent implements OnInit {
           if (data?.SapInvoiceCount > 0) {
             this.toastr.error("Cant change Mobile No and State as more than 1 Invoices posted to SAP")
           }
-
+         
           this.customerForm.patchValue({
             FirstName: data.FirstName,
             LastName: data.LastName,
@@ -230,20 +230,21 @@ export class AddCustomerMasterComponent implements OnInit {
             IsInsuranceApplicable: data.IsInsuranceApplicable,
             InsuranceType: data?.InsuranceType ?? null,
             CustomerType: data?.CustomerType ?? 'NA',
-            IsSpecialMarginApplicable: data?.IsSpecialMarginApplicable ?? 0
+            IsSpecialMarginApplicable :data?.IsSpecialMarginApplicable ?? 0
           });
 
-          this.IsShowMargin = this.customerForm.get("IsSpecialMarginApplicable").value == 1 ? true : false
+          this.IsShowMargin = this.customerForm.get("IsSpecialMarginApplicable").value  == 1 ? true : false
+        
 
-
-          if (data?.CustomerPricingOptionList?.CustomerPricingOption) {
-            this.CustomerPricingOptionList = [];
-            this.FinalSelectedPricingOption = Array.isArray(data?.CustomerPricingOptionList?.CustomerPricingOption) ? data?.CustomerPricingOptionList?.CustomerPricingOption : [data?.CustomerPricingOptionList?.CustomerPricingOption]
-
+          if(data?.CustomerPricingOptionList?.CustomerPricingOption)
+          {
+             this.CustomerPricingOptionList=[];
+              this.FinalSelectedPricingOption  = Array.isArray(data?.CustomerPricingOptionList?.CustomerPricingOption) ? data?.CustomerPricingOptionList?.CustomerPricingOption : [data?.CustomerPricingOptionList?.CustomerPricingOption]
+               
 
           }
-          else {
-            this.GetPricingOptionMasterList()
+          else{
+             this.GetPricingOptionMasterList()
           }
 
 
@@ -262,7 +263,7 @@ export class AddCustomerMasterComponent implements OnInit {
   }
 
   onSubmit() {
-
+    debugger
     const pattern = /^[^\\+\\=@\\-]/;
     const htmlpattern = /<(\"[^\"]\"|'[^']'|[^'\">])*>/
     const formValue = this.customerForm.value
@@ -380,7 +381,7 @@ export class AddCustomerMasterComponent implements OnInit {
       requestData.push({ Key: "InsuranceType", Value: this.customerForm.controls["InsuranceType"].value });
       requestData.push({ Key: "CustomerType", Value: this.customerForm.controls["CustomerType"].value ?? 'NA' });
       requestData.push({ Key: "IsSpecialMarginApplicable", Value: this.customerForm.controls["IsSpecialMarginApplicable"].value });
-      requestData.push({ Key: "CustomerPricingOption", Value: (this.customerForm.controls["IsSpecialMarginApplicable"].value == 1 || this.customerForm.controls["IsSpecialMarginApplicable"].value == '1') ? this.CustomerPricingOptionIntoXml() : '<rows/>' });
+      requestData.push({ Key: "CustomerPricingOption", Value: (this.customerForm.controls["IsSpecialMarginApplicable"].value == 1 || this.customerForm.controls["IsSpecialMarginApplicable"].value == '1' ) ? this.CustomerPricingOptionIntoXml() : '<rows/>' });
 
 
       console.log('requestData', requestData)
@@ -724,58 +725,58 @@ export class AddCustomerMasterComponent implements OnInit {
 
 
   onPinCodeChange() {
-    let pinCodeFieldValue = this.customerForm.get("PinCode").value;
+  let pinCodeFieldValue = this.customerForm.get("PinCode").value;
 
-    if (!pinCodeFieldValue) {
-      this.customerForm.patchValue({ Country: null, City: null, State: null });
-      return;
-    }
-
-    if (pinCodeFieldValue.toString().length !== 6) {
-      return;
-    }
-
-    this.spinner.show();
-
-    let requestData = [];
-    requestData.push({ key: "APIType", Value: "GetPinCodeValidation" });
-    requestData.push({ key: "PinCode", Value: pinCodeFieldValue });
-
-    let contentRequest = { content: JSON.stringify(requestData) };
-
-    this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
-      next: (value) => {
-        try {
-          let response = JSON.parse(value.toString());
-          if (response.ReturnCode == "0") {
-            let data = JSON.parse(response?.ExtraData);
-            if (data?.Totalrecords == "1") {
-              let results = data?.PinCodeRow;
-              this.toastr.success("Pincode Found");
-              this.customerForm.patchValue({
-                Country: results["CountryCode"],
-                City: results["City"],
-                State: results["StateCode"],
-                LandMark: results["OfficeName"]
-              });
-              this.onStatesSearch({ term: "", items: [] });
-              this.customerForm.get("State").patchValue(results["StateCode"]);
-            } else {
-              this.toastr.warning("No such pincode found! Add details manually");
-            }
-          }
-        } catch (ext) {
-          console.log(ext);
-        } finally {
-          this.spinner.hide();
-        }
-      },
-      error: (err) => {
-        console.log(err);
-        this.spinner.hide();
-      },
-    });
+  if (!pinCodeFieldValue) {
+    this.customerForm.patchValue({ Country: null, City: null, State: null });
+    return;
   }
+
+  if (pinCodeFieldValue.toString().length !== 6) {
+    return;
+  }
+
+  this.spinner.show();
+
+  let requestData = [];
+  requestData.push({ key: "APIType", Value: "GetPinCodeValidation" });
+  requestData.push({ key: "PinCode", Value: pinCodeFieldValue });
+
+  let contentRequest = { content: JSON.stringify(requestData) };
+
+  this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
+    next: (value) => {
+      try {
+        let response = JSON.parse(value.toString());
+        if (response.ReturnCode == "0") {
+          let data = JSON.parse(response?.ExtraData);
+          if (data?.Totalrecords == "1") {
+            let results = data?.PinCodeRow;
+            this.toastr.success("Pincode Found");
+            this.customerForm.patchValue({
+              Country: results["CountryCode"],
+              City: results["City"],
+              State: results["StateCode"],
+              LandMark: results["OfficeName"]
+            });
+            this.onStatesSearch({ term: "", items: [] });
+            this.customerForm.get("State").patchValue(results["StateCode"]);
+          } else {
+            this.toastr.warning("No such pincode found! Add details manually");
+          }
+        }
+      } catch (ext) {
+        console.log(ext);
+      } finally {
+        this.spinner.hide();
+      }
+    },
+    error: (err) => {
+      console.log(err);
+      this.spinner.hide();
+    },
+  });
+}
   DateT() {
     var RemoveT = new Date().toISOString().replace("T", " ");
   }
@@ -800,25 +801,25 @@ export class AddCustomerMasterComponent implements OnInit {
   }
 
   // onInsuranceFlagChange($event) {
-  //   
+  //   debugger
   //   console.log('$event', $event)
 
   //   if ($event.Id == "1" || $event.Id == 1) {
-
-
+     
+      
   //     this.FinalSelectedPricingOption.forEach(item => {
   //       item.MarginPercentage = 0.00
   //     })
   //   }
-
-
+    
+    
 
   // }
 
 
 
   GetPricingOptionMasterList() {
-
+    debugger
     let requestData = []
     requestData.push({
       "Key": "APIType",
@@ -834,7 +835,7 @@ export class AddCustomerMasterComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-
+          debugger
           try {
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {
@@ -878,24 +879,24 @@ export class AddCustomerMasterComponent implements OnInit {
   }
 
   // onCustomerTypeChange($event) {
-  //   
+  //   debugger
   //   //  this.IsShowMargin = (this.customerForm.get("CustomerType").value != 'NA' && this.customerForm.get("IsInsuranceApplicable").value == "1" ) ? true : false
-
-
+        
+     
   //   //  this.FinalSelectedPricingOption.forEach(x =>{
   //   //   x.MarginPercentage= 0.00
   //   //  })
 
-
+    
   // }
 
-  SpecialMarginApplicableChange($event) {
+  SpecialMarginApplicableChange($event){
 
-    this.IsShowMargin = this.customerForm.get("IsSpecialMarginApplicable").value == 1 ? true : false;
-
-    this.FinalSelectedPricingOption.forEach(x => {
-      x.MarginPercentage = 0.00
-    })
+      this.IsShowMargin = this.customerForm.get("IsSpecialMarginApplicable").value == 1 ? true : false;
+        
+     this.FinalSelectedPricingOption.forEach(x =>{
+      x.MarginPercentage= 0.00
+     })
 
   }
 

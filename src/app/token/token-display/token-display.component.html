@@ -10,7 +10,7 @@
         </div>
         <hr />
         <div class="container">
-          <div *ngFor="let item of ServingArrayFinal" class="card rounded-0" style="border:2px solid black;padding:5px">
+          <div *ngFor="let item of ServingArrayFinal" class="card rounded-0" style="border:2px solid black;padding:5px" [class.delayed-card]="getWaitingTimeInMinutes(item.WaitingTime) > 20">
             <div class="row">
               <div class="col-lg-3 col-sm-6 col-md-3">
                 <b class="TextStyle">{{item.Counter}}</b>
@@ -48,7 +48,7 @@
         </div>
         <hr />
         <div class="container">
-          <div *ngFor="let item of QueueArrayFinal" class="card rounded-0" style="background-color:wheat;border:2px solid black;padding:5px">
+          <div *ngFor="let item of QueueArrayFinal" class="card rounded-0" style="background-color:wheat;border:2px solid black;padding:5px" [class.delayed-card]="getWaitingTimeInMinutes(item.WaitingTime) > 20">
             <div class="row">
               <div class="col-lg-3 col-sm-6 col-md-3">
                 <b class="TextStyle" style="color:orangered">{{item.TokenCode}}</b>

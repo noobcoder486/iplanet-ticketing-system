@@ -163,12 +163,17 @@
             <ng-select formControlName="MatCategory" [(ngModel)]="material.MatCategory"
               [items]="MaterialCategoryDD.Data" placeholder="Material Category" bindLabel="TEXT" bindValue="Id"></ng-select>
           </div>
+         
 
          <!-- Price Source  -->
 
          <div class="col-sm-6">
             <ng-select formControlName="PriceSource" [(ngModel)]="material.PriceSource" (change)="onPriceSourceChange($event)"
               [items]="MaterialPriceSourceDD.Data" placeholder="Price Source" bindLabel="TEXT" bindValue="Id"></ng-select>
+          </div>
+           <div class="col-sm-6">
+            <ng-select formControlName="NretType" [(ngModel)]="material.NretType"
+              [items]="NretTypeDD.Data" placeholder="Nret Type" bindLabel="TEXT" bindValue="Id"></ng-select>
           </div>
 
          <div class="col-sm-6">

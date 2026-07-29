@@ -68,11 +68,12 @@ export class NretManagementListComponent implements OnInit {
   filtersEventRequest: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   filtersEventCreated: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  filterDataRequest: { DeliveryChallanType: string, DeliveryChallanStatusCode: string; DeliveryChallanStatusDesc: string; LocationCode: string } = {
+  filterDataRequest: { DeliveryChallanType: string, DeliveryChallanStatusCode: string; DeliveryChallanStatusDesc: string; LocationCode: string; DeliveryChallanSubType:string } = {
     DeliveryChallanType: '',
     DeliveryChallanStatusCode: '',
     DeliveryChallanStatusDesc: '',
     LocationCode: '',
+    DeliveryChallanSubType:''
   };
   Spinner = false
 
@@ -137,7 +138,7 @@ export class NretManagementListComponent implements OnInit {
 
   
   onCardSelected(status) {
-
+     debugger
     this.tabs[0].active = false;
     this.tabs[1].active = true;
 
@@ -145,6 +146,8 @@ export class NretManagementListComponent implements OnInit {
     this.filterDataRequest.DeliveryChallanStatusCode = status.DeliveryChallanStatusCode
     this.filterDataRequest.DeliveryChallanStatusDesc = status.DeliveryChallanStatusDesc
     this.filterDataRequest.DeliveryChallanType = status.ReturnTypeCode
+    this.filterDataRequest.DeliveryChallanSubType = status.ReturnTypeCode
+
     this.filterDataRequest.LocationCode = this.LocationCode;
     this.filtersEventRequest.next(this.filterDataRequest);
    
@@ -157,7 +160,7 @@ export class NretManagementListComponent implements OnInit {
       let requestData =[]
       requestData.push({
         "Key": "APIType",
-        "Value": "GetDeliveryChallanDashboard"
+        "Value": "GetNRETDashboard"
       });
       requestData.push({
         "Key": "DeliveryChallanType",

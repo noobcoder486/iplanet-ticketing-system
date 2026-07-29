@@ -31,4 +31,6 @@ export class Material {
     MatCategory:string;
        PriceSource:string;
     IsMarginPriceApplicable:boolean;
+        NretType:any;
+
   }

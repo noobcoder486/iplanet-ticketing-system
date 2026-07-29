@@ -58,12 +58,12 @@ export class AddMaterialMasterComponent implements OnInit {
 
   MaterialPriceSourceDD: DropDownValue = this.getBlankObject();
 
-
-
-
-
+  NretType:any;
+  NretTypeDD: DropDownValue = this.getBlankObject();
 
   ngOnInit(): void {
+    this.onNretTypes({ term: "", item: [] });
+
     this.params = this.activatedRoute.snapshot.queryParams;
     if (this.params.nc != null || this.params.nc != undefined) {
       this.getData()
@@ -105,7 +105,7 @@ export class AddMaterialMasterComponent implements OnInit {
 
       PriceSource: [null,Validators.required],
       IsMarginPriceApplicable: [null],
-
+      NretType:[null],
 
     });
 
@@ -202,10 +202,12 @@ export class AddMaterialMasterComponent implements OnInit {
               Brand: data?.Brand,
               MatCategory: data?.MatCategory,
               PriceSource: data?.PriceSource,
-              IsMarginPriceApplicable: data?.IsMarginPriceApplicable == '1' ? true : false
+              IsMarginPriceApplicable: data?.IsMarginPriceApplicable == '1' ? true : false,
+              NretType: data?.NretType ?? ''
+
 
             })
-
+  
           }
           else {
             console.log("error");
@@ -433,6 +435,10 @@ export class AddMaterialMasterComponent implements OnInit {
       requestData.push({
         "Key": "IsMarginPriceApplicable",
         "Value": this.material?.IsMarginPriceApplicable || 0
+      });
+       requestData.push({
+        "Key": "NretType",
+        "Value": this.material?.NretType || ''
       });
       console.log('requestData', requestData)
       
@@ -725,5 +731,20 @@ export class AddMaterialMasterComponent implements OnInit {
 
   }
 
+
+    onNretTypes($event: { term: string; item: any[] }) {
+      this.dropdownDataService.fetchDropDownData(DropDownType.NRETTYPES, $event.term, {
+      }).subscribe({
+        next: (value) => {
+          if (value != null) {
+            this.NretTypeDD = value;
+            console.log("onNretTypes ", this.NretTypeDD)
+          }
+        },
+        error: (err) => {
+          this.NretTypeDD = DropDownValue.getBlankObject();
+        }
+      });
+    }
 
 }

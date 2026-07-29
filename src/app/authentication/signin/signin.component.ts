@@ -57,8 +57,8 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
 
   onSubmit() {
     this.error = '';
-    if (this.dynamicService.validateAllFormFields(this.loginForm)) {
-
+    if (this.dynamicService.validateAllFormFields(this.loginForm)){
+        
       if (this.loginForm.invalid) {
         this.error = 'Username and Password not valid !';
         return;
@@ -67,8 +67,8 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
         //let password = this.encryptDecryptService.encrypt(this.f.password.value);
         this.subs.sink = this.authService.login(this.f.email.value, this.f.password.value)
           .subscribe((data: any) => {
-
-            this.UserObject = data.UserDetails
+            
+           this.UserObject = data.UserDetails
 
             if (data.isValid == true) {
               sessionStorage.setItem(GLOBALVARIABLE.USERNAME, this.f.email.value);
@@ -78,12 +78,12 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
 
             }
             else {
-
+              
               this.submitted = false;
-              if (data?.UserDetails?.AuthenticationResponse) {
+              if ( data?.UserDetails?.AuthenticationResponse){
                 this.error = data?.UserDetails?.AuthenticationResponse
               }
-              else {
+              else{
                 this.error = "User Name or Password is not correct!"
               }
             }
@@ -108,6 +108,8 @@ export class SigninComponent extends UnsubscribeOnDestroyAdapter implements OnIn
       Actions: this.authService.getModulections(),
       UserPermission: this.authService.getUserPermission(userName)
     }).subscribe((data: any) => {
+      console.log("Menu Data");
+      console.log(data.MenuDetail);
       data.MenuDetail[0].push({
         HeadingId: 1,
         HeadingLogo: "fas fa-tachometer-alt",

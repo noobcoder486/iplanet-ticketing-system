@@ -35,6 +35,11 @@ export class JobReportComponent implements OnInit {
   screenDetail: any;
   GSXStatusDD: DropDownValue = DropDownValue.getBlankObject();
   GSXStatus: string
+   TempSpecialAcessMasterList:any=[];
+
+   IsSpecialAcessMaster:boolean=false;
+   userName:any
+
 
   columns: Columns[] = [
     { datatype: "STRING", field: "TokenCode", title: "TokenCode" },
@@ -132,8 +137,12 @@ export class JobReportComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this.userName = glob.getLogedInUser().UserDetails.UserName;
+        console.log('this.userName',this.userName)
     this.onLocationSearch({ term: "", item: [] });
     this.onGSXStatusSearch({ term: "", item: [] });
+    this.GetSpecialAcessMasterList()
   }
 
   actionEmit($event) {
@@ -587,5 +596,155 @@ export class JobReportComponent implements OnInit {
     }
 
   }
+
+
+  // GetSpecialAcessMasterList
+
+  GetSpecialAcessMasterList() {
+    debugger
+    let requestData = []
+        this.ngxSpinnerService.show();
+        requestData.push({
+          "Key": "APIType",
+          "Value": "GetSpecialAcessMasterList"
+        })
+        requestData.push({
+          "Key": "CompanyCode",
+          "Value": glob.getCompanyCode()
+        })
+        requestData.push({
+          "Key": "Process",
+          "Value": "EXPORTARCHIEVEREPORT"
+        })
+        let strRequestData = JSON.stringify(requestData);
+        let contentRequest =
+        {
+          "content": strRequestData
+        };
+        this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
+          {
+            next: (Value) => {
+                  this.ngxSpinnerService.hide()
+                                debugger
+              try {
+                let response = JSON.parse(Value.toString());
+                if (response.ReturnCode == '0') {
+                  let data = JSON.parse(response?.ExtraData);
+                  if (Array.isArray(data?.SpecialAcessMasterList?.SpecialAcessMaster)) {
+                    this.TempSpecialAcessMasterList = data?.SpecialAcessMasterList?.SpecialAcessMaster
+                  }
+                  else {
+                    this.TempSpecialAcessMasterList.push(data?.SpecialAcessMasterList?.SpecialAcessMaster)
+                  }
+                   
+                  if(this.TempSpecialAcessMasterList && this.userName)
+                  {
+                    this.IsSpecialAcessMaster = this.TempSpecialAcessMasterList.some(item => item.UserName.toLowerCase() == this.userName.toLowerCase() && item.Process == 'EXPORTARCHIEVEREPORT' )
+                  }
+                  this.ngxSpinnerService.hide()
+                }
+              } catch (ext) {
+                console.log(ext);
+              }
+            },
+            error: err => {
+              console.log(err);
+              this.ngxSpinnerService.hide()
+            }
+          }
+        );
+    }
+   
+
+// Archieve
+
+// decline service report
+  ExportJobReportList_ARCHIEVE() {
+    const startformattedDate = this.datePipe.transform(this.StartDate, 'yyyy-MM-dd');
+    const endformattedDate = this.datePipe.transform(this.EndDate, 'yyyy-MM-dd');
+    
+    if ((this.StartDate != null || this.StartDate != undefined) && (this.EndDate != null || this.EndDate != undefined)) {
+      let requestData = []
+      this.ngxSpinnerService.show();
+      requestData.push({
+        "Key": "APIType",
+        "Value": "ExportJobReportList_ARCHIEVE"
+      })
+      requestData.push({
+        "Key": "LocationCode",
+        "Value": this.LocationData == null || this.LocationData == undefined ? '' : this.LocationData
+      })
+      requestData.push({
+        "Key": "GSXRepairStatus",
+        "Value": this.GSXStatus == null || this.GSXStatus == undefined ? '' : this.GSXStatus
+      })
+      requestData.push({
+        "Key": "CompanyCode",
+        "Value": glob.getCompanyCode()
+      })
+      requestData.push({
+        "Key": "StartDate",
+        "Value": startformattedDate == null || startformattedDate == undefined ? "0" : startformattedDate
+      })
+      requestData.push({
+        "Key": "EndDate",
+        "Value": endformattedDate == null || endformattedDate == undefined ? "0" : endformattedDate
+      })
+      requestData.push({
+        "Key": "CaseId",
+        "Value": this.CaseIdData == null || this.CaseIdData == undefined ? "" : this.CaseIdData
+      })
+      requestData.push({
+        "Key": "PageNo",
+        "Value": "1"
+      });
+      requestData.push({
+        "Key": "PageSize",
+        "Value": "10"
+      });
+      
+      let strRequestData = JSON.stringify(requestData);
+      let contentRequest =
+      {
+        "content": strRequestData
+      };
+      
+      this.reportService.downloadServiceReport('UNIVERSAL', contentRequest).subscribe(
+        {
+          next: (Value) => {
+            this.ngxSpinnerService.hide()
+            try {
+              const startformattedDate = this.datePipe.transform(this.StartDate, 'dd-MM-yyyy');
+              const endformattedDate = this.datePipe.transform(this.EndDate, 'dd-MM-yyyy');
+              let response = JSON.parse(Value.toString());
+              const byteArray = new Uint8Array(atob(response.FileContents).split('').map(char => char.charCodeAt(0)));
+              var blob = new Blob([byteArray], { type: 'application/vnd.ms-excel' });
+              // Create a download link
+              const link = document.createElement('a');
+              const url = URL.createObjectURL(blob);
+              link.href = url;
+              const fileName = `Job_Report_ARCHIEVE_${startformattedDate}_to_${endformattedDate}.xls`;
+              link.download = fileName;
+              link.click();
+              URL.revokeObjectURL(url);
+              this.ngxSpinnerService.hide();
+
+            } catch (ext) {
+              console.log(ext);
+            }
+          },
+          error: err => {
+            this.ngxSpinnerService.hide()
+            console.log(err);
+          }
+        }
+      );
+    }
+    else {
+      this.toast.error("Please Select Start and End Date")
+    }
+
+  }
+  
 
 }

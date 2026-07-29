@@ -94,7 +94,8 @@
                   'ts-dsb--qterej':         selectedTicket.TicketStatus === 'QTEREJ',
                   'ts-dsb--qtepsub':        selectedTicket.TicketStatus === 'QTEPSUB',
                   'ts-dsb--qtepappr':       selectedTicket.TicketStatus === 'QTEPAPPR',
-                  'ts-dsb--qteprej':        selectedTicket.TicketStatus === 'QTEPREJ'
+                  'ts-dsb--qteprej':        selectedTicket.TicketStatus === 'QTEPREJ',
+                  'ts-dsb--jobcreate':        selectedTicket.TicketStatus === 'JOBCREATE'
                 }">
                   <span class="ts-dsb-dot"></span>
                   {{ selectedTicket.TicketStatus }}
@@ -144,22 +145,22 @@
               <button class="ts-workflow-btn ts-workflow-btn--first" *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') &&
                      (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
                      (selectedTicket?.TechIds != null || selectedTicket?.TechIds != '') &&
-                     selectedTicket?.TicketStatus === 'IN-PROGRESS'" (click)="UpdateFirstResponse(selectedTicket)">
+                     selectedTicket?.TicketStatus === 'FIRSTRESPONSE'" (click)="UpdateFirstResponse(selectedTicket)">
                 <i class="fa fa-hard-hat"></i> Capture First Response
               </button>
 
               <button class="ts-workflow-btn ts-workflow-btn--product" *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') &&
                      (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
-                     selectedTicket?.TicketStatus === 'FIRSTRESPONSE' &&
+                     (selectedTicket?.TicketStatus === 'IN-PROGRESS' || selectedTicket?.TicketStatus == 'JOBCREATE') &&
                      (selectedTicket?.TechIds != null && selectedTicket?.TechIds != undefined)"
                 (click)="addProduct(selectedTicket)">
                 <i class="fa fa-box-open"></i> Add Product
               </button>
               <button class="ts-workflow-btn ts-workflow-btn--quotation" *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') &&
-       (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
-       selectedTicket?.TicketStatus === 'FIRSTRESPONSE' &&
-       (selectedTicket?.TechIds != null && selectedTicket?.TechIds != undefined) &&
-       selectedTicket?._jobHeaderGuid" (click)="openBulkQuotation(selectedTicket)">
+                (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
+                (selectedTicket?.TicketStatus === 'JOBCREATE' || selectedTicket?.TicketStatus.includes('QTE')) &&
+                (selectedTicket?.TechIds != null && selectedTicket?.TechIds != undefined) &&
+                selectedTicket?._jobHeaderGuid" (click)="openBulkQuotation(selectedTicket)">
                 <i class="fa fa-file-invoice-dollar"></i> Add Quotation
               </button>
 
@@ -238,6 +239,7 @@
                     <th>Onsite</th>
                     <th>AppleCare</th>
                     <th>ELS Status *</th>
+                    <th>Customer Voice *</th>
                     <th>Contract Code</th>
                     <th>Repair Type *</th>
                     <th>Billing Option *</th>
@@ -334,6 +336,25 @@
                     </td>
 
                     <td class="ts-pd-dd-cell">
+                      <ng-container *ngIf="p._fromJob; else customerVoiceEditable">
+                        <span class="ts-saved-field-badge" [matTooltip]="p.customerVoice">{{ p.customerVoice || '—'
+                          }}</span>
+                      </ng-container>
+                      <ng-template #customerVoiceEditable>
+                        <input type="text" class="ts-pd-voice-input" [(ngModel)]="p.customerVoice"
+                          (blur)="p._customerVoiceTouched = true" [class.ts-ng-invalid]="isCustomerVoiceInvalid(p)"
+                          placeholder="Customer Voice *" style="min-width:160px;" />
+                        <small class="ts-field-error" *ngIf="p._customerVoiceTouched && !p.customerVoice?.trim()">
+                          Required
+                        </small>
+                        <small class="ts-field-error"
+                          *ngIf="p._customerVoiceTouched && p.customerVoice?.trim() && hasSpecialChars(p.customerVoice)">
+                          Invalid characters
+                        </small>
+                      </ng-template>
+                    </td>
+
+                    <td class="ts-pd-dd-cell">
                       <ng-container *ngIf="p._fromJob; else contractEditable">
                         <span class="ts-saved-field-badge ts-saved-field-badge--grey">
                           {{ p._contractCode || '—' }}
@@ -420,39 +441,19 @@
             </div>
 
             <div class="ts-voice-section">
-              <div class="ts-voice-row">
-
-                <div class="ts-voice-field">
-                  <mat-form-field appearance="standard" style="width:100%;">
-                    <mat-label>Customer Voice *</mat-label>
-                    <textarea matInput rows="3" [(ngModel)]="customerVoice" (blur)="customerVoiceTouched = true"
-                      placeholder="Describe the customer's complaint..." [readonly]="!hasNewProducts()"
-                      [class.ts-textarea-error]="isCustomerVoiceInvalid()"></textarea>
-                  </mat-form-field>
-                  <mat-error *ngIf="customerVoiceTouched && !customerVoice?.trim()">
-                    Customer Voice cannot be blank
-                  </mat-error>
-                  <mat-error *ngIf="customerVoiceTouched && customerVoice?.trim() && hasSpecialChars(customerVoice)">
-                    No special characters allowed
-                  </mat-error>
-                </div>
-
-                <div class="ts-voice-field">
-                  <mat-form-field appearance="standard" style="width:100%;">
-                    <mat-label>CRE Voice *</mat-label>
-                    <textarea matInput rows="3" [(ngModel)]="creVoice" (blur)="creVoiceTouched = true"
-                      placeholder="Enter CRE remark..." [readonly]="!hasNewProducts()"
-                      [class.ts-textarea-error]="isCreVoiceInvalid()">
-                    </textarea>
-                  </mat-form-field>
-                  <mat-error *ngIf="creVoiceTouched && !creVoice?.trim()">
-                    CRE Voice cannot be blank
-                  </mat-error>
-                  <mat-error *ngIf="creVoiceTouched && creVoice?.trim() && hasSpecialChars(creVoice)">
-                    No special characters allowed
-                  </mat-error>
-                </div>
-
+              <div class="ts-voice-field" style="max-width:500px;">
+                <mat-form-field appearance="standard" style="width:100%;">
+                  <mat-label>CRE Voice *</mat-label>
+                  <textarea matInput rows="3" [(ngModel)]="creVoice" (blur)="creVoiceTouched = true"
+                    placeholder="Enter CRE remark..." [readonly]="!hasNewProducts()"
+                    [class.ts-textarea-error]="isCreVoiceInvalid()"></textarea>
+                </mat-form-field>
+                <mat-error *ngIf="creVoiceTouched && !creVoice?.trim()">
+                  CRE Voice cannot be blank
+                </mat-error>
+                <mat-error *ngIf="creVoiceTouched && creVoice?.trim() && hasSpecialChars(creVoice)">
+                  No special characters allowed
+                </mat-error>
               </div>
 
               <div class="ts-submit-row" *ngIf="hasNewProducts()">
@@ -461,12 +462,11 @@
                   Submit {{ newProductCount() }} New Product{{ newProductCount() > 1 ? 's' : '' }}
                 </button>
               </div>
-
             </div>
 
           </div>
 
-          <div class="ts-mail-section">
+          <div class="ts-mail-section" *ngIf="selectedTicket?.parsedTicketBody; else mailParseError">
             <div class="ts-mail-subject">
               <i class="fa fa-envelope ts-mail-icon"></i>
               <span>{{ selectedTicket?.parsedTicketBody?.subject | uppercase }}</span>
@@ -488,6 +488,11 @@
               </div>
             </div>
           </div>
+          <ng-template #mailParseError>
+            <div class="ts-mail-section">
+              <p style="color:#c62828;">Unable to display this email thread (malformed content).</p>
+            </div>
+          </ng-template>
 
         </div>
 

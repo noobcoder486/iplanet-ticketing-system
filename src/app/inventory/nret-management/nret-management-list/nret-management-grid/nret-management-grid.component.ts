@@ -63,6 +63,10 @@ export class NretManagementGridComponent implements OnInit {
   statuses: { JobStatusDesc: string; JobCount: number }[] = [];
   pageTitle: String = "Sales Return";
 
+  NretType:any;
+  NretTypeDD: DropDownValue = this.getBlankObject();
+  
+
   constructor(
       private dynamicService: DynamicService,
       private router: Router,
@@ -74,6 +78,9 @@ export class NretManagementGridComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.onNretTypes({ term: "", item: [] });
+
 
     this.onLocationSearch({ term: "", item: [] });
     // this.onDeliveryChallanType({ term: "", item: [] });
@@ -87,6 +94,7 @@ export class NretManagementGridComponent implements OnInit {
           this.DeliveryChallanStatusCode = value.DeliveryChallanStatusCode
           this.DeliveryChallanType = value.DeliveryChallanType
           this.DeliveryChallanStatusDesc = value.DeliveryChallanStatusDesc
+          this.NretType = value.DeliveryChallanSubType
           // if (value.JobStatusTitle) {
           //   this.filterList.push(new Filter("JobStatusTitle", value.JobStatusTitle, ''));
           // }
@@ -134,6 +142,10 @@ export class NretManagementGridComponent implements OnInit {
    requestData.push({
      "Key": "LocationCode",
      "Value": this.LocationCode == null || this.LocationCode == undefined || this.LocationCode == '' ? '' : this.LocationCode
+   });
+   requestData.push({
+     "Key": "DeliveryChallanSubType",
+     "Value": this.NretType == null || this.NretType == undefined || this.NretType == '' ? '' : this.NretType
    });
    requestData.push({
      "Key":"PageNo",
@@ -274,4 +286,20 @@ export class NretManagementGridComponent implements OnInit {
     ddv.Data = [];
     return ddv;
   }
+
+  
+   onNretTypes($event: { term: string; item: any[] }) {
+      this.dropdownDataService.fetchDropDownData(DropDownType.NRETTYPES, $event.term, {
+      }).subscribe({
+        next: (value) => {
+          if (value != null) {
+            this.NretTypeDD = value;
+            console.log("onNretTypes ", this.NretTypeDD)
+          }
+        },
+        error: (err) => {
+          this.NretTypeDD = DropDownValue.getBlankObject();
+        }
+      });
+    }
 }

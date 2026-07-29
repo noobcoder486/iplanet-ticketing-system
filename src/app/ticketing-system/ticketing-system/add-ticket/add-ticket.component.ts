@@ -85,7 +85,7 @@ export class AddTicketComponent implements OnInit {
     const contentRequest = { content: JSON.stringify(requestData) };
 
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
-      next: (value) => {
+      next: (value: any) => {
         const response = JSON.parse(value.toString());
 
         if (response.ReturnCode === '0') {

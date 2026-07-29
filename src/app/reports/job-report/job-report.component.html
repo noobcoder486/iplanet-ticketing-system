@@ -83,7 +83,7 @@
    
     </div> -->
     </div>
-  </mat-card><br />
+  </mat-card>
 
   <mat-card *ngIf="results.length>0">
 
@@ -98,5 +98,17 @@
       </div>
     </mat-card>
 
+  </mat-card>
+
+  <mat-card class="mt-2"  *ngIf="this.IsSpecialAcessMaster">
+     <div class="row">
+       <div class="col-lg-10 col-sm-10 col-md-10"></div>
+       <div class="col-lg-2 col-sm-2 col-md-2">
+           <button matTooltip="Export Archieve Job Report" class="btn blue-button" (click)="ExportJobReportList_ARCHIEVE()">
+             Export Archieve Report
+           </button>
+
+       </div>
+     </div>
   </mat-card>
 </section>

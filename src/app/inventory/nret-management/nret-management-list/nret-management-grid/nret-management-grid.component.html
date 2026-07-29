@@ -16,9 +16,14 @@
               </div>
             
               <!-- Second Field -->
-              <div class="col-lg-4 col-sm-4 mt-2">
+              <div class="col-lg-2 col-sm-2 mt-2">
                 <label style="font-weight:600; padding-bottom: 2%;">Delivery Challan Status*</label>
                 <ng-select [items]="DeliveryChallanStatusDD.Data" bindLabel="TEXT" bindValue="Id" [(ngModel)]="DeliveryChallanStatusCode" placeholder=""></ng-select>
+              </div>
+              <!-- Second Field -->
+              <div class="col-lg-2 col-sm-2 mt-2">
+                <label style="font-weight:600; padding-bottom: 2%;">Nret Type</label>
+                  <ng-select [items]="NretTypeDD.Data" bindValue="Id" bindLabel="TEXT" [(ngModel)]="NretType"></ng-select>
               </div>
             
               <!-- Third Field -->

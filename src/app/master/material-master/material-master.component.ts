@@ -56,6 +56,7 @@ export class MaterialMasterComponent implements OnInit {
     
      {datatype:"STRING", field:"PriceSource", title:"Price Source"},
     {datatype:"STRING", field:"IsMarginPriceApplicable", title:"IsMarginPriceApplicable"},
+    {datatype:"STRING", field:"NretType", title:"NretType"},
 
 
 
