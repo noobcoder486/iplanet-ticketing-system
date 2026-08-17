@@ -93,8 +93,8 @@ export class QuoteViewComponent implements OnInit, OnChanges {
 
   AmcTypeMasterDetailsList: any[] = [];
 
-    RejectQuoteReasonDD: DropDownValue = DropDownValue.getBlankObject();
-    RejectQuoteReason: any;
+  RejectQuoteReasonDD: DropDownValue = DropDownValue.getBlankObject();
+  RejectQuoteReason: any;
   Math = Math;
   constructor(
     private dropdownDataService: DropdownDataService,
@@ -117,7 +117,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
     this.GetAmcTypeMasterDetailsList()
     this.onQuoteRejectReasonSearch({ term: "", items: [] });
 
-    console.log('abd values',Math.abs(-10.00))
+    console.log('abd values', Math.abs(-10.00))
   }
 
   onPricingOptionSearch($event: { term: string; item: any[] }) {
@@ -134,11 +134,11 @@ export class QuoteViewComponent implements OnInit, OnChanges {
     });
   }
 
-   onQuoteRejectReasonSearch($event: { term: string; items: any[] }) {
+  onQuoteRejectReasonSearch($event: { term: string; items: any[] }) {
     this.dropdownDataService.fetchDropDownData(DropDownType.QUOTEREJECTREASON, $event.term).subscribe({
       next: (value) => {
         if (value != null) {
-          
+
           this.RejectQuoteReasonDD = value;
           console.log("RejectQuoteReasonDD ", this.RejectQuoteReasonDD)
         }
@@ -217,7 +217,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
   }
 
   validateDiscountAmount(value, item) {
-    
+
     if (value < 0) {
       this.toaster.error("Invalid Discount Amount!");
     }
@@ -290,7 +290,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
   }
 
   coveragehoverFunc(item) {
-    
+
     if (this.quoteStatus != 'OPEN') {
       this.toaster.error('Allowed only when the Quote Status is OPEN ')
       return
@@ -321,7 +321,8 @@ export class QuoteViewComponent implements OnInit, OnChanges {
 
 
   addApprovedDiscountToLineItem(obj) {
-    
+    debugger
+
     console.log("Quote Obj ", obj)
     if (this.objQuote?.QuoteDetail == null || this.objQuote?.QuoteDetail == undefined) {
       this.toaster.error("No Parts found in Quote")
@@ -330,18 +331,29 @@ export class QuoteViewComponent implements OnInit, OnChanges {
     else {
       this.objQuote?.QuoteDetail.forEach(item => {
         if (item.ItemCode == obj?.MaterialCode) {
-          
-          let discountAmount = Number(obj?.DiscountAmount ?? 0);
-          if (isNaN(discountAmount))
-            discountAmount = 0;
-          if(obj?.DiscountType == 'ADD'){
-          item.DiscountAmount = - discountAmount;
+
+          if (obj?.DISCOUNTSOURCE == 'DISCOUNTVOUCHERCODEHEADER' || obj?.DISCOUNTSOURCE == "DISCOUNTVOUCHERCODEHEADER") {
+                   const DiscountAmount = item.UnitPrice * (obj.DiscountPercentage / 100)
+                   item.DiscountAmount = Number(DiscountAmount.toFixed(2))
+                  item.DiscountCouponCode = obj?.CouponCode
+                 this.calculateDetails(item);
           }
-          else{
-          item.DiscountAmount = discountAmount;
+          else {
+
+
+            let discountAmount = Number(obj?.DiscountAmount ?? 0);
+
+            if (isNaN(discountAmount))
+              discountAmount = 0;
+            if (obj?.DiscountType == 'ADD') {
+              item.DiscountAmount = - discountAmount;
+            }
+            else {
+              item.DiscountAmount = discountAmount;
+            }
+            item.DiscountCouponCode = obj?.CouponCode
+            this.calculateDetails(item);
           }
-          item.DiscountCouponCode = obj?.CouponCode
-          this.calculateDetails(item);
         }
       })
       console.log(this.objQuote.QuoteDetail)
@@ -425,7 +437,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    
+
     if (changes["repa"]) {
 
 
@@ -458,7 +470,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
 
       this.quoteCode = this.repa?.QUOTE?.QuoteCode;
       this.quoteStatus = this.repa?.QUOTE?.QuoteStatus;
-      this.RejectQuoteReason = this.repa?.QUOTE?.RejectReason 
+      this.RejectQuoteReason = this.repa?.QUOTE?.RejectReason
       if (this.repa != null && this.repa != undefined) {
         this.newquoteGuid = this.repa?.QUOTE?.QuoteGuid;
         this.objQuote = {
@@ -566,7 +578,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
             ContractCode: item?.ContractCode,
             ContractStartDate: item?.ContractStartDate,
             ContractEndDate: item?.ContractEndDate,
-            PartType : item?.PartType
+            PartType: item?.PartType
 
 
 
@@ -596,10 +608,10 @@ export class QuoteViewComponent implements OnInit, OnChanges {
           this.lstDiagdetail.push(this.repa?.DIAG?.DIAGLIST?.DIAGDETAIL);
         }
 
-     
+
         // this.fetchPriceAndGSTDetails(this.partlist);
 
-          this.getPriceForPartList()
+        this.getPriceForPartList()
 
 
       }
@@ -609,22 +621,22 @@ export class QuoteViewComponent implements OnInit, OnChanges {
     }
   }
 
-    async getPriceForPartList(): Promise<void> {
-      
-      console.log('this.partlist before  ' , this.partlist)
-      await this.getStockPriceBulk();         
-      console.log('this.partlist after ' , this.partlist)
-      this.fetchPriceAndGSTDetails(this.partlist); 
-    }
-      
+  async getPriceForPartList(): Promise<void> {
+
+    console.log('this.partlist before  ', this.partlist)
+    await this.getStockPriceBulk();
+    console.log('this.partlist after ', this.partlist)
+    this.fetchPriceAndGSTDetails(this.partlist);
+  }
+
 
   showDiscount(item) {
-    
+
     if (this.quoteStatus != 'OPEN') {
       this.toaster.error('Allowed only when the Quote Status is OPEN ')
       return
     }
-    console.log('item' , item);
+    console.log('item', item);
     var objQuoteDiscountObj = {
       "CaseGUID": this.repa.CaseGUID,
       "UnitPrice": item.UnitPrice,
@@ -634,7 +646,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
       "DiscountCouponCode": item?.DiscountCouponCode ?? '',
       "DiscountCouponStatus": item?.DiscountCouponCode ? '' : 'APPROVED',
       "showPopUp": true,
-      "PartType" : item?.PartType ?? ''
+      "PartType": item?.PartType ?? ''
     }
     this.discountpopUp.emit(objQuoteDiscountObj)
   }
@@ -721,7 +733,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
   // }
 
   fetchPriceAndGSTDetails(partlist: any) {
-    
+
     let RequestItemList = [];
     RequestItemList.push({
       Key: "ApiType",
@@ -754,7 +766,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
     this.spinner.show();
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
       next: (value) => {
-        
+
         this.spinner.hide();
         let response = JSON.parse(value.toString());
         if (response.ReturnCode == "0") {
@@ -794,7 +806,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
         Remark: "",
       };
     }
-    
+
     var lstSelectedItem = [];
     if (Array.isArray(value.QuoteItem)) {
       lstSelectedItem = value.QuoteItem;
@@ -881,7 +893,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
   // }
 
   calculateDetails(item) {
-    
+
     console.log(item)
     const PartApplicableForDiscount_AMC = this.AmcTypeMasterDetailsList.find(a => item.ItemCode == a.PartNumber)
     const ContractCodeApplicableForPartDiscount = this.repa?.ContractCodeObject?.NoOfTimesUsed <= 3;
@@ -897,7 +909,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
       const ContractDiscount = safeRound((DiscountPercentage_AMC / 100) * item.BaseAmount)
       // item.BaseAmount = safeRound(item.BaseAmount - FivePerContractDiscount)
       item.DiscountAmount = ContractDiscount
-      item.DiscountCouponCode  = this.repa?.ContractCode ?? ''
+      item.DiscountCouponCode = this.repa?.ContractCode ?? ''
       item.BaseAmount = safeRound(item.UnitPrice * item.Quantity);
       item.TaxableAmount = safeRound(item.BaseAmount - item.DiscountAmount);
       item.SGSTAmount = safeRound(item.TaxableAmount * (item.SGSTPercentage / 100));
@@ -913,7 +925,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
       const PartContractDiscount = safeRound((PartDiscountPercentage_AMC / 100) * item.BaseAmount)
       // item.BaseAmount = safeRound(item.BaseAmount - FivePerContractDiscount)
       item.DiscountAmount = PartContractDiscount
-      item.DiscountCouponCode  = this.repa?.ContractCode ?? ''
+      item.DiscountCouponCode = this.repa?.ContractCode ?? ''
       item.BaseAmount = safeRound(item.UnitPrice * item.Quantity);
       item.TaxableAmount = safeRound(item.BaseAmount - item.DiscountAmount);
       item.SGSTAmount = safeRound(item.TaxableAmount * (item.SGSTPercentage / 100));
@@ -1013,7 +1025,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
   // }
 
   getQuoteItemObject(item) {
-    
+
     var margin = item.Margin == null ? 0 : parseFloat(item.Margin);
     var price = item.UnitPrice == null ? 0 : parseFloat(item.UnitPrice);
     var qty = item.Quantity == null ? 0 : parseFloat(item.Quantity);
@@ -1097,14 +1109,14 @@ export class QuoteViewComponent implements OnInit, OnChanges {
       ContractCode: item?.ContractCode,
       ContractStartDate: item?.ContractStartDate,
       ContractEndDate: item?.ContractEndDate,
-            PartType : item?.PartType,
+      PartType: item?.PartType,
 
     };
     return objquoteitem;
   }
 
   getPartListXml() {
-    
+
     let rawData = {
       rows: [],
     };
@@ -1112,7 +1124,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
       if (item.stockPrice == null || item.stockPrice == undefined) {
         //''
       }
-      
+
       console.log('item', item)
       rawData.rows.push({
         row: {
@@ -1150,7 +1162,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
           PriceType: item?.PriceType == null || item?.PriceType == undefined ? 'StockPrice' : item?.PriceType,
 
           // UnitPrice: item?.PriceType == null || item?.PriceType == undefined ? (this.dynamicService.removeCommas(item?.stockPrice == null || item?.stockPrice == undefined ? "0" : item?.stockPrice)) : (this.dynamicService.removeCommas(item?.tem?.exchangePrice == null || item?.tem?.exchangePrice == undefined ? "0" : item?.tem?.exchangePrice)),
-          UnitPrice : item?.UnitPrice ?? 0
+          UnitPrice: item?.UnitPrice ?? 0
 
         },
       });
@@ -1168,7 +1180,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
 
   validateQuotation() {
     for (let item of this.objQuote.QuoteDetail) {
-      
+
       if (item.UnitPrice < item.DiscountAmount) {
         this.toaster.error("Discount Amount cannot be greater than the Net Amount in Part Number", item.ItemCode);
         return false
@@ -1198,7 +1210,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
       return
     }
 
-    
+
 
     let requestData = [];
     requestData.push({
@@ -1259,7 +1271,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
     });
     requestData.push({
       Key: "RejectReason",
-      Value: this.RejectQuoteReason ?? '' 
+      Value: this.RejectQuoteReason ?? ''
     });
     requestData.push({
       Key: "QuotationDetails",
@@ -1278,7 +1290,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
     console.log("Quote ", requestData)
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
       next: (value) => {
-        
+
         this.spinner.hide();
         let response = JSON.parse(value.toString());
 
@@ -1342,9 +1354,9 @@ export class QuoteViewComponent implements OnInit, OnChanges {
 
   async onPriceType(item) {
     this.spinner.show();
-    
+
     console.log('onPriceType item', item)
-    
+
     this.isPriceTypeFuc(item);
     var rowno = item.rowno;
     item.PriceType = this.quoteForm.controls["PriceType" + rowno.toString()].value;
@@ -1512,7 +1524,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
 
   async getStockPrice(item): Promise<void> {
 
-    
+
 
     try {
       const data = {
@@ -1528,7 +1540,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
       const response = JSON.parse(value.toString());
 
       const matched = response.find(x => x?.number === item?.ItemCode);
-      
+
       let gsxPrice = 0;
       //   item.PriceType === 'ExchangePrice'
       //     ? this.dynamicService.removeCommas(matched?.exchangePrice ?? 0)
@@ -1644,7 +1656,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
           ContractCode: items?.ContractCode == null || items?.ContractCode == undefined ? this.ContractCode : items?.ContractCode,
           ContractStartDate: items?.ContractStartDate == null || items?.ContractStartDate == undefined ? this.ContractStartDate : items?.ContractStartDate,
           ContractEndDate: items?.ContractEndDate == null || items?.ContractEndDate == undefined ? this.ContractEndDate : items?.ContractEndDate,
-           PartType : items?.PartType
+          PartType: items?.PartType
         },
       });
     }
@@ -1675,16 +1687,16 @@ export class QuoteViewComponent implements OnInit, OnChanges {
   quoteSatusChange = "";
 
   updatequoteStatus() {
-    
-    if(this.quoteSatusChange == 'REJECTED' && (this.RejectQuoteReason == '' || this.RejectQuoteReason == null || this.RejectQuoteReason == undefined) ){
-       this.toaster.error('Please select Quote Reject Reason')
-       return
-     }
-     if(this.quoteSatusChange == 'REJECTED'){
-           this.UpdateQuotationRejectReason()
-     }
 
-    
+    if (this.quoteSatusChange == 'REJECTED' && (this.RejectQuoteReason == '' || this.RejectQuoteReason == null || this.RejectQuoteReason == undefined)) {
+      this.toaster.error('Please select Quote Reject Reason')
+      return
+    }
+    if (this.quoteSatusChange == 'REJECTED') {
+      this.UpdateQuotationRejectReason()
+    }
+
+
     this.onQuoteStatus();
     ("");
     this.quoteStatus = this.quoteSatusChange;
@@ -1777,7 +1789,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
 
 
   onUnitPriceChange(item) {
-    
+
     console.log('item from onUnitPriceChange ', item)
 
     if (item?.UnitPrice == null || item?.UnitPrice == undefined) {
@@ -1804,28 +1816,28 @@ export class QuoteViewComponent implements OnInit, OnChanges {
 
 
   GetAmcTypeMasterDetailsList() {
-    
+
     let requestData = []
     requestData.push({
       "Key": "APIType",
       "Value": "GetAmcTypeMasterDetailsList"
     })
-    
+
     let strRequestData = JSON.stringify(requestData);
     let contentRequest =
     {
       "content": strRequestData
     };
-    
+
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
-          
+
           try {
             let response = JSON.parse(Value.toString());
             if (response.ReturnCode == '0') {
               let data = JSON.parse(response?.ExtraData);
-              
+
               if (Array.isArray(data?.AmcTypeMasterDetailsList?.AmcTypeMasterDetails)) {
                 this.AmcTypeMasterDetailsList = data?.AmcTypeMasterDetailsList?.AmcTypeMasterDetails
               }
@@ -1851,7 +1863,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
   // bulk
 
   async getStockPriceBulk(): Promise<void> {
-    
+
 
     let tempSelectedElements = [...this.partlist];
     let apiCalls: Promise<void>[] = [];
@@ -1886,7 +1898,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
                 for (let object of response) {
                   for (let item of this.partlist) {
                     if (item.ItemCode === object.number) {
-                      
+
 
 
                       if (item.PriceType === 'ExchangePrice') {
@@ -1909,7 +1921,7 @@ export class QuoteViewComponent implements OnInit, OnChanges {
               reject(err);
             },
             complete: () => {
-              
+
               resolve();
             }
           });
@@ -1929,8 +1941,8 @@ export class QuoteViewComponent implements OnInit, OnChanges {
 
 
 
-  UpdateQuotationRejectReason(){
-    
+  UpdateQuotationRejectReason() {
+
     let requestData = [];
     requestData.push({
       Key: "ApiType",
@@ -1959,16 +1971,16 @@ export class QuoteViewComponent implements OnInit, OnChanges {
     };
     this.spinner.show();
     console.log("UpdateQuotationRejectReason ", requestData)
- 
+
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe({
       next: (value) => {
-        
+
         this.spinner.hide();
         let response = JSON.parse(value.toString());
 
         if (response.ReturnCode == "0") {
-            console.log('Reject Reason Updated Successfully !');
-           location.reload();
+          console.log('Reject Reason Updated Successfully !');
+          location.reload();
 
         }
         else {

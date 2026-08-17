@@ -1,5 +1,6 @@
 /* =============================================================================
-   TICKETING SYSTEM — scoped to section.content
+   TICKETING SYSTEM — Scoped to section.content
+   Layout: Details Part (78%) | List Part (22%)
    ============================================================================= */
 
 section.content {
@@ -83,7 +84,7 @@ section.content .ts-create-btn:active {
 }
 
 /* =============================================================================
-   MAIN LAYOUT
+   MAIN LAYOUT & SWAPPED PANELS (78% / 22%)
    ============================================================================= */
 section.content .ts-layout {
   display: flex;
@@ -93,41 +94,28 @@ section.content .ts-layout {
   position: relative;
 }
 
-/* =============================================================================
-   LEFT PANEL — DRAWER
-   ============================================================================= */
-section.content .ts-left {
-  width: 295px;
-  min-width: 295px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  background: #f8fafc;
-  border-right: 2px solid #e2e8f0;
-  overflow: hidden;
-  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-    min-width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 0.28s;
-}
-
-/* Collapsed state */
-section.content .ts-left.ts-left--collapsed {
-  width: 0;
-  min-width: 0;
-  border-right-color: transparent;
-}
-
-/* Inner wrapper preserves width so content doesn't reflow during animation */
-section.content .ts-drawer-inner {
-  width: 295px;
-  min-width: 295px;
+/* ── 1. Left Details Panel (78% Width) ───────────────────────────────────── */
+section.content .ts-left-detail {
+  width: 78%;
   flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  gap: 14px;
 }
 
-/* ── Pull Tab — a flex sibling between .ts-left and .ts-right in .ts-layout ── */
+section.content .ts-left-detail::-webkit-scrollbar {
+  width: 5px;
+}
+
+section.content .ts-left-detail::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+/* ── Pull Tab — Positioned between Left Detail and Right List ────────────── */
 section.content .ts-drawer-tab {
   flex-shrink: 0;
   align-self: center;
@@ -135,14 +123,14 @@ section.content .ts-drawer-tab {
   height: 52px;
   background: #1a73e8;
   border: none;
-  border-radius: 0 6px 6px 0;
+  border-radius: 6px 0 0 6px;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
   cursor: pointer;
-  box-shadow: 2px 0 8px rgba(26, 115, 232, 0.3);
+  box-shadow: -2px 0 8px rgba(26, 115, 232, 0.3);
   transition: background 0.15s, width 0.15s;
   z-index: 10;
 }
@@ -152,6 +140,40 @@ section.content .ts-drawer-tab:hover {
   width: 20px;
 }
 
+/* ── 2. Right Ticket List Drawer (22% Width) ─────────────────────────────── */
+section.content .ts-right-list {
+  width: 22%;
+  min-width: 22%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  border-left: 2px solid #e2e8f0;
+  overflow: hidden;
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    min-width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.28s;
+}
+
+/* Collapsed state for Right Panel */
+section.content .ts-right-list.ts-right-list--collapsed {
+  width: 0;
+  min-width: 0;
+  border-left-color: transparent;
+}
+
+section.content .ts-drawer-inner {
+  width: 100%;
+  min-width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* =============================================================================
+   RIGHT PANEL — FILTER & TICKET LIST
+   ============================================================================= */
 section.content .ts-filter-wrap {
   display: flex;
   align-items: center;
@@ -198,16 +220,12 @@ section.content .ts-ticket-list::-webkit-scrollbar {
   width: 4px;
 }
 
-section.content .ts-ticket-list::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 section.content .ts-ticket-list::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 2px;
 }
 
-/* ── Ticket Card ─────────────────────────────────────────────────────────────── */
+/* ── Ticket Cards ────────────────────────────────────────────────────────── */
 section.content .ts-ticket-card {
   display: flex;
   align-items: stretch;
@@ -226,7 +244,6 @@ section.content .ts-ticket-stripe {
   flex-shrink: 0;
 }
 
-/* ── Ticket card status colors — kept in sync with the pill/badge palette ───── */
 section.content .ts-ticket-card.new {
   background: #dbeafe;
   border-color: #60a5fa;
@@ -239,7 +256,7 @@ section.content .ts-ticket-card.new .ts-ticket-stripe {
 section.content .ts-ticket-card.new:hover {
   border-color: #1a73e8;
   box-shadow: 0 3px 12px rgba(26, 115, 232, 0.25);
-  transform: translateX(3px);
+  transform: translateX(-3px);
 }
 
 section.content .ts-ticket-card.first {
@@ -254,7 +271,7 @@ section.content .ts-ticket-card.first .ts-ticket-stripe {
 section.content .ts-ticket-card.first:hover {
   border-color: #c2410c;
   box-shadow: 0 3px 12px rgba(194, 65, 12, 0.25);
-  transform: translateX(3px);
+  transform: translateX(-3px);
 }
 
 section.content .ts-ticket-card.in-progress {
@@ -269,7 +286,7 @@ section.content .ts-ticket-card.in-progress .ts-ticket-stripe {
 section.content .ts-ticket-card.in-progress:hover {
   border-color: #d97706;
   box-shadow: 0 3px 12px rgba(217, 119, 6, 0.25);
-  transform: translateX(3px);
+  transform: translateX(-3px);
 }
 
 section.content .ts-ticket-card.closed {
@@ -285,7 +302,7 @@ section.content .ts-ticket-card.closed .ts-ticket-stripe {
 section.content .ts-ticket-card.closed:hover {
   border-color: #64748b;
   opacity: 1;
-  transform: translateX(3px);
+  transform: translateX(-3px);
 }
 
 section.content .ts-ticket-card.partially-closed {
@@ -300,7 +317,7 @@ section.content .ts-ticket-card.partially-closed .ts-ticket-stripe {
 section.content .ts-ticket-card.partially-closed:hover {
   border-color: #6d28d9;
   box-shadow: 0 3px 12px rgba(109, 40, 217, 0.25);
-  transform: translateX(3px);
+  transform: translateX(-3px);
 }
 
 section.content .ts-ticket-card.completed {
@@ -315,14 +332,14 @@ section.content .ts-ticket-card.completed .ts-ticket-stripe {
 section.content .ts-ticket-card.completed:hover {
   border-color: #16a34a;
   box-shadow: 0 3px 12px rgba(22, 163, 74, 0.25);
-  transform: translateX(3px);
+  transform: translateX(-3px);
 }
 
 section.content .ts-ticket-card.ts-ticket-active {
   background: #dbeafe !important;
   border-color: #1a73e8 !important;
   box-shadow: 0 3px 14px rgba(26, 115, 232, 0.25) !important;
-  transform: translateX(3px);
+  transform: translateX(-3px);
 }
 
 section.content .ts-ticket-card.ts-ticket-active .ts-ticket-stripe {
@@ -355,9 +372,7 @@ section.content .ts-ticket-no {
   white-space: nowrap;
 }
 
-/* =============================================================================
-   STATUS PILLS (left panel ticket list)
-   ============================================================================= */
+/* Status Pills */
 section.content .ts-status-pill {
   font-size: 9px;
   font-weight: 800;
@@ -510,39 +525,13 @@ section.content .ts-paginator-wrap {
   background: #fff;
 }
 
-section.content .ts-paginator-wrap .mat-paginator {
-  background: transparent;
-}
-
 section.content .ts-paginator-wrap .mat-paginator-container {
   min-height: 44px;
   padding: 0 8px;
 }
 
 /* =============================================================================
-   RIGHT PANEL
-   ============================================================================= */
-section.content .ts-right {
-  flex: 1;
-  min-width: 0;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-section.content .ts-right::-webkit-scrollbar {
-  width: 5px;
-}
-
-section.content .ts-right::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
-}
-
-/* =============================================================================
-   DETAIL CARD
+   LEFT PANEL — DETAIL CARD
    ============================================================================= */
 section.content .ts-detail {
   background: #fff;
@@ -597,9 +586,7 @@ section.content .ts-dsb-dot {
   border-radius: 50%;
 }
 
-/* =============================================================================
-   DETAIL HEADER STATUS BADGE
-   ============================================================================= */
+/* Detail Status Badges Palette */
 section.content .ts-dsb--new {
   background: #93c5fd;
   color: #1e3a8a;
@@ -717,6 +704,49 @@ section.content .ts-dsb--qteprej .ts-dsb-dot {
   background: #9f1239;
 }
 
+section.content .ts-status-pen-icon {
+  cursor: pointer;
+  font-size: 13px;
+  color: #888;
+  margin-left: 8px;
+  transition: color 0.2s;
+}
+
+section.content .ts-status-pen-icon:hover {
+  color: #1a73e8;
+}
+
+section.content .ts-status-inline-select {
+  min-width: 160px;
+  margin-left: 8px;
+}
+
+section.content .ts-status-save-btn {
+  margin-left: 8px;
+  padding: 4px 12px;
+  border: none;
+  border-radius: 4px;
+  background: #1a73e8;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+section.content .ts-status-save-btn:hover {
+  background: #1557b0;
+}
+
+section.content .ts-status-cancel-icon {
+  margin-left: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #c62828;
+}
+
+section.content .ts-status-cancel-icon:hover {
+  color: #8b0000;
+}
+
 section.content .ts-detail-header-actions {
   display: flex;
   align-items: center;
@@ -768,6 +798,53 @@ section.content .ts-action-btn--view:hover {
   background: #93c5fd;
 }
 
+section.content .ts-workflow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  line-height: 1;
+  color: #fff;
+}
+
+section.content .ts-workflow-btn--assign {
+  background: linear-gradient(135deg, #059669, #047857);
+}
+
+section.content .ts-workflow-btn--assign:hover {
+  background: linear-gradient(135deg, #047857, #065f46);
+  transform: translateY(-1px);
+}
+
+section.content .ts-workflow-btn--first {
+  background: linear-gradient(135deg, #fd914e, #ec752b);
+}
+
+section.content .ts-workflow-btn--product {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+}
+
+section.content .ts-workflow-btn--product:hover {
+  background: linear-gradient(135deg, #6d28d9, #5b21b6);
+  transform: translateY(-1px);
+}
+
+section.content .ts-workflow-btn--quotation {
+  background: linear-gradient(135deg, #0891b2, #0e7490);
+}
+
+section.content .ts-workflow-btn--quotation:hover {
+  background: linear-gradient(135deg, #0e7490, #155e75);
+  transform: translateY(-1px);
+}
+
 /* Meta Grid */
 section.content .ts-meta-grid {
   display: grid;
@@ -807,79 +884,95 @@ section.content .ts-meta-code {
   font-weight: 700;
 }
 
-/* Workflow Row */
-section.content .ts-workflow-row {
+/* Job Status Grid & Dynamic Gradient Cards */
+.job-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
+  margin-left: 10px !important;
+}
+
+.status-card {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  padding: 11px 16px;
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-  flex-shrink: 0;
-  min-height: 50px;
+  border-radius: 16px;
+  padding: 10px;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: default;
 }
 
-section.content .ts-workflow-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
-  transition: all 0.15s;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.status-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.status-count {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 12px;
   line-height: 1;
-  color: #fff;
+  text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-section.content .ts-workflow-btn--assign {
-  background: linear-gradient(135deg, #059669, #047857);
+.status-desc {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  word-wrap: break-word;
+  line-height: 1.3;
+  opacity: 0.95;
 }
 
-section.content .ts-workflow-btn--first {
-  background: linear-gradient(135deg, #fd914e, #ec752b);
+/* Card Gradients */
+.status-card:nth-child(10n + 1) {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
-section.content .ts-workflow-btn--assign:hover {
-  background: linear-gradient(135deg, #047857, #065f46);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+.status-card:nth-child(10n + 2) {
+  background: linear-gradient(135deg, #ff9a44 0%, #fc6076 100%);
 }
 
-section.content .ts-workflow-btn--product {
-  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+.status-card:nth-child(10n + 3) {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
 }
 
-section.content .ts-workflow-btn--product:hover {
-  background: linear-gradient(135deg, #6d28d9, #5b21b6);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+.status-card:nth-child(10n + 4) {
+  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
 }
 
-section.content .ts-workflow-btn--quotation {
-  background: linear-gradient(135deg, #0891b2, #0e7490);
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
-  transition: all 0.15s;
-  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.25);
-  line-height: 1;
+.status-card:nth-child(10n + 5) {
+  background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
 }
 
-section.content .ts-workflow-btn--quotation:hover {
-  background: linear-gradient(135deg, #0e7490, #155e75);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.35);
+.status-card:nth-child(10n + 6) {
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+}
+
+.status-card:nth-child(10n + 7) {
+  background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+}
+
+.status-card:nth-child(10n + 8) {
+  background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%);
+  color: #333;
+}
+
+.status-card:nth-child(10n + 8) .status-count {
+  text-shadow: none;
+}
+
+.status-card:nth-child(10n + 9) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.status-card:nth-child(10n + 10) {
+  background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
 }
 
 section.content .ts-divider {
@@ -887,6 +980,367 @@ section.content .ts-divider {
   border: none;
   border-top: 1px solid #e2e8f0;
   flex-shrink: 0;
+}
+
+/* =============================================================================
+   PRODUCTS SECTION & TABLE
+   ============================================================================= */
+section.content .ts-product-section {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 10px !important;
+}
+
+section.content .ts-product-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #dbeafe;
+  flex-shrink: 0;
+  border-left: 4px solid #1a73e8;
+  margin-bottom: 3px !important;
+}
+
+section.content .ts-product-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+section.content .ts-product-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #1a73e8;
+  flex-shrink: 0;
+}
+
+section.content .ts-product-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: black;
+}
+
+section.content .ts-product-scroll {
+  max-height: 220px;
+  overflow-x: auto;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+section.content .ts-product-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+section.content .ts-product-scroll::-webkit-scrollbar-thumb {
+  background: #c4b5fd;
+  border-radius: 3px;
+}
+
+section.content .ts-product-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+section.content .ts-product-table thead tr {
+  background: #f5f3ff;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+section.content .ts-product-table th {
+  padding: 7px 10px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  border-bottom: 1.5px solid #ddd6fe;
+  white-space: nowrap;
+}
+
+section.content .ts-product-table tbody tr {
+  height: 48px;
+}
+
+section.content .ts-product-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  color: #1e293b;
+}
+
+section.content .ts-product-row:hover td {
+  background: #faf5ff;
+}
+
+section.content .ts-pd-img {
+  text-align: center;
+  vertical-align: middle;
+  padding: 6px 8px !important;
+  min-width: 80px;
+}
+
+section.content .ts-pd-device-img {
+  display: block;
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  margin: 0 auto 4px;
+  border-radius: 6px;
+  background: #f5f5f5;
+  padding: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+section.content .ts-pd-mono {
+  font-family: 'Courier New', monospace;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #1d4ed8;
+  background: #dbeafe;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+section.content .ts-pd-muted {
+  color: #64748b;
+  font-size: 11.5px;
+}
+
+section.content .ts-pd-name {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 12px;
+  max-width: 160px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+section.content .ts-pd-config {
+  color: #475569;
+  font-size: 11.5px;
+  max-width: 140px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+section.content .ts-pd-date {
+  font-size: 11.5px;
+  color: #334155;
+}
+
+section.content .ts-pd-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+section.content .ts-pd-badge--success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+section.content .ts-pd-badge--danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+section.content .ts-pd-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+section.content .ts-pd-pill--ok {
+  background: #dcfce7;
+  color: #166534;
+}
+
+section.content .ts-pd-pill--no {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+section.content .ts-pd-action {
+  width: 36px;
+  text-align: center;
+}
+
+section.content .ts-pd-remove-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 5px;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+section.content .ts-pd-remove-btn:hover {
+  background: #fca5a5;
+}
+
+.ts-pd-dd-cell {
+  min-width: 180px;
+  vertical-align: middle;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.ts-ng-invalid .ng-select-container {
+  border-color: #c62828 !important;
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.15) !important;
+}
+
+.ts-field-error {
+  display: block;
+  color: #c62828;
+  font-size: 11px;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+.ts-contract-dates {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  color: #555;
+  font-size: 11px;
+  margin-top: 4px;
+  flex-wrap: wrap;
+}
+
+/* Voice & Submit Section */
+.ts-voice-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px 22px 14px;
+  margin-top: 16px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
+}
+
+.ts-voice-field {
+  flex: 1;
+  min-width: 280px;
+}
+
+.ts-voice-field mat-error {
+  font-size: 11.5px;
+  color: #c62828;
+  margin-top: 2px;
+  display: block;
+}
+
+.ts-textarea-error {
+  border-bottom: 2px solid #c62828 !important;
+}
+
+.ts-submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.ts-submit-btn {
+  background: linear-gradient(135deg, #1a73e8, #1558b0);
+  color: #fff;
+  border: none;
+  padding: 10px 26px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 3px 10px rgba(26, 115, 232, 0.3);
+}
+
+.ts-submit-btn:hover {
+  background: linear-gradient(135deg, #1558b0, #0d47a1);
+  box-shadow: 0 4px 14px rgba(26, 115, 232, 0.4);
+}
+
+.ts-submit-btn:active {
+  transform: scale(0.98);
+}
+
+.ts-job-case-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2e7d32;
+  background: #e8f5e9;
+  border: 1px solid #a5d6a7;
+  border-radius: 12px;
+  padding: 2px 8px;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.ts-job-case-badge:hover {
+  background: #c8e6c9;
+  box-shadow: 0 1px 5px rgba(46, 125, 50, 0.25);
+}
+
+.ts-saved-field-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #37474f;
+  background: #eceff1;
+  border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  padding: 3px 10px;
+  white-space: nowrap;
+  min-width: 80px;
+  text-align: center;
+}
+
+.ts-saved-field-badge--grey {
+  color: #546e7a;
+  background: #f5f5f5;
+  border-color: #e0e0e0;
 }
 
 /* =============================================================================
@@ -926,20 +1380,6 @@ section.content .ts-mail-thread-scroll {
   flex-direction: column;
   gap: 10px;
   padding-right: 4px;
-}
-
-section.content .ts-mail-thread-scroll::-webkit-scrollbar {
-  width: 4px;
-}
-
-section.content .ts-mail-thread-scroll::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 2px;
-}
-
-section.content .ts-mail-thread-scroll::-webkit-scrollbar-thumb {
-  background: #93c5fd;
-  border-radius: 2px;
 }
 
 section.content .ts-mail-item {
@@ -1021,81 +1461,6 @@ section.content .ts-mail-body {
 }
 
 /* =============================================================================
-   INFO CARD (for product details)
-   ============================================================================= */
-section.content .ts-info-card {
-  background: #fff;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-section.content .ts-info-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-section.content .ts-info-card-header-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-section.content .ts-info-card-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  color: #fff;
-}
-
-section.content .ts-info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-}
-
-section.content .ts-info-item {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 11px 16px;
-  border-right: 1px solid #f1f5f9;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-section.content .ts-info-item--full {
-  grid-column: 1 / -1;
-}
-
-section.content .ts-info-label {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #94a3b8;
-}
-
-section.content .ts-info-value {
-  font-size: 13px;
-  font-weight: 500;
-  color: #0f172a;
-  word-break: break-word;
-  line-height: 1.4;
-}
-
-/* =============================================================================
    EMPTY STATE
    ============================================================================= */
 section.content .ts-empty-state {
@@ -1139,651 +1504,39 @@ section.content .ts-empty-sub {
 }
 
 /* =============================================================================
-   RESPONSIVE
+   RESPONSIVE BREAKPOINTS
    ============================================================================= */
 @media (max-width: 768px) {
   section.content .ts-layout {
     flex-direction: column;
   }
 
-  section.content .ts-left {
+  section.content .ts-left-detail {
+    width: 100% !important;
+    padding: 10px;
+  }
+
+  section.content .ts-right-list {
     width: 100% !important;
     min-width: unset !important;
     height: 260px;
-    border-right: none;
-    border-bottom: 2px solid #e2e8f0;
-    flex-direction: column;
+    border-left: none;
+    border-top: 2px solid #e2e8f0;
   }
 
-  section.content .ts-left.ts-left--collapsed {
+  section.content .ts-right-list.ts-right-list--collapsed {
     height: 0;
-    border-bottom-color: transparent;
-  }
-
-  section.content .ts-drawer-inner {
-    width: 100%;
-    min-width: unset;
+    border-top-color: transparent;
   }
 
   section.content .ts-drawer-tab {
-    align-self: auto;
     width: 100%;
     height: 16px;
     border-radius: 0 0 6px 6px;
     box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
   }
 
-  section.content .ts-right {
-    padding: 10px;
-  }
-
   section.content .ts-meta-grid {
     grid-template-columns: 1fr 1fr;
-  }
-}
-
-section.content .ts-product-section {
-  background: #fff;
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  margin: 10px !important
-}
-
-section.content .ts-product-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 14px;
-  background: #dbeafe;
-  flex-shrink: 0;
-  border-left: 4px solid #1a73e8;
-  margin-bottom: 3px !important;
-}
-
-section.content .ts-product-header-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #fff;
-}
-
-section.content .ts-product-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 5px;
-  background: rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  color: #1a73e8;
-  flex-shrink: 0;
-}
-
-section.content .ts-product-count {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 600;
-  color: black;
-}
-
-/* Scrollable table wrapper — max height so it doesn't push everything down */
-section.content .ts-product-scroll {
-  max-height: 220px;
-  overflow-x: auto;
-  overflow-y: auto;
-  flex-shrink: 0;
-}
-
-section.content .ts-product-scroll::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-
-section.content .ts-product-scroll::-webkit-scrollbar-thumb {
-  background: #c4b5fd;
-  border-radius: 3px;
-}
-
-section.content .ts-product-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-  white-space: nowrap;
-}
-
-section.content .ts-product-table thead tr {
-  background: #f5f3ff;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
-
-section.content .ts-product-table th {
-  padding: 7px 10px;
-  text-align: left;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  color: white;
-  border-bottom: 1.5px solid #ddd6fe;
-  white-space: nowrap;
-}
-
-section.content .ts-product-table td {
-  padding: 5px 10px;
-  border-bottom: 1px solid #f1f5f9;
-  vertical-align: middle;
-  color: #1e293b;
-}
-
-section.content .ts-product-row:hover td {
-  background: #faf5ff;
-}
-
-section.content .ts-pd-img {
-  text-align: center;
-  vertical-align: middle;
-  padding: 6px 8px !important;
-  min-width: 80px;
-}
-
-section.content .ts-pd-device-img {
-  display: block;
-  width: 52px;
-  height: 52px;
-  object-fit: contain;
-  margin: 0 auto 4px;
-  border-radius: 6px;
-  background: #f5f5f5;
-  padding: 4px;
-  border: 1px solid #e0e0e0;
-}
-
-section.content .ts-pd-mono {
-  font-family: 'Courier New', monospace;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: #1d4ed8;
-  background: #dbeafe;
-  padding: 2px 6px;
-  border-radius: 3px;
-}
-
-section.content .ts-pd-muted {
-  color: #64748b;
-  font-size: 11.5px;
-}
-
-section.content .ts-pd-name {
-  font-weight: 600;
-  color: #0f172a;
-  font-size: 12px;
-  max-width: 160px;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-section.content .ts-pd-config {
-  color: #475569;
-  font-size: 11.5px;
-  max-width: 140px;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-section.content .ts-pd-date {
-  font-size: 11.5px;
-  color: #334155;
-}
-
-section.content .ts-pd-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 10px;
-  font-size: 10.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
-
-section.content .ts-pd-badge--success {
-  background: #dcfce7;
-  color: #166534;
-}
-
-section.content .ts-pd-badge--danger {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-section.content .ts-pd-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 7px;
-  border-radius: 10px;
-  font-size: 10.5px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-section.content .ts-pd-pill--ok {
-  background: #dcfce7;
-  color: #166534;
-}
-
-section.content .ts-pd-pill--no {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-section.content .ts-pd-action {
-  width: 36px;
-  text-align: center;
-}
-
-section.content .ts-pd-remove-btn {
-  width: 26px;
-  height: 26px;
-  border-radius: 5px;
-  background: #fee2e2;
-  border: 1px solid #fca5a5;
-  color: #dc2626;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-section.content .ts-pd-remove-btn:hover {
-  background: #fca5a5;
-}
-
-/* ── Per-row dropdown cell ───────────────────────────────────────────────── */
-.ts-pd-dd-cell {
-  min-width: 180px;
-  vertical-align: middle;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-}
-
-/* ── Invalid ng-select highlight ─────────────────────────────────────────── */
-.ts-ng-invalid .ng-select-container {
-  border-color: #c62828 !important;
-  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.15) !important;
-}
-
-/* ── Inline field error text ─────────────────────────────────────────────── */
-.ts-field-error {
-  display: block;
-  color: #c62828;
-  font-size: 11px;
-  margin-top: 3px;
-  font-weight: 500;
-}
-
-/* ── Contract dates shown below the contract dropdown ───────────────────── */
-.ts-contract-dates {
-  display: flex;
-  flex-direction: row;
-  gap: 8px;
-  color: #555;
-  font-size: 11px;
-  margin-top: 4px;
-  flex-wrap: wrap;
-}
-
-/* ── Voice fields section ─────────────────────────────────────────────────── */
-.ts-voice-section {
-  background: #fff;
-  border-radius: 12px;
-  padding: 18px 22px 14px;
-  margin-top: 16px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.07);
-}
-
-.ts-voice-row {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.ts-voice-field {
-  flex: 1;
-  min-width: 280px;
-}
-
-.ts-voice-field mat-error {
-  font-size: 11.5px;
-  color: #c62828;
-  margin-top: 2px;
-  display: block;
-}
-
-.ts-textarea-error {
-  border-bottom: 2px solid #c62828 !important;
-}
-
-/* ── Submit row at the bottom of voice section ───────────────────────────── */
-.ts-submit-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 16px;
-}
-
-.ts-submit-btn {
-  background: linear-gradient(135deg, #1a73e8, #1558b0);
-  color: #fff;
-  border: none;
-  padding: 10px 26px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-  letter-spacing: 0.3px;
-  box-shadow: 0 3px 10px rgba(26, 115, 232, 0.3);
-}
-
-.ts-submit-btn:hover {
-  background: linear-gradient(135deg, #1558b0, #0d47a1);
-  box-shadow: 0 4px 14px rgba(26, 115, 232, 0.4);
-}
-
-.ts-submit-btn:active {
-  transform: scale(0.98);
-}
-
-/* ── CaseId badge shown in the action column for saved-job rows ───────────── */
-.ts-job-case-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #2e7d32;
-  background: #e8f5e9;
-  border: 1px solid #a5d6a7;
-  border-radius: 12px;
-  padding: 2px 8px;
-  white-space: nowrap;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.15s, box-shadow 0.15s;
-}
-
-.ts-job-case-badge:hover {
-  background: #c8e6c9;
-  box-shadow: 0 1px 5px rgba(46, 125, 50, 0.25);
-  text-decoration: none;
-}
-
-/* ── Read-only banner at the bottom of the voice section ─────────────────── */
-.ts-job-saved-banner {
-  display: flex;
-  align-items: center;
-  background: #e3f2fd;
-  border: 1px solid #90caf9;
-  border-radius: 8px;
-  color: #1565c0;
-  font-size: 13px;
-  padding: 10px 16px;
-  margin-top: 8px;
-}
-
-/* ── Static read-only badge replacing a dropdown in _fromJob rows ─────────── */
-.ts-saved-field-badge {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 600;
-  color: #37474f;
-  background: #eceff1;
-  border: 1px solid #cfd8dc;
-  border-radius: 6px;
-  padding: 3px 10px;
-  white-space: nowrap;
-  min-width: 80px;
-  text-align: center;
-}
-
-.ts-saved-field-badge--grey {
-  color: #546e7a;
-  background: #f5f5f5;
-  border-color: #e0e0e0;
-}
-
-/* ── Job header badge in product list header ──────────────────────────────── */
-.ts-job-header-badge {
-  display: inline-flex;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 600;
-  color: #1565c0;
-  background: #e3f2fd;
-  border: 1px solid #90caf9;
-  border-radius: 10px;
-  padding: 2px 10px;
-  margin-left: 8px;
-}
-
-/* ── Add More Products button in product list header ─────────────────────── */
-.ts-add-more-btn {
-  display: inline-flex;
-  align-items: center;
-  background: linear-gradient(135deg, #43a047, #2e7d32);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 7px 18px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.25);
-  transition: background 0.2s, box-shadow 0.2s;
-}
-
-.ts-add-more-btn:hover {
-  background: linear-gradient(135deg, #388e3c, #1b5e20);
-  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.35);
-}
-
-/* ── Product table: lock row height for non-dropdown cells ───────────────── */
-.ts-product-table tbody tr {
-  height: 48px;
-}
-
-.ts-product-table tbody td {
-  vertical-align: middle;
-  padding: 6px 10px;
-}
-
-/* Container for the grid */
-.job-status-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 20px;
-  padding: 20px 0;
-  margin-left: 10px !important;
-}
-
-/* The Base Square Card */
-.status-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 16px;
-  /* Larger, softer corners for a modern feel */
-  padding: 10px;
-  text-align: center;
-  color: #ffffff;
-  /* Forces all text inside to be white */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  /* Soft baseline shadow */
-  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-    box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  cursor: default;
-}
-
-/* Smooth, modern hover effect */
-.status-card:hover {
-  transform: translateY(-6px) scale(1.03);
-  /* Floats up and slightly enlarges */
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-  /* Shadow deepens on hover */
-}
-
-/* The Bold Number */
-.status-count {
-  font-size: 2.5rem;
-  font-weight: 800;
-  /* Extra bold */
-  margin-bottom: 12px;
-  line-height: 1;
-  /* Crucial for readability of white text on light backgrounds */
-  text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* The Job Status Description */
-.status-desc {
-  font-size: 0.8rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  /* Adds breathing room to ALL CAPS text */
-  word-wrap: break-word;
-  line-height: 1.3;
-  opacity: 0.95;
-  /* Slightly softens the text compared to the number */
-}
-
-/* =========================================================
-   DYNAMIC COLORS: Cycles through 10 modern light gradients
-   ========================================================= */
-
-.status-card:nth-child(10n + 1) {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-}
-
-/* Cyan Blue */
-.status-card:nth-child(10n + 2) {
-  background: linear-gradient(135deg, #ff9a44 0%, #fc6076 100%);
-}
-
-/* Warm Sunset */
-.status-card:nth-child(10n + 3) {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-}
-
-/* Mint Green */
-.status-card:nth-child(10n + 4) {
-  background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
-}
-
-/* Soft Purple */
-.status-card:nth-child(10n + 5) {
-  background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-}
-
-/* Rose Pink */
-.status-card:nth-child(10n + 6) {
-  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-}
-
-/* Peach Yellow */
-.status-card:nth-child(10n + 7) {
-  background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-}
-
-/* Seafoam */
-.status-card:nth-child(10n + 8) {
-  background: linear-gradient(135deg, #cfd9df 0%, #e2ebf0 100%);
-  color: #333;
-}
-
-/* Light Silver (Overrides text to dark gray for contrast) */
-.status-card:nth-child(10n + 8) .status-count {
-  text-shadow: none;
-}
-
-/* Removes shadow for the silver card */
-.status-card:nth-child(10n + 9) {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-/* Deep Violet */
-.status-card:nth-child(10n + 10) {
-  background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%);
-}
-
-/* Sunset Glow */
-
-/* Styles for total header and fallback message */
-.total-jobs-header {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-  color: #444;
-}
-
-.no-jobs-msg {
-  color: #888;
-  font-style: italic;
-  padding: 16px 0;
-}
-
-.ts-status-pen-icon {
-  cursor: pointer;
-  font-size: 13px;
-  color: #888;
-  margin-left: 8px;
-  transition: color .2s;
-
-  &:hover {
-    color: #1a73e8;
-  }
-}
-
-.ts-status-inline-select {
-  min-width: 160px;
-  margin-left: 8px;
-}
-
-.ts-status-save-btn {
-  margin-left: 8px;
-  padding: 4px 12px;
-  border: none;
-  border-radius: 4px;
-  background: #1a73e8;
-  color: #fff;
-  font-size: 12px;
-  cursor: pointer;
-
-  &:hover {
-    background: #1557b0;
-  }
-}
-
-.ts-status-cancel-icon {
-  margin-left: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  color: #c62828;
-
-  &:hover {
-    color: #8b0000;
   }
 }

@@ -47,15 +47,13 @@ export class TicketingSystemComponent implements OnInit {
   productsSubmitted: boolean = false;
   customerData: any = null;
   locationData: any = null;
-  creVoice: string = '';
-  creVoiceTouched: boolean = false;
   ELSStatusType: DropDownValue = this.getBlankObject();
   RepairTypeDD: DropDownValue = this.getBlankObject();
   BillingOptionDD: DropDownValue = this.getBlankObject();
+  isEditingStatus = false;
+  editingStatus: string = '';
 
   ngOnInit(): void {
-
-
     const savedStatus = sessionStorage.getItem('ticketStatusFilter');
     if (savedStatus) {
       this.selectedStatus = savedStatus;
@@ -102,12 +100,6 @@ export class TicketingSystemComponent implements OnInit {
     return product._customerVoiceTouched && (!product.customerVoice?.trim() || this.hasSpecialChars(product.customerVoice));
   }
 
-
-  isCreVoiceInvalid(): boolean {
-    if (!this.hasNewProducts()) return false;
-    return this.creVoiceTouched && (!this.creVoice?.trim() || this.hasSpecialChars(this.creVoice));
-  }
-
   hasNewProducts(): boolean {
     return this.submittedProducts.some(p => !p._fromJob);
   }
@@ -121,8 +113,6 @@ export class TicketingSystemComponent implements OnInit {
     this.submittedProducts = [];
     this.customerData = null;
     this.locationData = null;
-    this.creVoice = '';
-    this.creVoiceTouched = false;
     this.GetTicketDetail(ticket);
   }
 
@@ -201,8 +191,6 @@ export class TicketingSystemComponent implements OnInit {
     this.locationData = null;
     this.productsSubmitted = false;
     this.submittedProducts = [];
-    this.creVoice = '';
-    this.creVoiceTouched = false;
     this.GetTicketList();
   }
 
@@ -475,8 +463,6 @@ export class TicketingSystemComponent implements OnInit {
         if (added > 0) {
           this.productsSubmitted = true;
           this.drawerOpen = false;
-          if (!this.creVoice) this.creVoice = '';
-          this.creVoiceTouched = false;
         }
         this.cdr.detectChanges();
       }
@@ -539,6 +525,8 @@ export class TicketingSystemComponent implements OnInit {
         _billingOption: diagnosis?.BillingOption || null,
         _repairTypeTouched: false,
         _billingOptionTouched: false,
+        _creVoice: jd.creVoice ?? '',
+        _creVoiceTouched: false,
       };
 
       this.submittedProducts.push(product);
@@ -548,7 +536,7 @@ export class TicketingSystemComponent implements OnInit {
     }
 
     if (details.length > 0) {
-      this.creVoice = details[0]?.creVoice ?? '';
+      // this.creVoice = details[0]?.creVoice ?? '';
     }
 
     this.selectedTicket = {
@@ -591,6 +579,8 @@ export class TicketingSystemComponent implements OnInit {
     p._billingOptionTouched = false;
     p.customerVoice = '';
     p._customerVoiceTouched = false;
+    p._creVoice = '';
+    p._creVoiceTouched = false;
     return p;
   }
 
@@ -676,6 +666,7 @@ export class TicketingSystemComponent implements OnInit {
           ContractStartDate: p._contractStartDate || '',
           ContractEndDate: p._contractEndDate || '',
           CustomerVoice: p.customerVoice || '',
+          CreVoice: p._creVoice || ''
         }
       });
     }
@@ -730,17 +721,19 @@ export class TicketingSystemComponent implements OnInit {
         this.cdr.detectChanges();
         return false;
       }
+      p._creVoiceTouched = true;
+      if (!p._creVoice?.trim()) {
+        this.toaster.error(`CRE Voice cannot be blank for Serial: ${p.serial}`);
+        this.cdr.detectChanges();
+        return false;
+      }
+      if (this.hasSpecialChars(p._creVoice)) {
+        this.toaster.error(`CRE Voice has invalid characters for Serial: ${p.serial}`);
+        this.cdr.detectChanges();
+        return false;
+      }
     }
 
-    this.creVoiceTouched = true;
-    if (!this.creVoice?.trim()) {
-      this.toaster.error('CRE Voice cannot be blank');
-      return false;
-    }
-    if (this.hasSpecialChars(this.creVoice)) {
-      this.toaster.error('CRE Voice contains invalid special characters');
-      return false;
-    }
     if (!this.selectedTicket?.CustomerCode) {
       this.toaster.error('Customer not mapped to this ticket');
       return false;
@@ -766,7 +759,6 @@ export class TicketingSystemComponent implements OnInit {
     requestData.push({ Key: 'CompanyCode', Value: glob.getCompanyCode() });
     requestData.push({ Key: 'RetailCustomerCode', Value: this.selectedTicket?.CustomerCode });
     requestData.push({ Key: 'LocationCode', Value: this.selectedTicket?.LocationCode });
-    requestData.push({ Key: 'Remark', Value: this.creVoice.trim() });
     requestData.push({ Key: 'ProductDetails', Value: productXml });
     requestData.push({ Key: 'JobHeaderGuid', Value: this.selectedTicket?._jobHeaderGuid || '' });
     const contentRequest = { content: JSON.stringify(requestData) };
@@ -777,8 +769,6 @@ export class TicketingSystemComponent implements OnInit {
           let response = JSON.parse(value.toString());
           if (response.ReturnCode == '0') {
             this.toaster.success(isAppend ? 'Products appended to job successfully' : 'Products submitted successfully');
-            this.creVoice = '';
-            this.creVoiceTouched = false;
             this.submittedProducts = [];
             this.productsSubmitted = false;
             this.drawerOpen = true;
@@ -864,8 +854,6 @@ export class TicketingSystemComponent implements OnInit {
     this.submittedProducts = [];
     this.customerData = null;
     this.locationData = null;
-    this.creVoice = '';
-    this.creVoiceTouched = false;
     this.GetTicketList();
   }
 
@@ -878,22 +866,15 @@ export class TicketingSystemComponent implements OnInit {
     this.route.navigate(['/auth/' + glob.getCompanyCode() + '/ticketing-bulk-quotation']);
   }
 
-  // ── Status inline-edit state ─────────────────────────────────────────
-  isEditingStatus = false;
-  editingStatus: string = '';
-
-  /** Enter edit mode – pre-patch with current status */
   startEditStatus(): void {
     this.editingStatus = this.selectedTicket?.TicketStatus ?? '';
     this.isEditingStatus = true;
   }
 
-  /** Revert to view mode without saving */
   cancelEditStatus(): void {
     this.isEditingStatus = false;
     this.editingStatus = '';
   }
-
 
   saveTicketStatus() {
     this.spinner.show()

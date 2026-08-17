@@ -2,6 +2,8 @@
   <ngx-spinner size="medium" [type]="typeSelected">
     <p style="font-size: 20px; color: white">Loading...</p>
   </ngx-spinner>
+
+  <!-- TOPBAR -->
   <div class="ts-topbar">
     <div class="ts-topbar-left">
       <div>
@@ -14,69 +16,16 @@
       <span>New Ticket</span>
     </button>
   </div>
+
+  <!-- MAIN LAYOUT: SWAPPED POSITIONS -->
   <div class="ts-layout">
-    <div class="ts-left" [class.ts-left--collapsed]="!drawerOpen">
-      <div class="ts-drawer-inner">
-        <div class="ts-filter-wrap">
-          <i class="fa fa-filter ts-filter-icon"></i>
-          <ng-select [items]="ticketStatusDD.Data" bindLabel="TEXT" bindValue="Id" placeholder="All Statuses"
-            [(ngModel)]="selectedStatus" (change)="fetchRecordsForStatus()" class="ts-ng-select">
-          </ng-select>
-        </div>
 
-        <div class="ts-ticket-list">
-          <div class="ts-ticket-card" *ngFor="let ticket of tickets"
-            [ngClass]="[getTicketStatusClass(ticket?.TicketStatus), selectedTicket?.TicketGuid === ticket?.TicketGuid ? 'ts-ticket-active' : '']"
-            (click)="selectTicket(ticket)">
-            <div class="ts-ticket-stripe"></div>
-            <div class="ts-ticket-body">
-              <div class="ts-ticket-top">
-                <span class="ts-ticket-no">{{ ticket?.TicketNo }}</span>
-                <span class="ts-status-pill ts-status-pill--{{ getTicketStatusClass(ticket?.TicketStatus) }}">
-                  {{ ticket?.TicketStatus }}
-                </span>
-              </div>
-              <div class="ts-ticket-customer">
-                <i class="fa fa-user-circle ts-cust-icon"></i>
-                <span class="ts-cust-name">{{ ticket?.CustomerName || 'Unknown Customer' }}</span>
-              </div>
-              <div class="ts-ticket-phone" *ngIf="ticket?.CustomerNo">
-                <i class="fa fa-phone ts-phone-icon"></i>
-                <span>{{ ticket?.CustomerNo }}</span>
-              </div>
-              <div class="ts-ticket-phone" *ngIf="ticket?.CustomerNo">
-                <span>{{ ticket?.S13JobDetailsCount }} Out Of {{ticket?.TotalJobDetailsCount }} Job Closed</span>
-              </div>
-            </div>
-            <div class="ts-active-dot" *ngIf="selectedTicket?.TicketGuid === ticket?.TicketGuid"></div>
-          </div>
-
-          <div class="ts-list-empty" *ngIf="tickets.length === 0">
-            <i class="fa fa-inbox"></i>
-            <p>No tickets found</p>
-          </div>
-        </div>
-
-        <div class="ts-paginator-wrap">
-          <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageNo - 1" showFirstLastButtons
-            (page)="onPageChange($event)">
-          </mat-paginator>
-        </div>
-
-      </div>
-    </div>
-
-    <button class="ts-drawer-tab" (click)="drawerOpen = !drawerOpen"
-      [matTooltip]="drawerOpen ? 'Collapse ticket list' : 'Expand ticket list'">
-      <i class="fa" [ngClass]="drawerOpen ? 'fa-chevron-left' : 'fa-chevron-right'"></i>
-    </button>
-
-    <div class="ts-right">
-
+    <!-- 1. DETAILS PART (LEFT SIDE - 78%) -->
+    <div class="ts-left-detail">
       <ng-container *ngIf="selectedTicket">
-
         <div class="ts-detail">
 
+          <!-- DETAIL HEADER -->
           <div class="ts-detail-header">
             <div class="ts-detail-header-left">
               <div class="ts-detail-ticketno">{{ selectedTicket.TicketNo }}</div>
@@ -84,7 +33,7 @@
               <ng-container *ngIf="!isEditingStatus">
                 <span class="ts-detail-status-badge" [ngClass]="{
                   'ts-dsb--new':            selectedTicket.TicketStatus === 'OPEN',
-                  'ts-dsb--first':            selectedTicket.TicketStatus === 'FIRSTRESPONSE',
+                  'ts-dsb--first':          selectedTicket.TicketStatus === 'FIRSTRESPONSE',
                   'ts-dsb--inprogress':     selectedTicket.TicketStatus === 'IN-PROGRESS',
                   'ts-dsb--closed':         selectedTicket.TicketStatus === 'CLOSED',
                   'ts-dsb--partiallyclosed':selectedTicket.TicketStatus === 'PARTIALLY-COMPLETED',
@@ -95,11 +44,11 @@
                   'ts-dsb--qtepsub':        selectedTicket.TicketStatus === 'QTEPSUB',
                   'ts-dsb--qtepappr':       selectedTicket.TicketStatus === 'QTEPAPPR',
                   'ts-dsb--qteprej':        selectedTicket.TicketStatus === 'QTEPREJ',
-                  'ts-dsb--jobcreate':        selectedTicket.TicketStatus === 'JOBCREATE'
+                  'ts-dsb--jobcreate':      selectedTicket.TicketStatus === 'JOBCREATE'
                 }">
                   <span class="ts-dsb-dot"></span>
                   {{ selectedTicket.TicketStatus }}
-                </span>s
+                </span>
                 <span>
                   <i *ngIf="selectedTicket.TicketStatus !== 'CLOSED'" class="fa-solid fa-pen ts-status-pen-icon"
                     matTooltip="Edit Status" (click)="startEditStatus()">
@@ -156,6 +105,7 @@
                 (click)="addProduct(selectedTicket)">
                 <i class="fa fa-box-open"></i> Add Product
               </button>
+
               <button class="ts-workflow-btn ts-workflow-btn--quotation" *ngIf="(selectedTicket?.CustomerCode != null && selectedTicket?.CustomerCode != '') &&
                 (selectedTicket?.LocationCode != null && selectedTicket?.LocationCode != '') &&
                 (selectedTicket?.TicketStatus === 'JOBCREATE' || selectedTicket?.TicketStatus.includes('QTE')) &&
@@ -173,6 +123,7 @@
             </div>
           </div>
 
+          <!-- META GRID -->
           <div class="ts-meta-grid">
             <div class="ts-meta-item">
               <span class="ts-meta-label">Customer Name</span>
@@ -200,8 +151,8 @@
             </div>
           </div>
 
+          <!-- JOB STATUS GRID -->
           <div class="job-status-grid" *ngIf="countArray && countArray.length > 0">
-            <!-- Iterate over the statuses -->
             <div class="status-card" *ngFor="let status of countArray">
               <div class="status-count">{{ status?.Count }}</div>
               <div class="status-desc">{{ status?.Description | uppercase }}</div>
@@ -210,6 +161,7 @@
 
           <hr class="ts-divider" />
 
+          <!-- SUBMITTED PRODUCTS -->
           <div *ngIf="productsSubmitted && submittedProducts.length > 0" class="ts-product-section">
             <div class="ts-product-header">
               <div class="ts-product-header-left">
@@ -240,6 +192,7 @@
                     <th>AppleCare</th>
                     <th>ELS Status *</th>
                     <th>Customer Voice *</th>
+                    <th>CRE Voice *</th>
                     <th>Contract Code</th>
                     <th>Repair Type *</th>
                     <th>Billing Option *</th>
@@ -248,7 +201,6 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let p of submittedProducts; let i = index" class="ts-product-row">
-
                     <td class="ts-pd-img">
                       <img [src]="p.productImageURL" [alt]="p.productDescription" class="ts-pd-device-img"
                         onerror="this.src='assets/images/device-placeholder.png'">
@@ -260,11 +212,8 @@
                     </td>
 
                     <td><span class="ts-pd-mono">{{ p.serial }}</span></td>
-
                     <td><span class="ts-pd-name">{{ p.productDescription }}</span></td>
-
                     <td><span class="ts-pd-config">{{ p.configDescription }}</span></td>
-
                     <td><span class="ts-pd-mono ts-pd-muted">{{ p.imei }}</span></td>
 
                     <td>
@@ -287,7 +236,6 @@
                     </td>
 
                     <td><span class="ts-pd-muted">{{ p.purchaseCountryDesc || '—' }}</span></td>
-
                     <td><span class="ts-pd-muted">{{ p.soldToName || '—' }}</span></td>
 
                     <td>
@@ -355,6 +303,24 @@
                     </td>
 
                     <td class="ts-pd-dd-cell">
+                      <ng-container *ngIf="p._fromJob; else creVoiceEditable">
+                        <span class="ts-saved-field-badge" [matTooltip]="p._creVoice">{{ p._creVoice || '—' }}</span>
+                      </ng-container>
+                      <ng-template #creVoiceEditable>
+                        <input type="text" class="ts-pd-voice-input" [(ngModel)]="p._creVoice"
+                          (blur)="p._creVoiceTouched = true" [class.ts-ng-invalid]="isCreVoiceInvalid(p)"
+                          placeholder="CRE Voice *" style="min-width:160px;" />
+                        <small class="ts-field-error" *ngIf="p._creVoiceTouched && !p._creVoice?.trim()">
+                          Required
+                        </small>
+                        <small class="ts-field-error"
+                          *ngIf="p._creVoiceTouched && p._creVoice?.trim() && hasSpecialChars(p._creVoice)">
+                          Invalid characters
+                        </small>
+                      </ng-template>
+                    </td>
+
+                    <td class="ts-pd-dd-cell">
                       <ng-container *ngIf="p._fromJob; else contractEditable">
                         <span class="ts-saved-field-badge ts-saved-field-badge--grey">
                           {{ p._contractCode || '—' }}
@@ -392,7 +358,6 @@
                       </ng-template>
                     </td>
 
-                    <!-- ── Repair Type ─────────────────────────────────────────────────── -->
                     <td class="ts-pd-dd-cell">
                       <ng-container *ngIf="p._fromJob; else repairEditable">
                         <span class="ts-saved-field-badge">{{ p._repairType || '—' }}</span>
@@ -434,38 +399,13 @@
                         <i class="fa fa-trash-alt"></i>
                       </button>
                     </td>
-
                   </tr>
                 </tbody>
               </table>
             </div>
-
-            <div class="ts-voice-section">
-              <div class="ts-voice-field" style="max-width:500px;">
-                <mat-form-field appearance="standard" style="width:100%;">
-                  <mat-label>CRE Voice *</mat-label>
-                  <textarea matInput rows="3" [(ngModel)]="creVoice" (blur)="creVoiceTouched = true"
-                    placeholder="Enter CRE remark..." [readonly]="!hasNewProducts()"
-                    [class.ts-textarea-error]="isCreVoiceInvalid()"></textarea>
-                </mat-form-field>
-                <mat-error *ngIf="creVoiceTouched && !creVoice?.trim()">
-                  CRE Voice cannot be blank
-                </mat-error>
-                <mat-error *ngIf="creVoiceTouched && creVoice?.trim() && hasSpecialChars(creVoice)">
-                  No special characters allowed
-                </mat-error>
-              </div>
-
-              <div class="ts-submit-row" *ngIf="hasNewProducts()">
-                <button class="ts-submit-btn" (click)="submitTicketProducts()">
-                  <i class="fa fa-check-circle" style="margin-right:7px;"></i>
-                  Submit {{ newProductCount() }} New Product{{ newProductCount() > 1 ? 's' : '' }}
-                </button>
-              </div>
-            </div>
-
           </div>
 
+          <!-- MAIL SECTION -->
           <div class="ts-mail-section" *ngIf="selectedTicket?.parsedTicketBody; else mailParseError">
             <div class="ts-mail-subject">
               <i class="fa fa-envelope ts-mail-icon"></i>
@@ -495,17 +435,71 @@
           </ng-template>
 
         </div>
-
       </ng-container>
 
       <div *ngIf="!selectedTicket" class="ts-empty-state">
         <div class="ts-empty-icon"><i class="fa fa-ticket-alt"></i></div>
         <h3 class="ts-empty-title">No ticket selected</h3>
-        <p class="ts-empty-sub">Choose a ticket from the left panel to view its details</p>
+        <p class="ts-empty-sub">Choose a ticket from the right panel to view its details</p>
       </div>
+    </div>
 
+    <!-- PULL TAB (DRAWER TOGGLE BUTTON) -->
+    <button class="ts-drawer-tab" (click)="drawerOpen = !drawerOpen"
+      [matTooltip]="drawerOpen ? 'Collapse ticket list' : 'Expand ticket list'">
+      <i class="fa" [ngClass]="drawerOpen ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+    </button>
+
+    <!-- 2. TICKET LIST DRAWER (RIGHT SIDE - 22%) -->
+    <div class="ts-right-list" [class.ts-right-list--collapsed]="!drawerOpen">
+      <div class="ts-drawer-inner">
+        <div class="ts-filter-wrap">
+          <i class="fa fa-filter ts-filter-icon"></i>
+          <ng-select [items]="ticketStatusDD.Data" bindLabel="TEXT" bindValue="Id" placeholder="All Statuses"
+            [(ngModel)]="selectedStatus" (change)="fetchRecordsForStatus()" class="ts-ng-select">
+          </ng-select>
+        </div>
+
+        <div class="ts-ticket-list">
+          <div class="ts-ticket-card" *ngFor="let ticket of tickets"
+            [ngClass]="[getTicketStatusClass(ticket?.TicketStatus), selectedTicket?.TicketGuid === ticket?.TicketGuid ? 'ts-ticket-active' : '']"
+            (click)="selectTicket(ticket)">
+            <div class="ts-ticket-stripe"></div>
+            <div class="ts-ticket-body">
+              <div class="ts-ticket-top">
+                <span class="ts-ticket-no">{{ ticket?.TicketNo }}</span>
+                <span class="ts-status-pill ts-status-pill--{{ getTicketStatusClass(ticket?.TicketStatus) }}">
+                  {{ ticket?.TicketStatus }}
+                </span>
+              </div>
+              <div class="ts-ticket-customer">
+                <i class="fa fa-user-circle ts-cust-icon"></i>
+                <span class="ts-cust-name">{{ ticket?.CustomerName || 'Unknown Customer' }}</span>
+              </div>
+              <div class="ts-ticket-phone" *ngIf="ticket?.CustomerNo">
+                <i class="fa fa-phone ts-phone-icon"></i>
+                <span>{{ ticket?.CustomerNo }}</span>
+              </div>
+              <div class="ts-ticket-phone" *ngIf="ticket?.CustomerNo">
+                <span>{{ ticket?.S13JobDetailsCount }} Out Of {{ticket?.TotalJobDetailsCount }} Job Closed</span>
+              </div>
+            </div>
+            <div class="ts-active-dot" *ngIf="selectedTicket?.TicketGuid === ticket?.TicketGuid"></div>
+          </div>
+
+          <div class="ts-list-empty" *ngIf="tickets.length === 0">
+            <i class="fa fa-inbox"></i>
+            <p>No tickets found</p>
+          </div>
+        </div>
+
+        <div class="ts-paginator-wrap">
+          <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageIndex]="pageNo - 1" showFirstLastButtons
+            (page)="onPageChange($event)">
+          </mat-paginator>
+        </div>
+      </div>
     </div>
 
   </div>
-
 </section>

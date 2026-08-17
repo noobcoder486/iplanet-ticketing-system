@@ -1,53 +1,239 @@
 <section class="content">
 
-    <div class="td-topbar">
-        <div class="td-topbar-left">
-            <div class="td-topbar-icon">
-                  <i class="fa fa-ticket-alt"></i>
-            </div>
-            <div>
-                <h1 class="td-topbar-title">Ticketing Dashboard</h1>
-                <span class="td-topbar-sub">Live overview of all ticket statuses</span>
-            </div>
-        </div>
+  <div class="td-topbar">
+    <div class="td-topbar-left">
+      <div class="td-topbar-icon">
+        <i class="fa fa-ticket-alt"></i>
+      </div>
+      <div>
+        <h1 class="td-topbar-title">Ticketing Dashboard</h1>
+        <span class="td-topbar-sub">Live overview of all ticket statuses</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="td-body">
+
+    <div class="td-hero-banner">
+      <div class="td-hero-info">
+        <span class="td-hero-label">TOTAL TICKETS</span>
+        <span class="td-hero-count">{{ totalTickets }}</span>
+      </div>
     </div>
 
-    <div class="td-body">
-
-        <div class="td-total-card">
-            <div class="td-total-left">
-                <span class="td-total-label">Total Tickets</span>
-                <span class="td-total-count">{{ totalTickets }}</span>
-            </div>
-           
+    <!-- SECTION 1: STATUS SUMMARY MATRIX TABLE -->
+    <div class="td-section-card">
+      <div class="td-section-header">
+        <div class="td-section-title">
+          <i class="fa fa-list-alt text-primary"></i>
+          <h3>Status Summary </h3>
         </div>
+        <span class="td-section-count">{{ statusCards.length }} Active Status Categories</span>
+      </div>
 
-        <div class="td-cards-grid">
-            <div
-                class="td-status-card"
-                *ngFor="let card of statusCards"
-                [style.borderColor]="card.color"
-                [style.background]="card.color + '12'"
-                (click)="navigateToTickets(card.status)">
+      <div class="td-table-wrapper">
+        <table class="td-exec-table">
+          <thead>
+            <tr>
+              <th class="text-left th-neutral">TICKET STATUS CATEGORY</th>
+              <th class="text-center th-total">TOTAL COUNT</th>
+              <th class="text-center th-neutral">ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let card of statusCards">
+              <td class="td-cell-plain">
+                <i class="fa {{ card.style.icon }} td-status-icon" [style.color]="card.style.text"></i>
+                <span class="font-bold" [style.color]="card.style.text">{{ card.status }}</span>
+              </td>
+              <td class="text-center font-bold font-lg">{{ card.count }}</td>
+              <td class="text-center">
+                <button class="td-action-btn" (click)="navigateToTickets(card.rawStatus)">
+                  <span>View Details</span>
+                  <i class="fa fa-arrow-right"></i>
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="statusCards.length === 0">
+              <td colspan="3" class="td-empty-cell">No Active Status Records Found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-                <div class="td-card-top">
-                    <span class="td-card-status" [style.color]="card.color">
-                        {{ card.status }}
-                    </span>
-                    <div class="td-card-icon" [style.background]="card.color + '25'">
-                        <i class="fa fa-circle" [style.color]="card.color"></i>
-                    </div>
-                </div>
+    <!-- SECTION 2: STORE-WISE OPERATIONAL MATRIX TABLE WITH DD -->
+    <div class="td-section-card">
+      <div class="td-section-header">
+        <div class="td-section-title">
+          <i class="fa fa-store-alt text-info"></i>
+          <h3>Store-wise Operational </h3>
+        </div>
+        <div class="td-filter-wrapper">
+          <label class="td-filter-label" for="storeLocationSelect">Location:</label>
+          <select 
+            id="storeLocationSelect"
+            class="td-filter-select" 
+            [(ngModel)]="selectedStoreLocation" 
+            (change)="onStoreLocationChange()">
+            <option value="ALL">All Outlets</option>
+            <option *ngFor="let loc of masterLocationList" [value]="loc.code">{{ loc.displayName }}</option>
+          </select>
+          <span class="td-section-count">{{ storeData.length }} Outlets Active</span>
+        </div>
+      </div>
 
-                <span class="td-card-count" [style.color]="card.color">
-                    {{ card.count }}
+      <div class="td-table-wrapper">
+        <table class="td-exec-table">
+          <thead>
+            <tr>
+              <th class="text-left th-neutral">RETAIL STORE / OUTLET</th>
+              <th class="text-center th-total">TOTAL</th>
+              <th class="text-center th-pack">PENDING ACK</th>
+              <th class="text-center th-open">OPEN</th>
+              <th class="text-center th-prog">IN PROGRESS</th>
+              <th class="text-center th-closed">CLOSED</th>
+              <th class="text-center th-time">AVG FIRST RESP</th>
+              <th class="text-center th-time">AVG DIAGNOSIS</th>
+              <th class="text-center th-time">AVG PENDING FIX</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let store of storeData">
+              <td class="td-cell-plain">
+                <i class="fa fa-building text-slate"></i>
+                <span class="font-bold">{{ store.STORE }}</span>
+              </td>
+              <td class="text-center font-bold">{{ store.TOTAL ? store.TOTAL : '-' }}</td>
+              <td class="text-center"><span class="td-badge badge-pack">{{ store.P_ACK ? store.P_ACK : 0 }}</span></td>
+              <td class="text-center"><span class="td-badge badge-open">{{ store.OPEN ? store.OPEN : 0 }}</span></td>
+              <td class="text-center"><span class="td-badge badge-prog">{{ store.IN_PROG ? store.IN_PROG : 0 }}</span></td>
+              <td class="text-center"><span class="td-badge badge-closed">{{ store.CLOSED ? store.CLOSED : 0 }}</span></td>
+              <td class="text-center"><span class="td-time-pill">{{ store.AVG_FR_MINS ? (store.AVG_FR_MINS + ' min') : '-' }}</span></td>
+              <td class="text-center"><span class="td-time-pill">{{ store.AVG_DIAG_HRS ? (store.AVG_DIAG_HRS + ' hrs') : '-' }}</span></td>
+              <td class="text-center"><span class="td-time-pill">{{ store.AVG_PF_HRS ? (store.AVG_PF_HRS + ' hrs') : '-' }}</span></td>
+            </tr>
+            <tr *ngIf="storeData.length === 0">
+              <td colspan="9" class="td-empty-cell">No Operational Store Breakdown Records Found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 3: ENGINEER PERFORMANCE MATRIX TABLE WITH DD -->
+    <div class="td-section-card">
+      <div class="td-section-header">
+        <div class="td-section-title">
+          <i class="fa fa-user-shield text-warning"></i>
+          <h3>Engineer Performance </h3>
+        </div>
+        <div class="td-filter-wrapper">
+          <label class="td-filter-label" for="engineerLocationSelect">Location:</label>
+          <select 
+            id="engineerLocationSelect"
+            class="td-filter-select" 
+            [(ngModel)]="selectedEngineerLocation" 
+            (change)="onEngineerLocationChange()">
+            <option value="ALL">All Locations</option>
+            <option *ngFor="let loc of masterLocationList" [value]="loc.code">{{ loc.displayName }}</option>
+          </select>
+          <span class="td-section-count">{{ engineerData.length }} Active Engineers</span>
+        </div>
+      </div>
+
+      <div class="td-table-wrapper">
+        <table class="td-exec-table">
+          <thead>
+            <tr>
+              <th class="text-left th-neutral">ENGINEER NAME / MAIL</th>
+              <th class="text-center th-total">TOTAL ASSIGNED</th>
+              <th class="text-center th-prog">IN PROGRESS</th>
+              <th class="text-center th-closed">RESOLVED</th>
+              <th class="text-center th-time">RESOLUTION RATE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let eng of engineerData">
+              <td class="td-cell-plain">
+                <i class="fa fa-user-circle text-slate"></i>
+                <span class="font-bold">{{ eng.ENGINEER }}</span>
+              </td>
+              <td class="text-center font-bold">{{ eng.TOTAL_ASSIGNED ? eng.TOTAL_ASSIGNED : '-' }}</td>
+              <td class="text-center"><span class="td-badge badge-prog">{{ eng.IN_PROG ? eng.IN_PROG : 0 }}</span></td>
+              <td class="text-center"><span class="td-badge badge-closed">{{ eng.RESOLVED ? eng.RESOLVED : 0 }}</span></td>
+              <td class="text-center">
+                <span class="td-rate-pill">{{ getCompletionRate(eng.RESOLVED, eng.TOTAL_ASSIGNED) }}%</span>
+              </td>
+            </tr>
+            <tr *ngIf="engineerData.length === 0">
+              <td colspan="5" class="td-empty-cell">No Engineer Performance Records Found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SECTION 4: SLA BREACH CASES MATRIX TABLE WITH DD -->
+    <div class="td-section-card">
+      <div class="td-section-header">
+        <div class="td-section-title">
+          <i class="fa fa-exclamation-triangle text-danger"></i>
+          <h3>Breach Cases </h3>
+        </div>
+        <div class="td-filter-wrapper">
+          <label class="td-filter-label" for="breachLocationSelect">Location:</label>
+          <select 
+            id="breachLocationSelect"
+            class="td-filter-select" 
+            [(ngModel)]="selectedBreachLocation" 
+            (change)="onBreachLocationChange()">
+            <option value="ALL">All Locations</option>
+            <option *ngFor="let loc of masterLocationList" [value]="loc.code">{{ loc.displayName }}</option>
+          </select>
+          <span class="td-section-count danger-badge">{{ breachLocations.length }} Outlets Monitored</span>
+        </div>
+      </div>
+
+      <div class="td-table-wrapper">
+        <table class="td-exec-table">
+          <thead>
+            <tr>
+              <th class="text-left th-danger">SLA BREACH CRITERIA</th>
+              <th *ngFor="let loc of breachLocations" class="text-center th-neutral">{{ loc }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-cell-plain">
+                <i class="fa fa-clock text-danger"></i>
+                <span class="font-bold">FIRST RESPONSE BREACH (>60 Mins)</span>
+              </td>
+              <td *ngFor="let count of firstResponseBreaches" class="text-center">
+                <span [class]="count > 0 ? 'td-badge badge-danger' : 'td-badge badge-safe'">
+                  {{ count }}
                 </span>
+              </td>
+              <td *ngIf="breachLocations.length === 0" class="td-empty-cell">No Breach Records Found</td>
+            </tr>
 
-                <span class="td-card-label">Tickets</span>
-
-            </div>
-        </div>
-
+            <tr>
+              <td class="td-cell-plain">
+                <i class="fa fa-stethoscope text-danger"></i>
+                <span class="font-bold">DIAGNOSIS TAT BREACH (>24 Hrs)</span>
+              </td>
+              <td *ngFor="let count of diagnosisTATBreaches" class="text-center">
+                <span [class]="count > 0 ? 'td-badge badge-danger' : 'td-badge badge-safe'">
+                  {{ count }}
+                </span>
+              </td>
+              <td *ngIf="breachLocations.length === 0" class="td-empty-cell">No Breach Records Found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+
+  </div>
 
 </section>

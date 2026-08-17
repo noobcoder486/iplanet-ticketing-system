@@ -131,6 +131,10 @@ export class DynamicService {
   makeOutboundCall = (data) => {
     return this.apiService.postData(Controller.LeadManagement + "makeOutboundCall", data );
   }
+  makeOutboundCallMcube = (data) => {
+    debugger
+    return this.apiService.postData(Controller.LeadManagement + "makeOutboundCallMcube", data );
+  }
   saveCasaTokenLead = (data) => {
     return this.apiService.postData(Controller.LeadManagement + "saveCasaTokenLead", data );
   }

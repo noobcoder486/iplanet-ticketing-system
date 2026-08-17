@@ -159,7 +159,35 @@ export class CallManagementComponent implements OnInit {
     return ddv;
   }
 
-  onCall() {
+  // onCall() {
+    
+  //   var obj = {
+  //     LocationMobileNo: this.LocationMobileNo,
+  //     CustomerMobileNo: this.CallObject.MobileNo,
+  //     party_id: this.CallObject.UniqueId,
+  //     crm: 'Workscan',
+  //     LeadType: "LEAD"
+  //   };
+  //   console.log("Before post ", obj);
+  //   this.ngxSpinnerService.show()
+  //   this.dynamicService.makeOutboundCall(obj).subscribe(
+  //     {
+  //       next: (value) => {
+  //         ;
+  //         this.ngxSpinnerService.hide();
+  //         let response = JSON.parse(value.toString());
+  //         this.toastMessage.success(response.message, "Call Forwarded successfully!");
+  //         // window.location.reload()
+  //       },
+  //       error: err => {
+          
+  //         this.ngxSpinnerService.hide();
+  //         console.log(err);
+  //       }
+  //     });
+  // }
+
+    onCall() {
     
     var obj = {
       LocationMobileNo: this.LocationMobileNo,
@@ -170,7 +198,7 @@ export class CallManagementComponent implements OnInit {
     };
     console.log("Before post ", obj);
     this.ngxSpinnerService.show()
-    this.dynamicService.makeOutboundCall(obj).subscribe(
+    this.dynamicService.makeOutboundCallMcube(obj).subscribe(
       {
         next: (value) => {
           ;

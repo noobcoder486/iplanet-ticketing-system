@@ -51,6 +51,11 @@
         </mat-form-field>
       </div>
 
+      <div class="col-sm-3 col-lg-2 col-md-3">
+        <ng-select [items]="DateFilterTypeList" placeholder="Date Filter Type" [(ngModel)]="DateFilterType" bindLabel="TEXT"
+          bindValue="Id"></ng-select>
+      </div>
+
     </div>
   <div class="row" style="padding-top: 10px;display: flex;">
       <div class="col-lg-6" style="display:flex; flex-direction: row;">

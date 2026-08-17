@@ -1,71 +1,159 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { DynamicService } from 'src/app/common/Services/dynamicService/dynamic.service';
 import * as glob from 'src/app/config/global';
-import { Router } from '@angular/router';
+
+interface LocationItem {
+  code: string;
+  name: string;
+  displayName: string;
+}
+
 @Component({
-    selector: 'app-ticket-dashboard',
-    templateUrl: './ticket-dashboard.component.html',
-    styleUrls: ['./ticket-dashboard.component.sass']
+  selector: 'app-ticket-dashboard',
+  templateUrl: './ticket-dashboard.component.html',
+  styleUrls: ['./ticket-dashboard.component.sass']
 })
 export class TicketDashboardComponent implements OnInit {
 
-    totalTickets: number = 0;
-    statusCards: any[] = [];
+  totalTickets: number = 0;
+  statusCards: any[] = [];
+  storeData: any[] = [];
+  engineerData: any[] = [];
+  masterLocationList: LocationItem[] = [];
 
-    statusColorMap: { [key: string]: string } = {
-        'NEW': '#1a73e8',
-        'IN-PROGRESS': '#d97706',
-        'CLOSED': '#94a3b8',
-        'COMPLETED': '#059669',
-        'PARTIALLY-COMPLETED': '#7c3aed'
-    };
+  selectedStoreLocation: string = 'ALL';
+  selectedEngineerLocation: string = 'ALL';
+  selectedBreachLocation: string = 'ALL';
 
-    constructor(
-        private dynamicService: DynamicService,
-        private cdr: ChangeDetectorRef,
-        private router : Router
-    ) {}
+  breachLocations: string[] = [];
+  firstResponseBreaches: number[] = [];
+  diagnosisTATBreaches: number[] = [];
 
-    ngOnInit(): void {
-        this.getDashboardData();
-    }
+  private readonly statusConfig: Record<string, { bg: string; text: string; icon: string }> = {
+    'OPEN': { bg: '#e0f2fe', text: '#0369a1', icon: 'fa-folder-open' },
+    'IN-PROGRESS': { bg: '#fef3c7', text: '#b45309', icon: 'fa-spinner' },
+    'CLOSED': { bg: '#f1f5f9', text: '#475569', icon: 'fa-check-circle' }
+  };
 
-    getDashboardData() {
-        let requestData = [];
-        requestData.push({ Key: 'ApiType', Value: 'GetTicketDashboard' });
+  constructor(
+    private dynamicService: DynamicService,
+    private cdr: ChangeDetectorRef,
+    private router: Router
+  ) {}
 
-        this.dynamicService.getDynamicDetaildata({ content: JSON.stringify(requestData) }).subscribe({
-            next: (value) => {
-                try {
-                    let response = JSON.parse(value.toString());
-                    if (response.ReturnCode == '0') {
-                        let data = JSON.parse(response?.ExtraData);
+  ngOnInit(): void {
+    this.getDashboardData(); 
+  }
 
-                        this.totalTickets = parseInt(data?.TotalTickets) || 0;
+  getDashboardData(): void {
+    const requestData = [
+      { Key: 'ApiType', Value: 'GetTicketDashboard' },
+      { Key: 'StoreLocationCode', Value: this.extractCode(this.selectedStoreLocation) },
+      { Key: 'EngineerLocationCode', Value: this.extractCode(this.selectedEngineerLocation) },
+      { Key: 'BreachLocationCode', Value: this.extractCode(this.selectedBreachLocation) }
+    ];
 
-                        let statuses = Array.isArray(data?.StatusWiseCount?.Status)
-                            ? data.StatusWiseCount.Status
-                            : [data.StatusWiseCount.Status];
+    this.dynamicService.getDynamicDetaildata({ content: JSON.stringify(requestData) }).subscribe({
+      next: (res: any) => {
+        try {
+          const response = typeof res === 'string' ? JSON.parse(res) : res;
+          if (response?.ReturnCode !== '0' || !response?.ExtraData) return;
 
-                        this.statusCards = statuses.map((s: any) => ({
-                            status: s.TicketStatus,
-                            count: parseInt(s.TicketCount) || 0,
-                            color: this.statusColorMap[s.TicketStatus] || '#64748b'
-                        }));
+          const data = typeof response.ExtraData === 'string' 
+            ? JSON.parse(response.ExtraData) 
+            : response.ExtraData;
 
-                        this.cdr.detectChanges();
-                    }
-                } catch (ext) {
-                    console.log(ext);
-                }
-            },
-            error: err => {
-                console.log(err);
-            }
-        });
-    }
-navigateToTickets(status: string) {
+          this.totalTickets = Number(data?.TotalTickets) || 0;
+
+          // Parse Locations Dropdown
+          if (this.masterLocationList.length === 0 && data?.LocationsMaster?.Location) {
+            this.masterLocationList = this.ensureArray(data.LocationsMaster.Location)
+              .map((loc: any) => {
+                const code = String(loc?.LocationCode || '').trim();
+                const name = String(loc?.LocationName || code).trim();
+                return {
+                  code,
+                  name,
+                  displayName: code && name && code !== name ? `${code} - ${name}` : (code || name)
+                };
+              })
+              .filter(item => item.code);
+          }
+
+          // Parse Status Cards
+          this.processStatusCards(this.ensureArray(data?.StatusWiseCount?.Status));
+
+          // Parse Table Data
+          this.storeData = this.ensureArray(data?.StoreData?.StoreWise);
+          this.engineerData = this.ensureArray(data?.EngineerData?.EngineerWise);
+
+          // Parse Breach Data
+          const breachList = this.ensureArray(data?.BreachCases?.LocationBreach);
+          this.breachLocations = breachList.map((b: any) => b?.LocationCode || b?.LocationName || 'N/A');
+          this.firstResponseBreaches = breachList.map((b: any) => Number(b?.FirstResponseBreach) || 0);
+          this.diagnosisTATBreaches = breachList.map((b: any) => Number(b?.DiagnosisTATBreach) || 0);
+
+          this.cdr.detectChanges();
+        } catch (err) {
+          console.error('Error parsing dashboard data:', err);
+        }
+      },
+      error: (err) => console.error('API Error:', err)
+    });
+  }
+
+  onStoreLocationChange(): void {
+    this.getDashboardData();
+  }
+
+  onEngineerLocationChange(): void {
+    this.getDashboardData();
+  }
+
+  onBreachLocationChange(): void {
+    this.getDashboardData();
+  }
+
+  getCompletionRate(resolved: number, total: number): number {
+    if (!total || total <= 0) return 0;
+    return Math.min(100, Math.max(0, Math.round(((resolved || 0) / total) * 100)));
+  }
+
+  navigateToTickets(status: string): void {
+    if (!status) return;
     sessionStorage.setItem('ticketStatusFilter', status);
-    this.router.navigate(['/auth/' + glob.getCompanyCode() + '/ticketing-system']);
-}
+    this.router.navigate([`/auth/${glob.getCompanyCode()}/ticketing-system`]);
+  }
+
+  private processStatusCards(rawStatuses: any[]): void {
+    let openCount = 0;
+    let inProgressCount = 0;
+    let closedCount = 0;
+
+    rawStatuses.forEach((s: any) => {
+      const key = String(s?.StatusCode || s?.TicketStatus || '').toUpperCase().trim();
+      const count = Number(s?.TicketCount) || 0;
+
+      if (key === 'OPEN') openCount += count;
+      else if (key === 'CLOSED') closedCount += count;
+      else inProgressCount += count;
+    });
+
+    this.statusCards = [
+      { status: 'Open', rawStatus: 'OPEN', count: openCount, style: this.statusConfig['OPEN'] },
+      { status: 'In-Progress', rawStatus: 'IN-PROGRESS', count: inProgressCount, style: this.statusConfig['IN-PROGRESS'] },
+      { status: 'Closed', rawStatus: 'CLOSED', count: closedCount, style: this.statusConfig['CLOSED'] }
+    ].filter(card => card.count > 0);
+  }
+
+  private extractCode(value: string): string {
+    if (!value || value === 'ALL') return 'ALL';
+    return value.includes(' - ') ? value.split(' - ')[0].trim() : value.trim();
+  }
+
+  private ensureArray(data: any): any[] {
+    if (!data) return [];
+    return Array.isArray(data) ? data : [data];
+  }
 }

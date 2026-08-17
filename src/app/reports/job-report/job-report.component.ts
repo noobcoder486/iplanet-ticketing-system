@@ -40,6 +40,13 @@ export class JobReportComponent implements OnInit {
    IsSpecialAcessMaster:boolean=false;
    userName:any
 
+   DateFilterTypeList = [
+     {Id : 'JOBCREATEDDATE' , TEXT : 'JOB CREATED DATE'},
+     {Id : 'REPAIRCREATEDDATE' , TEXT : 'REPAIR CREATED DATE'}
+  ]
+  
+  DateFilterType:any;
+
 
   columns: Columns[] = [
     { datatype: "STRING", field: "TokenCode", title: "TokenCode" },
@@ -137,7 +144,7 @@ export class JobReportComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
+      this.DateFilterType = 'JOBCREATEDDATE'
     this.userName = glob.getLogedInUser().UserDetails.UserName;
         console.log('this.userName',this.userName)
     this.onLocationSearch({ term: "", item: [] });
@@ -214,6 +221,10 @@ export class JobReportComponent implements OnInit {
           "Key": "CaseId",
           "Value": this.CaseIdData == null || this.CaseIdData == undefined ? "" : this.CaseIdData
         })
+         requestData.push({
+          "Key": "DateFilterType",
+          "Value": this.DateFilterType == null || this.DateFilterType == undefined ? "JOBCREATEDDATE" : this.DateFilterType
+        })
         requestData.push({
           "Key": "PageNo",
           "Value": "1"
@@ -222,6 +233,8 @@ export class JobReportComponent implements OnInit {
           "Key": "PageSize",
           "Value": "10"
         });
+
+
         
         let strRequestData = JSON.stringify(requestData);
         let contentRequest =
@@ -307,6 +320,10 @@ export class JobReportComponent implements OnInit {
           "Key": "PageSize",
           "Value": event.eventDetail.pageSize
         });
+         requestData.push({
+          "Key": "DateFilterType",
+          "Value": this.DateFilterType == null || this.DateFilterType == undefined ? "JOBCREATEDDATE" : this.DateFilterType
+        })
 
         let strRequestData = JSON.stringify(requestData);
         let contentRequest =
@@ -339,6 +356,7 @@ export class JobReportComponent implements OnInit {
 
 
   exportReportData() {
+    debugger
     const startformattedDate = this.datePipe.transform(this.StartDate, 'yyyy-MM-dd');
     const endformattedDate = this.datePipe.transform(this.EndDate, 'yyyy-MM-dd');
     this.results = []
@@ -381,7 +399,10 @@ export class JobReportComponent implements OnInit {
         "Key": "PageSize",
         "Value": "10"
       });
-      
+       requestData.push({
+          "Key": "DateFilterType",
+          "Value": this.DateFilterType == null || this.DateFilterType == undefined ? "JOBCREATEDDATE" : this.DateFilterType
+        })
       let strRequestData = JSON.stringify(requestData);
       let contentRequest =
       {
@@ -469,6 +490,10 @@ export class JobReportComponent implements OnInit {
         "Key": "PageSize",
         "Value": "10"
       });
+       PdfData.push({
+          "Key": "DateFilterType",
+          "Value": this.DateFilterType == null || this.DateFilterType == undefined ? "JOBCREATEDDATE" : this.DateFilterType
+        })
       
         let pdfRequestData = JSON.stringify(PdfData);
         let contentRequest =
@@ -553,6 +578,10 @@ export class JobReportComponent implements OnInit {
         "Key": "PageSize",
         "Value": "10"
       });
+       requestData.push({
+          "Key": "DateFilterType",
+          "Value": this.DateFilterType == null || this.DateFilterType == undefined ? "JOBCREATEDDATE" : this.DateFilterType
+        })
       
       let strRequestData = JSON.stringify(requestData);
       let contentRequest =
@@ -702,6 +731,10 @@ export class JobReportComponent implements OnInit {
         "Key": "PageSize",
         "Value": "10"
       });
+       requestData.push({
+          "Key": "DateFilterType",
+          "Value": this.DateFilterType == null || this.DateFilterType == undefined ? "JOBCREATEDDATE" : this.DateFilterType
+        })
       
       let strRequestData = JSON.stringify(requestData);
       let contentRequest =

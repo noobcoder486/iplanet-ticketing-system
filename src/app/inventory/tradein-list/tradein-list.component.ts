@@ -92,7 +92,7 @@ export class TradeinListComponent implements OnInit {
 
   ngOnInit(): void {
     // this.GetTradeinList('')
-    this.UpdateTradeinToAutoClose()
+    // this.UpdateTradeinToAutoClose() // done through scheduler in DB
     this.onLocationSearch({ term: "", item: [] });
     this.onTradeinSubCategorySearch({ term: "", items: [] });
     this.OnTradeinPartnerSearch({ term: "", items: [] });

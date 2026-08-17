@@ -62,7 +62,7 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
 
 
   getInvoiceSalesPart() {
-    
+     debugger
     this.ngxSpinnerService.show()
     this.gsxService.getInvoiceStock(this.data.SAPPlantCode, this.data.SAPStorageLocation).subscribe({
       next: (response: any) => {
@@ -85,7 +85,10 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
           this.invoiceStockData.push(response.d.results)
           this.getInvoiceMaterialName(this.invoiceStockData) 
         }
+        if(this.data.DocType !== 'AMCSALES'){
         this.GetResourceList()
+           
+        }
       },
       error: (err) => {
         this.ngxSpinnerService.hide()
@@ -96,7 +99,7 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
 
 
   getInvoiceMaterialName(materialcodearray: any[]) {
-    
+       console.log('getInvoiceMaterialName')
     let requestData = []
     requestData.push({
       "Key": "APIType",
@@ -158,6 +161,14 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
                 }
               }
 
+                if(this.data.DocType == 'AMCSALES')
+                   {
+                       this.invoiceStockData = this.invoiceStockData.filter(item =>(
+                    item.Material == 'GR-PCK' ||  item.Material == '7022'
+                     ))
+                       console.log('AMCItems',this.invoiceStockData)
+                   }
+
        
             }
             this.ngxSpinnerService.hide()
@@ -192,7 +203,7 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
     return xml;
   }
   GetResourceList() {
-    
+    console.log('GetResourceList called ')
     let requestData = [];
     requestData.push({
         "Key": "APIType",
@@ -249,6 +260,9 @@ export class InvoiceSalesStockSelectorComponent implements OnInit {
 
                         });
                     }
+
+                 
+                  
 
                     if (this.data.DocType === 'DSALES') {
                           

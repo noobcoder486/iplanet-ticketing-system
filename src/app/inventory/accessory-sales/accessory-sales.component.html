@@ -329,7 +329,7 @@
 
 
   <mat-card class="mt-2">
-    <div *ngIf="InvoiceDocTypeData != 'AMCSALES' " class="row"
+    <div  class="row"
       style=" color:black;border-bottom: 1px solid rgb(124, 124, 124);padding: 5px;">
       <div class="col-lg-6 col-sm-6 col-md-6">
         <span style="font-size: 16px !important;color:black;font-weight: 600;height:30px">Parts</span>
@@ -375,7 +375,7 @@
                   <td style="text-align: right; ">{{ item?.DiscountAmount | number: '1.2-2'}}</td>
                   <td style="text-align: right;">{{ item?.TaxAmount | number: '1.2-2'}}</td>
                   <td style="text-align: right;">{{ item?.NetAmount | number: '1.2-2'}}</td>
-                  <td *ngIf="item?.SerialNoRequired"><input matTooltip="{{item?.SerialNo}}" type="text"
+                  <td *ngIf="item?.SerialNoRequired || item?.InventoryStockType == 'PROTECTPLUS' || item?.InventoryStockType == 'ACPLUS'"><input matTooltip="{{item?.SerialNo}}" type="text"
                       style="width: 100% !important;" [(ngModel)]="item.SerialNo">
                   </td>
                   <td *ngIf="item.ItemType=='Resource' || !(item.Batch==undefined || item.Batch=='')">{{item.SerialNo}}
@@ -467,9 +467,9 @@
                   <td style="text-align: right;">{{ item?.TaxAmount | number: '1.2-2'}}</td>
                   <td style="text-align: right;">{{ item?.NetAmount | number: '1.2-2'}}</td>
                   <td><input
-                      *ngIf="(item.ItemType=='Resource' && (item.SerializedModule == '1')) || ( item.ItemType=='Material' && (item.Batch==undefined || item.Batch==''))"
+                      *ngIf="(item.ItemType=='Resource' && (item.SerializedModule == '1')) || ( item.ItemType=='Material' && (item.Batch==undefined || item.Batch=='')) || item?.InventoryStockType == 'PROTECTPLUS' || item?.InventoryStockType == 'ACPLUS' "
                       matTooltip="{{item?.SerialNo}}" type="text" style="width: 100% !important;"
-                      [(ngModel)]="item.SerialNo">
+                      [(ngModel)]="item.SerialNo" (blur)="Validate_SerialNo_GSX(item)">
                   </td>
                   <td style="text-align: center;">{{ item?.SerialNo }}</td>
                   <td><i *ngIf="item.ItemType=='Material' && (item.Batch==undefined || item.Batch=='')"

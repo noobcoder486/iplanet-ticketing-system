@@ -78,6 +78,7 @@ export class DiscountCouponComponent implements OnInit {
 
   getDiscount4Customer()
   {
+    debugger
     this.GetAutoApproveDiscountDetails()
 
 
@@ -116,6 +117,7 @@ export class DiscountCouponComponent implements OnInit {
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
         next: (Value) => {
+          debugger
           this.popUpArray = []
           this.ngxSpinnerService.hide()
           try {

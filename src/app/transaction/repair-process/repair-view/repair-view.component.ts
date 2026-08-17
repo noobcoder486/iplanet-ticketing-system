@@ -750,7 +750,7 @@ export class RepairViewComponent implements OnInit {
 
 
   getPartObject(part: any, Method: string) {
-
+debugger
     if (Array.isArray(this.repa.DIAG?.DIAGLIST?.DIAGDETAIL)) {
       this.rplist = this.repa.DIAG?.DIAGLIST?.DIAGDETAIL;
     }
@@ -833,7 +833,9 @@ export class RepairViewComponent implements OnInit {
       "PricingOptionList": Method == "GSX" ? [] : Method == "PartSelect" ? part?.pricingOptions : [],
       "SubType": Method == "GSX" ? part?.subType : Method == "PartSelect" ? null : part?.SubType,
       "RelatedSequenceNumber": Method == "GSX" ? part?.subType : Method == "PartSelect" ? null : part?.RelatedSequenceNumber,
-      "SubstitutePartNumber": Method == "GSX" ? part?.substitutePartNumber : Method == "PartSelect" ? null : part?.SubstitutePartNumber
+      "SubstitutePartNumber": Method == "GSX" ? part?.substitutePartNumber : Method == "PartSelect" ? null : part?.SubstitutePartNumber,
+      "ApprovedDate" : Method == "GSX" ? "" : (part?.ApprovedDate ?? '1900-01-01') ,
+      "ApprovedBy"  :  Method == "GSX" ?  "" : (part?.ApprovedBy ?? "") 
     }
     //objPart.PartSerialized=false
     return objPart;
@@ -1725,7 +1727,7 @@ export class RepairViewComponent implements OnInit {
       "Key": "RepairDetail",
       "Value": this.getRepairXml()
     });
-
+     
     let strRequestData = JSON.stringify(requestData);
     let contentRequest = {
       "content": strRequestData

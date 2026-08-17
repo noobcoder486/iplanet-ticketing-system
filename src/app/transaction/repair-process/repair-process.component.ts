@@ -1286,6 +1286,7 @@ export class RepairProcessComponent implements OnInit {
   }
 
   repairPartsVerification($event) {
+    debugger
     this.repairPartListVerification = $event;
   }
   verifiedPartList

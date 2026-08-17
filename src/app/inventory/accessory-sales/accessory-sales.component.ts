@@ -1176,6 +1176,8 @@ export class AccessorySalesComponent implements OnInit {
   }
 
   openInvoicePartSelector() {
+    debugger
+
     if (this.locationData != null || this.locationData != undefined) {
       const dialogRef = this.dialog.open(InvoiceSalesStockSelectorComponent, {
         data: {
@@ -1575,7 +1577,7 @@ export class AccessorySalesComponent implements OnInit {
   }
   fetchGSTDetails() {
     ;
-
+      debugger
     let requestdata = []
     requestdata.push({
       "Key": "ApiType",
@@ -1600,6 +1602,10 @@ export class AccessorySalesComponent implements OnInit {
     requestdata.push({
       "Key": "CompanyCode",
       "Value": glob.getCompanyCode()
+    })
+     requestdata.push({
+      "Key": "doctype",
+      "Value": this.params?.doctype ?? ''
     })
     console.log('requestdata fetchGSTDetails', requestdata)
 
@@ -2206,6 +2212,16 @@ export class AccessorySalesComponent implements OnInit {
 
   onSubmit() {
 
+    
+     if (this.params.doctype == 'DSALES'){
+      
+          if(this.IsSerialNoPresent_GSX())
+          {
+              this.toastMessage.error("Please Provide the Valid Serial No for ACPLUS , PROTECTPLUS")
+              return
+          }
+     }
+
     var hasLesserUnitPrice = false
     for (let item of this.finalSelectedElements) {
 
@@ -2229,14 +2245,14 @@ export class AccessorySalesComponent implements OnInit {
       || this.params.customercode == "123909247" || this.params.customercode == "12324918747" || this.params.customercode == "12324889135"
     )) {
       // || this.isApproverPermission == true)
-      if (hasLesserUnitPrice) {
+      if (hasLesserUnitPrice && this.params.doctype != 'AMCSALES' ) {
         this.toastMessage.error("Unit price cannot be lesser than Minimum Unit Price")
         return;
       }
     }
 
     const hasZeroUnitPrice = this.finalSelectedElements.some((item => { item?.UnitPrice == 0 }))
-    if (hasZeroUnitPrice) {
+    if (hasZeroUnitPrice && this.params.doctype != 'AMCSALES') {
       this.toastMessage.error("Unit Price cannot be zero")
       return
     }
@@ -2266,7 +2282,7 @@ export class AccessorySalesComponent implements OnInit {
     if (hasBlankBatch) {
       this.toastMessage.error("Cannot insert null or empty value in Batch Number")
       return;
-    }
+    } 
     const hasBlankMaterialName = this.finalSelectedElements.some(item => item.MaterialName == null || item?.MaterialName === '' || item?.MaterialName == undefined);
     if (hasBlankMaterialName) {
       this.toastMessage.error("Material Name Not Found...")
@@ -2276,7 +2292,7 @@ export class AccessorySalesComponent implements OnInit {
     if (hasBlankGSTGroup) {
       this.toastMessage.error("GST Detail Not found")
       return;
-    }
+    } 
     const hasBlankGSTAmount = this.finalSelectedElements.some(item => item.GSTPercentage == 0);
     if (!(this.CustomerObject[0].GSTRegistrationType == "GSEZ")) {
       if (hasBlankGSTGroup) {
@@ -2437,9 +2453,6 @@ export class AccessorySalesComponent implements OnInit {
       "content": strRequestData
     };
     console.log("Request Data ", requestData)
-
-    // alert("UAT Testing, contact Admin!")
-
 
     this.dynamicService.getDynamicDetaildata(contentRequest).subscribe(
       {
@@ -2617,6 +2630,7 @@ export class AccessorySalesComponent implements OnInit {
       "Key": "LocationCode",
       "Value": this.locationData
     })
+    
     let strRequestData = JSON.stringify(requestData);
     let contentRequest =
     {
@@ -2671,12 +2685,35 @@ export class AccessorySalesComponent implements OnInit {
 
   addDiscount(item) {
 
+      
+
+       debugger
     console.log("Discount Item ", item)
     console.log("finalSelectedElements ", this.finalSelectedElements)
     let discountExists
-    this.finalSelectedElements.forEach(obj => {
 
+    if(item?.DISCOUNTSOURCE == 'DISCOUNTVOUCHERCODEHEADER' || item?.DISCOUNTSOURCE == "DISCOUNTVOUCHERCODEHEADER")
+     {
+         this.finalSelectedElements.forEach(obj => {
+          debugger
+        if (item.MaterialCode == obj.MaterialCode && obj.InvoiceDetailGUID == this.discountInvoiceDetailGUID) {
+             debugger
+            const DiscountAmount = obj.UnitPrice * (item.DiscountPercentage / 100)
+            // obj.DiscountAmount = parseFloat(TempDiscount).toFixed(2)
+            obj.DiscountAmount = Number(DiscountAmount.toFixed(2))
+          
+          obj.DiscountCoupon = item.CouponCode
+          this.calculatePrices(obj)
+        }
+      
+    })
+
+     }
+    else{
+    this.finalSelectedElements.forEach(obj => {
+       debugger
       discountExists = this.finalSelectedElements.findIndex(part => part.DiscountCoupon == item.CouponCode)
+      console.log('discountExists',discountExists)
       if (discountExists == -1) {
         if (item.MaterialCode == obj.MaterialCode && obj.InvoiceDetailGUID == this.discountInvoiceDetailGUID) {
           if (item.DiscountType == 'ADD') {
@@ -2691,6 +2728,8 @@ export class AccessorySalesComponent implements OnInit {
         }
       }
     })
+  }
+
     this.hideAddParts()
   }
 
@@ -4794,6 +4833,8 @@ export class AccessorySalesComponent implements OnInit {
 
           this.BindAmcTypeMasterDD = value;
           console.log('BindAmcTypeMasterDD', this.BindAmcTypeMasterDD);
+          console.log('BindAmcTypeMasterDD', this.BindAmcTypeMasterDD.Data);
+
         }
       },
       error: (err) => {
@@ -4892,6 +4933,15 @@ export class AccessorySalesComponent implements OnInit {
       this.toastMessage.error('Material Code Cannot be empty !! ');
       return
     }
+
+     if (
+    this.finalSelectedElements.some(x =>
+        this.BindAmcTypeMasterDD.Data.some(y => y.Id === x.MaterialCode)
+    )
+    ) {
+    this.toastMessage.error('AMC Material code already Added !!');
+    return;
+   }
 
 
     console.log('this.finalSelectedElements', this.finalSelectedElements);
@@ -5103,6 +5153,61 @@ export class AccessorySalesComponent implements OnInit {
     );
 
   }
+
+
+  // ----------
+
+    Validate_SerialNo_GSX(item) {
+
+      debugger
+
+      if(this.params.doctype != 'DSALES'){
+        return
+      }
+
+      if(item.InventoryStockType != 'ACPLUS' &&  item.InventoryStockType != 'PROTECTPLUS' ){
+          
+        return
+      }
+
+    let searchData = { unitReceivedDateTime: this.unitReceivedDateTime, device: { "id": item?.SerialNo } };
+    let strRequestData = JSON.stringify(searchData);
+    let contentRequest = {
+      "content": strRequestData
+    };
+    console.log("device ", contentRequest)
+    this.gsxService.getDeviceDetails(contentRequest).subscribe(
+      {
+        next: (value:any) => {
+           debugger
+          let StoreAllResponse = JSON.parse(value.toString());
+          console.log("Data After ", StoreAllResponse)
+          if (!(StoreAllResponse["errors"] == undefined || StoreAllResponse["errors"] == null)) {
+            this.toastMessage.error(StoreAllResponse["errors"][0].code + ' - ' + StoreAllResponse["errors"][0].message);
+            this.ngxSpinnerService.hide();
+            item.SerialNo = "";
+            return;
+          }
+          else {
+            this.toastMessage.success("Serial number  found successfully");
+            // console.log('StoreAllResponse', StoreAllResponse);
+            // this.ProductName = StoreAllResponse.device.productDescription;
+            this.ngxSpinnerService.hide();
+          }
+
+        }
+      });
+  }
+  
+   IsSerialNoPresent_GSX(){
+
+      return this.finalSelectedElements.some(
+        x=> (x.InventoryStockType == "PROTECTPLUS" || x.InventoryStockType == "ACPLUS")
+          && (x.SerialNo == null || x.SerialNo == undefined ||x.SerialNo == "" )
+      )
+
+   }
+   
 
 
 
