@@ -685,14 +685,12 @@ export class TicketingBulkQuotationComponent implements OnInit {
       "Key": "TicketGuid",
       "Value": this.ticketGuid
     });
-
-
     let pdfRequestData = JSON.stringify(PdfData);
     let contentRequest =
     {
       "content": pdfRequestData
     };
-    this.reportService.downloadServiceReport('QUOTE', contentRequest).subscribe(
+    this.reportService.downloadServiceReport('BULKQUOTE', contentRequest).subscribe(
       {
         next: (value: any) => {
           let response = JSON.parse(value.toString());

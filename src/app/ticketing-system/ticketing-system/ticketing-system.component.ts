@@ -126,10 +126,35 @@ export class TicketingSystemComponent implements OnInit {
     this.GetTicketDetail(ticket);
   }
 
-  fetchTicketStatusDropdown($event: { term: String; items: any[] }) {
-    this.dropdownDataService.fetchDropDownData(DropDownType.TicketStatus, $event.term, {}).subscribe({
-      next: (value) => { if (value != null) this.ticketStatusDD = value; },
-      error: (err) => { this.ticketStatusDD = this.getBlankObject(); }
+  fetchTicketStatusDropdown($event?: { term: String; items: any[] }) {
+    this.dropdownDataService.fetchDropDownData(DropDownType.TicketStatus, $event?.term || '', {}).subscribe({
+      next: (value) => {
+        if (value && value.Data) {
+          this.ticketStatusDD = value;
+
+          const allowed = ['ALL', 'OPEN', 'CLOSED', 'IN-PROGRESS'];
+          this.ticketStatusDD.Data = this.ticketStatusDD.Data.filter((item: any) =>
+            allowed.includes(item?.Id?.toString().trim().toUpperCase()) ||
+            allowed.includes(item?.TEXT?.toString().trim().toUpperCase())
+          );
+
+          if (this.selectedStatus) {
+            const currentStatusClean = this.selectedStatus.toString().trim().toUpperCase();
+
+            const matchedItem = this.ticketStatusDD.Data.find((item: any) =>
+              item?.Id?.toString().trim().toUpperCase() === currentStatusClean ||
+              item?.TEXT?.toString().trim().toUpperCase() === currentStatusClean
+            );
+
+            if (matchedItem) {
+              this.selectedStatus = matchedItem.Id;
+            }
+          }
+        }
+      },
+      error: (err) => {
+        this.ticketStatusDD = this.getBlankObject();
+      }
     });
   }
 
